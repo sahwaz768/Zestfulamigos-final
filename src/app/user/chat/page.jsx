@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import Header from "@/components/Header";
 import Image from "next/image";
@@ -6,12 +7,35 @@ import { RiChatSmile3Line } from "react-icons/ri";
 import { FaHistory } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
+import Chatwindow from "@/components/chatwindow";
 
 const page = () => {
+
+  const handleResize = () => {
+    if (window.matchMedia("(min-width: 768px)").matches) {
+      showchat1();
+    } else {
+      showchat();
+    }
+  };
+  
+  const showchat1 = () => {
+    document.getElementById('chatcomponentwindow').style.display = 'block';
+  };
+  
+  const showchat = () => {
+    document.getElementById('chatlist').style.display = 'none';
+    document.getElementById('chatcomponentwindow').style.display = 'block';
+  };
+
+ 
+
   return (
+   
     <div>
       <Header />
-      <div className="chat-top-box flex">
+      <div className="chat-top-box">
+        <div className="mb-view" id="chatlist">
         <div className="sidebartop">
           <div>
             <nav>
@@ -53,10 +77,11 @@ const page = () => {
             </nav>
           </div>
         </div>
-        <div className="chatlist">
+        
+        <div className="chatlist" >
           <h1 className="text-sm font-bold mt-5 mb-2"> Chats</h1>
           <div className="userlist">
-            <div className="userdetail flex items-center ">
+            <div className="userdetail flex items-center " onClick={handleResize}>
               <div>
                 <Image src={Profile} alt="Picture of the user" />
               </div>
@@ -80,6 +105,13 @@ const page = () => {
             </div>
           </div>
         </div>
+        </div>
+        <div className="chatcomponentwindow" id="chatcomponentwindow" >
+          
+         <Chatwindow/>
+         
+        </div>
+        
       </div>
     </div>
   );
