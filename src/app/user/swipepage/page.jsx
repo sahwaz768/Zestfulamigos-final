@@ -1,7 +1,10 @@
-"use client";
-import React, { useState } from "react";
-import { FaRegBell } from "react-icons/fa6";
-import { CgProfile } from "react-icons/cg";
+'use client';
+import React, { useState } from 'react';
+import { FaRegBell } from 'react-icons/fa6';
+import { CgProfile } from 'react-icons/cg';
+import { CiMenuBurger } from 'react-icons/ci';
+import Sidebar from '@/components/sidebar';
+import Swipepagemodal from '@/components/swipepagemodal';
 
 const page = () => {
   /* logic for nav bar */
@@ -16,12 +19,11 @@ const page = () => {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-
   const images = [
-    "https://img.freepik.com/premium-photo/photography-beautiful-young-happy-fashion-model-woman_1288657-24992.jpg?semt=ais_hybrid",
-    "https://s3.ap-south-1.amazonaws.com/modelfactory.in/upload/2023/Feb/18/blog_images/43b6b34c9d64d40ba7fb7be86d6f35fb.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPKXpTj5ZoWA1NikAyOWORfK0vdWw9iTCTCE3Esl_cNdejhEiEjQevx5A_6uLHMLi6MSo&usqp=CAU",
-    "https://t4.ftcdn.net/jpg/07/05/40/77/360_F_705407769_qWzohDKyvuu78V65ICzDkXt7xDX3G9RE.jpg",
+    'https://img.freepik.com/premium-photo/photography-beautiful-young-happy-fashion-model-woman_1288657-24992.jpg?semt=ais_hybrid',
+    'https://s3.ap-south-1.amazonaws.com/modelfactory.in/upload/2023/Feb/18/blog_images/43b6b34c9d64d40ba7fb7be86d6f35fb.jpg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPKXpTj5ZoWA1NikAyOWORfK0vdWw9iTCTCE3Esl_cNdejhEiEjQevx5A_6uLHMLi6MSo&usqp=CAU',
+    'https://t4.ftcdn.net/jpg/07/05/40/77/360_F_705407769_qWzohDKyvuu78V65ICzDkXt7xDX3G9RE.jpg'
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -40,19 +42,36 @@ const page = () => {
     setCurrentIndex(newIndex);
   };
 
+  const showsecondnification = () => {
+    document.getElementById('hideshow1').style.display = 'none';
+    document.getElementById('notification2').style.display = 'block';
+  };
+  const showthirdnification = () => {
+    document.getElementById('hideshow2').style.display = 'none';
+    document.getElementById('notification3').style.display = 'block';
+  };
+
+  const hideallnotification = () => {
+    document.getElementById('notification2').style.display = 'none';
+    document.getElementById('notification3').style.display = 'none';
+    document.getElementById('hideshow1').style.display = 'block';
+    document.getElementById('hideshow2').style.display = 'block';
+  };
+
   return (
     <div className="swipebox">
+    <Swipepagemodal/>
       <div className="swipeheader">
-        <header className="header ">
-          <div className="menu-toggle" onClick={toggleMenu}>
+        <header className="header2 ">
+          <div className="menu-toggle2" onClick={toggleMenu}>
             <span className="bar"></span>
             <span className="bar"></span>
             <span className="bar"></span>
           </div>
-          <div className="logo ">zestful amigos</div>
+          <div className="logo2 ">zestful amigos</div>
 
-          <nav className={`nav ${isMenuOpen ? "active" : ""}`}>
-            <ul className="nav-list">
+          <nav className={`nav2 ${isMenuOpen ? 'active' : ''}`}>
+            <ul className="nav-list2">
               <li>
                 <a href="#">Home</a>
               </li>
@@ -77,8 +96,87 @@ const page = () => {
           </div>
         </header>
       </div>
+      <div className="noti-mb-view w-full px-4">
+        <div className="threelinembview">
+          <Sidebar />
+        </div>
+        <div className="belmbview " onClick={toggleDropdown}>
+          <FaRegBell color="black" size={20} />
+        </div>
+      </div>
       {isOpen && (
-        <div className="dropdown-menu">hey this is an notification panal</div>
+        <div className="dropdown-menu">
+          <div className="notificationsvg">
+            <svg
+              width="26"
+              height="13"
+              viewBox="0 0 26 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M25.5 13H0.5L12.5 0L25.5 13Z" fill="white" />
+            </svg>
+          </div>
+          <div className="notificatioview text-sm text-gray-900">
+            <div id="notification1">
+              <ul>
+                <li>Your slot for companion henry has been confirmed.</li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+              </ul>
+
+              <br />
+              <hr />
+              <div
+                className="text-center text-pink-700 p-2 cursor-pointer"
+                onClick={showsecondnification}
+                id="hideshow1"
+              >
+                show more notification
+              </div>
+            </div>
+            <div id="notification2">
+              <ul>
+                <li>
+                  this is second notification for companion henry has been
+                  confirmed.
+                </li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+              </ul>
+
+              <br />
+              <hr />
+              <div
+                className="text-center text-pink-700 p-2 cursor-pointer"
+                onClick={showthirdnification}
+                id="hideshow2"
+              >
+                show more notification
+              </div>
+            </div>
+
+            <div id="notification3">
+              <ul>
+                <li>
+                  this is third notification for companion henry has been
+                  confirmed.
+                </li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+              </ul>
+
+              <br />
+              <hr />
+              <div
+                className="text-center text-pink-700 p-2 cursor-pointer"
+                onClick={hideallnotification}
+              >
+                Hide all notification
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       <div>

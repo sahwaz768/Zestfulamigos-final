@@ -1,25 +1,20 @@
-"use client";
+'use client';
 import React, { useState } from 'react';
-import { BsArrowReturnRight } from "react-icons/bs";
-import { CiLocationOn } from "react-icons/ci";
-import { CiMail } from "react-icons/ci";
-import { CiPhone } from "react-icons/ci";
-import { FaWhatsapp } from "react-icons/fa";
-import { FiFacebook } from "react-icons/fi";
-import { FaInstagram } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
-import { CiLinkedin } from "react-icons/ci";
-import { FcGoogle } from "react-icons/fc";
+import { BsArrowReturnRight } from 'react-icons/bs';
+import { CiLocationOn } from 'react-icons/ci';
+import { CiMail } from 'react-icons/ci';
+import { CiPhone } from 'react-icons/ci';
+import { FaWhatsapp } from 'react-icons/fa';
+import { FiFacebook } from 'react-icons/fi';
+import { FaInstagram } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
+import { CiLinkedin } from 'react-icons/ci';
+import { FcGoogle } from 'react-icons/fc';
+import Homemidsection from '@/components/homemidsection';
+import Forgotpassword from '@/components/Forgotpassword';
+import { useGoogleLogin } from '@react-oauth/google';
 
-const page =() => {
-
-  /* Logic for nav bar */
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
+const page = () => {
   /* Logic for modal */
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -36,7 +31,7 @@ const page =() => {
   /* Logic for login validation */
   const [formData, setFormData] = useState({
     email: '',
-    password: '',
+    password: ''
   });
 
   const [errors, setErrors] = useState({});
@@ -45,7 +40,7 @@ const page =() => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -75,20 +70,28 @@ const page =() => {
     }
   };
 
+  const showotpbox = () => {
+    document.getElementById('forgotpassword').style.display = 'none';
+    document.getElementById('optverify').style.display = 'block';
+  };
+  const resetpassword = () => {
+    document.getElementById('resetpassword').style.display = 'block';
+    document.getElementById('optverify').style.display = 'none';
+  };
+
+  const login = useGoogleLogin({
+    onSuccess: tokenResponse => console.log(tokenResponse),
+  });
+
   return (
     <>
       <div className="herosection">
-      {/* nav bar start here */}
+        {/* nav bar start here */}
         <div className="herobox">
           <header className="header ">
-            <div className="menu-toggle" onClick={toggleMenu}>
-              <span className="bar"></span>
-              <span className="bar"></span>
-              <span className="bar"></span>
-            </div>
             <div className="logo ">zestful amigos</div>
 
-            <nav className={`nav ${isMenuOpen ? "active" : ""}`}>
+            <nav>
               <ul className="nav-list">
                 <li>
                   <a href="#">Home</a>
@@ -115,18 +118,25 @@ const page =() => {
         </div>
         {/* hero section */}
         <div className="herocont">
-          <h1 className="text-5xl text-white ">Connect,Engage,Enjoy</h1>
+          <h1 className="companionconnect text-white ">Connect,Engage,Enjoy</h1>
           <h2 className="text-3xl text-white mt-4">
-            with <span className="ml-6 zestful ">zestful amigos</span>
+            <span className="companionwith"> with</span>
+            <span className="ml-6 zestful ">zestful amigos</span>
           </h2>
-          <p className="text-gray-800 mt-4  font-bold text-lg">
+          <p className="text-gray-800 mt-4  font-bold text-lg companionawait">
             Your ZestfulCompanion Awaits......
           </p>
+        </div>
+        <div className="lgbtn2 " onClick={handleOpenModal1}>
+          <h3 className="mt-1 mx-3"> Get started</h3>
+          <div className="lgicon2">
+            <BsArrowReturnRight color="white" size={20} />
+          </div>
         </div>
       </div>
       {/* how does work section */}
       <div>
-        <h1>how does it work</h1>
+        <Homemidsection />
       </div>
       {/* footer section */}
       <div className="footer text-white">
@@ -185,45 +195,59 @@ const page =() => {
               &times;
             </span>
             <h1 className="text-center text-xl font-semibold mb-3">Log in</h1>
-            <div className="flex glgbtn justify-center gap-2 items-center">
+            <div className="flex glgbtn justify-center gap-2 items-center"  onClick={() => login()}>
               <FcGoogle size={20} />
               <h1>Sign in with google</h1>
             </div>
 
-            <h4 className="hrline mx-3 my-3 text-gray-600">{" "}or {" "}</h4>
+            <h4 className="hrline mx-3 my-3 text-gray-600"> or </h4>
             {/* login form start here */}
             <div>
               <form onSubmit={handleSubmit}>
-              <p className="text-sm text-gray-800">Email</p>
-              <input  placeholder="Enter your email" className="inputfield "
-               type="email"
-               name="email"
-               value={formData.email}
-               onChange={handleInputChange}
-              />
-              <br />
-              {errors.email && <span className="text-sm text-pink-700">{errors.email}</span>}
-              <p className="text-sm text-gray-800">Password</p>
-              <input  placeholder="*********" className="inputfield"
-               type="password"
-               name="password"
-               value={formData.password}
-               onChange={handleInputChange}
-              />
-               <br />
-               {errors.password && <span className="text-sm text-pink-700">{errors.password}</span>}
-              <br />
-              <span className="frpassword  text-pink-700" onClick={handleOpenModal2}>
-                Forget password?
-              </span>
-              <br />
-              
-              <button type="submit" className="w-full loginbtn text-center">login</button>
-              
+                <p className="text-sm text-gray-800">Email</p>
+                <input
+                  placeholder="Enter your email"
+                  className="inputfield "
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+                <br />
+                {errors.email && (
+                  <span className="text-sm text-pink-700">{errors.email}</span>
+                )}
+                <p className="text-sm text-gray-800">Password</p>
+                <input
+                  placeholder="*********"
+                  className="inputfield"
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                />
+                <br />
+                {errors.password && (
+                  <span className="text-sm text-pink-700">
+                    {errors.password}
+                  </span>
+                )}
+                <br />
+                <span
+                  className="frpassword  text-pink-700"
+                  onClick={handleOpenModal2}
+                >
+                  Forget password?
+                </span>
+                <br />
+
+                <button type="submit" className="w-full loginbtn text-center">
+                  login
+                </button>
               </form>
               {/* login form end here */}
               <div className="flex mt-3 mb-1 justify-center ">
-                <p className="text-xs">Dont have an account? </p>{" "}
+                <p className="text-xs">Dont have an account? </p>{' '}
                 <p className="text-pink-600 text-xs">Signup here</p>
               </div>
             </div>
@@ -234,22 +258,86 @@ const page =() => {
       {/* Second Modal */}
       {showModal2 && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content p-3">
             <span className="close" onClick={handleCloseModal2}>
               &times;
             </span>
-            <h2>Second Modal</h2>
-            <button >Open Third Modal</button>
+            <div id="forgotpassword">
+              <h2 className="text-center text-xl my-3 font-bold">
+                Forgot password!
+              </h2>
+              <p>Email</p>
+              <p className="text-xs text-gray-700 mb-2">
+                You will recieve code in your mail address
+              </p>
+
+              <input
+                placeholder="Enter your email"
+                className="inputfield "
+                type="email"
+                name="forgotpassword"
+              />
+
+              <button
+                className="w-full loginbtn text-center"
+                onClick={showotpbox}
+              >
+                Proceed
+              </button>
+            </div>
+            <div id="optverify" className="otpverifybox">
+              <h1 className="text-center text-xl my-3 font-bold">
+                Verification
+              </h1>
+              <p className="text-black">Enter Verification code</p>
+              <div class="pin-inputs">
+                <input
+                  type="text"
+                  className="pin-input"
+                  maxlength="1"
+                  oninput="if(this.value.length > 1) this.value=this.value.slice(0,1)"
+                />
+                <input
+                  type="text"
+                  className="pin-input"
+                  maxlength="1"
+                  oninput="if(this.value.length > 1) this.value=this.value.slice(0,1)"
+                />
+                <input
+                  type="text"
+                  className="pin-input"
+                  maxlength="1"
+                  oninput="if(this.value.length > 1) this.value=this.value.slice(0,1)"
+                />
+                <input
+                  type="text"
+                  className="pin-input"
+                  maxlength="1"
+                  oninput="if(this.value.length > 1) this.value=this.value.slice(0,1)"
+                />
+              </div>
+            <div className='text-sm text-gray-700 flex justify-center my-2'>
+              <span>If you dont' receive code click  </span><span className='text-pink-600'>Resend Code</span>
+            </div>
+            <button
+                className="w-full loginbtn text-center"
+               onClick={resetpassword}
+              >
+                Proceed
+              </button>
+            </div>
+            <div className='resetpassword' id='resetpassword' >
+            <Forgotpassword/>
+           
+            
+               
+
+            </div>
           </div>
         </div>
       )}
-
-    
-
-      
-     
     </>
   );
-}
+};
 
 export default page;

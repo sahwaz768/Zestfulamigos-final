@@ -57,9 +57,7 @@ const page = () => {
             <div>
                 Countinue 
             </div>
-            <div className='arrowbtn2'>
-            <MdOutlineSubdirectoryArrowRight  color='white' size={20}/>
-            </div>
+            
             
 
         </div>
