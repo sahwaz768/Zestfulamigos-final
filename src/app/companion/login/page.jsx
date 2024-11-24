@@ -1,19 +1,8 @@
+
 'use client';
 import React, { useState } from 'react';
-import { BsArrowReturnRight } from 'react-icons/bs';
-import { CiLocationOn } from 'react-icons/ci';
-import { CiMail } from 'react-icons/ci';
-import { CiPhone } from 'react-icons/ci';
-import { FaWhatsapp } from 'react-icons/fa';
-import { FiFacebook } from 'react-icons/fi';
-import { FaInstagram } from 'react-icons/fa';
-import { FaXTwitter } from 'react-icons/fa6';
-import { CiLinkedin } from 'react-icons/ci';
-import { FcGoogle } from 'react-icons/fc';
-import Homemidsection from '@/components/homemidsection';
 import Forgotpassword from '@/components/Forgotpassword';
 import { useGoogleLogin } from '@react-oauth/google';
-import Link from 'next/link';
 
 const page = () => {
   /* Logic for modal */
@@ -81,130 +70,31 @@ const page = () => {
   };
 
   const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse)
+    onSuccess: tokenResponse => console.log(tokenResponse),
   });
+
+
 
   return (
     <>
-      <div className="herosection">
-        {/* nav bar start here */}
-        <div className="herobox">
-          <header className="header ">
-            <div className="logo ">zestful amigos</div>
-
-            <nav>
-              <ul className="nav-list">
-                <li>
-                  <a href="#">Home</a>
-                </li>
-                <li>
-                  <a href="#">About</a>
-                </li>
-                <li>
-                  <a href="#">Services</a>
-                </li>
-                <li>
-                  <a href="#">Contact</a>
-                </li>
-              </ul>
-            </nav>
-
-            <div className="lgbtn flex" onClick={handleOpenModal1}>
-              <h3 className="mt-1 mx-3"> Get started</h3>
-              <div className="lgicon">
-                <BsArrowReturnRight color="white" size={20} />
-              </div>
-            </div>
-          </header>
-        </div>
-        {/* hero section */}
-        <div className="herocont">
-          <h1 className="companionconnect text-white ">Connect,Engage,Enjoy</h1>
-          <h2 className="text-3xl text-white mt-4">
-            <span className="companionwith"> with</span>
-            <span className="ml-6 zestful ">zestful amigos</span>
-          </h2>
-          <p className="text-gray-800 mt-4  font-bold text-lg companionawait">
-            Your ZestfulCompanion Awaits......
-          </p>
-        </div>
-        <div className="lgbtn2 " onClick={handleOpenModal1}>
-          <h3 className="mt-1 mx-3"> Get started</h3>
-          <div className="lgicon2">
-            <BsArrowReturnRight color="white" size={20} />
-          </div>
-        </div>
+    <div className='companion-login-box'>
+      <div className='comp-lg-box'>
+        <h1 className='zestful-companion'>zestful amigos</h1>
+        <h1 className='text-3xl '>You want to work as our "Amigos"</h1>
+        <button className='companion-login-btn' onClick={handleOpenModal1}>Start here</button>
       </div>
-      {/* how does work section */}
-      <div>
-        <Homemidsection />
-      </div>
-      {/* footer section */}
-      <div className="footer text-white">
-        <div className="  py-12">
-          <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4 sm:px-6 ">
-            <div>
-              <h2 className="footerzest">zestful amigos</h2>
-              <p className="text-white">Connect,Engage,Enjoy</p>
-            </div>
-
-            <div>
-              <div className="flex mt-6">
-                <CiLocationOn color="white" size={20} />
-                <h1 className="ml-3 text-white">Mumbai, India</h1>
-              </div>
-              <div className="flex mt-4">
-                <CiMail color="white" size={20} className="" />
-                <h1 className="ml-3 text-white">Zestfulamigos@gmail.com</h1>
-              </div>
-              <div className="flex mt-4">
-                <CiPhone color="white" size={20} />
-                <h1 className="ml-3 text-white">+91 9632587144</h1>
-              </div>
-              <div></div>
-            </div>
-            <div className="mt-4 ">
-              <p className="mt-1">Home</p>
-              <p className="mt-1">AboutUs</p>
-              <p className="mt-1">Privacy Policy</p>
-            </div>
-            <div className="mt-4">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. A
-              temporibus quo mollitia optio error exercitationem, eius qui id.
-              Fugit, distinctio?
-            </div>
-          </div>
-        </div>
-        <hr className="mx-16" />
-        <div className="flex justify-center items-center mt-8 gap-6">
-          <FaWhatsapp color="white" size={26} />
-          <FiFacebook color="white" size={26} />
-          <FaInstagram color="white" size={26} />
-          <FaXTwitter color="white" size={26} />
-          <CiLinkedin color="white" size={26} />
-        </div>
-        <div className="pt-14 py-7 text-center">
-          Copyright 2024.All right reserve
-        </div>
-      </div>
-
-      {/* First Modal */}
-      {showModal1 && (
+    </div>
+  {/* First Modal */}
+  {showModal1 && (
         <div className="modal">
           <div className="modal-content animate">
             <span className="close" onClick={handleCloseModal1}>
               &times;
             </span>
             <h1 className="text-center text-xl font-semibold mb-3">Log in</h1>
-            <div
-              className="flex glgbtn justify-center gap-2 items-center"
-              onClick={() => login()}
-            >
-              <FcGoogle size={20} />
-              <h1>Sign in with google</h1>
-            </div>
+           
 
-            <h4 className="hrline mx-3 my-3 text-gray-600"> or </h4>
+            
             {/* login form start here */}
             <div>
               <form onSubmit={handleSubmit}>
@@ -245,16 +135,12 @@ const page = () => {
                 </span>
                 <br />
 
-             <Link href={'./user/swipepage'}> <button type="submit" className="w-full loginbtn text-center">
+                <button type="submit" className="w-full loginbtn text-center">
                   login
                 </button>
-                </Link>  
               </form>
               {/* login form end here */}
-              <div className="flex mt-3 mb-1 justify-center ">
-                <p className="text-xs">Dont have an account? </p>{' '}
-                <p className="text-pink-600 text-xs">Signup here</p>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -321,25 +207,33 @@ const page = () => {
                   oninput="if(this.value.length > 1) this.value=this.value.slice(0,1)"
                 />
               </div>
-              <div className="text-sm text-gray-700 flex justify-center my-2">
-                <span>If you dont' receive code click </span>
-                <span className="text-pink-600">Resend Code</span>
-              </div>
-              <button
+            <div className='text-sm text-gray-700 flex justify-center my-2'>
+              <span>If you dont' receive code click  </span><span className='text-pink-600'>Resend Code</span>
+            </div>
+            <button
                 className="w-full loginbtn text-center"
-                onClick={resetpassword}
+               onClick={resetpassword}
               >
                 Proceed
               </button>
             </div>
-            <div className="resetpassword" id="resetpassword">
-              <Forgotpassword />
+            <div className='resetpassword' id='resetpassword' >
+            <Forgotpassword/>
+           
+            
+               
+
             </div>
           </div>
         </div>
       )}
-    </>
-  );
-};
 
-export default page;
+
+
+
+
+    </>
+  )
+}
+
+export default page

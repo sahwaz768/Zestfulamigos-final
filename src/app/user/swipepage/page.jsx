@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { FaRegBell } from 'react-icons/fa6';
 import { CgProfile } from 'react-icons/cg';
-import { CiMenuBurger } from 'react-icons/ci';
+
 import Sidebar from '@/components/sidebar';
 import Swipepagemodal from '@/components/swipepagemodal';
 
@@ -13,33 +13,55 @@ const page = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+   // Function to toggle the dropdown notification
   const [isOpen, setIsOpen] = useState(false);
 
-  // Function to toggle the dropdown visibility
+ 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-  const images = [
-    'https://img.freepik.com/premium-photo/photography-beautiful-young-happy-fashion-model-woman_1288657-24992.jpg?semt=ais_hybrid',
-    'https://s3.ap-south-1.amazonaws.com/modelfactory.in/upload/2023/Feb/18/blog_images/43b6b34c9d64d40ba7fb7be86d6f35fb.jpg',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPKXpTj5ZoWA1NikAyOWORfK0vdWw9iTCTCE3Esl_cNdejhEiEjQevx5A_6uLHMLi6MSo&usqp=CAU',
-    'https://t4.ftcdn.net/jpg/07/05/40/77/360_F_705407769_qWzohDKyvuu78V65ICzDkXt7xDX3G9RE.jpg'
+
+  // slidder
+
+  const slides = [
+    {
+      id: 1,
+      imgSrc:
+        'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmVtYWxlJTIwbW9kZWx8ZW58MHx8MHx8fDA%3D',
+      name: 'Jerry',
+      price: '1200/hr',
+      title: 'Dig deeper'
+    },
+    {
+      id: 2,
+      imgSrc:
+        'https://img.freepik.com/free-photo/person-background-women-corporate-shopaholic-life_1303-2789.jpg',
+      name: 'Alice',
+      price: '1500/hr',
+      title: 'Explore more'
+    },
+    {
+      id: 3,
+      imgSrc: 'https://img.freepik.com/free-photo/girl-park_1157-15182.jpg',
+      name: 'Mike',
+      price: '1100/hr',
+      title: 'Discover yourself'
+    }
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Function to go to the previous image
-  const prevSlide = () => {
-    const isFirstSlide = currentIndex === 0;
-    const newIndex = isFirstSlide ? images.length - 1 : currentIndex - 1;
-    setCurrentIndex(newIndex);
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? slides.length - 1 : prevIndex - 1
+    );
   };
 
-  // Function to go to the next image
-  const nextSlide = () => {
-    const isLastSlide = currentIndex === images.length - 1;
-    const newIndex = isLastSlide ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === slides.length - 1 ? 0 : prevIndex + 1
+    );
   };
 
   const showsecondnification = () => {
@@ -60,7 +82,7 @@ const page = () => {
 
   return (
     <div className="swipebox">
-    <Swipepagemodal/>
+      <Swipepagemodal />
       <div className="swipeheader">
         <header className="header2 ">
           <div className="menu-toggle2" onClick={toggleMenu}>
@@ -215,15 +237,17 @@ const page = () => {
 
             <div className="card-container">
               <div className="card">
-                <img src={images[currentIndex]} alt="Profile picture" />
-                <div className="txtimg flex ">
-                  <div className="imgtag1">
-                    <h1>jerry</h1>
-                  </div>
-                  <div className="imgtag2">
-                    <h1>1200\hr</h1>
-                  </div>
+                <img
+                  src={slides[currentIndex].imgSrc}
+                  alt={slides[currentIndex].title}
+                  className="slide-image"
+                />
+
+                <div className="img-desc-tags">
+                  <span className="name">{slides[currentIndex].name}</span>
+                  <span className="price">{slides[currentIndex].price}</span>
                 </div>
+
                 <div className="card-footer">
                   <div className="card-title text-center text-xs font-extrabold">
                     Dig deeper
@@ -233,10 +257,10 @@ const page = () => {
             </div>
 
             <div className="navigation">
-              <button class="nav-button" onClick={prevSlide}>
+              <button class="nav-button" onClick={handlePrev}>
                 ←
               </button>
-              <button class="nav-button" onClick={nextSlide}>
+              <button class="nav-button" onClick={handleNext}>
                 →
               </button>
             </div>
