@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const times = [
@@ -20,6 +21,9 @@ const Page = () => {
   const [location, setLocation] = useState('');
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const router = useRouter(); 
+
+
 
   const dates = Array.from({ length: 4 }, (_, i) => {
     const today = new Date();
@@ -55,6 +59,7 @@ const Page = () => {
       !isConfirmed
     ) {
       setErrorMessage('Please complete all fields before submitting.');
+      
       return;
     }
 
@@ -75,6 +80,7 @@ const Page = () => {
     setLocation('');
     setIsConfirmed(false);
     setErrorMessage('');
+    router.push("./payment");
   };
 
   return (

@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import Forgotpassword from '@/components/Forgotpassword';
 import { useGoogleLogin } from '@react-oauth/google';
+import { useRouter } from "next/navigation";
+
 
 const page = () => {
   /* Logic for modal */
@@ -25,6 +27,7 @@ const page = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const router = useRouter();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -57,6 +60,7 @@ const page = () => {
     if (validateForm()) {
       console.log('Login successful:', formData);
       // Login logic goes here
+      router.push("./dashboard");
     }
   };
 

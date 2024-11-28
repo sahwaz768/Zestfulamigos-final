@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BsArrowReturnRight } from 'react-icons/bs';
 import { CiLocationOn } from 'react-icons/ci';
 import { CiMail } from 'react-icons/ci';
@@ -13,6 +13,7 @@ import { FcGoogle } from 'react-icons/fc';
 import Homemidsection from '@/components/homemidsection';
 import Forgotpassword from '@/components/Forgotpassword';
 import { useGoogleLogin } from '@react-oauth/google';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const page = () => {
@@ -36,6 +37,7 @@ const page = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const router = useRouter(); // Use the new router from next/navigation
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -67,7 +69,7 @@ const page = () => {
     e.preventDefault();
     if (validateForm()) {
       console.log('Login successful:', formData);
-      // Login logic goes here
+      router.push('/user/genderchoose'); // Navigate to your desired route
     }
   };
 
@@ -80,12 +82,27 @@ const page = () => {
     document.getElementById('optverify').style.display = 'none';
   };
 
+  const hideinvalide = () => {
+    document.getElementById('invalide-email').style.display = 'none';
+  };
+
   const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse)
+    onSuccess: (tokenResponse) => {
+      console.log(tokenResponse);
+      router.push('/user/genderchoose'); // Ensure router is properly defined and accessible.
+    }
   });
 
   return (
     <>
+      <div className="flex justify-center">
+        <div className="invalide-email " id="invalide-email">
+          <h1 className="text-sm font-bold"> Invalide email or password </h1>
+          <span className="close ml-2" onClick={hideinvalide}>
+            &times;
+          </span>
+        </div>
+      </div>
       <div className="herosection">
         {/* nav bar start here */}
         <div className="herobox">
@@ -95,16 +112,22 @@ const page = () => {
             <nav>
               <ul className="nav-list">
                 <li>
-                  <a href="#">Home</a>
+                  <Link href={'/'}>
+                    {' '}
+                    <p>Home</p>{' '}
+                  </Link>
                 </li>
                 <li>
-                  <a href="#">About</a>
+                  <Link href={'./user/aboutus'}>
+                    {' '}
+                    <p>About</p>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#">Services</a>
-                </li>
-                <li>
-                  <a href="#">Contact</a>
+                  <Link href={'./user/privacypolicy'}>
+                    {' '}
+                    <p>privacy policy</p>{' '}
+                  </Link>
                 </li>
               </ul>
             </nav>
@@ -168,12 +191,15 @@ const page = () => {
               <p className="mt-1">AboutUs</p>
               <p className="mt-1">Privacy Policy</p>
             </div>
-            <div className="mt-4">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. A
-              temporibus quo mollitia optio error exercitationem, eius qui id.
-              Fugit, distinctio?
-            </div>
+            
+              <div className="mt-4">
+              <Link href={'/user/becompanion'}>  <h1>Be a companion</h1></Link>
+              <Link href={'/user/concern'}>  <h1 className='mt-2'>Raise a concern</h1></Link>
+              </div>
+            
+            
           </div>
+         
         </div>
         <hr className="mx-16" />
         <div className="flex justify-center items-center mt-8 gap-6">
@@ -245,15 +271,17 @@ const page = () => {
                 </span>
                 <br />
 
-             <Link href={'./user/swipepage'}> <button type="submit" className="w-full loginbtn text-center">
+                <button type="submit" className="w-full loginbtn text-center">
                   login
                 </button>
-                </Link>  
               </form>
               {/* login form end here */}
               <div className="flex mt-3 mb-1 justify-center ">
                 <p className="text-xs">Dont have an account? </p>{' '}
-                <p className="text-pink-600 text-xs">Signup here</p>
+                <Link href={'./user/signup'}>
+                  {' '}
+                  <p className="text-pink-600 text-xs">Signup here</p>
+                </Link>
               </div>
             </div>
           </div>

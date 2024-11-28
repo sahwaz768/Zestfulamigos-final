@@ -16,6 +16,7 @@ import { CiLocationOff } from "react-icons/ci";
 import { CiLogout } from 'react-icons/ci';
 import { BiLocationPlus } from "react-icons/bi";
 import { IoIosTimer } from "react-icons/io";
+import Link from 'next/link';
 
 
 
@@ -115,26 +116,25 @@ export const Chatheader = () => {
           <nav className={`nav2 ${isMenuOpen ? 'active' : ''}`}>
             <ul className="nav-list2">
               <li>
-                <a href="#">Home</a>
+            <Link href={'/'}>  <p >Home</p> </Link>  
               </li>
               <li>
-                <a href="#">About</a>
+              <Link href={'./aboutus'}> <p >About</p></Link> 
               </li>
               <li>
-                <a href="#">Services</a>
+             <Link href={'./privacypolicy'}>  <p>Privacy policy</p> </Link> 
               </li>
-              <li>
-                <a href="#">Contact</a>
-              </li>
+              
             </ul>
           </nav>
           <div className="flex gap-2 mr-4">
             <div className="bellicon" onClick={toggleDropdown}>
               <FaRegBell color="white" size={20} />
             </div>
-            <div className="bellicon">
+         <Link href={'./profile'}>  <div className="bellicon2">
               <CgProfile color="white" size={20} />
             </div>
+            </Link> 
           </div>
         </header>
       </div>
@@ -229,9 +229,9 @@ export const Chatsideicon = () => {
     <>
       <div className="chat-side-icon">
         <Image src={Profile} alt="profile" />
-        <RiChatSmile2Line color="black" size={25} />
-        <MdHistory color="black" size={25} />
-        <CiLogout color="black" size={25} />
+     <Link href={'./chat'}>   <RiChatSmile2Line color="black" size={25} /> </Link>
+     <Link href={'./bookinghistory'}>  <MdHistory color="black" size={25} /></Link> 
+      <Link href={'/'}>  <CiLogout color="black" size={25} /> </Link>
       </div>
     </>
   );

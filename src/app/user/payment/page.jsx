@@ -1,10 +1,11 @@
 import React from 'react';
 import Header from '@/components/Header';
+import { Chatheader } from '../chat/page';
 
 const page = () => {
   return (
     <div>
-      <Header />
+      <Chatheader/>
       <div className="paymentsummarybox">
         <div className="paymentsummary">
           <div className="paymentbox">

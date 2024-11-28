@@ -6,6 +6,7 @@ import { IoCloudUploadOutline } from 'react-icons/io5';
 import Image from 'next/image';
 import Pikasho from '@/app/Pikasobg.png';
 import { useGoogleLogin } from '@react-oauth/google';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const Page = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const router = useRouter();
   const [photoError, setPhotoError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -102,6 +104,7 @@ const Page = () => {
         photo: null
       });
       setIsModalOpen(false);
+      router.push('/user/genderchoose');
     }
   };
 
@@ -160,8 +163,19 @@ const Page = () => {
     onSuccess: (tokenResponse) => console.log(tokenResponse)
   });
 
+  const hideinvalide = () => {
+    
+    document.getElementById('invalide-email').style.display = 'none';
+  };
+
   return (
     <>
+    <div className='flex justify-center'>
+      <div className="invalide-email " id='invalide-email'>
+       <h1 className='text-sm font-bold'>Email already exist</h1>
+        <span className="close ml-2" onClick={hideinvalide}>&times;</span>
+        </div>
+      </div>
       <div className="flex">
         <div className="rightbox">
           <h1 className="zestful text-center mt-8 text-white font-light">
@@ -175,10 +189,7 @@ const Page = () => {
               <h1 className="text-xl font-bold">Get started with </h1>{' '}
               <p className="zest ml-3">zestful amigos</p>
             </div>
-            <div className=" glgbtn2" onClick={() => login()}>
-              <FcGoogle size={20} />
-              <h1>signup with google</h1>
-            </div>
+            <GoogleSignUp />
             <h4 className="hrline mx-3 my-3 text-gray-600"> or </h4>
             <form>
               <div>
@@ -394,5 +405,193 @@ const Page = () => {
     </>
   );
 };
+
+function GoogleSignUp() {
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [isDragging, setIsDragging] = useState(false); // Drag-and-drop state
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [errors, setErrors] = useState({});
+  const router = useRouter();
+  const [user, setUser] = useState(null); // User data after Google login
+
+  const login = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      console.log('Google Token Response:', tokenResponse);
+      setUser(tokenResponse); // Store user data
+      setIsModalOpen(true); // Open modal for profile completion
+    },
+    onError: () => console.log('Google login failed')
+  });
+
+  // Drag-and-drop handlers
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      setProfilePicture(URL.createObjectURL(file));
+      setErrors((prev) => ({ ...prev, profilePicture: '' }));
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        profilePicture: 'Please upload a valid image file.'
+      }));
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      setProfilePicture(URL.createObjectURL(file));
+      setErrors((prev) => ({ ...prev, profilePicture: '' }));
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        profilePicture: 'Please upload a valid image file.'
+      }));
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newErrors = {};
+    if (!profilePicture)
+      newErrors.profilePicture = 'Profile picture is required.';
+    if (!age) newErrors.age = 'Age is required.';
+    else if (age < 18 || age > 120)
+      newErrors.age = 'Age must be between 18 and 120.';
+    if (!gender) newErrors.gender = 'Gender is required.';
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // Submit data
+    const profileData = {
+      profilePicture,
+      age,
+      gender
+    };
+
+    console.log('Profile Data Submitted:', profileData);
+    setIsModalOpen(false);
+    router.push('/user/genderchoose');
+  };
+
+  return (
+    <div>
+      <div className=" glgbtn2" onClick={() => login()}>
+        <FcGoogle size={20} />
+        <h1>signup with google</h1>
+      </div>
+      {isModalOpen && (
+        <div className="google-modal-overlay">
+          <div className="google-modal-content">
+            <button className="close" onClick={() => setIsModalOpen(false)}>
+            &times;
+            </button>
+            <h2 className='font-bold  my-3'>Complete Your Profile</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="google-uploader-container">
+                {!profilePicture ? (
+                  <div
+                    className={`google-dropzone ${isDragging ? 'active' : ''}`}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                  >
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="google-file-input"
+                    />
+                    <div className="google-placeholder">
+                      <i className="google-upload-icon flex justify-center"> <IoCloudUploadOutline size={30} color='black'/></i>
+                      <p className='text-black'>
+                        <strong>Click to upload</strong> or Drag and Drop
+                      </p>
+                      <span className='text-black text-xs'>Use portrait image for better display</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="google-preview-container">
+                    <div className="google-image-wrapper">
+                      <img
+                        src={profilePicture}
+                        alt="Uploaded Preview"
+                        className="google-preview-box"
+                      />
+                      <button
+                        className="google-remove-button"
+                        onClick={() => setProfilePicture(null)}
+                      >
+                        ✖
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {errors.profilePicture && (
+                  <p className="text-xs">{errors.profilePicture}</p>
+                )}
+              </div>
+              <p className='text-sm mt-2 mb-1'>Age</p>
+                <input
+                  type="text"
+                  value={age}
+                  onChange={(e) => {
+                    setAge(e.target.value);
+                    setErrors((prev) => ({ ...prev, age: '' }));
+                  }}
+                  min="18"
+                  max="120"
+                  required
+                  placeholder='Age'
+                  className="inputfield-glg"
+                />
+              
+              {errors.age && <p className="text-xs">{errors.age}</p>}
+              <br />
+             
+                <select
+                className='select-gender'
+                  value={gender}
+                  onChange={(e) => {
+                    setGender(e.target.value);
+                    setErrors((prev) => ({ ...prev, gender: '' }));
+                  }}
+                  required
+                >
+                  <option value="" >Select Gender</option>
+                  <option value="male" >Male</option>
+                  <option value="female" >Female</option>
+                  <option value="other" >Other</option>
+                </select>
+              
+              {errors.gender && <p className="text-xs">{errors.gender}</p>}
+              <br />
+              <div className='my-3'>
+              <button type="submit" className='sbtbtm '>Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default Page;

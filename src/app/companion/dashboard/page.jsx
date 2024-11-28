@@ -8,6 +8,7 @@ import { MdHistory } from 'react-icons/md';
 import { CiLogout } from 'react-icons/ci';
 import React, { useState } from 'react';
 import { IoHomeOutline } from "react-icons/io5";
+import Link from 'next/link';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -134,10 +135,10 @@ export const Chatsideicon2 = () => {
   return (
     <>
       <div className="chat-side-icon">
-      <IoHomeOutline color='black' size={25}/>
-        <RiChatSmile2Line color="black" size={25} />
-        <MdHistory color="black" size={25} />
-        <CiLogout color="black" size={25} />
+     <Link href={'./dashboard'}> <IoHomeOutline color='black' size={25}/> </Link>
+     <Link href={'./chat'}> <RiChatSmile2Line color="black" size={25} /> </Link>
+       <Link href={'./bookinghistory'}> <MdHistory color="black" size={25} /> </Link>
+       <Link href={'./login'}> <CiLogout color="black" size={25} /> </Link>
        
       </div>
     </>

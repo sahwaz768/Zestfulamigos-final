@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import Swipepagemodal from '@/components/swipepagemodal';
 
 const Page = () => {
   const [gender, setGender] = useState('');
@@ -20,6 +21,8 @@ const Page = () => {
   };
 
   return (
+    <>
+    <Swipepagemodal/>
     <div className="genderbox">
       <h1 className="pt-10 text-xl font-extrabold sm:ml-3">
         Choose your companion gender
@@ -68,6 +71,7 @@ const Page = () => {
         <div className="gender-quarter-circle2"></div>
       </div>
     </div>
+    </>
   );
 };
 
