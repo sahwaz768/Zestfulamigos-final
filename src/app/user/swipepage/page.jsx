@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import { FaRegBell } from 'react-icons/fa6';
 import { CgProfile } from 'react-icons/cg';
-
+import { Chatheader } from '../chat/page';
 import Sidebar from '@/components/sidebar';
 import Swipepagemodal from '@/components/swipepagemodal';
+import Link from 'next/link';
 
 const page = () => {
   /* logic for nav bar */
@@ -14,10 +15,9 @@ const page = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-   // Function to toggle the dropdown notification
+  // Function to toggle the dropdown notification
   const [isOpen, setIsOpen] = useState(false);
 
- 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -82,124 +82,8 @@ const page = () => {
 
   return (
     <div className="swipebox">
-      <Swipepagemodal />
-      <div className="swipeheader">
-        <header className="header2 ">
-          <div className="menu-toggle2" onClick={toggleMenu}>
-            <span className="bar"></span>
-            <span className="bar"></span>
-            <span className="bar"></span>
-          </div>
-          <div className="logo2 ">zestful amigos</div>
-
-          <nav className={`nav2 ${isMenuOpen ? 'active' : ''}`}>
-            <ul className="nav-list2">
-              <li>
-                <a href="#">Home</a>
-              </li>
-              <li>
-                <a href="#">About</a>
-              </li>
-              <li>
-                <a href="#">Services</a>
-              </li>
-              <li>
-                <a href="#">Contact</a>
-              </li>
-            </ul>
-          </nav>
-          <div className="flex gap-2 mr-4">
-            <div className="bellicon" onClick={toggleDropdown}>
-              <FaRegBell color="white" size={20} />
-            </div>
-            <div className="bellicon">
-              <CgProfile color="white" size={20} />
-            </div>
-          </div>
-        </header>
-      </div>
-      <div className="noti-mb-view w-full px-4">
-        <div className="threelinembview">
-          <Sidebar />
-        </div>
-        <div className="belmbview " onClick={toggleDropdown}>
-          <FaRegBell color="black" size={20} />
-        </div>
-      </div>
-      {isOpen && (
-        <div className="dropdown-menu">
-          <div className="notificationsvg">
-            <svg
-              width="26"
-              height="13"
-              viewBox="0 0 26 13"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M25.5 13H0.5L12.5 0L25.5 13Z" fill="white" />
-            </svg>
-          </div>
-          <div className="notificatioview text-sm text-gray-900">
-            <div id="notification1">
-              <ul>
-                <li>Your slot for companion henry has been confirmed.</li>
-                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
-                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
-              </ul>
-
-              <br />
-              <hr />
-              <div
-                className="text-center text-pink-700 p-2 cursor-pointer"
-                onClick={showsecondnification}
-                id="hideshow1"
-              >
-                show more notification
-              </div>
-            </div>
-            <div id="notification2">
-              <ul>
-                <li>
-                  this is second notification for companion henry has been
-                  confirmed.
-                </li>
-                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
-                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
-              </ul>
-
-              <br />
-              <hr />
-              <div
-                className="text-center text-pink-700 p-2 cursor-pointer"
-                onClick={showthirdnification}
-                id="hideshow2"
-              >
-                show more notification
-              </div>
-            </div>
-
-            <div id="notification3">
-              <ul>
-                <li>
-                  this is third notification for companion henry has been
-                  confirmed.
-                </li>
-                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
-                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
-              </ul>
-
-              <br />
-              <hr />
-              <div
-                className="text-center text-pink-700 p-2 cursor-pointer"
-                onClick={hideallnotification}
-              >
-                Hide all notification
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+    
+     <Chatheader/>
 
       <div>
         <div className="wrapper">
@@ -249,9 +133,10 @@ const page = () => {
                 </div>
 
                 <div className="card-footer">
-                  <div className="card-title text-center text-xs font-extrabold">
+               <Link href={'./companiondetail'}>  <div className="card-title text-center text-xs font-extrabold">
                     Dig deeper
                   </div>
+                  </Link> 
                 </div>
               </div>
             </div>
