@@ -7,4 +7,5 @@ export const removeUserData = async () => {
     } = await import('js-cookie');
     remove(ACCESS_TOKEN_LOC);
     remove(REFRESH_TOKEN_LOC);
+    window.sessionStorage.clear();
   };

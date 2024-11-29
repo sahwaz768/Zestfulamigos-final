@@ -185,7 +185,7 @@ const page = () => {
                 Verification
               </h1>
               <p className="text-black">Enter Verification code</p>
-              <div class="pin-inputs">
+              <div className="pin-inputs">
                 <input
                   type="text"
                   className="pin-input"

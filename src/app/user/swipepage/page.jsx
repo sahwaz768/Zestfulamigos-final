@@ -142,10 +142,10 @@ const page = () => {
             </div>
 
             <div className="navigation">
-              <button class="nav-button" onClick={handlePrev}>
+              <button className="nav-button" onClick={handlePrev}>
                 ←
               </button>
-              <button class="nav-button" onClick={handleNext}>
+              <button className="nav-button" onClick={handleNext}>
                 →
               </button>
             </div>

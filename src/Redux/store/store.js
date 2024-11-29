@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import { rootReducer } from './root.reducer';
 import { createWrapper } from 'next-redux-wrapper';
 import { persistReducer, persistStore } from 'redux-persist';
@@ -48,5 +48,6 @@ export const wrapper = createWrapper(makeStore);
 // export type storeDispatch = typeof store.dispatch;
 export const useAppDispatch = useDispatch;
 export const useAppSelector = useSelector;
+export const useAppStore = useStore;
 
-export const { dispatch: appDispatch, getState: appState } = store;
+// export const { dispatch: appDispatch, getState: appState } = store;
