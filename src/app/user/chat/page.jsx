@@ -39,7 +39,7 @@ const page = () => {
   };
   return (
     <>
-      <Guidmodel />
+      
       <Chatheader />
       <div className="chatpage">
         <div>
@@ -237,7 +237,7 @@ export const Chatsideicon = () => {
   );
 };
 
-const Guidmodel = () => {
+export const Guidmodel = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const closeModal = () => setIsModalOpen(false);

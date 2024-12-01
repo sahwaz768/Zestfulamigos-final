@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import { Guidmodel } from '../chat/page';
 
 const Page = () => {
   const times = [
@@ -85,7 +86,7 @@ const Page = () => {
 
   return (
     <>
-   
+   <Guidmodel/>
     <form onSubmit={handleFormSubmit} className="flex flex-col space-y-4">
     <div className='flex mx-6'>
       <div className="timeslotebox">

@@ -4,6 +4,10 @@ import { RiChatSmile2Line } from 'react-icons/ri';
 import { MdHistory } from 'react-icons/md';
 import { CgProfile } from 'react-icons/cg';
 import { CiLogout } from 'react-icons/ci';
+import { MdOutlineArrowDropDown } from "react-icons/md";
+import { FiDivide } from 'react-icons/fi';
+import Link from 'next/link';
+import { CiSettings } from "react-icons/ci";
 
 const sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,12 +15,18 @@ const sidebar = () => {
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
+  const [isOpen2, setIsOpen2] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen2((prev) => !prev);
+  };
   return (
     <>
       <div className="sidebar-container">
         {/* Sidebar Toggle Button */}
         <button
-          className={`sidebar-toggle ${isOpen ? 'active' : ''}`}
+          className={`sidebar-toggle  ${isOpen ? 'active' : ''}`}
           onClick={toggleSidebar}
         >
           <svg
@@ -49,23 +59,41 @@ const sidebar = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="nav-link-sidebar">
+               <Link href={'/user/bookinghistory'}>  <p href="#" className="nav-link-sidebar">
                     <MdHistory color="black" size={20} />
                     Booking history
-                  </a>
+                  </p>
+                  </Link> 
                 </li>
-                <li>
+                
+                <div
+                  className={`nav-link-sidebar  ${isOpen2 ? 'active' : ''}`}
+                  onClick={toggleDropdown}
+                >
+                <CiSettings color='black' size={25}/>
+                  settings <div className='sidebar-dropdown-btn'><MdOutlineArrowDropDown  color='black' size={25}/>
+                  </div>
+                </div>
+                <div
+                  className="dropdown-sidebar"
+                  style={{ display: isOpen2 ? 'block' : 'none' }}
+                >
+                  <li className='ml-2'>
                   <a href="#" className="nav-link-sidebar">
                     <CgProfile color="black" size={20} />
                     Profile settings
                   </a>
                 </li>
-                <li>
+                  
+                  <li className='ml-2'>
                   <a href="#" className="nav-link-sidebar">
-                    <CiLogout color="black" size={20} />
+                  <CiLogout  color='black' size={20}/>
                     Logout
                   </a>
                 </li>
+                  
+                  
+                </div>
               </ul>
             </nav>
           </div>
