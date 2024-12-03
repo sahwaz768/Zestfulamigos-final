@@ -1,6 +1,7 @@
 import { Sacramento, Manrope } from 'next/font/google';
 import "./globals.css";
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import StoreProvider from './StoreProvider';
 
 const manrope = Manrope({
   weight: ['400', '600'], 
@@ -21,6 +22,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    <StoreProvider>
     <html lang="en">
       <body
         className={`${sacramento.variable} ${manrope.variable}`}
@@ -30,5 +32,6 @@ export default function RootLayout({ children }) {
         </GoogleOAuthProvider>
       </body>
     </html>
+    </StoreProvider>
   );
 }

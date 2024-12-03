@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { Chatheader,Chatsideicon} from '../chat/page';
+import withAuth from '@/app/hoc/wihAuth';
 
 
 const page = () => {
@@ -87,4 +88,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default withAuth(page);

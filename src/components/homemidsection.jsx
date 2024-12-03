@@ -120,7 +120,7 @@ const Homemidsection = () => {
         </div>
       </div>
       <div className="circlebox2">
-        <div class="quarter-circle2"></div>
+        <div className="quarter-circle2"></div>
       </div>
     </>
   );

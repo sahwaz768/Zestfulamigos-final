@@ -54,6 +54,7 @@ const Page = () => {
     const newErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{10}$/;
+    const passwordRegex =  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 
     if (!formData.name) newErrors.name = 'Name is required.';
     if (!formData.email) {
@@ -68,8 +69,8 @@ const Page = () => {
     }
     if (!formData.password) {
       newErrors.password = 'Password is required.';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters.';
+    } else if (!passwordRegex.test(formData.password)) {
+      newErrors.password = 'Password is not valid';
     }
     if (!formData.age) {
       newErrors.age = 'Age is required.';
@@ -86,25 +87,48 @@ const Page = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.photo) {
       setPhotoError('Profile photo is required.');
       return;
     }
     if (validateForm()) {
-      console.log('Signup successful:', formData);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        password: '',
-        age: '',
-        gender: '',
-        photo: null
-      });
-      setIsModalOpen(false);
-      router.push('/user/genderchoose');
+      const firstname = formData.name.split(' ')[0];
+      const lastname = formData.name.split(' ')[1];
+      if (!firstname || !lastname) {
+        setErrors({ name: 'Name is invalid, firstame and lastname required' });
+        return;
+      }
+      const apiFormData = new FormData();
+      apiFormData.append('firstname', firstname);
+      apiFormData.append('lastname', lastname);
+      apiFormData.append('email', formData.email);
+      apiFormData.append('password', formData.password);
+      apiFormData.append('age', formData.age);
+      apiFormData.append('gender', formData.gender.toLocaleUpperCase());
+      apiFormData.append('images', formData.photo);
+      console.log(
+        'Signup successful:',
+        apiFormData.forEach((l) => console.log(l))
+      );
+      const { registerUserService } = await import(
+        '../../../services/auth/register.service'
+      );
+      const { data, error } = await registerUserService(apiFormData);
+      if (data) {
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          password: '',
+          age: '',
+          gender: '',
+          photo: null
+        });
+        setIsModalOpen(false);
+        router.push('/user/genderchoose');
+      }
     }
   };
 
@@ -164,16 +188,17 @@ const Page = () => {
   });
 
   const hideinvalide = () => {
-    
     document.getElementById('invalide-email').style.display = 'none';
   };
 
   return (
     <>
-    <div className='flex justify-center'>
-      <div className="invalide-email " id='invalide-email'>
-       <h1 className='text-sm font-bold'>Email already exist</h1>
-        <span className="close ml-2" onClick={hideinvalide}>&times;</span>
+      <div className="flex justify-center">
+        <div className="invalide-email " id="invalide-email">
+          <h1 className="text-sm font-bold">Email already exist</h1>
+          <span className="close ml-2" onClick={hideinvalide}>
+            &times;
+          </span>
         </div>
       </div>
       <div className="flex">
@@ -501,9 +526,9 @@ function GoogleSignUp() {
         <div className="google-modal-overlay">
           <div className="google-modal-content">
             <button className="close" onClick={() => setIsModalOpen(false)}>
-            &times;
+              &times;
             </button>
-            <h2 className='font-bold  my-3'>Complete Your Profile</h2>
+            <h2 className="font-bold  my-3">Complete Your Profile</h2>
             <form onSubmit={handleSubmit}>
               <div className="google-uploader-container">
                 {!profilePicture ? (
@@ -520,11 +545,16 @@ function GoogleSignUp() {
                       className="google-file-input"
                     />
                     <div className="google-placeholder">
-                      <i className="google-upload-icon flex justify-center"> <IoCloudUploadOutline size={30} color='black'/></i>
-                      <p className='text-black'>
+                      <i className="google-upload-icon flex justify-center">
+                        {' '}
+                        <IoCloudUploadOutline size={30} color="black" />
+                      </i>
+                      <p className="text-black">
                         <strong>Click to upload</strong> or Drag and Drop
                       </p>
-                      <span className='text-black text-xs'>Use portrait image for better display</span>
+                      <span className="text-black text-xs">
+                        Use portrait image for better display
+                      </span>
                     </div>
                   </div>
                 ) : (
@@ -548,43 +578,45 @@ function GoogleSignUp() {
                   <p className="text-xs">{errors.profilePicture}</p>
                 )}
               </div>
-              <p className='text-sm mt-2 mb-1'>Age</p>
-                <input
-                  type="text"
-                  value={age}
-                  onChange={(e) => {
-                    setAge(e.target.value);
-                    setErrors((prev) => ({ ...prev, age: '' }));
-                  }}
-                  min="18"
-                  max="120"
-                  required
-                  placeholder='Age'
-                  className="inputfield-glg"
-                />
-              
+              <p className="text-sm mt-2 mb-1">Age</p>
+              <input
+                type="text"
+                value={age}
+                onChange={(e) => {
+                  setAge(e.target.value);
+                  setErrors((prev) => ({ ...prev, age: '' }));
+                }}
+                min="18"
+                max="120"
+                required
+                placeholder="Age"
+                className="inputfield-glg"
+              />
+
               {errors.age && <p className="text-xs">{errors.age}</p>}
               <br />
-             
-                <select
-                className='select-gender'
-                  value={gender}
-                  onChange={(e) => {
-                    setGender(e.target.value);
-                    setErrors((prev) => ({ ...prev, gender: '' }));
-                  }}
-                  required
-                >
-                  <option value="" >Select Gender</option>
-                  <option value="male" >Male</option>
-                  <option value="female" >Female</option>
-                  <option value="other" >Other</option>
-                </select>
-              
+
+              <select
+                className="select-gender"
+                value={gender}
+                onChange={(e) => {
+                  setGender(e.target.value);
+                  setErrors((prev) => ({ ...prev, gender: '' }));
+                }}
+                required
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+
               {errors.gender && <p className="text-xs">{errors.gender}</p>}
               <br />
-              <div className='my-3'>
-              <button type="submit" className='sbtbtm '>Submit</button>
+              <div className="my-3">
+                <button type="submit" className="sbtbtm ">
+                  Submit
+                </button>
               </div>
             </form>
           </div>

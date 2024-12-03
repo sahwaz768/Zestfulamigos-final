@@ -65,11 +65,17 @@ const page = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    const { loginUserService } = await import('../services/auth/login.service');
+    const { default:{ set } } = await import("js-cookie")
     e.preventDefault();
     if (validateForm()) {
       console.log('Login successful:', formData);
-      router.push('/user/genderchoose'); // Navigate to your desired route
+      const { data, error } = await loginUserService(formData);
+      if (data) {
+        set("x-token", data.access_token);
+        router.push('/user/genderchoose'); // Navigate to your desired route
+      }
     }
   };
 
@@ -191,15 +197,18 @@ const page = () => {
               <p className="mt-1">AboutUs</p>
               <p className="mt-1">Privacy Policy</p>
             </div>
-            
-              <div className="mt-4">
-              <Link href={'/user/becompanion'}>  <h1>Be a companion</h1></Link>
-              <Link href={'/user/concern'}>  <h1 className='mt-2'>Raise a concern</h1></Link>
-              </div>
-            
-            
+
+            <div className="mt-4">
+              <Link href={'/user/becompanion'}>
+                {' '}
+                <h1>Be a companion</h1>
+              </Link>
+              <Link href={'/user/concern'}>
+                {' '}
+                <h1 className="mt-2">Raise a concern</h1>
+              </Link>
+            </div>
           </div>
-         
         </div>
         <hr className="mx-16" />
         <div className="flex justify-center items-center mt-8 gap-6">
@@ -233,48 +242,48 @@ const page = () => {
             <h4 className="hrline mx-3 my-3 text-gray-600"> or </h4>
             {/* login form start here */}
             <div>
-              <form onSubmit={handleSubmit}>
-                <p className="text-sm text-gray-800">Email</p>
-                <input
-                  placeholder="Enter your email"
-                  className="inputfield "
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-                <br />
-                {errors.email && (
-                  <span className="text-sm text-pink-700">{errors.email}</span>
-                )}
-                <p className="text-sm text-gray-800">Password</p>
-                <input
-                  placeholder="*********"
-                  className="inputfield"
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                />
-                <br />
-                {errors.password && (
-                  <span className="text-sm text-pink-700">
-                    {errors.password}
-                  </span>
-                )}
-                <br />
-                <span
-                  className="frpassword  text-pink-700"
-                  onClick={handleOpenModal2}
-                >
-                  Forget password?
-                </span>
-                <br />
+              <p className="text-sm text-gray-800">Email</p>
+              <input
+                placeholder="Enter your email"
+                className="inputfield "
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+              />
+              <br />
+              {errors.email && (
+                <span className="text-sm text-pink-700">{errors.email}</span>
+              )}
+              <p className="text-sm text-gray-800">Password</p>
+              <input
+                placeholder="*********"
+                className="inputfield"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+              />
+              <br />
+              {errors.password && (
+                <span className="text-sm text-pink-700">{errors.password}</span>
+              )}
+              <br />
+              <span
+                className="frpassword  text-pink-700"
+                onClick={handleOpenModal2}
+              >
+                Forget password?
+              </span>
+              <br />
 
-                <button type="submit" className="w-full loginbtn text-center">
-                  login
-                </button>
-              </form>
+              <button
+                type="submit"
+                className="w-full loginbtn text-center"
+                onClick={handleSubmit}
+              >
+                login
+              </button>
               {/* login form end here */}
               <div className="flex mt-3 mb-1 justify-center ">
                 <p className="text-xs">Dont have an account? </p>{' '}
@@ -323,7 +332,7 @@ const page = () => {
                 Verification
               </h1>
               <p className="text-black">Enter Verification code</p>
-              <div class="pin-inputs">
+              <div className="pin-inputs">
                 <input
                   type="text"
                   className="pin-input"
