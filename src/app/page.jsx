@@ -89,7 +89,7 @@ const page = () => {
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
       console.log(tokenResponse);
-      router.push('/user/genderchoose'); // Ensure router is properly defined and accessible.
+      router.push('/user/genderchoose'); 
     }
   });
 
