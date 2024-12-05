@@ -128,6 +128,9 @@ const Page = () => {
         });
         setIsModalOpen(false);
         router.push('/user/genderchoose');
+      } else {
+        const response = error;
+        document.getElementById('response').innerText = response;
       }
     }
   };
@@ -218,7 +221,7 @@ const Page = () => {
             <h4 className="hrline mx-3 my-3 text-gray-600"> or </h4>
             <form>
               <div>
-                <label className="text-sm text-black">Name</label>
+                <label className="text-sm text-black">Full Name</label>
                 <br />
                 <input
                   type="text"
@@ -346,6 +349,7 @@ const Page = () => {
                   <span className="text-xs text-pink-700">{errors.gender}</span>
                 )}
               </div>
+              
               <div
                 className=" flex  cntbtn justify-center mt-3"
                 onClick={handleContinue}
@@ -418,7 +422,9 @@ const Page = () => {
                 </div>
                 {photoError && (
                   <span className="text-xs text-pink-700">{photoError}</span>
+                  
                 )}
+                <p className='text-sm text-pink-700' id='response'></p>
                 <button onClick={handleSubmit} className="sbtbtm">
                   Submit
                 </button>
@@ -495,8 +501,8 @@ function GoogleSignUp() {
     if (!profilePicture)
       newErrors.profilePicture = 'Profile picture is required.';
     if (!age) newErrors.age = 'Age is required.';
-    else if (age < 18 || age > 120)
-      newErrors.age = 'Age must be between 18 and 120.';
+    else if (age < 18 || age > 50)
+      newErrors.age = 'Age must be between 18 and 50.';
     if (!gender) newErrors.gender = 'Gender is required.';
 
     if (Object.keys(newErrors).length > 0) {

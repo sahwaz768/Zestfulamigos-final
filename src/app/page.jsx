@@ -15,6 +15,7 @@ import Forgotpassword from '@/components/Forgotpassword';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import axios from 'axios';
 
 const page = () => {
   /* Logic for modal */
@@ -67,15 +68,43 @@ const page = () => {
 
   const handleSubmit = async (e) => {
     const { loginUserService } = await import('../services/auth/login.service');
-    const { default:{ set } } = await import("js-cookie")
+    const {
+      default: { set }
+    } = await import('js-cookie');
     e.preventDefault();
+
     if (validateForm()) {
       console.log('Login successful:', formData);
       const { data, error } = await loginUserService(formData);
       if (data) {
-        set("x-token", data.access_token);
+        set('x-token', data.access_token);
+
         router.push('/user/genderchoose'); // Navigate to your desired route
+      } else {
+        const response = error;
+        document.getElementById('response').innerText = response;
       }
+    }
+  };
+
+  const sendotp = async (e) => {
+    const BASEURL = process.env.NEXT_PUBLIC_BASE_URL || '';
+    const forgotemail = document.getElementById('emailsend')?.value;
+
+    try {
+      const response = await axios.post(
+        `${BASEURL}/auth/forgot-password`,
+        { email: forgotemail },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+
+      console.log('API Response:', response);
+      console.log('API Response Message:', response.data.message);
+    } catch (err) {
+      console.error(
+        'Error Response Message:',
+        err.response?.data?.message || 'No error message provided.'
+      );
     }
   };
 
@@ -95,7 +124,7 @@ const page = () => {
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
       console.log(tokenResponse);
-      router.push('/user/genderchoose'); 
+      router.push('/user/genderchoose');
     }
   });
 
@@ -268,6 +297,7 @@ const page = () => {
               {errors.password && (
                 <span className="text-sm text-pink-700">{errors.password}</span>
               )}
+              <p id="response" className="text-sm text-pink-700"></p>
               <br />
               <span
                 className="frpassword  text-pink-700"
@@ -318,12 +348,10 @@ const page = () => {
                 className="inputfield "
                 type="email"
                 name="forgotpassword"
+                id="emailsend"
               />
 
-              <button
-                className="w-full loginbtn text-center"
-                onClick={showotpbox}
-              >
+              <button className="w-full loginbtn text-center" onClick={sendotp}>
                 Proceed
               </button>
             </div>
