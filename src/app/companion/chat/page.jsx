@@ -9,14 +9,12 @@ import { IoIosNotificationsOutline } from 'react-icons/io';
 import { CgProfile } from 'react-icons/cg';
 import { useState } from 'react';
 import Companionchatwindow from '@/components/companionchatwindow';
-import { AiOutlineSafety } from 'react-icons/ai';
 import { RiChatSmile2Line } from 'react-icons/ri';
-import { MdHistory } from 'react-icons/md';
-import { CiLocationOff } from "react-icons/ci";
+import { MdOutlineHistory } from 'react-icons/md';
+import { IoSettingsOutline } from 'react-icons/io5';
 import { CiLogout } from 'react-icons/ci';
-import { BiLocationPlus } from "react-icons/bi";
-import { IoIosTimer } from "react-icons/io";
-import { Chatsideicon2 } from '../dashboard/page';
+import { MdOutlineArrowDropDown } from 'react-icons/md';
+
 
 
 
@@ -43,7 +41,7 @@ const page = () => {
       <Chatheader2/>
       <div className="chatpage">
         <div>
-          <Chatsideicon2 />
+          <Secondsidebar/>
         </div>
         <div className="chatsection">
           <div className="chatlist" id="chatlist">
@@ -225,5 +223,97 @@ export const Chatheader2 = () => {
     </>
   );
 };
+
+
+export const Secondsidebar = () => {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+
+  const toggleSettings = () => {
+    setIsSettingsOpen(!isSettingsOpen);
+  };
+
+  const toggleSidebar = () => {
+    if (isSidebarExpanded) {
+      setIsSettingsOpen(false); // Close dropdown when sidebar is collapsed
+    }
+    setIsSidebarExpanded(!isSidebarExpanded);
+  };
+  return (
+    <div>
+      <>
+      <div
+        className={`sidebar-second ${isSidebarExpanded ? 'expanded' : 'collapsed'}`}
+        onMouseEnter={() => setIsSidebarExpanded(true)}
+        onMouseLeave={() => {
+          setIsSidebarExpanded(false);
+          setIsSettingsOpen(false); // Close dropdown on sidebar collapse
+        }}
+      >
+        <div className="menu-container-second">
+          {/* Profile */}
+          <div className="menu-item-second-x">
+            <div className="icon-container-second">
+            <Image src={Profile} alt="profile" />
+            </div>
+            <div className="menu-label-second ">
+              <span className="">Olivia Rhye</span>
+              <p className="text-xs text-gray-600">Olivia@gmail.com</p>
+            </div>
+          </div>
+
+          {/* Refresh */}
+          <div className="menu-item-second">
+            <div className="icon-container-second">
+              <RiChatSmile2Line color="black" size={20} />
+            </div>
+            <span className="menu-label-second">Chat</span>
+          </div>
+
+          {/* History */}
+          <div className="menu-item-second">
+            <div className="icon-container-second">
+              <MdOutlineHistory color="black" size={20} />
+            </div>
+            <span className="menu-label-second">Booking history</span>
+          </div>
+
+          {/* Settings */}
+          <div className="menu-item-second" onClick={toggleSettings}>
+            <div className="icon-container-second">
+              <IoSettingsOutline color="black" size={20} />
+            </div>
+            <span className="menu-label-second">Settings</span>
+            <div className="arrow-down">
+              <MdOutlineArrowDropDown color="black" size={25} />
+            </div>
+          </div>
+
+          {isSettingsOpen && (
+            <div className="submenu ">
+              <div className="">
+                <div className="menu-item-second flex ml-4">
+                  <CgProfile color="black" size={20} />
+                  <span className="menu-label-second">Profile Settings</span>
+                </div>
+              </div>
+              <div className="menu-item-second flex ml-4 mt-2">
+                <CiLogout color="black" size={20} />
+                <span className="menu-label-second">Logout</span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+    </div>
+  )
+}
+
+
+
+
+
+
 
 export default page

@@ -3,23 +3,25 @@ import React, { useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { Chatheader,Chatsideicon} from '../chat/page';
 import withAuth from '@/app/hoc/wihAuth';
+import { Secondsidebaruser } from '../chat/page';
 
 
-const page = () => {
+const Page = () => {
   const [imageUrl, setImageUrl] = useState(null);
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+   const file = e.target.files[0];
     if (file) {
-      const url = URL.createObjectURL(file);
-      setImageUrl(url);
+     const url = URL.createObjectURL(file);
+     setImageUrl(url);
     }
-  };
+  }
+ 
   return (
     <>
       <Chatheader/>
       <div className="profilebox">
-        <Chatsideicon/>
+        <Secondsidebaruser/>
         <div className="profiledetail">
           <div className="userprofile">
             <div className="profile-containerx">
@@ -28,11 +30,11 @@ const page = () => {
                 className="profile-picturex"
                 style={{ backgroundImage: `url(${imageUrl})` }}
               >
-                {!imageUrl && (
+             {!imageUrl && (
                   <span className="userx ">
                     <CgProfile size={30} />
                   </span>
-                )}
+           )  }
               </label>
               <input
                 id="file-input"
@@ -51,6 +53,7 @@ const page = () => {
                 type="text"
                 className="userprofile-input-text"
                 placeholder="Olavia"
+                disabled
               />
             </div>
             <div>
@@ -59,6 +62,7 @@ const page = () => {
                 type="text"
                 className="userprofile-input-text"
                 placeholder="Olavia"
+                disabled
               />
             </div>
           </div>
@@ -78,6 +82,7 @@ const page = () => {
                 type="text"
                 className="userprofile-input-text"
                 placeholder="1234567890"
+                disabled
               />
             </div>
           </div>
@@ -88,4 +93,4 @@ const page = () => {
   );
 };
 
-export default withAuth(page);
+export default Page;

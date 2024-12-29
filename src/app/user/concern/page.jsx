@@ -3,7 +3,7 @@ import Header from '@/components/Header'
 import { FiPlus } from "react-icons/fi";
 import React, { useState } from "react";
 import Link from 'next/link';
-
+import { Chatheader, Chatsideicon } from '../chat/page';
 const page = () => {
 
   const [isOpen, setIsOpen] = useState(false);
@@ -68,10 +68,10 @@ const page = () => {
   };
   return (
     <div>
-      <Header/>
+      <Chatheader/>
       <div className='support-head'>
       <div className='support-txt'>
-      <h1 className='text-xl ml-3 font-bold mt-2'>Your support requests</h1>
+      <h1 className='md:text-xl ml-3 md:font-bold mt-2'>Your support requests</h1>
       </div>
         <div className='support' onClick={openModal}>
         <FiPlus color='red' />
@@ -80,16 +80,16 @@ const page = () => {
         
       </div>
       <div className='support-box-head'>
-     <div className='support-row-head text-xl '>
+     <div className='support-row-head md:text-xl '>
       Ticket no
      </div>
-     <div className='support-row-head text-xl '>
+     <div className='support-row-head md:text-xl '>
       Topic
      </div>
-     <div className='support-row-head text-xl  '>
+     <div className='support-row-head md:text-xl  '>
       status
      </div>
-     <div className='support-row-2-head text-xl '>
+     <div className='support-row-2-head md:text-xl '>
       check
      </div>
 

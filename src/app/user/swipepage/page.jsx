@@ -86,6 +86,13 @@ const page = () => {
      <Chatheader/>
 
       <div>
+      
+      <div className='swipe-container-first'>
+        <h1 className="font-extrabold text-center">Select your amigo</h1>
+            <p className="text-sm mt-2 px-8 text-center">
+              Check out our Companion list Swipe by right or left option.
+            </p>
+        </div>
         <div className="wrapper">
           <div className="bg-card bg-card-left-2">
             <img
@@ -112,13 +119,15 @@ const page = () => {
               alt="Background card"
             />
           </div>
+       
 
           <div className="container">
+          <div className='swipe-container'>
             <h1 className="font-extrabold">Select your amigo</h1>
             <p className="text-sm mt-2 px-8">
               Check out our Companion list Swipe by right or left option.
             </p>
-
+</div>
             <div className="card-container">
               <div className="card">
                 <img

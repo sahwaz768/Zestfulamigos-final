@@ -1,6 +1,8 @@
 import React from 'react';
 import Header from '@/components/Header';
 import { Chatheader } from '../chat/page';
+import Image from 'next/image';
+import Payment from 'src/app/payment1.png'
 
 const page = () => {
   return (
@@ -9,7 +11,7 @@ const page = () => {
       <div className="paymentsummarybox">
         <div className="paymentsummary">
           <div className="paymentbox">
-            <h1 className="text-2xl font-semibold">Summary of payment</h1>
+            <h1 className="md:text-2xl font-semibold">Summary of payment</h1>
             <h3 className="text-base my-4">Description amount(INR)</h3>
             <table className="mt-2">
               <tbody>
@@ -45,7 +47,12 @@ const page = () => {
             <button className="paymentbtn">proceed to payment</button>
           </div>
         </div>
-        <div className="paymentimage"></div>
+        <div className="paymentimage">
+        <Image
+      src={Payment}
+      
+    />
+        </div>
       </div>
     </div>
   );

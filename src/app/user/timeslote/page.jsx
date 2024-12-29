@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { Guidmodel } from '../chat/page';
+import { Chatheader } from '../chat/page';
 
 const Page = () => {
   const times = [
@@ -86,12 +87,13 @@ const Page = () => {
 
   return (
     <>
+    <Chatheader/>
    <Guidmodel/>
     <form onSubmit={handleFormSubmit} className="flex flex-col space-y-4">
-    <div className='flex mx-6'>
-      <div className="timeslotebox">
-        <h1 className="text-black text-2xl font-semibold my-4">Time Slot and Date Availability</h1>
-        <div className="flex">
+    <div className='flex flex-wrap '>
+      <div className="timeslotebox ">
+        <h1 className="text-black md:text-2xl font-semibold my-4 md:ml-10 ml-4 timeslote-text">Time Slot and Date Availability</h1>
+        <div className="flex md:ml-8 ml-3">
           {dates.map((date, index) => (
             <div
               key={index}
@@ -103,7 +105,7 @@ const Page = () => {
             </div>
           ))}
         </div>
-        <div className="time-slots-container mt-4">
+        <div className="time-slots-container mt-4 md:ml-6 ml-3">
           {times.map((time, index) => (
             <div
               key={index}
@@ -116,8 +118,8 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="timeslotebox">
-        <h1 className="text-black text-2xl font-semibold my-4">Purpose of Engagement</h1>
+      <div className="timeslotebox timeslote-textarea">
+        <h1 className="text-black md:text-2xl font-semibold my-4">Purpose of Engagement</h1>
         <textarea
           value={purpose}
           onChange={(e) => setPurpose(e.target.value)}
@@ -126,7 +128,7 @@ const Page = () => {
           required
         ></textarea>
 
-        <h1 className="my-3">Specify the Location for Companion Meet-Up</h1>
+        <h1 className="my-3 text-sm">Specify the Location for Companion Meet-Up</h1>
         <LocationInput location={location} setLocation={setLocation} />
 
         <div className="mt-2 ">
