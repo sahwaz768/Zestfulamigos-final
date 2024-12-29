@@ -3,36 +3,31 @@ import { CiShoppingBasket } from 'react-icons/ci';
 import { FaPersonHiking } from 'react-icons/fa6';
 import { FaRoad } from 'react-icons/fa';
 import { GiCampingTent } from 'react-icons/gi';
-import { MdOutlineSubdirectoryArrowRight } from 'react-icons/md';
+import Image from 'next/image';
 import Link from 'next/link';
+import { Chatheader } from '../chat/page';
+import Profile1 from 'src/app/Rectangle 10.png';
+import Profile2 from 'src/app/Rectangle 11.png';
+import Profile3 from 'src/app/Rectangle 12.png';
+import Profile4 from 'src/app/Rectangle 14.png';
 
 const page = () => {
   return (
     <>
-      <h1 className="text-2xl font-semibold mx-32 my-4">Full Profile detail</h1>
+      <Chatheader />
+      <h1 className="text-2xl font-semibold mx-6 my-4 profile-text">Full Profile detail</h1>
       <div className="detailbox ">
         <div className="detail">
-          <div className=" flex">
+          <div className=" flex flex-wrap gap-3">
             <div className="horizontalimg flex gap-2">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
-                alt=""
-              />
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
-                alt=""
-              />
+              <Image src={Profile1} />
             </div>
-            <div className="vertical img ml-2">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
-                alt=""
-              />
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
-                alt=""
-                className="mt-2"
-              />
+            <div className="vertical img ">
+            <Image src={Profile2} />
+            <Image src={Profile3} className='md:mt-3'/>
+            </div>
+            <div className="horizontalimg-2 flex gap-2 ">
+            <Image src={Profile4} />
             </div>
           </div>
           <div className="flex mt-10">
@@ -71,7 +66,10 @@ const page = () => {
               If she is your favourite then
             </h1>
             <div className=" cntbtn2">
-             <Link href={'./timeslote'}> <div>Countinue</div> </Link>
+              <Link href={'./timeslote'}>
+                {' '}
+                <div>Countinue</div>{' '}
+              </Link>
             </div>
           </div>
         </div>

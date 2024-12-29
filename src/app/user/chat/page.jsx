@@ -17,6 +17,11 @@ import { CiLogout } from 'react-icons/ci';
 import { BiLocationPlus } from "react-icons/bi";
 import { IoIosTimer } from "react-icons/io";
 import Link from 'next/link';
+import { MdOutlineArrowDropDown } from 'react-icons/md';
+import { MdOutlineHistory } from 'react-icons/md';
+import { IoSettingsOutline } from 'react-icons/io5';
+
+
 
 
 
@@ -43,7 +48,7 @@ const page = () => {
       <Chatheader />
       <div className="chatpage">
         <div>
-          <Chatsideicon />
+          <Secondsidebaruser/>
         </div>
         <div className="chatsection">
           <div className="chatlist" id="chatlist">
@@ -224,18 +229,90 @@ export const Chatheader = () => {
   );
 };
 
-export const Chatsideicon = () => {
+export const Secondsidebaruser = () => {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+
+  const toggleSettings = () => {
+    setIsSettingsOpen(!isSettingsOpen);
+  };
+
+  const toggleSidebar = () => {
+    if (isSidebarExpanded) {
+      setIsSettingsOpen(false); // Close dropdown when sidebar is collapsed
+    }
+    setIsSidebarExpanded(!isSidebarExpanded);
+  };
   return (
-    <>
-      <div className="chat-side-icon">
-        <Image src={Profile} alt="profile" />
-     <Link href={'./chat'}>   <RiChatSmile2Line color="black" size={25} /> </Link>
-     <Link href={'./bookinghistory'}>  <MdHistory color="black" size={25} /></Link> 
-      <Link href={'/'}>  <CiLogout color="black" size={25} /> </Link>
+    <div>
+      <>
+      <div
+        className={`sidebar-second ${isSidebarExpanded ? 'expanded' : 'collapsed'}`}
+        onMouseEnter={() => setIsSidebarExpanded(true)}
+        onMouseLeave={() => {
+          setIsSidebarExpanded(false);
+          setIsSettingsOpen(false); // Close dropdown on sidebar collapse
+        }}
+      >
+        <div className="menu-container-second">
+          {/* Profile */}
+          <div className="menu-item-second-x">
+            <div className="icon-container-second">
+            <Image src={Profile} alt="profile" />
+            </div>
+            <div className="menu-label-second ">
+              <span className="">Olivia Rhye</span>
+              <p className="text-xs text-gray-600">Olivia@gmail.com</p>
+            </div>
+          </div>
+
+          {/* Refresh */}
+          <div className="menu-item-second">
+            <div className="icon-container-second">
+              <RiChatSmile2Line color="black" size={20} />
+            </div>
+            <span className="menu-label-second">Chat</span>
+          </div>
+
+          {/* History */}
+          <div className="menu-item-second">
+            <div className="icon-container-second">
+              <MdOutlineHistory color="black" size={20} />
+            </div>
+            <span className="menu-label-second">Booking history</span>
+          </div>
+
+          {/* Settings */}
+          <div className="menu-item-second" onClick={toggleSettings}>
+            <div className="icon-container-second">
+              <IoSettingsOutline color="black" size={20} />
+            </div>
+            <span className="menu-label-second">Settings</span>
+            <div className="arrow-down">
+              <MdOutlineArrowDropDown color="black" size={25} />
+            </div>
+          </div>
+
+          {isSettingsOpen && (
+            <div className="submenu ">
+              <div className="">
+                <div className="menu-item-second flex ml-4">
+                  <CgProfile color="black" size={20} />
+                  <span className="menu-label-second">Profile Settings</span>
+                </div>
+              </div>
+              <div className="menu-item-second flex ml-4 mt-2">
+                <CiLogout color="black" size={20} />
+                <span className="menu-label-second">Logout</span>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </>
-  );
-};
+    </div>
+  )
+}
 
 export const Guidmodel = () => {
   const [isModalOpen, setIsModalOpen] = useState(true);

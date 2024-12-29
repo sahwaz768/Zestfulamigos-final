@@ -10,36 +10,41 @@ import { RiServiceLine } from 'react-icons/ri';
 import { MdPendingActions } from 'react-icons/md';
 import { FaRegStar } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
+import { Secondsidebar } from '../chat/page';
 
 const Page = () => {
   const showupcomingbooking = () => {
     document.getElementById('closed-booking-box').style.display = 'none';
-
+    document.getElementById('upcomingbtn').classList.add('bottomline');
+    document.getElementById('historybtn').classList.remove('bottomline2');
     document.getElementById('upcoming-booking-box').style.display = 'block';
   };
   const showcompletedbooking = () => {
     document.getElementById('closed-booking-box').style.display = 'block';
-
+    document.getElementById('upcomingbtn').classList.remove('bottomline');
+    document.getElementById('historybtn').classList.add('bottomline2');
     document.getElementById('upcoming-booking-box').style.display = 'none';
   };
   return (
     <div>
       <Chatheader2 />
       <div className="bookingbox">
-        <Chatsideicon2 />
+        <Secondsidebar />
         <div className="booking-side">
           <div className="booking-type">
             <div
               className="text-sm font-bold flex  items-center"
+              id="upcomingbtn"
               onClick={showupcomingbooking}
             >
-              Upcoming <IoIosArrowRoundForward size={20} />
+              Upcoming
             </div>
             <div
-              className="text-sm font-bold flex items-center"
+              className="text-sm font-bold flex items-center bottomline2"
+               id="historybtn"
               onClick={showcompletedbooking}
             >
-              History <IoIosArrowRoundForward size={20} />
+              History
             </div>
           </div>
           <div className="booking-box">

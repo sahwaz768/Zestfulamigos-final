@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import Forgotpassword from '@/components/Forgotpassword';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useRouter } from "next/navigation";
+import Companion from 'src/app/complogin.png';
+import Image from 'next/image'
 
 
 const page = () => {
@@ -81,11 +83,16 @@ const page = () => {
 
   return (
     <>
-    <div className='companion-login-box'>
+    <div className='companion-login-box flex'>
       <div className='comp-lg-box'>
         <h1 className='zestful-companion'>zestful amigos</h1>
         <h1 className='text-3xl '>You want to work as our "Amigos"</h1>
         <button className='companion-login-btn' onClick={handleOpenModal1}>Start here</button>
+      </div>
+      <div className='comp-lg-image'>
+      <Image
+     src={Companion}
+    />
       </div>
     </div>
   {/* First Modal */}

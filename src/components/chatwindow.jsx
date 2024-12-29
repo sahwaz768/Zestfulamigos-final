@@ -139,7 +139,7 @@ const sendMessage = () => {
                 className="chat-input-text"
                 placeholder="type of massage"
               />
-              <div className="send-button flex">
+              <div className="send-button-chat flex">
                 <div className="flex justify-center items-center mx-4">
                   <CiLocationOn color="white" size={20} />
                 </div>

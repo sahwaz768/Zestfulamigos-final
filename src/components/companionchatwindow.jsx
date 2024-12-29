@@ -69,6 +69,11 @@ const Companionchatwindow = () => {
   const openModal = () => setIsOpenexmodel(true);
   const closeModal = () => setIsOpenexmodel(false);
 
+  const [isOpenexmodel2, setIsOpenexmodel2] = useState(false);
+
+  const openModal2 = () => setIsOpenexmodel2(true);
+  const closeModal2 = () => setIsOpenexmodel2(false);
+
   return (
     <>
       {isOpenexmodel && (
@@ -84,6 +89,23 @@ const Companionchatwindow = () => {
             <h1 className="text-center text-xs">Drop Your Companion OTP</h1>
             
           <Otpvalidation/>
+          </div>
+        </div>
+      )}
+
+      {isOpenexmodel2 && (
+        <div className="extension-modal-overlay">
+          <div className="extension-modal-content">
+          <div className=''>
+             <h1 className='text-center text-2xl font-bold'>Are you sure</h1>
+             <div className='flex justify-center gap-2 mr-3 my-3'>
+             <button className='yes'>Yes</button>
+             <button className='no' onClick={closeModal2}>No</button>
+
+             </div>
+             </div>
+            
+          
           </div>
         </div>
       )}
@@ -123,6 +145,9 @@ const Companionchatwindow = () => {
                   <div className="extension-slote" onClick={openModal}>
                     start session
                   </div>
+                  <div className="extension-slote mt-2" onClick={openModal2}>
+                    end session
+                  </div>
                 </ul>
               )}
             </div>
@@ -150,7 +175,7 @@ const Companionchatwindow = () => {
               className="chat-input-text"
               placeholder="type of massage"
             />
-            <div className="send-button flex">
+            <div className="send-button-chat flex">
               <div className="flex justify-center items-center mx-4">
                 <CiLocationOn color="white" size={20} />
               </div>
