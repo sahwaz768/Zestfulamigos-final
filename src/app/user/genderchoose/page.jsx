@@ -1,14 +1,16 @@
 'use client';
 import React, { useState } from 'react';
 import Swipepagemodal from '@/components/swipepagemodal';
-import withAuth from '@/app/hoc/wihAuth';
 import { useRouter } from 'next/navigation';
+import withAuth from '@/app/hoc/wihAuth';
+import { useDispatch } from 'react-redux';
 
 const Page = () => {
   const [gender, setGender] = useState('');
   const [error, setError] = useState('');
   const [location, setLocation] = useState(null);
   const router = useRouter()
+  const dispatch = useDispatch();
 
   const handleGenderSelect = (selectedGender) => {
     setGender(selectedGender);
@@ -36,7 +38,8 @@ const Page = () => {
         '../../../Redux/companionfindReducer/companionFinReducer'
       );
       if (data) {
-        window.sessionStorage.setItem("companions", JSON.stringify(data))
+        dispatch(datafetched(data));
+        console.log(data);
         router.push("/user/swipepage");
       } else {
         console.error(error);

@@ -16,6 +16,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
+import { useAppDispatch } from '@/Redux/store/store';
 
 const page = () => {
   /* Logic for modal */
@@ -39,6 +40,7 @@ const page = () => {
 
   const [errors, setErrors] = useState({});
   const router = useRouter(); // Use the new router from next/navigation
+  const dispatch = useAppDispatch();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -68,17 +70,22 @@ const page = () => {
 
   const handleSubmit = async (e) => {
     const { loginUserService } = await import('../services/auth/login.service');
+    const { datafetched } = await import("../Redux/auth/auth.reducer");
+    const { decodeAccessToken } = await import("../utils/common.utils");
+    const { ACCESS_TOKEN_LOC, REFRESH_TOKEN_LOC } = await import("../Constants/common.constants");
+
     const {
-      default: { set }
-    } = await import('js-cookie');
+      default: { setCokkie }
+    } = await import('nookies');
     e.preventDefault();
 
     if (validateForm()) {
       console.log('Login successful:', formData);
       const { data, error } = await loginUserService(formData);
       if (data) {
-        set('x-token', data.access_token);
-
+        dispatch(datafetched(decodeAccessToken(data.access_token)));
+        setCokkie(ACCESS_TOKEN_LOC, 'fromClient',data.access_token);
+        setCokkie(REFRESH_TOKEN_LOC, 'fromClient',data.refresh_token);
         router.push('/user/genderchoose'); // Navigate to your desired route
       } else {
         const response = error;
