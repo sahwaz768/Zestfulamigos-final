@@ -52,13 +52,13 @@ axios.interceptors.response.use(
     }
     if (
       (err?.response?.config?.url === BASEURL + "auth/refreshtoken" &&
-        err?.response?.status >= 400 &&
-        err?.response?.status < 500) ||
-      err?.response?.status === 401 ||
+        err?.response?.statusCode >= 400 &&
+        err?.response?.statusCode < 500) ||
+      err?.response?.statusCode === 401 ||
       !token
     ) {
       await removeUserData();
-      window.location = "/login";
+      window.location = "/";
     }
     const refreshToken = cookie.get(REFRESH_TOKEN_LOC);
     let exp = null;
@@ -110,7 +110,7 @@ axios.interceptors.response.use(
           })
           .catch(async (error) => {
             await removeUserData();
-            window.location = "/login";
+            window.location = "/";
             processQueue(error, null);
             reject(error);
           })
