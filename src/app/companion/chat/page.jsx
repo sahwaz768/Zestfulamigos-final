@@ -14,6 +14,8 @@ import { MdOutlineHistory } from 'react-icons/md';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { CiLogout } from 'react-icons/ci';
 import { MdOutlineArrowDropDown } from 'react-icons/md';
+import { useSelector } from 'react-redux';
+import withAuth from '@/app/hoc/wihAuth';
 
 
 
@@ -239,6 +241,10 @@ export const Secondsidebar = () => {
     }
     setIsSidebarExpanded(!isSidebarExpanded);
   };
+  
+  const userDetails = useSelector((state) => state.AuthReducer.data);
+  if (!userDetails) return <p>Loading...</p>;
+
   return (
     <div>
       <>
@@ -257,7 +263,7 @@ export const Secondsidebar = () => {
             <Image src={Profile} alt="profile" />
             </div>
             <div className="menu-label-second ">
-              <span className="">Olivia Rhye</span>
+              <span className="">{userDetails ? userDetails.name : 'Olivia Rhye'}</span>
               <p className="text-xs text-gray-600">Olivia@gmail.com</p>
             </div>
           </div>
@@ -316,4 +322,4 @@ export const Secondsidebar = () => {
 
 
 
-export default page
+export default withAuth(page);

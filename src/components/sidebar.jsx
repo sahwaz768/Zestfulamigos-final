@@ -5,7 +5,6 @@ import { MdHistory } from 'react-icons/md';
 import { CgProfile } from 'react-icons/cg';
 import { CiLogout } from 'react-icons/ci';
 import { MdOutlineArrowDropDown } from "react-icons/md";
-import { FiDivide } from 'react-icons/fi';
 import Link from 'next/link';
 import { CiSettings } from "react-icons/ci";
 
@@ -21,6 +20,7 @@ const sidebar = () => {
   const toggleDropdown = () => {
     setIsOpen2((prev) => !prev);
   };
+
   return (
     <>
       <div className="sidebar-container">
@@ -71,7 +71,8 @@ const sidebar = () => {
                   onClick={toggleDropdown}
                 >
                 <CiSettings color='black' size={25}/>
-                  settings <div className='sidebar-dropdown-btn'><MdOutlineArrowDropDown  color='black' size={25}/>
+                  settings <div className='sidebar-dropdown-btn'>
+                    <MdOutlineArrowDropDown  color='black' size={25}/>
                   </div>
                 </div>
                 <div

@@ -82,16 +82,14 @@ const page = () => {
 
   return (
     <div className="swipebox">
-    
-     <Chatheader/>
+      <Chatheader />
 
       <div>
-      
-      <div className='swipe-container-first'>
-        <h1 className="font-extrabold text-center">Select your amigo</h1>
-            <p className="text-sm mt-2 px-8 text-center">
-              Check out our Companion list Swipe by right or left option.
-            </p>
+        <div className="swipe-container-first">
+          <h1 className="font-extrabold text-center">Select your amigo</h1>
+          <p className="text-sm mt-2 px-8 text-center">
+            Check out our Companion list Swipe by right or left option.
+          </p>
         </div>
         <div className="wrapper">
           <div className="bg-card bg-card-left-2">
@@ -119,15 +117,14 @@ const page = () => {
               alt="Background card"
             />
           </div>
-       
 
           <div className="container">
-          <div className='swipe-container'>
-            <h1 className="font-extrabold">Select your amigo</h1>
-            <p className="text-sm mt-2 px-8">
-              Check out our Companion list Swipe by right or left option.
-            </p>
-</div>
+            <div className="swipe-container">
+              <h1 className="font-extrabold">Select your amigo</h1>
+              <p className="text-sm mt-2 px-8">
+                Check out our Companion list Swipe by right or left option.
+              </p>
+            </div>
             <div className="card-container">
               <div className="card">
                 <img
@@ -142,10 +139,15 @@ const page = () => {
                 </div>
 
                 <div className="card-footer">
-               <Link href={'./companiondetail'}>  <div className="card-title text-center text-xs font-extrabold">
-                    Dig deeper
-                  </div>
-                  </Link> 
+                  <Link
+                    href={
+                      './companiondetail?companionId=b7a162d8-7e16-4e0b-a421-9456f91b1bcb'
+                    }
+                  >
+                    <div className="card-title text-center text-xs font-extrabold">
+                      Dig deeper
+                    </div>
+                  </Link>
                 </div>
               </div>
             </div>
