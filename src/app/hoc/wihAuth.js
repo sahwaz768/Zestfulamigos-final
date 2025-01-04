@@ -15,7 +15,7 @@ const withAuth = (WrappedComponent) => {
       if (!token && !tokenredux) {
         redirect('/');
       } else if (!tokenredux) {
-        dispatch(datafetched(decodeAccessToken(token)));
+        dispatch(datafetched(decodeAccessToken(token).decodedToken));
       }
     }, [tokenredux, dispatch]);
 

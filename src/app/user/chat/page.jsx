@@ -5,7 +5,6 @@ import { GoLocation } from "react-icons/go";
 import Sidebar from '@/components/sidebar';
 import Image from 'next/image';
 import Profile from '@/app/homepageimg.jpg';
-import { IoIosNotificationsOutline } from 'react-icons/io';
 import { CgProfile } from 'react-icons/cg';
 import { useState } from 'react';
 import Chatwindow from '@/components/chatwindow';
@@ -20,9 +19,8 @@ import Link from 'next/link';
 import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { MdOutlineHistory } from 'react-icons/md';
 import { IoSettingsOutline } from 'react-icons/io5';
-
-
-
+import { useSelector } from 'react-redux';
+import withAuth from '@/app/hoc/wihAuth';
 
 
 const page = () => {
@@ -44,7 +42,6 @@ const page = () => {
   };
   return (
     <>
-      
       <Chatheader />
       <div className="chatpage">
         <div>
@@ -243,6 +240,10 @@ export const Secondsidebaruser = () => {
     }
     setIsSidebarExpanded(!isSidebarExpanded);
   };
+
+  const userDetails = useSelector((state) => state.AuthReducer.data);
+  if (!userDetails) return <p>Loading...</p>;
+
   return (
     <div>
       <>
@@ -261,7 +262,7 @@ export const Secondsidebaruser = () => {
             <Image src={Profile} alt="profile" />
             </div>
             <div className="menu-label-second ">
-              <span className="">Olivia Rhye</span>
+              <span className="">{userDetails ? userDetails.name : 'Olivia Rhye'}</span>
               <p className="text-xs text-gray-600">Olivia@gmail.com</p>
             </div>
           </div>
@@ -380,4 +381,4 @@ export const Guidmodel = () => {
   );
 };
 
-export default page;
+export default withAuth(page);

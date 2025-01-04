@@ -42,83 +42,90 @@ axios.defaults.headers.common = {
   Expires: "0",
 };
 
+const refreshAccessToken = async (refreshToken) => {
+  const setRefUrl = BASEURL + "/auth/refreshtoken";
+  try {
+    const response = await fetch(setRefUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        refresh_token: refreshToken,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to refresh token');
+    }
+    const data = await response.json();
+    const access_token = data.access_token;
+    cookie.set(ACCESS_TOKEN_LOC, access_token);
+    axios.defaults.headers.common.Authorization = "Bearer " + access_token;
+    processQueue(null, access_token);
+    return access_token;
+  } catch (error) {
+    console.error('Error refreshing token:', error);
+    await removeUserData();
+    window.location = "/";
+    processQueue(error, null);
+    throw error;
+  } finally {
+    isRefreshing = false;
+  }
+};
+
 axios.interceptors.response.use(
   (res) => res,
   async (err) => {
     const onrequest = err.config;
     const token = cookie.get(ACCESS_TOKEN_LOC);
+    const refreshToken = cookie.get(REFRESH_TOKEN_LOC);
+
+    // Ignore token handling if there's no token and it's not a path that needs the token
     if (!err.response?.config?.url?.includes(ignoretokenpaths) && !token) {
       return Promise.reject(err);
     }
-    if (
-      (err?.response?.config?.url === BASEURL + "auth/refreshtoken" &&
-        err?.response?.statusCode >= 400 &&
-        err?.response?.statusCode < 500) ||
-      err?.response?.statusCode === 401 ||
-      !token
-    ) {
-      await removeUserData();
-      window.location = "/";
-    }
-    const refreshToken = cookie.get(REFRESH_TOKEN_LOC);
-    let exp = null;
-    if (token) {
-      const { decodedToken } = decodeAccessToken(token);
-      if (decodedToken) {
-        exp = decodedToken.exp;
-      }
-    }
-    if (
-      token &&
-      refreshToken &&
-      exp &&
-      exp < Date.now() / 1000 &&
-      // eslint-disable-next-line no-underscore-dangle
-      !onrequest._retry
-    ) {
-      if (isRefreshing) {
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
-        })
-          .then((tokens) => {
-            if (onrequest.headers) {
-              onrequest.headers.Authorization = "Bearer " + tokens;
-            }
-            return axios(onrequest);
-          })
-          .catch((error) => {
-            return Promise.reject(error);
-          });
-      }
-      // eslint-disable-next-line no-underscore-dangle
-      onrequest._retry = true;
-      isRefreshing = true;
 
-      return new Promise((resolve, reject) => {
-        const setRefUrl = BASEURL + "auth/refreshtoken";
-        axios
-          .post<getAccessTokenFromRefreshTokenDto>(setRefUrl, {
-            refresh_token: refreshToken,
+    // Handle 401 and 403 errors by triggering refresh token logic
+    if (
+      (err?.response?.status === 401 || err?.response?.status === 403) &&
+      !onrequest._retry && token && refreshToken
+    ) {
+      const { decodedToken } = decodeAccessToken(token);
+      let exp = decodedToken ? decodedToken.exp : null;
+
+      // Check if the access token is expired and if we should refresh it
+      if (exp && exp < Date.now() / 1000) {
+        if (isRefreshing) {
+          // Queue the request if refresh is in progress
+          return new Promise((resolve, reject) => {
+            failedQueue.push({ resolve, reject });
           })
-          .then(({ data }) => {
-            const access_token = data.access_token;
-            axios.defaults.headers.common.Authorization =
-              "Bearer " + access_token;
-            cookie.set(ACCESS_TOKEN_LOC, access_token);
-            processQueue(null, access_token);
-            resolve(axios(onrequest));
-          })
-          .catch(async (error) => {
-            await removeUserData();
-            window.location = "/";
-            processQueue(error, null);
-            reject(error);
-          })
-          .then(() => {
-            isRefreshing = false;
-          });
-      });
+            .then((tokens) => {
+              // Retry the original request with new token
+              onrequest.headers.Authorization = "Bearer " + tokens;
+              return axios(onrequest);
+            })
+            .catch((error) => {
+              return Promise.reject(error);
+            });
+        }
+
+        // Mark the request as retrying and refresh the token
+        onrequest._retry = true;
+        isRefreshing = true;
+
+        try {
+          const access_token = await refreshAccessToken(refreshToken);
+          onrequest.headers.Authorization = "Bearer " + access_token;
+          return axios(onrequest);
+        } catch (error) {
+          return Promise.reject(error);
+        }
+      }
     }
+
+    // If none of the above conditions are met, reject the error
     return Promise.reject(err);
   }
 );

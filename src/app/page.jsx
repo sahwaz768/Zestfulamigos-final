@@ -70,22 +70,22 @@ const page = () => {
 
   const handleSubmit = async (e) => {
     const { loginUserService } = await import('../services/auth/login.service');
-    const { datafetched } = await import("../Redux/auth/auth.reducer");
-    const { decodeAccessToken } = await import("../utils/common.utils");
-    const { ACCESS_TOKEN_LOC, REFRESH_TOKEN_LOC } = await import("../Constants/common.constants");
+    const { datafetched } = await import('../Redux/auth/auth.reducer');
+    const { decodeAccessToken } = await import('../utils/common.utils');
+    const { ACCESS_TOKEN_LOC, REFRESH_TOKEN_LOC } = await import(
+      '../Constants/common.constants'
+    );
 
-    const {
-      default: { setCokkie }
-    } = await import('nookies');
+    const { setCookie } = await import('nookies');
     e.preventDefault();
 
     if (validateForm()) {
       console.log('Login successful:', formData);
       const { data, error } = await loginUserService(formData);
       if (data) {
-        dispatch(datafetched(decodeAccessToken(data.access_token)));
-        setCokkie(ACCESS_TOKEN_LOC, 'fromClient',data.access_token);
-        setCokkie(REFRESH_TOKEN_LOC, 'fromClient',data.refresh_token);
+        dispatch(datafetched(decodeAccessToken(token).decodedToken));
+        setCookie(null, ACCESS_TOKEN_LOC, data.access_token);
+        setCookie(null, REFRESH_TOKEN_LOC, data.refresh_token);
         router.push('/user/genderchoose'); // Navigate to your desired route
       } else {
         const response = error;
@@ -277,7 +277,9 @@ const page = () => {
 
             <h4 className="hrline mx-3 my-3 text-gray-600"> or </h4>
             {/* login form start here */}
-            <div>
+            <div
+              onKeyUp={(e) => e.key === 'Enter' && handleSubmit(e)}
+            >
               <p className="text-sm text-gray-800">Email</p>
               <input
                 placeholder="Enter your email"
