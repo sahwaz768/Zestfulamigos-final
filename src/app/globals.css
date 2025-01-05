@@ -2579,10 +2579,8 @@ th {
 }
 
 .profile-containerx {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   margin-top: 5px;
+  margin-left: 20px;
 }
 
 .profile-picturex {
@@ -2659,6 +2657,10 @@ th {
 }
 
 @media (max-width: 540px) {
+  .profile-containerx{
+    display: flex;
+    justify-content: center;
+  }
   .userprofile-input-text {
     width: 350px;
   }
@@ -3259,11 +3261,15 @@ flex-shrink: 0;
 .sidebar-second:hover .menu-label-second {
   opacity: 1;
 }
+.arrow-down{
+  margin-left: 0%;
+}
 @media (max-width: 810px) {
   .sidebar-second {
     display: none;
   }
 }
+
 /* cancel model */
 
 .modal-overlay-cancel{

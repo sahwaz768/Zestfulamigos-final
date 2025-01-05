@@ -9,7 +9,7 @@ const Homemidsection = () => {
         <div className=" circlebox">
           <div className="quarter-circle"></div>
           <h1 className="text-center text-3xl text-red-900 font-bold">
-            how to Connect
+            How to Connect
           </h1>
         </div>
       </div>
@@ -54,22 +54,7 @@ const Homemidsection = () => {
               />
             </svg>
 
-            <div className="step">
-              <h2 className="mt-3 text-gray-800 font-bold mb-1">
-                Choose gender
-              </h2>
-
-              <div className="icon-wrapper">
-                <div>
-                  <TbGenderBigender size={35} />
-                </div>
-              </div>
-
-              <p className="text-sm text-gray-800 ">
-                Let us tailor your dating journey by selecting your gender to
-                match you with compatible connections
-              </p>
-            </div>
+           
 
             <div className="step">
               <h2 className="mt-3 text-gray-800 font-bold mb-1">Get Sign up</h2>
@@ -80,8 +65,25 @@ const Homemidsection = () => {
               </div>
 
               <p className="text-sm text-gray-800">
-                Set up your account, provide detailed information, let find
-                partner that matches your interests
+                Set up your account, provide detailed information,and find
+                partner that matches your interests.
+              </p>
+            </div>
+
+            <div className="step">
+              <h2 className="mt-3 text-gray-800 font-bold mb-1">
+                Choose Gender
+              </h2>
+
+              <div className="icon-wrapper">
+                <div>
+                  <TbGenderBigender size={35} />
+                </div>
+              </div>
+
+              <p className="text-sm text-gray-800 ">
+                Let's tailor your dating journey by selecting your gender to
+                match you with compatible connections.
               </p>
             </div>
 
@@ -97,13 +99,13 @@ const Homemidsection = () => {
 
               <p className="text-sm text-gray-800">
                 Take the first step towards meaningful connections. Join now and
-                discover people who share your goals and interests!
+                discover people who share your goals and interests.
               </p>
             </div>
 
             <div className="step">
               <h2 className="mt-3 text-gray-800 font-bold mb-1">
-                Choose companion
+                Choose Companion
               </h2>
               <div className="icon-wrapper">
                 <svg className="icon" viewBox="0 0 24 24">
@@ -112,8 +114,8 @@ const Homemidsection = () => {
               </div>
 
               <p className="text-sm text-gray-800">
-                Select the type of partner youre looking for and well help you
-                find people who match and align well with your preferences
+                Select the type of partner you are looking for we well help you
+                find a date who matches and align well with your preferences.
               </p>
             </div>
           </div>

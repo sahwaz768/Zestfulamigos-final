@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
-
 import { IoCloudUploadOutline } from 'react-icons/io5';
 import Image from 'next/image';
 import Pikasho from '@/app/Pikasobg.png';
@@ -77,9 +76,9 @@ const Page = () => {
     } else if (
       isNaN(Number(formData.age)) ||
       Number(formData.age) < 18 ||
-      Number(formData.age) > 50
+      Number(formData.age) > 100
     ) {
-      newErrors.age = 'Age must be between 18 and 50.';
+      newErrors.age = 'Age must be above 18.';
     }
     if (!formData.gender) newErrors.gender = 'Gender selection is required.';
 
@@ -358,7 +357,7 @@ const Page = () => {
               </div>
               <div className="flex justify-center my-3">
                 <p className="text-sm">Already have an account ? </p>
-                <p className="text-pink-700 text-sm ml-2">login</p>
+                <p className="text-pink-700 text-sm ml-2">Login</p>
               </div>
             </form>
           </div>
@@ -409,7 +408,7 @@ const Page = () => {
                               <IoCloudUploadOutline size={30} />
                             </div>
                             <p className="text-sm text-gray-700">
-                              Click to upload or Drag and Drop
+                              Click to upload 
                             </p>
                             <p className="text-xs text-gray-700">
                               use portrait image for better show
@@ -501,8 +500,8 @@ function GoogleSignUp() {
     if (!profilePicture)
       newErrors.profilePicture = 'Profile picture is required.';
     if (!age) newErrors.age = 'Age is required.';
-    else if (age < 18 || age > 50)
-      newErrors.age = 'Age must be between 18 and 50.';
+    else if (age < 18 || age > 100)
+      newErrors.age = 'Age must be above 18.';
     if (!gender) newErrors.gender = 'Gender is required.';
 
     if (Object.keys(newErrors).length > 0) {
@@ -526,7 +525,7 @@ function GoogleSignUp() {
     <div>
       <div className=" glgbtn2" onClick={() => login()}>
         <FcGoogle size={20} />
-        <h1>signup with google</h1>
+        <h1>Sign up with Google</h1>
       </div>
       {isModalOpen && (
         <div className="google-modal-overlay">
@@ -556,7 +555,7 @@ function GoogleSignUp() {
                         <IoCloudUploadOutline size={30} color="black" />
                       </i>
                       <p className="text-black">
-                        <strong>Click to upload</strong> or Drag and Drop
+                        <strong>Click to upload</strong>
                       </p>
                       <span className="text-black text-xs">
                         Use portrait image for better display

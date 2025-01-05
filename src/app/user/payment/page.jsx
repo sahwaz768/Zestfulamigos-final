@@ -1,13 +1,56 @@
-import React from 'react';
-import Header from '@/components/Header';
+'use client';
+import React, { useState } from 'react';
+
 import { Chatheader } from '../chat/page';
 import Image from 'next/image';
-import Payment from 'src/app/payment1.png'
+import Payment from 'src/app/payment1.png';
 
 const page = () => {
+  const [checkboxes, setCheckboxes] = useState({
+    checkbox1: false,
+    checkbox2: false
+  });
+
+  const [errors, setErrors] = useState({
+    checkbox1: '',
+    checkbox2: ''
+  });
+
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setCheckboxes({
+      ...checkboxes,
+      [name]: checked
+    });
+
+    if (checked) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: ''
+      }));
+    }
+  };
+
+  const validate = () => {
+    const newErrors = {};
+    if (!checkboxes.checkbox1)
+      newErrors.checkbox1 = 'Please agree to out term & condition.';
+    if (!checkboxes.checkbox2)
+      newErrors.checkbox2 = 'Please agree to our term & condition.';
+    setErrors(newErrors);
+
+    // Return true if no errors
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+    }
+  };
   return (
     <div>
-      <Chatheader/>
+      <Chatheader />
       <div className="paymentsummarybox">
         <div className="paymentsummary">
           <div className="paymentbox">
@@ -31,27 +74,45 @@ const page = () => {
                 </tr>
               </tbody>
             </table>
-            <div className="flex mt-3">
-              <input type="checkbox" />
-              <p className="text-xs font-normal ml-2">
-                I agree to the <a>Term and Condition</a> and Privacy policy
-              </p>
-            </div>
-            <div className="flex my-2">
-              <input type="checkbox" />
-              <p className="text-xs font-normal ml-2">
-                I authorize the merchant to debit the above amount for selected
-                service
-              </p>
-            </div>
-            <button className="paymentbtn">proceed to payment</button>
+            <form onSubmit={handleSubmit}>
+              <div className="flex mt-3">
+                <input
+                  type="checkbox"
+                  name="checkbox1"
+                  checked={checkboxes.checkbox1}
+                  onChange={handleCheckboxChange}
+                />
+                <p className="text-xs font-normal ml-2">
+                  I agree to the <a>Term and Condition</a> and Privacy policy
+                </p>
+                
+               
+              </div>
+              {errors.checkbox1 && <p className='text-xs text-red-800'>{errors.checkbox1}</p>}
+              <div className="flex my-2">
+                <input
+                  type="checkbox"
+                  name="checkbox2"
+                  checked={checkboxes.checkbox2}
+                  onChange={handleCheckboxChange}
+                />
+                <p className="text-xs font-normal ml-2">
+                  I authorize the merchant to debit the above amount for
+                  selected service
+                </p>
+               
+              </div>
+              {errors.checkbox2 && (
+                  <p className="text-xs text-red-800">{errors.checkbox2}</p>
+                )}
+              <button className="paymentbtn" type="submit">
+                proceed to payment
+              </button>
+            </form>
           </div>
         </div>
         <div className="paymentimage">
-        <Image
-      src={Payment}
-      
-    />
+          <Image src={Payment} />
         </div>
       </div>
     </div>

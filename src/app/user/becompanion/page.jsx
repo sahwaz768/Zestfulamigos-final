@@ -82,9 +82,9 @@ const page = () => {
     <div>
       <Header />
       <h1 className=" font-bold my-5 text-2xl ml-10">Be a companion</h1>
-      <div className="flex justify-center">
+      <div className="flex md:justify-center ml-4">
         <form onSubmit={handleSubmit} className="">
-          <div className="flex">
+          <div className="flex flex-wrap">
             <div className="">
               <label className="text-sm ">First Name</label>
               <br />
@@ -99,7 +99,7 @@ const page = () => {
               {errors.firstName && <p className="text-xs">{errors.firstName}</p>}
             </div>
 
-            <div className="mx-2">
+            <div className="md:mx-2">
               <label className="text-sm">Last Name</label>
               <br />
               <input
@@ -113,7 +113,7 @@ const page = () => {
               {errors.lastName && <p className="text-xs">{errors.lastName}</p>}
             </div>
           </div>
-          <div className="flex mt-2">
+          <div className="flex flex-wrap mt-2">
             <div className="">
               <label className="text-sm">Age</label>
               <br />
@@ -127,7 +127,7 @@ const page = () => {
               />
               {errors.age && <p className="text-xs">{errors.age}</p>}
             </div>
-            <div className="ml-2">
+            <div className="md:ml-2">
               <label className="text-sm">Phone Number</label>
               <br />
               <input
@@ -141,7 +141,7 @@ const page = () => {
               {errors.phone && <p className="text-xs">{errors.phone}</p>}
             </div>
           </div>
-          <div className="flex mt-2">
+          <div className="flex flex-wrap mt-2">
             <div className="">
               <label className="text-sm">Email</label>
               <br />
