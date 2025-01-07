@@ -1,10 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { CgProfile } from 'react-icons/cg';
-import { Chatheader,Chatsideicon} from '../chat/page';
-import withAuth from '@/app/hoc/wihAuth';
-import { Secondsidebaruser } from '../chat/page';
 
+import { CgProfile } from 'react-icons/cg';
 
 const Page = () => {
   const preExistingData = {
@@ -78,15 +75,10 @@ const Page = () => {
       console.log('Form data submitted:', formData);
     }
   };
- 
+
   return (
-    <>
-      <Chatheader/>
-      <div className="profilebox">
-        <Secondsidebaruser/>
-        <div className='profiledetail '>
-        <form onSubmit={handleSubmit}>
-      <div className="">
+    <form onSubmit={handleSubmit}>
+      <div className="form-group">
         <div className="profile-containerx">
           <label
             htmlFor="file-input"
@@ -108,7 +100,7 @@ const Page = () => {
           />
         </div>
       </div>
-      <div className="userprofile-detail mt-3">
+      <div className="userprofile-detail">
         <div className="">
           <label className="text-sm my-1">Full Name</label>
           <br />
@@ -126,7 +118,7 @@ const Page = () => {
         </div>
 
         <div className="">
-          <label className="text-sm ">Email</label>
+          <label className="text-sm my-1">Email</label>
           <br />
           <input
             type="email"
@@ -197,10 +189,6 @@ const Page = () => {
         Save Changes
       </button>
     </form>
-
-        </div>
-      </div>
-    </>
   );
 };
 

@@ -19,6 +19,7 @@ import Link from 'next/link';
 import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { MdOutlineHistory } from 'react-icons/md';
 import { IoSettingsOutline } from 'react-icons/io5';
+import { MdOutlineReportProblem } from "react-icons/md";
 import { useSelector } from 'react-redux';
 import withAuth from '@/app/hoc/wihAuth';
 
@@ -289,7 +290,7 @@ export const Secondsidebaruser = () => {
               <IoSettingsOutline color="black" size={20} />
             </div>
             <span className="menu-label-second">Settings</span>
-            <div className="arrow-down">
+            <div className="sidebar-dropdown-btn">
               <MdOutlineArrowDropDown color="black" size={25} />
             </div>
           </div>
@@ -303,9 +304,14 @@ export const Secondsidebaruser = () => {
                 </div>
               </div>
               <div className="menu-item-second flex ml-4 mt-2">
+              <MdOutlineReportProblem  color='black' size={20}/>
+                <span className="menu-label-second">Raise a concern</span>
+              </div>
+              <div className="menu-item-second flex ml-4 mt-2">
                 <CiLogout color="black" size={20} />
                 <span className="menu-label-second">Logout</span>
               </div>
+              
             </div>
           )}
         </div>

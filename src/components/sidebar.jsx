@@ -7,6 +7,7 @@ import { CiLogout } from 'react-icons/ci';
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import Link from 'next/link';
 import { CiSettings } from "react-icons/ci";
+import { MdOutlineReportProblem } from "react-icons/md";
 
 const sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -83,6 +84,12 @@ const sidebar = () => {
                   <a href="#" className="nav-link-sidebar">
                     <CgProfile color="black" size={20} />
                     Profile settings
+                  </a>
+                </li>
+                <li className='ml-2'>
+                  <a href="#" className="nav-link-sidebar">
+                  <MdOutlineReportProblem  color='black' size={20}/>
+                    Raise a concern
                   </a>
                 </li>
                   

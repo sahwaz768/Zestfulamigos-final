@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { BsArrowReturnRight } from 'react-icons/bs';
 import { CiLocationOn } from 'react-icons/ci';
 import { CiMail } from 'react-icons/ci';
@@ -135,6 +135,23 @@ const page = () => {
     }
   });
 
+  const inputs = useRef([]);
+
+  const handleKeyUp = (e, index) => {
+    if (e.key >= '0' && e.key <= '9') {
+      if (index < 3) {
+        // Move focus to the next input, only up to the fourth input
+        inputs.current[index + 1].focus();
+      }
+    }
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === 'Backspace' && index > 0 && !inputs.current[index].value) {
+      inputs.current[index - 1].focus();
+    }
+  };
+
   return (
     <>
       <div className="flex justify-center">
@@ -210,13 +227,13 @@ const page = () => {
           <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4 sm:px-6 ">
             <div>
               <h2 className="footerzest">zestful amigos</h2>
-              <p className="text-white">Connect,Engage,Enjoy</p>
+              <p className="text-white">Connect,Engage,Enjoy.</p>
             </div>
 
             <div>
               <div className="flex mt-6">
                 <CiLocationOn color="white" size={20} />
-                <h1 className="ml-3 text-white">Mumbai, India</h1>
+                <h1 className="ml-3 text-white">Mumbai, India.</h1>
               </div>
               <div className="flex mt-4">
                 <CiMail color="white" size={20} className="" />
@@ -272,7 +289,7 @@ const page = () => {
               onClick={() => login()}
             >
               <FcGoogle size={20} />
-              <h1>Sign in with google</h1>
+              <h1>Sign in with Google</h1>
             </div>
 
             <h4 className="hrline mx-3 my-3 text-gray-600"> or </h4>
@@ -325,10 +342,10 @@ const page = () => {
               </button>
               {/* login form end here */}
               <div className="flex mt-3 mb-1 justify-center ">
-                <p className="text-xs">Dont have an account? </p>{' '}
+                <p className="text-xs">Dont have an account ? </p>{' '}
                 <Link href={'./user/signup'}>
                   {' '}
-                  <p className="text-pink-600 text-xs">Signup here</p>
+                  <p className="text-pink-600 text-xs">Sign up here</p>
                 </Link>
               </div>
             </div>
@@ -345,7 +362,7 @@ const page = () => {
             </span>
             <div id="forgotpassword">
               <h2 className="text-center text-xl my-3 font-bold">
-                Forgot password!
+                Forgot password
               </h2>
               <p>Email</p>
               <p className="text-xs text-gray-700 mb-2">
@@ -360,7 +377,10 @@ const page = () => {
                 id="emailsend"
               />
 
-              <button className="w-full loginbtn text-center" onClick={sendotp}>
+              <button
+                className="w-full loginbtn text-center"
+                onClick={showotpbox}
+              >
                 Proceed
               </button>
             </div>
@@ -368,35 +388,47 @@ const page = () => {
               <h1 className="text-center text-xl my-3 font-bold">
                 Verification
               </h1>
-              <p className="text-black">Enter Verification code</p>
+              <p className="text-black">Enter Verification Code</p>
               <div className="pin-inputs">
                 <input
                   type="text"
                   className="pin-input"
                   maxlength="1"
                   oninput="if(this.value.length > 1) this.value=this.value.slice(0,1)"
+                  ref={(el) => (inputs.current[0] = el)}
+                  onKeyUp={(e) => handleKeyUp(e, 0)}
+                  onKeyDown={(e) => handleKeyDown(e, 0)}
                 />
                 <input
                   type="text"
                   className="pin-input"
                   maxlength="1"
                   oninput="if(this.value.length > 1) this.value=this.value.slice(0,1)"
+                  ref={(el) => (inputs.current[1] = el)}
+                  onKeyUp={(e) => handleKeyUp(e, 1)}
+                  onKeyDown={(e) => handleKeyDown(e, 1)}
                 />
                 <input
                   type="text"
                   className="pin-input"
                   maxlength="1"
                   oninput="if(this.value.length > 1) this.value=this.value.slice(0,1)"
+                  ref={(el) => (inputs.current[2] = el)}
+                  onKeyUp={(e) => handleKeyUp(e, 2)}
+                  onKeyDown={(e) => handleKeyDown(e, 2)}
                 />
                 <input
                   type="text"
                   className="pin-input"
                   maxlength="1"
                   oninput="if(this.value.length > 1) this.value=this.value.slice(0,1)"
+                  ref={(el) => (inputs.current[3] = el)}
+                  onKeyUp={(e) => handleKeyUp(e, 3)}
+                  onKeyDown={(e) => handleKeyDown(e, 3)}
                 />
               </div>
               <div className="text-sm text-gray-700 flex justify-center my-2">
-                <span>If you dont' receive code click </span>
+                <span>If you dont' receive code </span>
                 <span className="text-pink-600">Resend Code</span>
               </div>
               <button

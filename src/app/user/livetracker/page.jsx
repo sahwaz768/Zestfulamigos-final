@@ -1,8 +1,6 @@
 'use client';
-
 import React, { useEffect, useRef, useState } from 'react';
 
-// Function to dynamically load the Google Maps script and return a promise
 const loadGoogleMapsScript = () => {
   return new Promise((resolve, reject) => {
     if (typeof window.google === 'object' && window.google.maps) {
@@ -32,71 +30,18 @@ const Page = () => {
   const [map, setMap] = useState(null);
   const [directionsService, setDirectionsService] = useState(null);
   const [directionsDisplay, setDirectionsDisplay] = useState(null);
-  const [userLocation, setUserLocation] = useState(null);
-  const [originLocation, setOriginLocation] = useState(null);
+  const [originLocation, setOriginLocation] = useState({ lat: 28.6139, lng: 77.2090 }); // Delhi
+  const [destinationLocation, setDestinationLocation] = useState({ lat: 19.0760, lng: 72.8777 }); // Mumbai
 
-  const DESTINATION = { lat: 23.207001, lng: 85.850998 }; // Fixed destination coordinates
-
-  // Function to get the user's location
-  const getUserLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLatLng = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          setUserLocation(userLatLng);
-
-          if (!map) {
-            initializeMap(userLatLng);
-          }
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
+  const updateLocation = () => {
+    setOriginLocation({ lat: 28.6139, lng: 77.2090 }); // Keep Delhi static
+    setDestinationLocation({ lat: 19.0760, lng: 72.8777 }); // Keep Mumbai static
   };
 
-  // Function to fetch origin location from API
-  const fetchOriginLocation = async () => {
-    try {
-      const response = await fetch('/api/origin-location'); // Replace with your actual API endpoint
-      const data = await response.json();
-      setOriginLocation({ lat: data.latitude, lng: data.longitude });
-    } catch (error) {
-      console.error("Error fetching origin location from API:", error);
-    }
-  };
-
-  useEffect(() => {
-    // Load Google Maps script and set intervals for updating user and origin locations
-    loadGoogleMapsScript()
-      .then(() => {
-        getUserLocation();
-        fetchOriginLocation();
-
-        // Update locations every 5 minutes
-        const userLocationInterval = setInterval(getUserLocation, 300000);
-        const originLocationInterval = setInterval(fetchOriginLocation, 300000);
-
-        return () => {
-          clearInterval(userLocationInterval);
-          clearInterval(originLocationInterval);
-        };
-      })
-      .catch((error) => {
-        console.error("Failed to load Google Maps API:", error);
-      });
-  }, []);
-
-  const initializeMap = (latlng) => {
-    if (window.google && window.google.maps) {
+  const initializeMap = () => {
+    if (window.google && window.google.maps && !map) {
       const mapOptions = {
-        center: latlng,
+        center: originLocation,
         zoom: 7,
         mapTypeId: window.google.maps.MapTypeId.ROADMAP,
       };
@@ -109,17 +54,15 @@ const Page = () => {
       setDirectionsService(newDirectionsService);
       setDirectionsDisplay(newDirectionsDisplay);
 
-      calculateRoute(latlng, newDirectionsService, newDirectionsDisplay);
-    } else {
-      console.error("Google Maps API not initialized.");
+      calculateRoute(newDirectionsService, newDirectionsDisplay);
     }
   };
 
-  const calculateRoute = (origin, directionsService, directionsDisplay) => {
-    if (directionsService && directionsDisplay && origin) {
+  const calculateRoute = (directionsService, directionsDisplay) => {
+    if (directionsService && directionsDisplay && originLocation && destinationLocation) {
       const request = {
-        origin: origin,
-        destination: DESTINATION,
+        origin: originLocation,
+        destination: destinationLocation,
         travelMode: window.google.maps.TravelMode.DRIVING,
       };
 
@@ -136,17 +79,31 @@ const Page = () => {
   };
 
   useEffect(() => {
-    // Recalculate the route whenever userLocation or originLocation changes
-    if (userLocation && originLocation) {
-      calculateRoute(originLocation, directionsService, directionsDisplay);
-    }
-  }, [userLocation, originLocation, directionsService, directionsDisplay]);
+    loadGoogleMapsScript()
+      .then(() => {
+        initializeMap();
+
+        // Update locations and route every 5 minutes
+        const interval = setInterval(() => {
+          updateLocation();
+          calculateRoute(directionsService, directionsDisplay);
+        }, 300000); // 5 minutes
+
+        return () => clearInterval(interval);
+      })
+      .catch((error) => {
+        console.error("Failed to load Google Maps API:", error);
+      });
+  }, [directionsService, directionsDisplay]);
 
   return (
     <div>
-      <div id="googlemap" ref={mapRef} style={{ width: '100%', height: '580px' }}></div>
+      <div id="googlemap" ref={mapRef} style={{ width: '100%', height: '582px' }}></div>
     </div>
   );
 };
 
 export default Page;
+
+
+
