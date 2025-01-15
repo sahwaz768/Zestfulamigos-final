@@ -15,19 +15,14 @@ export const generateHashforTransaction = async (values) => {
 };
 
 export const initiateTransaction = async (values) => {
-  const { PAYU_KEY } = await import('../../Constants/services.constants');
+  const { BASEURL } = await import('../../Constants/services.constants');
+  const {
+    default: { post }
+  } = await import('../interface/interceptor');
   try {
-    values = { ...values, key: PAYU_KEY };
-    const formData = new URLSearchParams(values).toString();
-    const response = await fetch('https://test.payu.in/_payment', {
-      method: 'POST',
-      headers: {
-        "Accept": "application/json",
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: formData
-    });
-    return response.text();
+    const url = BASEURL + '/user/transactions/initiatepayment';
+    const { data:{ data } } = await post(url, values);
+    return data;
   } catch (error) {
     console.error(error.response);
     if (error.response?.status >= 400)

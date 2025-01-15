@@ -1,6 +1,6 @@
 import PaymentComponent from "@/components/PaymentComponent";
 
-const page = () => {
+export default function Page(props) {
     return (
         <div>
             <h1>Payu</h1>
@@ -8,5 +8,3 @@ const page = () => {
         </div>
     )
 }
-
-export default page;
