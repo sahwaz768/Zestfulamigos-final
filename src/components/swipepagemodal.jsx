@@ -8,7 +8,7 @@ const Swipepagemodal = (props) => {
   const [coords, setCoords] = useState({ latitude: null, longitude: null });
   const [errorMessage, setErrorMessage] = useState('');
 
-  const GOOGLE_API_KEY = 'AIzaSyDzgEHJMuVZWhUtQgNbbuFr3TmJ2v3J96M';
+  const GOOGLE_API_KEY = 'AIzaSyCuC6e1EuFwJrWvlZwZFTWdaYxFjzRwyJo';
 
   const getAddressFromLatLng = async (lat, lng) => {
     try {

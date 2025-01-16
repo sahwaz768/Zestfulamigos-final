@@ -83,7 +83,7 @@ const page = () => {
       console.log('Login successful:', formData);
       const { data, error } = await loginUserService(formData);
       if (data) {
-        dispatch(datafetched(decodeAccessToken(token).decodedToken));
+        dispatch(datafetched(decodeAccessToken(data.access_token).decodedToken));
         setCookie(null, ACCESS_TOKEN_LOC, data.access_token);
         setCookie(null, REFRESH_TOKEN_LOC, data.refresh_token);
         router.push('/user/genderchoose'); // Navigate to your desired route
