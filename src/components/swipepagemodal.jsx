@@ -1,34 +1,35 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
+import { getAddressFromLatLng } from 'src/utils/location';
 
-const Swipepagemodal = (props) => {
+const Swipepagemodal = React.memo((props) => {
   const inputRef = useRef(null); // Ref for input field
-  const [showModal, setShowModal] = useState(true); // State to show/hide modal
-  const [location, setLocation] = useState(null);
-  const [coords, setCoords] = useState({ latitude: null, longitude: null });
-  const [errorMessage, setErrorMessage] = useState('');
+  const [state, setState] = useState({
+    showModal: true,
+    location: null,
+    coords: { latitude: null, longitude: null },
+    errorMessage: '',
+  });
+
+  const setShowModal = (showModal) => setState((prevState) => ({ ...prevState, showModal }));
+  const setLocation = (location) => setState((prevState) => ({ ...prevState, location }));
+  const setCoords = (coords) => setState((prevState) => ({ ...prevState, coords }));
+  const setErrorMessage = (errorMessage) => setState((prevState) => ({ ...prevState, errorMessage }));
 
   const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_KEY;
 
-  const getAddressFromLatLng = async (lat, lng) => {
+  const fetchAddress = async (lat, lng) => {
     try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_API_KEY}`
-      );
-      const data = await response.json();
-      if (data.results && data.results.length > 0) {
-        return data.results[0].formatted_address;
-      }
-      return 'Unknown Location';
-    } catch {
-      setErrorMessage('Failed to fetch location details.');
-      return 'Unknown Location';
+      const address = await getAddressFromLatLng(lat, lng, GOOGLE_API_KEY);
+      setLocation(address);
+    } catch (error) {
+      setErrorMessage(error.message);
     }
   };
 
   const handleLocationSuccess = async (position) => {
     const { latitude, longitude } = position.coords;
-    const address = await getAddressFromLatLng(latitude, longitude);
+    const address = await getAddressFromLatLng(latitude, longitude, GOOGLE_API_KEY);
     // setCoords({ latitude, longitude });
     // setLocation(address);
     props.setLocation &&
@@ -134,7 +135,7 @@ const Swipepagemodal = (props) => {
 
   return (
     <>
-      {showModal && (
+      {state.showModal && (
         <>
           <div className="modal-overlay-swipepage"></div>
 
@@ -160,12 +161,12 @@ const Swipepagemodal = (props) => {
             >
               Submit
             </button>
-            {errorMessage && <p className="error">{errorMessage}</p>}
+            {state.errorMessage && <p className="error">{state.errorMessage}</p>}
           </div>
         </>
       )}
     </>
   );
-};
+});
 
 export default Swipepagemodal;
