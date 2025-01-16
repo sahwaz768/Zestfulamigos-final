@@ -1,23 +1,18 @@
-'use client';
-import Image from 'next/image';
-import Profile from '@/app/homepageimg.jpg';
-import { FaStar } from 'react-icons/fa6';
-import { IoIosTimer } from 'react-icons/io';
-import { RiChatSmile2Line } from 'react-icons/ri';
-import { MdHistory } from 'react-icons/md';
-import { CiLogout } from 'react-icons/ci';
+'use client'
 import React, { useState } from 'react';
-import { IoHomeOutline } from "react-icons/io5";
-import Link from 'next/link';
+import { Secondsidebar } from '../chat/page';
+import { PiSquaresFourDuotone } from "react-icons/pi";
+import Profile from 'src/app/Rectangle 12.png';
+import Couple from 'src/app/dashcouple.png';
+import Image from 'next/image'
+import { IoIosStar } from "react-icons/io";
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
   // validation for text area
-
   const [text, setText] = useState('');
   const [error, setError] = useState('');
 
@@ -36,69 +31,117 @@ const page = () => {
     alert('Form submitted successfully!');
     setText(''); // Clear the textarea after submission
   };
-
   return (
     <>
-      <div className="companion-dashboard">
-        <div className="companion-dash-topbox">
-          <div className="text-2xl pl-3 pt-3 wlcome">Welcome back Alisha!</div>
-          <div className="companion-detail">
-            <div className="flex justify-center items-center gap-2 mt-2 mr-3">
-              <Image src={Profile} alt="profile" />
-              <div>
-                <h1>Olivia Rhye</h1>
-                <div className="flex">
-                  <FaStar color="white" />
-                  <FaStar color="white" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="flex">
-          <div>
-            <Chatsideicon2 />
-          </div>
-          <div>
-            <h1 className="text-lg font-bold mt-4 ml-4">Recent bookings</h1>
-            <div className="companion-recent-booking-box">
-              <div className="flex  font-bold text-gray-900">
-                <h1>Alex parker:</h1> <span>2 Hour Visit</span>
-              </div>
-              <div className="flex text-xs font-bold text-gray-600">
-                <h1>September 5th 2025</h1>
-              </div>
-              <div className="flex gap-9 mt-2 text-sm font-bold">
-                <h1>
-                  Gender: <span>Male</span>
-                </h1>
-                <h1>
-                  age: <span>24</span>
-                </h1>
-              </div>
-              <div className="flex gap-1 text-sm font-bold items-center mt-2">
-                <IoIosTimer color="red" /> <h1>12.00-2.00PM</h1>
-              </div>
-              <div className="flex text-sm font-bold mt-2">
-                <h1>Description:</h1>
-                <span>
-                  hey i want to take into my place xcbjchvsdcfhdksjfchnksd
-                  bhdakjcfbhchaksechksacfhsezkhcfhsekugcksaekcfseacf
-                  ajdkadhkbchkbwahdka
-                </span>
-              </div>
-              <div className="flex text-sm font-bold mt-2">
-                <h1>location of meetup:</h1> <span>Mumbai</span>
-              </div>
-              <div>
-                <button onClick={openModal}>cancel</button>
-              </div>
-            </div>
-          </div>
+    <div className='flex'>
+    <div>
+    <Secondsidebar/>
+    </div>
+    <div className='dashboard'>
+    <div className='dashboard-header '>
+    <div className='flex justify-center items-center ml-4'>
+    <PiSquaresFourDuotone  color='gray' size={50}/>
+    <div>
+      <h1 className='font-bold'>Dashboard</h1>
+      <h1 className='text-sm text-pink-700'>Monday <span className='text-black'>20 Jan</span></h1>
+    </div>
+    </div>
+    <div className='comp-admin flex justify-center items-center'>
+    <Image
+      src={Profile}
+      alt="Picture of the author"
+    />
+    <h1 className='text-sm'>Alysaa jones</h1>
+    </div>
+
+    </div>
+    <div className='dashboard-midsection flex'>
+    <div className='mt-5'>
+      <h1 className='text-3xl font-bold ml-5 '>Hi, Alyssa</h1>
+      <h1 className='mt-3 ml-5'>Ready to start your day with same pitch decks</h1>
+    </div>
+    <div className='midsection-image'>
+    <Image
+      src={Couple}
+      alt="Picture of the author"
+    />
+    </div>
+    </div>
+    <div className='dashboard-overview'>
+    <h1 >Overview</h1>
+    <div className='flex gap-4'>
+      <div className='overview-box'>
+      <IoIosStar  color='yellow' size={30}/>
+      <div>
+        Last rating
+        <div className='flex  items-center'>
+        <IoIosStar  color='yellow' size={15}/>
+        <IoIosStar  color='yellow' size={15}/>
         </div>
       </div>
+      </div>
+      <div className='overview-box'>
+      <IoIosStar  color='yellow' size={30}/>
+      <div>
+        <h1 >Total rating</h1>
+        <h1 className='font-bold'>400/500</h1>
+        
+      </div>
+      </div>
+    </div>
 
-      {isOpen && (
+    </div>
+    <div className='dashboard-userdetail'>
+    <div className='dashboard-userprofile'>
+    <Image
+      src={Profile}
+      alt="Picture of the author"
+    />
+    <div className='mt-2 ml-2 gap-2'>
+      <h1>Name:<span className='font-bold'>Alysaa</span></h1>
+      <h1>Age:<span className='font-bold'>20</span></h1>
+      <h1>Gender:<span className='font-bold'>Male</span></h1>
+    </div>
+    </div>
+    <div className='dashboard-purpose mt-2 ml-2 gap-2'>
+    <h1>Time and date:<span className='font-bold'>8.00pm / 5-01-2025 </span></h1>
+      <h1>Location of meet- up:<span className='font-bold'>Bkc Mumbai</span></h1>
+      <h1>Purpose of meet:<span className='font-bold'>Dinner</span></h1>
+
+    </div>
+    <div className='dashboard-cancel'>
+      <button onClick={openModal}>Cancel</button>
+    </div>
+
+    </div>
+    <div className='dashboard-userdetail '>
+    <div className='dashboard-userprofile'>
+    <Image
+      src={Profile}
+      alt="Picture of the author"
+    />
+    <div className='mt-2 ml-2 gap-2'>
+      <h1>Name:<span className='font-bold'>Alysaa</span></h1>
+      <h1>Age:<span className='font-bold'>20</span></h1>
+      <h1>Gender:<span className='font-bold'>Male</span></h1>
+    </div>
+    </div>
+    <div className='dashboard-purpose mt-2 ml-2 gap-2'>
+    <h1>Time and date:<span className='font-bold'>8.00pm / 5-01-2025 </span></h1>
+      <h1>Location of meet- up:<span className='font-bold'>Bkc Mumbai</span></h1>
+      <h1>Purpose of meet:<span className='font-bold'>Dinner</span></h1>
+
+    </div>
+    <div className='dashboard-cancel'>
+      <button onClick={openModal}>Cancel</button>
+    </div>
+
+    </div>
+    </div>
+      
+    </div>
+
+    {isOpen && (
         <div className="companion-modal-overlay" >
           <div
             className="companion-modal-content"
@@ -128,21 +171,8 @@ const page = () => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export const Chatsideicon2 = () => {
-  return (
-    <>
-      <div className="chat-side-icon">
-     <Link href={'./dashboard'}> <IoHomeOutline color='black' size={25}/> </Link>
-     <Link href={'./chat'}> <RiChatSmile2Line color="black" size={25} /> </Link>
-       <Link href={'./bookinghistory'}> <MdHistory color="black" size={25} /> </Link>
-       <Link href={'./login'}> <CiLogout color="black" size={25} /> </Link>
-       
-      </div>
-    </>
-  );
-};
+export default page
 
-export default page;
