@@ -153,7 +153,7 @@ const LocationInput = ({ location, setLocation }) => {
   const inputRef = useRef(null);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const GOOGLE_API_KEY = 'AIzaSyCuC6e1EuFwJrWvlZwZFTWdaYxFjzRwyJo';
+  const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_KEY;
 
   // Function to handle manual location submission
   const handleManualLocationSubmit = async () => {
