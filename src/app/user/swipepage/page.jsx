@@ -83,80 +83,79 @@ const page = () => {
   return (
     <div className="swipebox">
       <Chatheader />
-      <Chatheader />
-
       <div>
         <div className="swipe-container-first">
           <h1 className="font-extrabold text-center">Select your amigo</h1>
           <p className="text-sm mt-2 px-8 text-center">
             Check out our Companion list Swipe by right or left option.
           </p>
-        <div className="swipe-container-first">
-          <h1 className="font-extrabold text-center">Select your amigo</h1>
-          <p className="text-sm mt-2 px-8 text-center">
-            Check out our Companion list Swipe by right or left option.
-          </p>
-        </div>
-        <div className="wrapper">
-          <div className="bg-card bg-card-left-2">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
-              alt="Background card"
-            />
+          <div className="swipe-container-first">
+            <h1 className="font-extrabold text-center">Select your amigo</h1>
+            <p className="text-sm mt-2 px-8 text-center">
+              Check out our Companion list Swipe by right or left option.
+            </p>
           </div>
-          <div className="bg-card bg-card-right-2">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
-              alt="Background card"
-            />
-          </div>
-
-          <div className="bg-card bg-card-left-1">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
-              alt="Background card"
-            />
-          </div>
-          <div className="bg-card bg-card-right-1">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
-              alt="Background card"
-            />
-          </div>
-
-          <div className="container">
-            <div className="swipe-container">
-              <h1 className="font-extrabold">Select Your Amigo</h1>
-              <p className="text-sm mt-2 px-8">
-                Check out our Companion list Swipe by right or left option.
-              </p>
+          <div className="wrapper">
+            <div className="bg-card bg-card-left-2">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
+                alt="Background card"
+              />
             </div>
-            <div className="card-container">
-              <div className="card">
-                <img
-                  src={slides[currentIndex].imgSrc}
-                  alt={slides[currentIndex].title}
-                  className="slide-image"
-                />
+            <div className="bg-card bg-card-right-2">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
+                alt="Background card"
+              />
+            </div>
 
-                <div className="card-footer">
-                  <Link href={'./companiondetail'}>
-                    {' '}
-                    <div className="card-title text-center text-xs font-extrabold">
-                      Dig Deeper
-                    </div>
-                  </Link>
+            <div className="bg-card bg-card-left-1">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
+                alt="Background card"
+              />
+            </div>
+            <div className="bg-card bg-card-right-1">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
+                alt="Background card"
+              />
+            </div>
+
+            <div className="container">
+              <div className="swipe-container">
+                <h1 className="font-extrabold">Select Your Amigo</h1>
+                <p className="text-sm mt-2 px-8">
+                  Check out our Companion list Swipe by right or left option.
+                </p>
+              </div>
+              <div className="card-container">
+                <div className="card">
+                  <img
+                    src={slides[currentIndex].imgSrc}
+                    alt={slides[currentIndex].title}
+                    className="slide-image"
+                  />
+
+                  <div className="card-footer">
+                    <Link href={'./companiondetail'}>
+                      {' '}
+                      <div className="card-title text-center text-xs font-extrabold">
+                        Dig Deeper
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="navigation">
-              <button className="nav-button" onClick={handlePrev}>
-                ←
-              </button>
-              <button className="nav-button" onClick={handleNext}>
-                →
-              </button>
+              <div className="navigation">
+                <button className="nav-button" onClick={handlePrev}>
+                  ←
+                </button>
+                <button className="nav-button" onClick={handleNext}>
+                  →
+                </button>
+              </div>
             </div>
           </div>
         </div>

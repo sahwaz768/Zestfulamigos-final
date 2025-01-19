@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import Swipepagemodal from '@/components/swipepagemodal';
+// import Swipepagemodal from '@/components/swipepagemodal';
 import { useRouter } from 'next/navigation';
 import withAuth from '@/app/hoc/wihAuth';
 import { useDispatch } from 'react-redux';
@@ -8,8 +8,14 @@ import { useDispatch } from 'react-redux';
 const Page = () => {
   const [gender, setGender] = useState('');
   const [error, setError] = useState('');
-  const [location, setLocation] = useState(null);
-  const router = useRouter()
+  const [location, setLocation] = useState({
+    lat: 19.05444444,
+    lng: 72.84055556,
+    state: 'Maharashtra',
+    city: 'Mumbai',
+    address: 'Kamal Building, B/1, New, Linking Rd, next to Burger King, Bandra West'
+  });
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const handleGenderSelect = (selectedGender) => {
@@ -40,7 +46,7 @@ const Page = () => {
       if (data) {
         dispatch(datafetched(data));
         console.log(data);
-        router.push("/user/swipepage");
+        router.push('/user/swipepage');
       } else {
         console.error(error);
       }
@@ -49,7 +55,7 @@ const Page = () => {
 
   return (
     <>
-      <Swipepagemodal setLocation={setLocation} />
+      {/* <Swipepagemodal setLocation={setLocation} /> */}
       <div className="genderbox">
         <h1 className="pt-10 text-xl font-extrabold sm:ml-3">
           Choose your companion gender
