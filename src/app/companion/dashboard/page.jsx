@@ -6,6 +6,7 @@ import Profile from 'src/app/Rectangle 12.png';
 import Couple from 'src/app/dashcouple.png';
 import Image from 'next/image'
 import { IoIosStar } from "react-icons/io";
+import Sidebar from '@/components/sidebar';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,14 +34,19 @@ const page = () => {
   };
   return (
     <>
+    <div className='dashboard-threeline'>
+    <Sidebar/>
+    </div>
     <div className='flex'>
     <div>
     <Secondsidebar/>
     </div>
     <div className='dashboard'>
     <div className='dashboard-header '>
-    <div className='flex justify-center items-center ml-4'>
+    <div className='flex justify-center items-center ml-4 '>
+    <div className='dots4'>
     <PiSquaresFourDuotone  color='gray' size={50}/>
+    </div>
     <div>
       <h1 className='font-bold'>Dashboard</h1>
       <h1 className='text-sm text-pink-700'>Monday <span className='text-black'>20 Jan</span></h1>
@@ -57,8 +63,8 @@ const page = () => {
     </div>
     <div className='dashboard-midsection flex'>
     <div className='mt-5'>
-      <h1 className='text-3xl font-bold ml-5 '>Hi, Alyssa</h1>
-      <h1 className='mt-3 ml-5'>Ready to start your day with same pitch decks</h1>
+      <h1 className='md:text-3xl font-bold ml-5 '>Hi, Alyssa</h1>
+      <h1 className='md:mt-3 ml-5 md:text-base text-sm'>Ready to start your day with same pitch decks</h1>
     </div>
     <div className='midsection-image'>
     <Image
@@ -97,40 +103,46 @@ const page = () => {
       src={Profile}
       alt="Picture of the author"
     />
-    <div className='mt-2 ml-2 gap-2'>
-      <h1>Name:<span className='font-bold'>Alysaa</span></h1>
-      <h1>Age:<span className='font-bold'>20</span></h1>
-      <h1>Gender:<span className='font-bold'>Male</span></h1>
+   
     </div>
+    <div className='flex flex-wrap'>
+    <div className='md:mt-2 ml-2 gap-2'>
+      <h1 className='text-sm md:text-base'>Name:<span className='md:font-bold'>Alysaa</span></h1>
+      <h1 className='text-sm md:text-base'>Age:<span className='md:font-bold'>20</span></h1>
+      <h1 className='text-sm md:text-base'>Gender:<span className='md:font-bold'>Male</span></h1>
     </div>
-    <div className='dashboard-purpose mt-2 ml-2 gap-2'>
-    <h1>Time and date:<span className='font-bold'>8.00pm / 5-01-2025 </span></h1>
-      <h1>Location of meet- up:<span className='font-bold'>Bkc Mumbai</span></h1>
-      <h1>Purpose of meet:<span className='font-bold'>Dinner</span></h1>
+    <div className='dashboard-purpose md:mt-2  gap-2'>
+    <h1 className='text-sm md:text-base'>Time and date:<span className='md:font-bold '>8.00pm / 5-01-2025 </span></h1>
+      <h1 className='text-sm md:text-base'>Location of meet- up:<span className='md:font-bold '>Bkc Mumbai</span></h1>
+      <h1 className='text-sm md:text-base'>Purpose of meet:<span className='md:font-bold '>Dinner</span></h1>
 
+    </div>
     </div>
     <div className='dashboard-cancel'>
       <button onClick={openModal}>Cancel</button>
     </div>
 
     </div>
-    <div className='dashboard-userdetail '>
+    <div className='dashboard-userdetail'>
     <div className='dashboard-userprofile'>
     <Image
       src={Profile}
       alt="Picture of the author"
     />
-    <div className='mt-2 ml-2 gap-2'>
-      <h1>Name:<span className='font-bold'>Alysaa</span></h1>
-      <h1>Age:<span className='font-bold'>20</span></h1>
-      <h1>Gender:<span className='font-bold'>Male</span></h1>
+   
     </div>
+    <div className='flex flex-wrap'>
+    <div className='md:mt-2 ml-2 gap-2'>
+      <h1 className='text-sm md:text-base'>Name:<span className='md:font-bold'>Alysaa</span></h1>
+      <h1 className='text-sm md:text-base'>Age:<span className='md:font-bold'>20</span></h1>
+      <h1 className='text-sm md:text-base'>Gender:<span className='md:font-bold'>Male</span></h1>
     </div>
-    <div className='dashboard-purpose mt-2 ml-2 gap-2'>
-    <h1>Time and date:<span className='font-bold'>8.00pm / 5-01-2025 </span></h1>
-      <h1>Location of meet- up:<span className='font-bold'>Bkc Mumbai</span></h1>
-      <h1>Purpose of meet:<span className='font-bold'>Dinner</span></h1>
+    <div className='dashboard-purpose md:mt-2  gap-2'>
+    <h1 className='text-sm md:text-base'>Time and date:<span className='md:font-bold'>8.00pm / 5-01-2025 </span></h1>
+      <h1 className='text-sm md:text-base'>Location of meet- up:<span className='md:font-bold'>Bkc Mumbai</span></h1>
+      <h1 className='text-sm md:text-base'>Purpose of meet:<span className='md:font-bold'>Dinner</span></h1>
 
+    </div>
     </div>
     <div className='dashboard-cancel'>
       <button onClick={openModal}>Cancel</button>

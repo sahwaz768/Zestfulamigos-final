@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-
-import { Chatheader } from '../chat/page';
+import Chatheader from '@/components/Masterheader';
+import { Notification } from '../swipepage/page';
 import Image from 'next/image';
 import Payment from 'src/app/payment1.png';
 
@@ -50,7 +50,7 @@ const page = () => {
   };
   return (
     <div>
-      <Chatheader />
+      <Chatheader rightElement={<Notification />} />
       <div className="paymentsummarybox">
         <div className="paymentsummary">
           <div className="paymentbox">
@@ -112,7 +112,7 @@ const page = () => {
           </div>
         </div>
         <div className="paymentimage">
-          <Image src={Payment} />
+          <Image src={Payment} alt='payment image'/>
         </div>
       </div>
     </div>

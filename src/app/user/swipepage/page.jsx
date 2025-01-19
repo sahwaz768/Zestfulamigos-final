@@ -2,28 +2,10 @@
 import React, { useState } from 'react';
 import { FaRegBell } from 'react-icons/fa6';
 import { CgProfile } from 'react-icons/cg';
-import { Chatheader } from '../chat/page';
-import Sidebar from '@/components/sidebar';
-import Swipepagemodal from '@/components/swipepagemodal';
+import Chatheader from '@/components/Masterheader';
 import Link from 'next/link';
 
-const page = () => {
-  /* logic for nav bar */
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  // Function to toggle the dropdown notification
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  // slidder
-
+const Page = () => {
   const slides = [
     {
       id: 1,
@@ -64,39 +46,19 @@ const page = () => {
     );
   };
 
-  const showsecondnification = () => {
-    document.getElementById('hideshow1').style.display = 'none';
-    document.getElementById('notification2').style.display = 'block';
-  };
-  const showthirdnification = () => {
-    document.getElementById('hideshow2').style.display = 'none';
-    document.getElementById('notification3').style.display = 'block';
-  };
-
-  const hideallnotification = () => {
-    document.getElementById('notification2').style.display = 'none';
-    document.getElementById('notification3').style.display = 'none';
-    document.getElementById('hideshow1').style.display = 'block';
-    document.getElementById('hideshow2').style.display = 'block';
-  };
+ 
 
   return (
-    <div className="swipebox">
-      <Chatheader />
-      <Chatheader />
-
-      <div>
+    <>
+      <div className="swipebox">
+        <Chatheader rightElement={<Notification />} />
         <div className="swipe-container-first">
           <h1 className="font-extrabold text-center">Select your amigo</h1>
           <p className="text-sm mt-2 px-8 text-center">
-            Check out our Companion list Swipe by right or left option.
-          </p>
-        <div className="swipe-container-first">
-          <h1 className="font-extrabold text-center">Select your amigo</h1>
-          <p className="text-sm mt-2 px-8 text-center">
-            Check out our Companion list Swipe by right or left option.
+            Check out our Companion list. Swipe left or right to explore.
           </p>
         </div>
+
         <div className="wrapper">
           <div className="bg-card bg-card-left-2">
             <img
@@ -111,26 +73,7 @@ const page = () => {
             />
           </div>
 
-          <div className="bg-card bg-card-left-1">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
-              alt="Background card"
-            />
-          </div>
-          <div className="bg-card bg-card-right-1">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
-              alt="Background card"
-            />
-          </div>
-
           <div className="container">
-            <div className="swipe-container">
-              <h1 className="font-extrabold">Select Your Amigo</h1>
-              <p className="text-sm mt-2 px-8">
-                Check out our Companion list Swipe by right or left option.
-              </p>
-            </div>
             <div className="card-container">
               <div className="card">
                 <img
@@ -138,12 +81,10 @@ const page = () => {
                   alt={slides[currentIndex].title}
                   className="slide-image"
                 />
-
                 <div className="card-footer">
-                  <Link href={'./companiondetail'}>
-                    {' '}
+                  <Link href="./companiondetail">
                     <div className="card-title text-center text-xs font-extrabold">
-                      Dig Deeper
+                      {slides[currentIndex].title}
                     </div>
                   </Link>
                 </div>
@@ -161,8 +102,119 @@ const page = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default page;
+export const Notification = () => {
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const showsecondnification = () => {
+    document.getElementById('hideshow1').style.display = 'none';
+    document.getElementById('notification2').style.display = 'block';
+  };
+  const showthirdnification = () => {
+    document.getElementById('hideshow2').style.display = 'none';
+    document.getElementById('notification3').style.display = 'block';
+  };
+
+  const hideallnotification = () => {
+    document.getElementById('notification2').style.display = 'none';
+    document.getElementById('notification3').style.display = 'none';
+    document.getElementById('hideshow1').style.display = 'block';
+    document.getElementById('hideshow2').style.display = 'block';
+  };
+  return (
+    <>
+      <div className="flex gap-2 mr-4">
+        <div className="bellicon" onClick={toggleDropdown}>
+          <FaRegBell color="white" size={20} />
+        </div>
+        <div className="bellicon">
+          <CgProfile color="white" size={20} />
+        </div>
+      </div>
+      {isOpen && (
+        <div className="dropdown-menu">
+          <div className="notificationsvg">
+            <svg
+              width="26"
+              height="13"
+              viewBox="0 0 26 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M25.5 13H0.5L12.5 0L25.5 13Z" fill="white" />
+            </svg>
+          </div>
+          <div className="notificatioview text-sm text-gray-900">
+            <div id="notification1">
+              <ul>
+                <li>Your slot for companion henry has been confirmed.</li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+              </ul>
+
+              <br />
+              <hr />
+              <div
+                className="text-center text-pink-700 p-2 cursor-pointer"
+                onClick={showsecondnification}
+                id="hideshow1"
+              >
+                show more notification
+              </div>
+            </div>
+            <div id="notification2">
+              <ul>
+                <li>
+                  this is second notification for companion henry has been
+                  confirmed.
+                </li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+              </ul>
+
+              <br />
+              <hr />
+              <div
+                className="text-center text-pink-700 p-2 cursor-pointer"
+                onClick={showthirdnification}
+                id="hideshow2"
+              >
+                show more notification
+              </div>
+            </div>
+
+            <div id="notification3">
+              <ul>
+                <li>
+                  this is third notification for companion henry has been
+                  confirmed.
+                </li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+              </ul>
+
+              <br />
+              <hr />
+              <div
+                className="text-center text-pink-700 p-2 cursor-pointer"
+                onClick={hideallnotification}
+              >
+                Hide all notification
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default Page;

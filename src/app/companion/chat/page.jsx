@@ -14,8 +14,9 @@ import { MdOutlineHistory } from 'react-icons/md';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { CiLogout } from 'react-icons/ci';
 import { MdOutlineArrowDropDown } from 'react-icons/md';
+import Chatheader from '@/components/Masterheader';
 import { useSelector } from 'react-redux';
-import withAuth from '@/app/hoc/wihAuth';
+//import withAuth from '@/app/hoc/wihAuth';
 
 
 
@@ -40,7 +41,7 @@ const page = () => {
   };
   return (
     <div>
-      <Chatheader2/>
+      <Chatheader rightElement={<Notificationsecond />} />
       <div className="chatpage">
         <div>
           <Secondsidebar/>
@@ -105,41 +106,7 @@ export const Chatheader2 = () => {
   };
   return (
     <>
-      <div className="swipeheader">
-        <header className="header2 ">
-          <div className="menu-toggle2" onClick={toggleMenu}>
-            <span className="bar"></span>
-            <span className="bar"></span>
-            <span className="bar"></span>
-          </div>
-          <div className="logo2 ">zestful amigos</div>
-
-          <nav className={`nav2 ${isMenuOpen ? 'active' : ''}`}>
-            <ul className="nav-list2">
-              <li>
-                <a href="#">Home</a>
-              </li>
-              <li>
-                <a href="#">About</a>
-              </li>
-              <li>
-                <a href="#">Services</a>
-              </li>
-              <li>
-                <a href="#">Contact</a>
-              </li>
-            </ul>
-          </nav>
-          <div className="flex gap-2 mr-4">
-            <div className="bellicon" onClick={toggleDropdown}>
-              <FaRegBell color="white" size={20} />
-            </div>
-            <div className="bellicon">
-              <CgProfile color="white" size={20} />
-            </div>
-          </div>
-        </header>
-      </div>
+      
       <div className="noti-mb-view w-full px-4">
         <div className="threelinembview">
           <Sidebar />
@@ -242,8 +209,8 @@ export const Secondsidebar = () => {
     setIsSidebarExpanded(!isSidebarExpanded);
   };
   
-  const userDetails = useSelector((state) => state.AuthReducer.data);
-  if (!userDetails) return <p>Loading...</p>;
+//  const userDetails = useSelector((state) => state.AuthReducer.data);
+ // if (!userDetails) return <p>Loading...</p>;
 
   return (
     <div>
@@ -263,7 +230,7 @@ export const Secondsidebar = () => {
             <Image src={Profile} alt="profile" />
             </div>
             <div className="menu-label-second ">
-              <span className="">{userDetails ? userDetails.name : 'Olivia Rhye'}</span>
+              <span className="">Olivia Rhye</span>
               <p className="text-xs text-gray-600">Olivia@gmail.com</p>
             </div>
           </div>
@@ -316,10 +283,119 @@ export const Secondsidebar = () => {
   )
 }
 
+export const Notificationsecond = () => {
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const showsecondnification = () => {
+    document.getElementById('hideshow1').style.display = 'none';
+    document.getElementById('notification2').style.display = 'block';
+  };
+  const showthirdnification = () => {
+    document.getElementById('hideshow2').style.display = 'none';
+    document.getElementById('notification3').style.display = 'block';
+  };
+
+  const hideallnotification = () => {
+    document.getElementById('notification2').style.display = 'none';
+    document.getElementById('notification3').style.display = 'none';
+    document.getElementById('hideshow1').style.display = 'block';
+    document.getElementById('hideshow2').style.display = 'block';
+  };
+  return (
+    <>
+      <div className="flex gap-2 mr-4">
+        <div className="bellicon" onClick={toggleDropdown}>
+          <FaRegBell color="white" size={20} />
+        </div>
+        <div className="bellicon">
+          <CgProfile color="white" size={20} />
+        </div>
+      </div>
+      {isOpen && (
+        <div className="dropdown-menu">
+          <div className="notificationsvg">
+            <svg
+              width="26"
+              height="13"
+              viewBox="0 0 26 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M25.5 13H0.5L12.5 0L25.5 13Z" fill="white" />
+            </svg>
+          </div>
+          <div className="notificatioview text-sm text-gray-900">
+            <div id="notification1">
+              <ul>
+                <li>this is second notification panel</li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+              </ul>
+
+              <br />
+              <hr />
+              <div
+                className="text-center text-pink-700 p-2 cursor-pointer"
+                onClick={showsecondnification}
+                id="hideshow1"
+              >
+                show more notification
+              </div>
+            </div>
+            <div id="notification2">
+              <ul>
+                <li>
+                  this is second notification for companion henry has been
+                  confirmed.
+                </li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+              </ul>
+
+              <br />
+              <hr />
+              <div
+                className="text-center text-pink-700 p-2 cursor-pointer"
+                onClick={showthirdnification}
+                id="hideshow2"
+              >
+                show more notification
+              </div>
+            </div>
+
+            <div id="notification3">
+              <ul>
+                <li>
+                  this is third notification for companion henry has been
+                  confirmed.
+                </li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
+              </ul>
+
+              <br />
+              <hr />
+              <div
+                className="text-center text-pink-700 p-2 cursor-pointer"
+                onClick={hideallnotification}
+              >
+                Hide all notification
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
 
 
 
 
 
-
-export default withAuth(page);
+export default page;

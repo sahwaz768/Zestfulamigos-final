@@ -6,7 +6,8 @@ import { CiShoppingBasket } from 'react-icons/ci';
 // import { GiCampingTent } from 'react-icons/gi';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Chatheader } from '../chat/page';
+import Chatheader from '@/components/Masterheader';
+import { Notification } from '../swipepage/page';
 // import Profile1 from 'src/app/Rectangle 10.png';
 // import Profile2 from 'src/app/Rectangle 11.png';
 // import Profile3 from 'src/app/Rectangle 12.png';
@@ -34,7 +35,7 @@ const page = () => {
 
   return (
     <>
-      <Chatheader />
+      <Chatheader rightElement={<Notification />} />
       <h1 className="text-2xl font-semibold mx-6 my-4 profile-text">
         Full Profile detail
       </h1>
