@@ -1,9 +1,10 @@
 'use client';
 import React, { useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
-import { Chatheader,Chatsideicon} from '../chat/page';
+import Chatheader from '@/components/Masterheader';
+import { Notification } from '../swipepage/page';
 import withAuth from '@/app/hoc/wihAuth';
-import { Secondsidebaruser } from '../chat/page';
+import Secondsidebaruser from '@/components/ChatSideBar';
 
 
 const Page = () => {
@@ -81,7 +82,7 @@ const Page = () => {
  
   return (
     <>
-      <Chatheader/>
+      <Chatheader rightElement={<Notification />} />
       <div className="profilebox">
         <Secondsidebaruser/>
         <div className='profiledetail '>

@@ -1,14 +1,7 @@
 'use client';
 import React, { useState, useRef } from 'react';
 import { BsArrowReturnRight } from 'react-icons/bs';
-import { CiLocationOn } from 'react-icons/ci';
-import { CiMail } from 'react-icons/ci';
-import { CiPhone } from 'react-icons/ci';
-import { FaWhatsapp } from 'react-icons/fa';
-import { FiFacebook } from 'react-icons/fi';
-import { FaInstagram } from 'react-icons/fa';
-import { FaXTwitter } from 'react-icons/fa6';
-import { CiLinkedin } from 'react-icons/ci';
+import Homeheader from '@/components/Homeheader'
 import { FcGoogle } from 'react-icons/fc';
 import Homemidsection from '@/components/homemidsection';
 import Forgotpassword from '@/components/Forgotpassword';
@@ -17,8 +10,53 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
 import { useAppDispatch } from '@/Redux/store/store';
+import Footer from '@/components/Footer';
 
 const page = () => {
+  const hideinvalide = () => {
+    document.getElementById('invalide-email').style.display = 'none';
+  };
+
+  return (
+    <>
+      <div className="flex justify-center">
+        <div className="invalide-email " id="invalide-email">
+          <h1 className="text-sm font-bold"> Invalide email or password </h1>
+          <span className="close ml-2" onClick={hideinvalide}>
+            &times;
+          </span>
+        </div>
+      </div>
+      <div className="herosection">
+        {/* nav bar start here */}
+        <div className="herobox">
+          <Homeheader rightElement={<Login />} />
+        </div>
+        {/* hero section */}
+        <div className="herocont">
+          <h1 className="companionconnect text-white ">Connect,Engage,Enjoy</h1>
+          <h2 className="text-3xl text-white mt-4">
+            <span className="companionwith"> with</span>
+            <span className="ml-6 zestful ">zestful amigos</span>
+          </h2>
+          <p className="text-gray-800 mt-4  font-bold text-lg companionawait">
+            Your ZestfulCompanion Awaits......
+          </p>
+        </div>
+        <div className="lgbtn2 " >
+        <Login/>
+        </div>  
+      </div>
+      <div>
+        <Homemidsection />
+      </div>
+      <Footer />
+     
+    </>
+  );
+};
+
+export const Login = () => {
   /* Logic for modal */
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -83,7 +121,9 @@ const page = () => {
       console.log('Login successful:', formData);
       const { data, error } = await loginUserService(formData);
       if (data) {
-        dispatch(datafetched(decodeAccessToken(data.access_token).decodedToken));
+        dispatch(
+          datafetched(decodeAccessToken(data.access_token).decodedToken)
+        );
         setCookie(null, ACCESS_TOKEN_LOC, data.access_token);
         setCookie(null, REFRESH_TOKEN_LOC, data.refresh_token);
         router.push('/user/genderchoose'); // Navigate to your desired route
@@ -124,9 +164,7 @@ const page = () => {
     document.getElementById('optverify').style.display = 'none';
   };
 
-  const hideinvalide = () => {
-    document.getElementById('invalide-email').style.display = 'none';
-  };
+ 
 
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
@@ -151,128 +189,12 @@ const page = () => {
       inputs.current[index - 1].focus();
     }
   };
-
   return (
     <>
-      <div className="flex justify-center">
-        <div className="invalide-email " id="invalide-email">
-          <h1 className="text-sm font-bold"> Invalide email or password </h1>
-          <span className="close ml-2" onClick={hideinvalide}>
-            &times;
-          </span>
-        </div>
-      </div>
-      <div className="herosection">
-        {/* nav bar start here */}
-        <div className="herobox">
-          <header className="header ">
-            <div className="logo ">zestful amigos</div>
-
-            <nav>
-              <ul className="nav-list">
-                <li>
-                  <Link href={'/'}>
-                    {' '}
-                    <p>Home</p>{' '}
-                  </Link>
-                </li>
-                <li>
-                  <Link href={'./user/aboutus'}>
-                    {' '}
-                    <p>About</p>
-                  </Link>
-                </li>
-                <li>
-                  <Link href={'./user/privacypolicy'}>
-                    {' '}
-                    <p>privacy policy</p>{' '}
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-
-            <div className="lgbtn flex" onClick={handleOpenModal1}>
-              <h3 className="mt-1 mx-3"> Get started</h3>
-              <div className="lgicon">
-                <BsArrowReturnRight color="white" size={20} />
-              </div>
-            </div>
-          </header>
-        </div>
-        {/* hero section */}
-        <div className="herocont">
-          <h1 className="companionconnect text-white ">Connect,Engage,Enjoy</h1>
-          <h2 className="text-3xl text-white mt-4">
-            <span className="companionwith"> with</span>
-            <span className="ml-6 zestful ">zestful amigos</span>
-          </h2>
-          <p className="text-gray-800 mt-4  font-bold text-lg companionawait">
-            Your ZestfulCompanion Awaits......
-          </p>
-        </div>
-        <div className="lgbtn2 " onClick={handleOpenModal1}>
-          <h3 className="mt-1 mx-3"> Get started</h3>
-          <div className="lgicon2">
-            <BsArrowReturnRight color="white" size={20} />
-          </div>
-        </div>
-      </div>
-      {/* how does work section */}
-      <div>
-        <Homemidsection />
-      </div>
-      {/* footer section */}
-      <div className="footer text-white">
-        <div className="  py-12">
-          <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4 sm:px-6 ">
-            <div>
-              <h2 className="footerzest">zestful amigos</h2>
-              <p className="text-white">Connect,Engage,Enjoy.</p>
-            </div>
-
-            <div>
-              <div className="flex mt-6">
-                <CiLocationOn color="white" size={20} />
-                <h1 className="ml-3 text-white">Mumbai, India.</h1>
-              </div>
-              <div className="flex mt-4">
-                <CiMail color="white" size={20} className="" />
-                <h1 className="ml-3 text-white">Zestfulamigos@gmail.com</h1>
-              </div>
-              <div className="flex mt-4">
-                <CiPhone color="white" size={20} />
-                <h1 className="ml-3 text-white">+91 9632587144</h1>
-              </div>
-              <div></div>
-            </div>
-            <div className="mt-4 ">
-              <p className="mt-1">Home</p>
-              <p className="mt-1">AboutUs</p>
-              <p className="mt-1">Privacy Policy</p>
-            </div>
-
-            <div className="mt-4">
-              <Link href={'/user/becompanion'}>
-                {' '}
-                <h1>Be a companion</h1>
-              </Link>
-              <Link href={'/user/concern'}>
-                {' '}
-                <h1 className="mt-2">Raise a concern</h1>
-              </Link>
-            </div>
-          </div>
-        </div>
-        <hr className="mx-16" />
-        <div className="flex justify-center items-center mt-8 gap-6">
-          <FaWhatsapp color="white" size={26} />
-          <FiFacebook color="white" size={26} />
-          <FaInstagram color="white" size={26} />
-          <FaXTwitter color="white" size={26} />
-          <CiLinkedin color="white" size={26} />
-        </div>
-        <div className="pt-14 py-7 text-center">
-          Copyright 2024.All right reserve
+      <div className="lgbtn flex" onClick={handleOpenModal1}>
+        <h3 className="mt-1 mx-3"> Get started</h3>
+        <div className="lgicon">
+          <BsArrowReturnRight color="white" size={20} />
         </div>
       </div>
 
@@ -283,24 +205,24 @@ const page = () => {
             <span className="close" onClick={handleCloseModal1}>
               &times;
             </span>
-            <h1 className="text-center text-xl font-semibold mb-3">Log in</h1>
+            <h1 className="text-center text-xl font-semibold mb-3 text-black">
+              Log in
+            </h1>
             <div
               className="flex glgbtn justify-center gap-2 items-center"
               onClick={() => login()}
             >
               <FcGoogle size={20} />
-              <h1>Sign in with Google</h1>
+              <h1 className="text-black">Sign in with Google</h1>
             </div>
 
             <h4 className="hrline mx-3 my-3 text-gray-600"> or </h4>
             {/* login form start here */}
-            <div
-              onKeyUp={(e) => e.key === 'Enter' && handleSubmit(e)}
-            >
+            <div onKeyUp={(e) => e.key === 'Enter' && handleSubmit(e)}>
               <p className="text-sm text-gray-800">Email</p>
               <input
                 placeholder="Enter your email"
-                className="inputfield "
+                className="inputfield text-black"
                 type="email"
                 name="email"
                 value={formData.email}
@@ -313,7 +235,7 @@ const page = () => {
               <p className="text-sm text-gray-800">Password</p>
               <input
                 placeholder="*********"
-                className="inputfield"
+                className="inputfield text-black"
                 type="password"
                 name="password"
                 value={formData.password}
@@ -342,9 +264,9 @@ const page = () => {
               </button>
               {/* login form end here */}
               <div className="flex mt-3 mb-1 justify-center ">
-                <p className="text-xs">Dont have an account ? </p>{' '}
+                <p className="text-xs text-black">Dont have an account ? </p>{' '}
                 <Link href={'./user/signup'}>
-                  {' '}
+                  
                   <p className="text-pink-600 text-xs">Sign up here</p>
                 </Link>
               </div>
@@ -361,7 +283,7 @@ const page = () => {
               &times;
             </span>
             <div id="forgotpassword">
-              <h2 className="text-center text-xl my-3 font-bold">
+              <h2 className="text-center text-xl my-3 font-bold text-black">
                 Forgot password
               </h2>
               <p>Email</p>
@@ -385,7 +307,7 @@ const page = () => {
               </button>
             </div>
             <div id="optverify" className="otpverifybox">
-              <h1 className="text-center text-xl my-3 font-bold">
+              <h1 className="text-center text-xl my-3 font-bold text-black">
                 Verification
               </h1>
               <p className="text-black">Enter Verification Code</p>
@@ -393,8 +315,7 @@ const page = () => {
                 <input
                   type="text"
                   className="pin-input"
-                  maxlength="1"
-                  oninput="if(this.value.length > 1) this.value=this.value.slice(0,1)"
+                  maxLength="1"
                   ref={(el) => (inputs.current[0] = el)}
                   onKeyUp={(e) => handleKeyUp(e, 0)}
                   onKeyDown={(e) => handleKeyDown(e, 0)}
@@ -402,8 +323,7 @@ const page = () => {
                 <input
                   type="text"
                   className="pin-input"
-                  maxlength="1"
-                  oninput="if(this.value.length > 1) this.value=this.value.slice(0,1)"
+                  maxLength="1"
                   ref={(el) => (inputs.current[1] = el)}
                   onKeyUp={(e) => handleKeyUp(e, 1)}
                   onKeyDown={(e) => handleKeyDown(e, 1)}
@@ -411,8 +331,7 @@ const page = () => {
                 <input
                   type="text"
                   className="pin-input"
-                  maxlength="1"
-                  oninput="if(this.value.length > 1) this.value=this.value.slice(0,1)"
+                  maxLength="1"
                   ref={(el) => (inputs.current[2] = el)}
                   onKeyUp={(e) => handleKeyUp(e, 2)}
                   onKeyDown={(e) => handleKeyDown(e, 2)}
@@ -420,8 +339,7 @@ const page = () => {
                 <input
                   type="text"
                   className="pin-input"
-                  maxlength="1"
-                  oninput="if(this.value.length > 1) this.value=this.value.slice(0,1)"
+                  maxLength="1"
                   ref={(el) => (inputs.current[3] = el)}
                   onKeyUp={(e) => handleKeyUp(e, 3)}
                   onKeyDown={(e) => handleKeyDown(e, 3)}

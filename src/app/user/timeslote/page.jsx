@@ -2,7 +2,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { Guidmodel } from '../chat/page';
-import { Chatheader } from '../chat/page';
+import Chatheader from '@/components/Masterheader';
+import { Notification } from '../swipepage/page';
 
 const Page = () => {
   const times = [
@@ -87,7 +88,7 @@ const Page = () => {
 
   return (
     <>
-    <Chatheader/>
+    <Chatheader rightElement={<Notification />} />
    <Guidmodel/>
     <form onSubmit={handleFormSubmit} className="flex flex-col space-y-4">
     <div className='flex flex-wrap '>

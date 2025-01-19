@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { Chatheader, Chatsideicon } from '../chat/page';
+import Chatheader from '@/components/Masterheader';
+import { Notification } from '../swipepage/page';
 import { IoIosArrowRoundForward } from 'react-icons/io';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { PiTimerThin } from 'react-icons/pi';
@@ -28,7 +29,7 @@ const page = () => {
   };
   return (
     <div>
-      <Chatheader />
+       <Chatheader rightElement={<Notification />} />
       <div className="bookingbox">
         <Secondsidebaruser />
 

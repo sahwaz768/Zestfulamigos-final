@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from "react";
-import { Chatheader } from '../chat/page';
+import Chatheader from '@/components/Masterheader';
+import { Notification } from '../swipepage/page';
 
 const page = () => {
   const [hasReplied, setHasReplied] = useState(false); // Track if the user has replied
@@ -19,7 +20,7 @@ const page = () => {
   };
   return (
     <>
-    <Chatheader/>
+    <Chatheader rightElement={<Notification />} />
     <div className='ticket-head'>
       <h1 className='text-lg font-bold'>Transaction error</h1>
       <div className='support-row text-sm font-bold pending'>

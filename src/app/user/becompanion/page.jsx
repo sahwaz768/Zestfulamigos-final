@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import Header from '@/components/Header';
+import Header from '@/components/Homeheader';
+import { Login } from '@/app/page';
 import Link from 'next/link';
 
 const page = () => {
@@ -80,7 +81,7 @@ const page = () => {
   };
   return (
     <div>
-      <Header />
+      <Header rightElement={<Login />} />
       <h1 className=" font-bold my-5 text-2xl ml-10">Be a companion</h1>
       <div className="flex md:justify-center ml-4">
         <form onSubmit={handleSubmit} className="">
@@ -96,7 +97,9 @@ const page = () => {
                 className="inputfield-glg-be"
                 placeholder="first name"
               />
-              {errors.firstName && <p className="text-xs">{errors.firstName}</p>}
+              {errors.firstName && (
+                <p className="text-xs">{errors.firstName}</p>
+              )}
             </div>
 
             <div className="md:mx-2">
@@ -203,14 +206,16 @@ const page = () => {
           {errors.profilePictures && (
             <p className="text-xs">{errors.profilePictures}</p>
           )}
-<div className='my-3'>
-          <button type="submit" className='sbtbtm '>
-            Submit
-          </button>
+          <div className="my-3">
+            <button type="submit" className="sbtbtm ">
+              Submit
+            </button>
           </div>
         </form>
       </div>
-     <Link href={'/companion/login'}><h1 className='text-sm text-center font-bold'>login as a companion</h1></Link> 
+      <Link href={'/companion/login'}>
+        <h1 className="text-sm text-center font-bold">login as a companion</h1>
+      </Link>
     </div>
   );
 };
