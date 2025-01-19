@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
-import { Chatheader2 } from '../chat/page';
+import Chatheader from '@/components/Masterheader';
+import { Notificationsecond } from '../chat/page';
 import { Chatsideicon2 } from '../dashboard/page';
 import { IoIosArrowRoundForward } from 'react-icons/io';
 import { IoCalendarOutline } from 'react-icons/io5';
@@ -27,7 +28,7 @@ const Page = () => {
   };
   return (
     <div>
-      <Chatheader2 />
+      <Chatheader rightElement={<Notificationsecond />} />
       <div className="bookingbox">
         <Secondsidebar />
         <div className="booking-side">

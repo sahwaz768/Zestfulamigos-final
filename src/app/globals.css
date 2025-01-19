@@ -249,13 +249,19 @@ body {
     margin-top: 180px;
     margin-left: 40px;
   }
-  .lgbtn2 {
+  .lgbtn{
+    padding: 5px;
+    border-radius: 10px;
+    font-size: medium;
+    font-weight: bold;
+  }
+  .lgbtn2{
     padding: 5px;
     display: flex;
     margin-left: 90px;
     margin-top: 30px;
   }
-  .lgicon2 {
+  .lgicon{
     width: 40px;
   }
 }
@@ -1260,6 +1266,7 @@ body {
   align-items: center;
   padding: 1px 2px;
   width: 50px;
+  height: 50px;
   cursor: pointer;
 }
 .bellicon2 {
@@ -2777,6 +2784,9 @@ th {
 }
 
 /* companion dashboard */
+.dashboard-threeline{
+ display: none;
+}
 
 .dashboard {
   margin-left: 85px;
@@ -2878,6 +2888,7 @@ th {
   width: 90%;
   max-width: 400px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 225px;
 }
 
 .companion-textarea {
@@ -2899,8 +2910,51 @@ th {
   margin-top: 20px;
 }
 @media (max-width: 810px) {
+  .companion-modal-overlay{
+    align-items: normal;
+  }
+  .dots4{
+    display: none;
+  }
+  .dashboard-threeline{
+    display: block;
+   }
   .dashboard{
+    margin-top: 45px;
     margin-left: 5px;
+    width: 100vw;
+  }
+  .dashboard-purpose{
+    margin-left: 5px;
+  }
+  .dashboard-cancel button{
+    padding: 4px;
+    font-size: smaller;
+
+  }
+  .dashboard-userdetail{
+    margin: 10px 2px 0px 2px;
+  }
+  .dashboard-overview {
+    padding: 5px;
+  }
+  .overview-box {
+    padding: 8px;
+    gap: 3px;
+    
+  }
+  .dashboard-midsection {
+    padding: 5px 0px 5px 5px;
+    margin: 20px 2px 0px 2px;
+  }
+  .midsection-image img {
+    width: 150px;
+    height: 120px;
+    flex-shrink: 0;
+  }
+  .comp-admin {
+    gap: 5px;
+    margin-right: 10px;
   }
 }
 
