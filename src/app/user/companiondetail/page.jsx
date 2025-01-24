@@ -15,6 +15,7 @@ import { Notification } from '../swipepage/page';
 import { companionDetailsService } from 'src/services/user/companionDetails.service';
 import { BASEURL } from '@/Constants/services.constants';
 import { Threeline } from '../swipepage/page';
+import { capitalizedWord } from '@/utils/common.utils';
 
 const page = () => {
   const [companionDetails, setCompanionDetails] = useState({});
@@ -34,19 +35,21 @@ const page = () => {
 
   if (!Object.keys(companionDetails).length) return <p>Loading...</p>;
 
-
-
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "About Us", href: "./aboutus" },
-    { name: "Privacy Policy", href: "./privacypolicy" },
-    { name: "Contact", href: "./contactus" }
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: './aboutus' },
+    { name: 'Privacy Policy', href: './privacypolicy' },
+    { name: 'Contact', href: './contactus' }
   ];
 
   return (
     <>
-      <Chatheader rightElement={<Notification />} backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={navLinks}  />
-      <Threeline/>
+      <Chatheader
+        rightElement={<Notification />}
+        backgroundColor="rgba(250, 236, 236, 0.8)"
+        navLinks={navLinks}
+      />
+      <Threeline />
       <h1 className="text-2xl font-semibold mx-6 my-4 profile-text">
         Full Profile detail
       </h1>
@@ -55,7 +58,7 @@ const page = () => {
           <div className=" flex flex-wrap gap-3">
             <div className="horizontalimg flex gap-2">
               <Image
-                src={BASEURL + `/` + companionDetails.images[0]}
+                src={BASEURL + `/` + 'UserPhotos/companion1.jpg'}
                 width={500}
                 height={300}
                 alt="profile"
@@ -63,14 +66,14 @@ const page = () => {
             </div>
             <div className="vertical img ">
               <Image
-                src={BASEURL + `/` + companionDetails.images[1]}
+                src={BASEURL + `/` + 'UserPhotos/companion1.jpg'}
                 width={500}
                 height={300}
                 alt="profile"
               />
               {companionDetails.images[2] && (
                 <Image
-                  src={BASEURL + `/` + companionDetails.images[2]}
+                  src={BASEURL + `/` + 'UserPhotos/companion1.jpg'}
                   className="md:mt-3"
                   width={500}
                   height={300}
@@ -81,26 +84,55 @@ const page = () => {
             <div className="horizontalimg-2 flex gap-2 ">
               {companionDetails.images[3] && (
                 <Image
-                  src={BASEURL + `/` + companionDetails.images[3]}
+                  src={BASEURL + `/` + 'UserPhotos/companion1.jpg'}
                   width={500}
                   height={300}
                 />
               )}
             </div>
           </div>
+          <div style={{ fontSize: '2rem' }}>
+            <b>{companionDetails.firstname}</b>
+          </div>
           <div className="flex mt-10">
             <div className="tag">
               <p>
-                charge: <span>{companionDetails.bookingrate} per hour</span>
+                Gender: <span>{capitalizedWord(companionDetails?.gender)}</span>
+              </p>
+            </div>
+            <div className="tag">
+              <p>
+                charge: <span>{companionDetails?.bookingrate} per hour</span>
               </p>
             </div>
             <div className="tag">
               <p>
                 My age / height:{' '}
                 <span>
-                  {companionDetails.age} /{' '}
-                  {parseFloat(companionDetails.height / 30.48).toFixed(2)} feet
+                  {companionDetails?.age} /{' '}
+                  {parseFloat(companionDetails?.height / 30.48).toFixed(2)} feet
                 </span>
+              </p>
+            </div>
+            <div className="tag">
+              <p>
+                Skin Tone: <span>{companionDetails?.Skintone}</span>
+              </p>
+            </div>
+            <div className="tag">
+              <p>
+                Body Type:{' '}
+                <span>{capitalizedWord(companionDetails?.bodytype)}</span>
+              </p>
+            </div>
+            <div className="tag">
+              <p>
+                Drinking Habits: <span>{companionDetails.Skintone}</span>
+              </p>
+            </div>
+            <div className="tag">
+              <p>
+                Eating Habits: <span>{companionDetails.Skintone}</span>
               </p>
             </div>
           </div>
@@ -112,7 +144,7 @@ const page = () => {
                 ? companionDetails.description.map((desc, i) => (
                     <div className="prtag flex" key={i * 300}>
                       <CiShoppingBasket size={20} color="black" />
-                      <p>{desc.split('_').join(' ').toLowerCase()}</p>
+                      <p>{capitalizedWord(desc)}</p>
                     </div>
                   ))
                 : null}
@@ -137,7 +169,7 @@ const page = () => {
               If she is your favourite then
             </h1>
             <div className=" cntbtn2">
-              <Link href={'./timeslote'}>
+              <Link href={`./timeslote?companionId=${companionDetails.id}`}>
                 {' '}
                 <div>Countinue</div>{' '}
               </Link>

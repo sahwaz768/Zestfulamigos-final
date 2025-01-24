@@ -1,6 +1,6 @@
 // import { decodedTokenDto } from './dto/decodedToken';
 
-export const uuid  = () => {
+export const uuid = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
 };
 
@@ -45,4 +45,10 @@ export const convertFile = async (basestr, fileName) => {
   const res = await fetch(basestr);
   const blob = await res.blob();
   return new File([blob], fileName, { type: 'image/png' });
+};
+
+export const capitalizedWord = (word) => {
+  if (word.length === 0) return word; // Handle empty string
+  word = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  return word.split("_").join(' ');
 };

@@ -32,6 +32,37 @@ const page = () => {
     }
   };
 
+  const handlePayment = async ({ amount = '', email = '', firstname = '' }) => {
+    const paymentData = {
+      amount,
+      email,
+      firstname,
+      productinfo: 'Web',
+      phone: '9896014946'
+    };
+
+    try {
+      const { initiateTransaction } = await import(
+        '../../../services/transactions/makepayement.service'
+      );
+      const values = {
+        ...paymentData,
+        surl: 'http://localhost:3000/transaction/success',
+        furl: 'http://localhost:3000/transaction/failure'
+      };
+      const response = await initiateTransaction(values);
+      const formContainer = document.createElement('div');
+        formContainer.innerHTML = response;
+        document.body.appendChild(formContainer);
+        const form = document.forms['payment_post'];
+        if (form) {
+          form.submit();
+        }
+    } catch (error) {
+      console.error('Payment Request Failed', error);
+    }
+  };
+
   const validate = () => {
     const newErrors = {};
     if (!checkboxes.checkbox1)
@@ -44,9 +75,15 @@ const page = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
+      const values = {
+        amount: '1200',
+        email: 'abc@gmail.com',
+        firstname: 'Mukul'
+      }
+      await handlePayment(values)
     }
   };
 
@@ -72,17 +109,17 @@ const page = () => {
               <tbody>
                 <tr>
                   <th className="text-sm font-normal">Base price</th>
-                  <td className="text-sm font-normal ">: ₹6000.00</td>
+                  <td className="text-sm font-normal ">: ₹1200.00</td>
                 </tr>
 
                 <tr>
-                  <th className="text-sm font-normal">Gst(18%) fee</th>
-                  <td className="text-sm font-normal">: ₹1080.00</td>
+                  <th className="text-sm font-normal">Gst(18%) fee(Included)</th>
+                  <td className="text-sm font-normal">: ₹0.00</td>
                 </tr>
 
                 <tr>
                   <th className="text-sm font-normal">Total Amount</th>
-                  <td className="text-sm font-normal">: ₹7080.00</td>
+                  <td className="text-sm font-normal">: ₹1200.00</td>
                 </tr>
               </tbody>
             </table>

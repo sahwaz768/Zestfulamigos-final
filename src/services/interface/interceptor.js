@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable operator-linebreak */
 import axios from "axios";
-import cookie from "js-cookie";
+import cookie from 'js-cookie';
+import { setCookie } from 'nookies';
 import {
   ACCESS_TOKEN_LOC,
   REFRESH_TOKEN_LOC,
@@ -59,7 +60,7 @@ const refreshAccessToken = async (refreshToken) => {
     }
     const data = await response.json();
     const access_token = data.access_token;
-    cookie.set(ACCESS_TOKEN_LOC, access_token);
+    setCookie(null, ACCESS_TOKEN_LOC, access_token);
     axios.defaults.headers.common.Authorization = "Bearer " + access_token;
     processQueue(null, access_token);
     return access_token;
@@ -83,6 +84,7 @@ axios.interceptors.response.use(
 
     // Ignore token handling if there's no token and it's not a path that needs the token
     if (!err.response?.config?.url?.includes(ignoretokenpaths) && !token) {
+      window.location = "/";
       return Promise.reject(err);
     }
 

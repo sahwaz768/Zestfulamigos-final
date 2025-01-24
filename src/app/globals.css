@@ -71,7 +71,6 @@ body {
   margin-right: 60px;
 }
 
-
 .nav-list li {
   margin-left: 30px;
 }
@@ -237,19 +236,19 @@ body {
     margin-top: 180px;
     margin-left: 40px;
   }
-  .lgbtn{
+  .lgbtn {
     padding: 5px;
     border-radius: 10px;
     font-size: medium;
     font-weight: bold;
   }
-  .lgbtn2{
+  .lgbtn2 {
     padding: 5px;
     display: flex;
     margin-left: 90px;
     margin-top: 30px;
   }
-  .lgicon{
+  .lgicon {
     width: 40px;
   }
 }
@@ -1247,8 +1246,7 @@ body {
   padding: 10px 15px;
 }
 .bellicon {
-  
- background-color: #000;
+  background-color: #000;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -1654,6 +1652,9 @@ body {
 .detailbox {
   display: flex;
   justify-content: center;
+  justify-content: center;
+  max-width: 80%;
+  margin: auto;
 }
 .detail {
   border-width: 1px;
@@ -2019,7 +2020,6 @@ th {
   display: flex;
   margin-top: 3px;
 }
-
 
 .chat-side-icon {
   display: flex;
@@ -2666,8 +2666,8 @@ th {
 }
 
 /* companion dashboard */
-.dashboard-threeline{
- display: none;
+.dashboard-threeline {
+  display: none;
 }
 
 .dashboard {
@@ -2792,29 +2792,28 @@ th {
   margin-top: 20px;
 }
 @media (max-width: 810px) {
-  .companion-modal-overlay{
+  .companion-modal-overlay {
     align-items: normal;
   }
-  .dots4{
+  .dots4 {
     display: none;
   }
-  .dashboard-threeline{
+  .dashboard-threeline {
     display: block;
-   }
-  .dashboard{
+  }
+  .dashboard {
     margin-top: 45px;
     margin-left: 5px;
     width: 100vw;
   }
-  .dashboard-purpose{
+  .dashboard-purpose {
     margin-left: 5px;
   }
-  .dashboard-cancel button{
+  .dashboard-cancel button {
     padding: 4px;
     font-size: smaller;
-
   }
-  .dashboard-userdetail{
+  .dashboard-userdetail {
     margin: 10px 2px 0px 2px;
   }
   .dashboard-overview {
@@ -2823,7 +2822,6 @@ th {
   .overview-box {
     padding: 8px;
     gap: 3px;
-    
   }
   .dashboard-midsection {
     padding: 5px 0px 5px 5px;
@@ -3128,9 +3126,6 @@ th {
   }
 }
 
-
-
-
 /* process page */
 
 .process-logo {
@@ -3149,10 +3144,6 @@ th {
   border-radius: 10px;
   text-align: center;
 }
-
-
-
-
 
 /* cancel model */
 
@@ -3205,7 +3196,6 @@ th {
   }
 }
 
-
 /* sidebar */
 
 .toggle-button-sidebar {
@@ -3220,9 +3210,7 @@ th {
   padding: 10px;
   cursor: pointer;
   z-index: 1001;
-
 }
-
 
 .sidebar {
   position: absolute;
@@ -3246,8 +3234,6 @@ th {
   cursor: pointer;
 }
 
-
-
 .profile-photo-sidebar {
   width: 35px;
   height: 30px;
@@ -3255,7 +3241,7 @@ th {
   margin-right: 10px;
 }
 
-.user-info-sidebar{
+.user-info-sidebar {
   display: flex;
   flex-direction: column;
 }
@@ -3270,20 +3256,19 @@ th {
   color: gray;
   margin: 0;
 }
-.dropdown-arrow-sidebar{
+.dropdown-arrow-sidebar {
   margin-left: auto;
   font-size: 14px;
   color: black;
 }
 
-.menu-sidebar{
+.menu-sidebar {
   list-style: none;
   margin: 0;
   padding: 0;
-  
 }
 
-.menu-item-sidebar{
+.menu-item-sidebar {
   display: flex;
   align-items: center;
   margin-top: 10px;
@@ -3291,9 +3276,8 @@ th {
   cursor: pointer;
   position: relative;
   border-radius: 10px;
-  
 }
-.menu-item-second{
+.menu-item-second {
   margin-left: 10px;
   display: flex;
   align-items: center;
@@ -3302,7 +3286,6 @@ th {
   cursor: pointer;
   position: relative;
   border-radius: 10px;
-  
 }
 
 .menu-item-sidebar:hover {
@@ -3316,7 +3299,6 @@ th {
   padding-left: 5px;
 }
 
-
 .dropdown {
   list-style: none;
   margin: 0;
@@ -3328,20 +3310,17 @@ th {
   width: 100%;
 }
 
-.dropdown-item{
+.dropdown-item {
   font-size: 16px;
   margin-top: 17px;
   cursor: pointer;
   margin-left: 45px;
 }
 
-
-
 @media screen and (max-width: 810px) {
   .toggle-button-sidebar {
     display: block;
   }
-  
 
   .sidebar {
     top: 0;
@@ -3353,33 +3332,30 @@ th {
   .sidebar.open {
     width: 100vw;
   }
-  .menu-item-second{
+  .menu-item-second {
     margin-left: 50px;
   }
 }
 
-.notifymb{
+.notifymb {
   margin-left: auto;
 }
-.notifymbsecond{
+.notifymbsecond {
   float: right;
   display: none;
 }
 
-
 /* three line */
 
-.threeline{
+.threeline {
   display: none;
 }
 
-
 @media screen and (max-width: 810px) {
-  .threeline{
+  .threeline {
     display: block;
   }
-  .notifymbsecond{
+  .notifymbsecond {
     display: block;
   }
- 
 }
