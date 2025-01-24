@@ -156,7 +156,7 @@ export const Login = () => {
       console.log('API Response:', response);
       console.log('API Response Message:', response.data.message);
     } catch (err) {
-      console.error(
+      console.log(
         'Error Response Message:',
         err.response?.data?.message || 'No error message provided.'
       );

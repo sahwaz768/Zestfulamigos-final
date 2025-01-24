@@ -72,7 +72,7 @@ const Page = () => {
           directionsDisplay.setDirections(result);
         } else {
           directionsDisplay.setDirections({ routes: [] });
-          console.error("Error fetching directions: ", status);
+          console.log("Error fetching directions: ", status);
         }
       });
     }
@@ -92,7 +92,7 @@ const Page = () => {
         return () => clearInterval(interval);
       })
       .catch((error) => {
-        console.error("Failed to load Google Maps API:", error);
+        console.log("Failed to load Google Maps API:", error);
       });
   }, [directionsService, directionsDisplay]);
 

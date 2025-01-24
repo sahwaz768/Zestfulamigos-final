@@ -37,7 +37,7 @@ const PaymentComponent = () => {
           form.submit();
         }
     } catch (error) {
-      console.error('Payment Request Failed', error);
+      console.log('Payment Request Failed', error);
     }
   };
 

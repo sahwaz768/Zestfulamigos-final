@@ -21,7 +21,7 @@ export async function getServerSideProps({ req, res }) {
         });
       });
     } catch (error) {
-      console.error('Error parsing POST data:', error);
+      console.log('Error parsing POST data:', error);
     }
     // Respond with a result, but keep the page rendering
     return {

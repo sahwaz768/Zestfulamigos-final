@@ -6,7 +6,7 @@ export const registerUserService = async (formdata) => {
         const { data } = await post(url, formdata);
         return { data };
     } catch (error) {
-        console.error(error.response);
+        console.log(error.response);
         if(error.response?.status >= 400)
         return { error: error.response.data.message }
     }
