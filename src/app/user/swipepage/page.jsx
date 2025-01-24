@@ -5,64 +5,49 @@ import { CgProfile } from 'react-icons/cg';
 import Chatheader from '@/components/Masterheader';
 import Link from 'next/link';
 import { MdLogout, MdOutlineReportProblem } from 'react-icons/md';
-import { RiChatSmile3Line } from "react-icons/ri";
-import { MdOutlineHistory } from "react-icons/md";
-import { CiSettings } from "react-icons/ci";
+import { RiChatSmile3Line } from 'react-icons/ri';
+import { MdOutlineHistory } from 'react-icons/md';
+import { CiSettings } from 'react-icons/ci';
 import Sidebar from '@/components/sidebar';
+import { useSelector } from 'react-redux';
+import { redirect } from 'next/navigation';
+import { BASEURL } from '@/Constants/services.constants';
 
 const Page = () => {
-  const slides = [
-    {
-      id: 1,
-      imgSrc:
-        'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmVtYWxlJTIwbW9kZWx8ZW58MHx8MHx8fDA%3D',
-      name: 'Jerry',
-      price: '1200/hr',
-      title: 'Dig deeper'
-    },
-    {
-      id: 2,
-      imgSrc:
-        'https://img.freepik.com/free-photo/person-background-women-corporate-shopaholic-life_1303-2789.jpg',
-      name: 'Alice',
-      price: '1500/hr',
-      title: 'Explore more'
-    },
-    {
-      id: 3,
-      imgSrc: 'https://img.freepik.com/free-photo/girl-park_1157-15182.jpg',
-      name: 'Mike',
-      price: '1100/hr',
-      title: 'Discover yourself'
-    }
-  ];
+  const companions = useSelector((state) => state.companionFind.data?.data);
+  if (!companions) {
+    redirect('/user/genderchoose');
+  }
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? slides.length - 1 : prevIndex - 1
+      prevIndex === 0 ? companions.length - 1 : prevIndex - 1
     );
   };
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === slides.length - 1 ? 0 : prevIndex + 1
+      prevIndex === companions.length - 1 ? 0 : prevIndex + 1
     );
   };
-  const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "About Us", href: "./aboutus" },
-    { name: "Privacy Policy", href: "./privacypolicy" },
-    { name: "Contact", href: "./contactus" }
-  ];
- 
 
+  const navLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: './aboutus' },
+    { name: 'Privacy Policy', href: './privacypolicy' },
+    { name: 'Contact', href: './contactus' }
+  ];
   return (
     <>
       <div className="swipebox">
-        <Chatheader rightElement={<Notification />}  backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={navLinks}   />
-        <Threeline/>
+        <Chatheader
+          rightElement={<Notification />}
+          backgroundColor="rgba(250, 236, 236, 0.8)"
+          navLinks={navLinks}
+        />
+        <Threeline />
         <div className="swipe-container-first">
           <h1 className="font-extrabold text-center">Select your amigo</h1>
           <p className="text-sm mt-2 px-8 text-center">
@@ -88,16 +73,29 @@ const Page = () => {
             <div className="card-container">
               <div className="card">
                 <img
-                  src={slides[currentIndex].imgSrc}
-                  alt={slides[currentIndex].title}
+                  src={BASEURL + `/` + 'UserPhotos/companion1.jpg'}
+                  alt={'profile image'}
                   className="slide-image"
                 />
-                <div className="card-footer">
-                  <Link href="./companiondetail">
-                    <div className="card-title text-center text-xs font-extrabold">
-                      {slides[currentIndex].title}
-                    </div>
-                  </Link>
+                <div>
+                  <div>{companions[currentIndex].firstname}</div>
+                  <div>
+                    <span>Booking Rate</span>
+                    {companions[currentIndex].bookingrate} /{' '}
+                    {companions[currentIndex].bookingrateunit}
+                  </div>
+                  <div>
+                    {companions[currentIndex].distance.toFixed(2)} Km away
+                  </div>
+                  <div className="card-footer">
+                    <Link
+                      href={`./companiondetail/?companionId=${companions[currentIndex].userid}`}
+                    >
+                      <div className="card-title text-center text-xs font-extrabold">
+                        {'Dig deeper'}
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               </div>
 
@@ -121,67 +119,70 @@ export const Notification = () => {
   return (
     <>
       <div className="flex gap-2 mr-4">
-        <Notify backgroundColor='black' color='white'/>
+        <Notify backgroundColor="black" color="white" />
         <div className="bellicon">
           <CgProfile color="white" size={20} />
         </div>
       </div>
-      
     </>
   );
 };
 
 export const Threeline = () => {
- 
   return (
     <>
-    <div className='threeline'>
-      <div className="flex gap-2 mr-4 ">
-      <div className="threelinembview mt-3 ml-3">
-      <Mastersidebar/>
-        </div>
-        <div className="notifymb" >
-        <Notify backgroundColor='transparent' color='black'/>
+      <div className="threeline">
+        <div className="flex gap-2 mr-4 ">
+          <div className="threelinembview mt-3 ml-3">
+            <Mastersidebar />
+          </div>
+          <div className="notifymb">
+            <Notify backgroundColor="transparent" color="black" />
+          </div>
         </div>
       </div>
-      </div>
-      
     </>
   );
 };
-
-
 
 export const Mastersidebar = () => {
   const menuItems = [
-    { label: 'Chats', route: './chat', icon: RiChatSmile3Line  },
-    { label: 'Booking History', route: './bookinghistory', icon: MdOutlineHistory },
-    { 
-      label: 'Settings', 
-      icon: CiSettings, 
-      isDropdown: true, 
-      dropdownItems: [
-        { label: 'Profile Settings', route: './profile',  },
-        { label: 'Raise a Concern', route: '/page-one/raise-concern', icon: MdOutlineReportProblem },
-        { label: 'Logout', route: './concern', icon: MdLogout },
-      ] 
+    { label: 'Chats', route: './chat', icon: RiChatSmile3Line },
+    {
+      label: 'Booking History',
+      route: './bookinghistory',
+      icon: MdOutlineHistory
     },
+    {
+      label: 'Settings',
+      icon: CiSettings,
+      isDropdown: true,
+      dropdownItems: [
+        { label: 'Profile Settings', route: './profile' },
+        {
+          label: 'Raise a Concern',
+          route: '/page-one/raise-concern',
+          icon: MdOutlineReportProblem
+        },
+        { label: 'Logout', route: './concern', icon: MdLogout }
+      ]
+    }
   ];
 
   const user = {
-    photo: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmVtYWxlJTIwbW9kZWx8ZW58MHx8MHx8fDA%3D',
+    photo:
+      'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmVtYWxlJTIwbW9kZWx8ZW58MHx8MHx8fDA%3D',
     name: 'John Doe',
-    email: 'johndoe@example.com',
+    email: 'johndoe@example.com'
   };
   return (
     <>
-      <Sidebar menuItems={menuItems}  user={user}/>
+      <Sidebar menuItems={menuItems} user={user} />
     </>
   );
 };
 
-export const Notify = ({ backgroundColor = "black", color='white' }) => {
-
+export const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -204,10 +205,14 @@ export const Notify = ({ backgroundColor = "black", color='white' }) => {
   };
   return (
     <>
-     <div className="bellicon" onClick={toggleDropdown} style={{ backgroundColor,color }}>
-          <FaRegBell  size={20} />
-        </div>
-        {isOpen && (
+      <div
+        className="bellicon"
+        onClick={toggleDropdown}
+        style={{ backgroundColor, color }}
+      >
+        <FaRegBell size={20} />
+      </div>
+      {isOpen && (
         <div className="dropdown-menu">
           <div className="notificationsvg">
             <svg
@@ -282,7 +287,7 @@ export const Notify = ({ backgroundColor = "black", color='white' }) => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
 export default Page;
