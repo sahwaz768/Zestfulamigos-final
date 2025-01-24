@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useRef } from 'react';
 import { BsArrowReturnRight } from 'react-icons/bs';
-import Homeheader from '@/components/Homeheader'
+import Homeheader from '@/components/Masterheader';
 import { FcGoogle } from 'react-icons/fc';
 import Homemidsection from '@/components/homemidsection';
 import Forgotpassword from '@/components/Forgotpassword';
@@ -17,6 +17,14 @@ const page = () => {
     document.getElementById('invalide-email').style.display = 'none';
   };
 
+
+  const navLinks = [
+    { name: "Home", href: "./" },
+    { name: "About Us", href: "./user/aboutus" },
+    { name: "Privacy Policy", href: "./user/privacypolicy" },
+    { name: "Contact", href: "./user/contactus" }
+  ];
+
   return (
     <>
       <div className="flex justify-center">
@@ -30,7 +38,7 @@ const page = () => {
       <div className="herosection">
         {/* nav bar start here */}
         <div className="herobox">
-          <Homeheader rightElement={<Login />} />
+          <Homeheader rightElement={<Login />}  backgroundColor="rgba(250, 236, 236, 0.3)" navLinks={navLinks} />
         </div>
         {/* hero section */}
         <div className="herocont">

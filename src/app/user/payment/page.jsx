@@ -4,6 +4,7 @@ import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
 import Image from 'next/image';
 import Payment from 'src/app/payment1.png';
+import { Threeline } from '../swipepage/page';
 
 const page = () => {
   const [checkboxes, setCheckboxes] = useState({
@@ -48,9 +49,20 @@ const page = () => {
     if (validate()) {
     }
   };
+
+
+
+
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "About Us", href: "./aboutus" },
+    { name: "Privacy Policy", href: "./privacypolicy" },
+    { name: "Contact", href: "./contactus" }
+  ];
   return (
     <div>
-      <Chatheader rightElement={<Notification />} />
+      <Chatheader rightElement={<Notification />} backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={navLinks}/>
+      <Threeline/>
       <div className="paymentsummarybox">
         <div className="paymentsummary">
           <div className="paymentbox">

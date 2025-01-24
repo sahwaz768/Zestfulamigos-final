@@ -1,32 +1,19 @@
 import React from 'react'
 import Link from 'next/link';
 
-
-const Masterheader = ({ rightElement }) => {
+const Masterheader = ({ rightElement, backgroundColor = "white",navLinks = []  }) => {
   return (
     <div>
     <div className="swipeheader">
-       <header className="header2 ">
-         
-          <div className="logo2 ">zestful amigos</div>
-
-          <nav className="nav2">
-            <ul className="nav-list2 text-black text-sm">
-           <Link  href={'/'}>  <li>
-                <p >Home</p>
-              </li>
-              </Link> 
-             <Link href={'./aboutus'}><li>
-                <p >About</p>
-              </li>
-              </Link> 
-           <Link href={'./privacypolicy'}> <li>
-                <p >Privacy policy</p>
-              </li>
-              </Link>  
-              <Link href={'./contactus'}>  <li>
-                <p >Contact</p>
-              </li> </Link >
+       <header className="header" style={{ backgroundColor }}>
+          <div className="logo ">zestful amigos</div>
+          <nav className="nav">
+            <ul className="nav-list text-black text-sm">
+            {navLinks.map((link, index) => (
+          <Link key={index} href={link.href} passHref>
+            <p className='mx-3'>{link.name}</p>
+          </Link>
+        ))}
             </ul>
           </nav>
           <div className="nav-right">

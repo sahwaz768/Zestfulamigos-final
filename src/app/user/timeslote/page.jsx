@@ -86,9 +86,17 @@ const Page = () => {
     router.push("./payment");
   };
 
+
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "About Us", href: "./aboutus" },
+    { name: "Privacy Policy", href: "./privacypolicy" },
+    { name: "Contact", href: "./contactus" }
+  ];
+
   return (
     <>
-    <Chatheader rightElement={<Notification />} />
+    <Chatheader rightElement={<Notification />} backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={navLinks} />
    <Guidmodel/>
     <form onSubmit={handleFormSubmit} className="flex flex-col space-y-4">
     <div className='flex flex-wrap '>

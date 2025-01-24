@@ -4,8 +4,8 @@ import { CgProfile } from 'react-icons/cg';
 import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
 import withAuth from '@/app/hoc/wihAuth';
-import Secondsidebaruser from '@/components/ChatSideBar';
-
+import { Mastersidebar } from '../swipepage/page';
+import { Notify } from '../swipepage/page';
 
 const Page = () => {
   const preExistingData = {
@@ -79,126 +79,141 @@ const Page = () => {
       console.log('Form data submitted:', formData);
     }
   };
- 
+
+  const navLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: './aboutus' },
+    { name: 'Privacy Policy', href: './privacypolicy' },
+    { name: 'Contact', href: './contactus' }
+  ];
+
   return (
     <>
-      <Chatheader rightElement={<Notification />} />
+      <Chatheader
+        rightElement={<Notification />}
+        backgroundColor="rgba(250, 236, 236, 0.8)"
+        navLinks={navLinks}
+      />
+       <div className='notifymbsecond'>
+      <Notify backgroundColor='transparent' color='black'/>
+      </div>
       <div className="profilebox">
-        <Secondsidebaruser/>
-        <div className='profiledetail '>
-        <form onSubmit={handleSubmit}>
-      <div className="">
-        <div className="profile-containerx">
-          <label
-            htmlFor="file-input"
-            className="profile-picturex"
-            style={{ backgroundImage: `url(${imageUrl})` }}
-          >
-            {!imageUrl && (
-              <span className="userx">
-                <CgProfile size={30} />
-              </span>
-            )}
-          </label>
-          <input
-            id="file-input"
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="file-inputx"
-          />
-        </div>
-      </div>
-      <div className="userprofile-detail mt-3">
-        <div className="">
-          <label className="text-sm my-1">Full Name</label>
-          <br />
-          <input
-            type="text"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-            placeholder="Enter your full name"
-            className="userprofile-input-text"
-          />
-          {errors.fullName && (
-            <span className="text-sm">{errors.fullName}</span>
-          )}
-        </div>
+        <Mastersidebar/>
+        <div className="profiledetail ">
+          <form onSubmit={handleSubmit}>
+            <div className="">
+              <div className="profile-containerx">
+                <label
+                  htmlFor="file-input"
+                  className="profile-picturex"
+                  style={{ backgroundImage: `url(${imageUrl})` }}
+                >
+                  {!imageUrl && (
+                    <span className="userx">
+                      <CgProfile size={30} />
+                    </span>
+                  )}
+                </label>
+                <input
+                  id="file-input"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="file-inputx"
+                />
+              </div>
+            </div>
+            <div className="userprofile-detail mt-3">
+              <div className="">
+                <label className="text-sm my-1">Full Name</label>
+                <br />
+                <input
+                  type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                  className="userprofile-input-text"
+                />
+                {errors.fullName && (
+                  <span className="text-sm">{errors.fullName}</span>
+                )}
+              </div>
 
-        <div className="">
-          <label className="text-sm ">Email</label>
-          <br />
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter your email"
-            className="userprofile-input-text"
-          />
-          {errors.email && (
-            <span className="error-message">{errors.email}</span>
-          )}
-        </div>
-      </div>
-      <div className="userprofile-detail ">
-        <div className="">
-          <label className="text-sm my-1">Phone Number</label>
-          <br />
-          <input
-            type="tel"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            placeholder="Enter your phone number"
-            pattern="[0-9]{10}"
-            className="userprofile-input-text"
-          />
-          {errors.phoneNumber && (
-            <span className="text-sm">{errors.phoneNumber}</span>
-          )}
-        </div>
+              <div className="">
+                <label className="text-sm ">Email</label>
+                <br />
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Enter your email"
+                  className="userprofile-input-text"
+                />
+                {errors.email && (
+                  <span className="error-message">{errors.email}</span>
+                )}
+              </div>
+            </div>
+            <div className="userprofile-detail ">
+              <div className="">
+                <label className="text-sm my-1">Phone Number</label>
+                <br />
+                <input
+                  type="tel"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  placeholder="Enter your phone number"
+                  pattern="[0-9]{10}"
+                  className="userprofile-input-text"
+                />
+                {errors.phoneNumber && (
+                  <span className="text-sm">{errors.phoneNumber}</span>
+                )}
+              </div>
 
-        <div className="">
-          <label className="text-sm my-1">Age</label>
-          <br />
-          <input
-            type="number"
-            name="age"
-            value={formData.age}
-            onChange={handleChange}
-            placeholder="Enter your age"
-            min="1"
-            max="100"
-            className="userprofile-input-text"
-            disabled
-          />
-          {errors.age && <span className="text-sm">{errors.age}</span>}
-        </div>
-      </div>
-      <div className="form-group">
-        <label className="text-sm my-1">Gender</label>
-        <br />
-        <select
-          name="gender"
-          value={formData.gender}
-          onChange={handleChange}
-          className="userprofile-input-text"
-          disabled
-        >
-          <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
-        {errors.gender && <span className="text-sm">{errors.gender}</span>}
-      </div>
-      <button type="submit" className="savechgbtn">
-        Save Changes
-      </button>
-    </form>
-
+              <div className="">
+                <label className="text-sm my-1">Age</label>
+                <br />
+                <input
+                  type="number"
+                  name="age"
+                  value={formData.age}
+                  onChange={handleChange}
+                  placeholder="Enter your age"
+                  min="1"
+                  max="100"
+                  className="userprofile-input-text"
+                  disabled
+                />
+                {errors.age && <span className="text-sm">{errors.age}</span>}
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="text-sm my-1">Gender</label>
+              <br />
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className="userprofile-input-text"
+                disabled
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+              {errors.gender && (
+                <span className="text-sm">{errors.gender}</span>
+              )}
+            </div>
+            <button type="submit" className="savechgbtn">
+              Save Changes
+            </button>
+          </form>
         </div>
       </div>
     </>
