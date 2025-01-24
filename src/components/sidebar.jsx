@@ -1,117 +1,93 @@
 'use client';
-import { useState } from 'react';
-import { RiChatSmile2Line } from 'react-icons/ri';
-import { MdHistory } from 'react-icons/md';
-import { CgProfile } from 'react-icons/cg';
-import { CiLogout } from 'react-icons/ci';
-import { MdOutlineArrowDropDown } from "react-icons/md";
+import React, { useState } from 'react';
+import { FaChevronDown } from 'react-icons/fa';
 import Link from 'next/link';
-import { CiSettings } from "react-icons/ci";
-import { MdOutlineReportProblem } from "react-icons/md";
 
-const sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const [isOpen2, setIsOpen2] = useState(false);
+const Sidebar = ({ menuItems , user }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
-    setIsOpen2((prev) => !prev);
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleMouseEnter = () => {
+    if (window.innerWidth > 810) {
+      setIsSidebarOpen(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (window.innerWidth > 810) {
+      setIsSidebarOpen(false);
+      if (isDropdownOpen) {
+        setIsDropdownOpen(false);
+      }
+    }
   };
 
   return (
-    <>
-      <div className="sidebar-container">
-        {/* Sidebar Toggle Button */}
-        <button
-          className={`sidebar-toggle  ${isOpen ? 'active' : ''}`}
-          onClick={toggleSidebar}
-        >
-          <svg
-            className={`toggle-icon ${isOpen ? 'rotate' : ''}`}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
+    <div>
+    {/* Sidebar toggle button for screens below 810px */}
+    <button className="toggle-button-sidebar" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+      ☰
+    </button>
 
-        {/* Sidebar Content */}
-        <div className={`sidebar ${isOpen ? 'open' : ''}`}>
-          <div className="sidebar-content">
-            <div className="sidebar-title ">
-              <h2 className="">Olivia Rhye</h2>
-              <p className="text-xs text-gray-500">olivia123@gmail.com</p>
+    {/* Sidebar container */}
+    <div 
+      className={`sidebar ${isSidebarOpen ? 'open' : ''}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+ 
+        {/* User profile section */}
+        <div className="menu-item-second user-profile-sidebar">
+          <img src={user.photo} alt="User Profile" className="profile-photo-sidebar" />
+          {isSidebarOpen && (
+            <div className="user-info-sidebar">
+              <p className="username-sidebar">{user.name}</p>
+              <p className="email-sidebar">{user.email}</p>
             </div>
-            <nav>
-              <ul className="nav-list-sidebar">
-                <li>
-                  <a href="#" className="nav-link-sidebar">
-                    <RiChatSmile2Line color="black" size={20} /> Chat
-                  </a>
-                </li>
-                <li>
-               <Link href={'/user/bookinghistory'}>  <p href="#" className="nav-link-sidebar">
-                    <MdHistory color="black" size={20} />
-                    Booking history
-                  </p>
-                  </Link> 
-                </li>
-                
-                <div
-                  className={`nav-link-sidebar  ${isOpen2 ? 'active' : ''}`}
-                  onClick={toggleDropdown}
-                >
-                <CiSettings color='black' size={25}/>
-                  settings <div className='sidebar-dropdown-btn'>
-                    <MdOutlineArrowDropDown  color='black' size={25}/>
-                  </div>
-                </div>
-                <div
-                  className="dropdown-sidebar"
-                  style={{ display: isOpen2 ? 'block' : 'none' }}
-                >
-                  <li className='ml-2'>
-                  <a href="#" className="nav-link-sidebar">
-                    <CgProfile color="black" size={20} />
-                    Profile settings
-                  </a>
-                </li>
-                <li className='ml-2'>
-                  <a href="#" className="nav-link-sidebar">
-                  <MdOutlineReportProblem  color='black' size={20}/>
-                    Raise a concern
-                  </a>
-                </li>
-                  
-                  <li className='ml-2'>
-                  <a href="#" className="nav-link-sidebar">
-                  <CiLogout  color='black' size={20}/>
-                    Logout
-                  </a>
-                </li>
-                  
-                  
-                </div>
-              </ul>
-            </nav>
-          </div>
+          )}
         </div>
 
-        {/* Overlay for Mobile */}
-        {isOpen && <div className="sidebar-overlay" onClick={toggleSidebar} />}
-      </div>
-    </>
+      {/* Menu items */}
+      <ul className="menu-sidebar">
+        {menuItems.map((item, index) => (
+          <li key={index} className="menu-item-sidebar" onClick={item.isDropdown ? toggleDropdown : undefined}>
+            <span className="icon-sidebar">{React.createElement(item.icon)}</span>
+            {isSidebarOpen && (
+              <>
+                {item.route ? (
+                  <Link href={item.route}>
+                    <span>{item.label}</span>
+                  </Link>
+                ) : (
+                  <span>{item.label}</span>
+                )}
+                {item.isDropdown && <FaChevronDown className="dropdown-arrow-sidebar" />}
+              </>
+            )}
+            {item.isDropdown && isDropdownOpen && isSidebarOpen && (
+              <ul className="dropdown below">
+                {item.dropdownItems.map((dropdownItem, idx) => (
+                  <li key={idx} className="dropdown-item">
+                    {dropdownItem.route ? (
+                      <Link href={dropdownItem.route}>{dropdownItem.label}</Link>
+                    ) : (
+                      <span>{dropdownItem.label}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
   );
 };
 
-export default sidebar;
+export default Sidebar;
