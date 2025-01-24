@@ -4,6 +4,11 @@ import { FaRegBell } from 'react-icons/fa6';
 import { CgProfile } from 'react-icons/cg';
 import Chatheader from '@/components/Masterheader';
 import Link from 'next/link';
+import { MdLogout, MdOutlineReportProblem } from 'react-icons/md';
+import { RiChatSmile3Line } from "react-icons/ri";
+import { MdOutlineHistory } from "react-icons/md";
+import { CiSettings } from "react-icons/ci";
+import Sidebar from '@/components/sidebar';
 
 const Page = () => {
   const slides = [
@@ -45,13 +50,19 @@ const Page = () => {
       prevIndex === slides.length - 1 ? 0 : prevIndex + 1
     );
   };
-
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "About Us", href: "./aboutus" },
+    { name: "Privacy Policy", href: "./privacypolicy" },
+    { name: "Contact", href: "./contactus" }
+  ];
  
 
   return (
     <>
       <div className="swipebox">
-        <Chatheader rightElement={<Notification />} />
+        <Chatheader rightElement={<Notification />}  backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={navLinks}   />
+        <Threeline/>
         <div className="swipe-container-first">
           <h1 className="font-extrabold text-center">Select your amigo</h1>
           <p className="text-sm mt-2 px-8 text-center">
@@ -107,9 +118,71 @@ const Page = () => {
 };
 
 export const Notification = () => {
+  return (
+    <>
+      <div className="flex gap-2 mr-4">
+        <Notify backgroundColor='black' color='white'/>
+        <div className="bellicon">
+          <CgProfile color="white" size={20} />
+        </div>
+      </div>
+      
+    </>
+  );
+};
+
+export const Threeline = () => {
+ 
+  return (
+    <>
+    <div className='threeline'>
+      <div className="flex gap-2 mr-4 ">
+      <div className="threelinembview mt-3 ml-3">
+      <Mastersidebar/>
+        </div>
+        <div className="notifymb" >
+        <Notify backgroundColor='transparent' color='black'/>
+        </div>
+      </div>
+      </div>
+      
+    </>
+  );
+};
+
+
+
+export const Mastersidebar = () => {
+  const menuItems = [
+    { label: 'Chats', route: './chat', icon: RiChatSmile3Line  },
+    { label: 'Booking History', route: './bookinghistory', icon: MdOutlineHistory },
+    { 
+      label: 'Settings', 
+      icon: CiSettings, 
+      isDropdown: true, 
+      dropdownItems: [
+        { label: 'Profile Settings', route: './profile',  },
+        { label: 'Raise a Concern', route: '/page-one/raise-concern', icon: MdOutlineReportProblem },
+        { label: 'Logout', route: './concern', icon: MdLogout },
+      ] 
+    },
+  ];
+
+  const user = {
+    photo: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmVtYWxlJTIwbW9kZWx8ZW58MHx8MHx8fDA%3D',
+    name: 'John Doe',
+    email: 'johndoe@example.com',
+  };
+  return (
+    <>
+      <Sidebar menuItems={menuItems}  user={user}/>
+    </>
+  );
+};
+
+export const Notify = ({ backgroundColor = "black", color='white' }) => {
 
   const [isOpen, setIsOpen] = useState(false);
-
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -131,15 +204,10 @@ export const Notification = () => {
   };
   return (
     <>
-      <div className="flex gap-2 mr-4">
-        <div className="bellicon" onClick={toggleDropdown}>
-          <FaRegBell color="white" size={20} />
+     <div className="bellicon" onClick={toggleDropdown} style={{ backgroundColor,color }}>
+          <FaRegBell  size={20} />
         </div>
-        <div className="bellicon">
-          <CgProfile color="white" size={20} />
-        </div>
-      </div>
-      {isOpen && (
+        {isOpen && (
         <div className="dropdown-menu">
           <div className="notificationsvg">
             <svg
@@ -214,7 +282,7 @@ export const Notification = () => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
 export default Page;

@@ -14,6 +14,7 @@ import { Notification } from '../swipepage/page';
 // import Profile4 from 'src/app/Rectangle 14.png';
 import { companionDetailsService } from 'src/services/user/companionDetails.service';
 import { BASEURL } from '@/Constants/services.constants';
+import { Threeline } from '../swipepage/page';
 
 const page = () => {
   const [companionDetails, setCompanionDetails] = useState({});
@@ -33,9 +34,19 @@ const page = () => {
 
   if (!Object.keys(companionDetails).length) return <p>Loading...</p>;
 
+
+
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "About Us", href: "./aboutus" },
+    { name: "Privacy Policy", href: "./privacypolicy" },
+    { name: "Contact", href: "./contactus" }
+  ];
+
   return (
     <>
-      <Chatheader rightElement={<Notification />} />
+      <Chatheader rightElement={<Notification />} backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={navLinks}  />
+      <Threeline/>
       <h1 className="text-2xl font-semibold mx-6 my-4 profile-text">
         Full Profile detail
       </h1>

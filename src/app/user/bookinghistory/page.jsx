@@ -9,7 +9,8 @@ import { GrTransaction } from 'react-icons/gr';
 import { RiServiceLine } from 'react-icons/ri';
 import { MdPendingActions } from 'react-icons/md';
 import { MdOutlinePaid } from 'react-icons/md';
-import { Secondsidebaruser } from '../chat/page';
+import { Mastersidebar } from '../swipepage/page';
+import { Notify } from '../swipepage/page';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,11 +28,24 @@ const page = () => {
     document.getElementById('historybtn').classList.add('bottomline2');
     document.getElementById('upcoming-booking-box').style.display = 'none';
   };
+
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "About Us", href: "./aboutus" },
+    { name: "Privacy Policy", href: "./privacypolicy" },
+    { name: "Contact", href: "./contactus" }
+  ];
+
+
+
   return (
     <div>
-       <Chatheader rightElement={<Notification />} />
+       <Chatheader rightElement={<Notification />} backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={navLinks}/>
+       <div className='notifymbsecond'>
+      <Notify backgroundColor='transparent' color='black'/>
+      </div>
       <div className="bookingbox">
-        <Secondsidebaruser />
+      <Mastersidebar/>
 
         {isOpen && (
           <div className="modal-overlay-cancel">

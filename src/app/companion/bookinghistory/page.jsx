@@ -1,9 +1,7 @@
 'use client';
 import React from 'react';
 import Chatheader from '@/components/Masterheader';
-import { Notificationsecond } from '../chat/page';
-import { Chatsideicon2 } from '../dashboard/page';
-import { IoIosArrowRoundForward } from 'react-icons/io';
+import { CompanionNotify } from '../chat/page';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { PiTimerThin } from 'react-icons/pi';
 import { GrTransaction } from 'react-icons/gr';
@@ -12,6 +10,8 @@ import { MdPendingActions } from 'react-icons/md';
 import { FaRegStar } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
 import { Secondsidebar } from '../chat/page';
+import { CompanionNotification } from '../chat/page';
+import { Companionsidebar } from '../chat/page';
 
 const Page = () => {
   const showupcomingbooking = () => {
@@ -26,11 +26,21 @@ const Page = () => {
     document.getElementById('historybtn').classList.add('bottomline2');
     document.getElementById('upcoming-booking-box').style.display = 'none';
   };
+
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "About Us", href: "./aboutus" },
+    { name: "Privacy Policy", href: "./privacypolicy" },
+    { name: "Contact", href: "./contactus" }
+  ];
   return (
     <div>
-      <Chatheader rightElement={<Notificationsecond />} />
+      <Chatheader rightElement={< CompanionNotification />}  backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={navLinks}   />
+      <div className='notifymbsecond'>
+      <CompanionNotify backgroundColor='transparent' color='black'/>
+      </div>
       <div className="bookingbox">
-        <Secondsidebar />
+      <Companionsidebar/>
         <div className="booking-side">
           <div className="booking-type">
             <div

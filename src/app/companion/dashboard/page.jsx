@@ -6,7 +6,8 @@ import Profile from 'src/app/Rectangle 12.png';
 import Couple from 'src/app/dashcouple.png';
 import Image from 'next/image'
 import { IoIosStar } from "react-icons/io";
-import Sidebar from '@/components/sidebar';
+import { Companionsidebar } from '../chat/page';
+import { CompanionNotify } from '../chat/page';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,11 +36,13 @@ const page = () => {
   return (
     <>
     <div className='dashboard-threeline'>
-    <Sidebar/>
+    <div className='notifymbsecond'>
+      <CompanionNotify backgroundColor='transparent' color='black'/>
+      </div>
     </div>
     <div className='flex'>
     <div>
-    <Secondsidebar/>
+    <Companionsidebar/>
     </div>
     <div className='dashboard'>
     <div className='dashboard-header '>
