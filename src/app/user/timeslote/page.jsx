@@ -106,7 +106,7 @@ const Page = () => {
       const { data } = await bookaCompanionService(values);
       console.log(data);
     } catch (err) {
-      console.error(err);
+      console.log(err);
       setSelectedDateIndex(null);
       setSelectedSlots([]);
       setPurpose('');

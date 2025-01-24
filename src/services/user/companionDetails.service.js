@@ -6,7 +6,7 @@ export const companionDetailsService = async (values) => {
         const { data } = await get(url, { params: values });
         return { data };
     } catch (error) {
-        console.error(error.response);
+        console.log(error.response);
         if(error.response?.status >= 400)
         return { error: error.response.data.message }
     }

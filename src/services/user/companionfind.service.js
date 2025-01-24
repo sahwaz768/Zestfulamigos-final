@@ -6,7 +6,7 @@ export const companionFindService = async (values) => {
         const { data } = await post(url, values);
         return { data };
     } catch (error) {
-        console.error(error.response);
+        console.log(error.response);
         if(error.response?.status >= 400)
         return { error: error.response.data.message }
     }

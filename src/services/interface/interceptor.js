@@ -1,8 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable operator-linebreak */
 import axios from "axios";
-import cookie from 'js-cookie';
-import { setCookie } from 'nookies';
+import { setCookie, parseCookies } from 'nookies';
 import {
   ACCESS_TOKEN_LOC,
   REFRESH_TOKEN_LOC,
@@ -27,7 +26,8 @@ const processQueue = (error, token = null) => {
 };
 
 axios.interceptors.request.use((config) => {
-  const token = cookie.get(ACCESS_TOKEN_LOC);
+  const cookie = parseCookies()
+  const token = cookie[ACCESS_TOKEN_LOC];
   if (token) {
     if (config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -65,7 +65,7 @@ const refreshAccessToken = async (refreshToken) => {
     processQueue(null, access_token);
     return access_token;
   } catch (error) {
-    console.error('Error refreshing token:', error);
+    console.log('Error refreshing token:', error);
     await removeUserData();
     window.location = "/";
     processQueue(error, null);
@@ -79,8 +79,9 @@ axios.interceptors.response.use(
   (res) => res,
   async (err) => {
     const onrequest = err.config;
-    const token = cookie.get(ACCESS_TOKEN_LOC);
-    const refreshToken = cookie.get(REFRESH_TOKEN_LOC);
+    const cookie = parseCookies()
+    const token = cookie[ACCESS_TOKEN_LOC];
+    const refreshToken = cookie[REFRESH_TOKEN_LOC];
 
     // Ignore token handling if there's no token and it's not a path that needs the token
     if (!err.response?.config?.url?.includes(ignoretokenpaths) && !token) {

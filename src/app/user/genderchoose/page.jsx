@@ -48,7 +48,7 @@ const Page = () => {
         console.log(data);
         router.push('/user/swipepage');
       } else {
-        console.error(error);
+        console.log(error);
       }
     }
   };

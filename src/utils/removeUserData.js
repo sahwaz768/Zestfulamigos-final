@@ -3,9 +3,9 @@ export const removeUserData = async () => {
       'src/Constants/common.constants'
     );
     const {
-      default: { remove }
-    } = await import('js-cookie');
-    remove(ACCESS_TOKEN_LOC);
-    remove(REFRESH_TOKEN_LOC);
+      destroyCookie
+    } = await import('nookies');
+    destroyCookie(null, ACCESS_TOKEN_LOC);
+    destroyCookie(null, REFRESH_TOKEN_LOC);
     window.sessionStorage.clear();
   };
