@@ -6,6 +6,8 @@ import { Notification } from '../swipepage/page';
 import { redirect } from 'next/dist/server/api-utils';
 import withAuth from '@/app/hoc/wihAuth';
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+
 
 const Page = () => {
   const times = [

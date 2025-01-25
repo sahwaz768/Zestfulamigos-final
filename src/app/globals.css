@@ -1286,6 +1286,7 @@ body {
   display: flex;
   justify-content: center;
   margin-left: 75px;
+  
 }
 
 .notificatioview {
@@ -1293,6 +1294,9 @@ body {
   padding: 10px;
   border-radius: 10px;
   margin-bottom: 10px;
+  height: 190px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  overflow-y: auto;
 }
 .notificatioview ul li {
   margin-top: 10px;
@@ -3357,5 +3361,137 @@ th {
   }
   .notifymbsecond {
     display: block;
+  }
+}
+/* rate box */
+
+.rate-box {
+  width: 100vw;
+  height: 100vh;
+  background: #fffafa;
+  display: flex;
+  justify-content: space-between;
+}
+.rate{
+  margin-top: 10px;
+}
+.party-1 img {
+  width: 300.46px;
+  height: 300.46px;
+
+  flex-shrink: 0;
+}
+.party-2 img {
+  width: 300.46px;
+  height: 300.46px;
+
+  flex-shrink: 0;
+}
+.rate-photo img {
+  width: 200px;
+  height: 182px;
+  flex-shrink: 0;
+}
+
+.star-button {
+  font-size: 1.8rem;
+  margin: 0 0.25rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.active-star {
+  color: #fbbf24; /* Yellow */
+}
+
+.inactive-star {
+  color: #d1d5db; /* Gray */
+}
+.rate-text {
+  display: flex;
+  width: 400px;
+  height: 20vh;
+  padding: 8px 10px 10px 8px;
+  align-items: flex-start;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 18px;
+  border: 1px solid var(--Foundation-Red-red-600, #e73767);
+  background: #fffafa;
+}
+.rate-btn {
+  margin-top: 15px;
+  display: flex;
+  width: 20vw;
+  height: 40px;
+  padding: 5px 18px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  gap: 8px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 1px solid var(--Gray-300, #d0d5dd);
+  background: var(--Foundation-Red-red-500, #fe3c71);
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+}
+
+@media screen and (max-width: 810px) {
+  .rate{
+    margin-top: 100px;
+  }
+  .party-1 img {
+    width: 150.46px;
+    height: 150.46px;
+  
+    flex-shrink: 0;
+  }
+  .party-2 img {
+    width: 150.46px;
+    height: 150.46px;
+  
+    flex-shrink: 0;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .rate{
+    margin-top: 130px;
+  }
+  .party-1 img {
+    width: 80.46px;
+    height: 80.46px;
+  
+    flex-shrink: 0;
+  }
+  .party-2 img {
+    width: 80.46px;
+    height: 80.46px;
+  
+    flex-shrink: 0;
+  }
+  .rate-btn {
+    width: 40vw;
+  }
+}
+@media screen and (max-width: 450px) {
+  .rate{
+    margin-top: 130px;
+  }
+  .party-1 img {
+    width: 100.46px;
+    height: 100.46px;
+  
+    flex-shrink: 0;
+  }
+  .party-2 img {
+    width: 100.46px;
+    height: 100.46px;
+  
+    flex-shrink: 0;
+  }
+  .rate-text{
+    width: 275px;
   }
 }
