@@ -12,7 +12,7 @@ import { CiLocationOff } from 'react-icons/ci';
 import { BiLocationPlus } from 'react-icons/bi';
 import { IoIosTimer } from 'react-icons/io';
 import { Mastersidebar } from '../swipepage/page';
-import { Notify } from '../swipepage/page';
+import Notify from '@/components/Notify';
 
 const Page = React.memo((props) => {
   const handleResize = () => {

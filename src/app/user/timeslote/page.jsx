@@ -7,6 +7,8 @@ import { Notification } from '../swipepage/page';
 import withAuth from '@/app/hoc/wihAuth';
 import { useSelector } from 'react-redux';
 import { redirect } from 'next/navigation';
+import { Threeline } from '../swipepage/page';
+
 
 
 const Page = () => {
@@ -133,6 +135,7 @@ const Page = () => {
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />
+      <Threeline/>
       <Guidmodel />
       <form onSubmit={handleFormSubmit} className="flex flex-col space-y-4">
         <div className="flex flex-wrap ">

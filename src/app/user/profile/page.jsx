@@ -5,7 +5,7 @@ import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
 import withAuth from '@/app/hoc/wihAuth';
 import { Mastersidebar } from '../swipepage/page';
-import { Notify } from '../swipepage/page';
+import Notify from '@/components/Notify';
 
 const Page = () => {
   const preExistingData = {
