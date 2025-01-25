@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Chatheader from '@/components/Masterheader';
-import { CompanionNotify } from '../chat/page';
+import Notify from '@/components/Notify';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { PiTimerThin } from 'react-icons/pi';
 import { GrTransaction } from 'react-icons/gr';
@@ -37,7 +37,7 @@ const Page = () => {
     <div>
       <Chatheader rightElement={< CompanionNotification />}  backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={navLinks}   />
       <div className='notifymbsecond'>
-      <CompanionNotify backgroundColor='transparent' color='black'/>
+      <Notify backgroundColor='transparent' color='black'/>
       </div>
       <div className="bookingbox">
       <Companionsidebar/>

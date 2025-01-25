@@ -7,7 +7,7 @@ import Couple from 'src/app/dashcouple.png';
 import Image from 'next/image'
 import { IoIosStar } from "react-icons/io";
 import { Companionsidebar } from '../chat/page';
-import { CompanionNotify } from '../chat/page';
+import Notify from '@/components/Notify';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +37,7 @@ const page = () => {
     <>
     <div className='dashboard-threeline'>
     <div className='notifymbsecond'>
-      <CompanionNotify backgroundColor='transparent' color='black'/>
+      <Notify backgroundColor='transparent' color='black'/>
       </div>
     </div>
     <div className='flex'>

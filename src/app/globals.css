@@ -2796,6 +2796,7 @@ th {
   margin-top: 20px;
 }
 @media (max-width: 810px) {
+  
   .companion-modal-overlay {
     align-items: normal;
   }

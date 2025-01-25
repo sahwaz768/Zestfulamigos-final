@@ -10,7 +10,7 @@ import { RiServiceLine } from 'react-icons/ri';
 import { MdPendingActions } from 'react-icons/md';
 import { MdOutlinePaid } from 'react-icons/md';
 import { Mastersidebar } from '../swipepage/page';
-import { Notify } from '../swipepage/page';
+import Notify from '@/components/Notify';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(false);
