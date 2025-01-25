@@ -195,21 +195,42 @@ export const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
     setIsOpen(!isOpen);
   };
 
-  const showsecondnification = () => {
-    document.getElementById('hideshow1').style.display = 'none';
-    document.getElementById('notification2').style.display = 'block';
-  };
-  const showthirdnification = () => {
-    document.getElementById('hideshow2').style.display = 'none';
-    document.getElementById('notification3').style.display = 'block';
-  };
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      avatar:
+        'https://e7.pngegg.com/pngimages/636/819/png-clipart-computer-icons-privacy-policy-admin-icon-copyright-rim.png',
+      title: 'Your financial report is overdue',
+      description:
+        'Please submit your quarterly figures for Q2 by EOB on August 15.',
+      time: 'Just now',
+      actions: []
+    },
+    {
+      id: 2,
+      avatar:
+        'https://e7.pngegg.com/pngimages/636/819/png-clipart-computer-icons-privacy-policy-admin-icon-copyright-rim.png',
+      title: 'Leave request requires your approval',
+      description:
+        'Paula Smith has requested vacation from Aug 24 – Sep 5, 2020.',
+      time: '4 minutes ago',
+      actions: ['Approve', 'Reject', 'Forward']
+    },
+    {
+      id: 3,
+      avatar:
+        'https://e7.pngegg.com/pngimages/636/819/png-clipart-computer-icons-privacy-policy-admin-icon-copyright-rim.png',
+      title: 'Blocked invoice overdue soon',
+      description:
+        'Invoice 1234678 is blocked for payment and will soon be overdue.',
+      time: '32 minutes ago',
+      actions: []
+    }
+  ]);
 
-  const hideallnotification = () => {
-    document.getElementById('notification2').style.display = 'none';
-    document.getElementById('notification3').style.display = 'none';
-    document.getElementById('hideshow1').style.display = 'block';
-    document.getElementById('hideshow2').style.display = 'block';
-  };
+  const removeNotification = (id) =>
+    setNotifications(notifications.filter((notif) => notif.id !== id));
+
   return (
     <>
       <div
@@ -233,62 +254,41 @@ export const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
             </svg>
           </div>
           <div className="notificatioview text-sm text-gray-900">
-            <div id="notification1">
-              <ul>
-                <li>Your slot for companion henry has been confirmed.</li>
-                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
-                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
-              </ul>
+            <div className="max-w-md ">
+              {notifications.map((notification) => (
+                <div
+                  key={notification.id}
+                  className="notification-card  p-3 flex items-start gap-3 bg-white shadow-sm rounded-md relative"
+                >
+                  {/* Avatar */}
+                  <img
+                    src={notification.avatar}
+                    alt="Avatar"
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
 
-              <br />
-              <hr />
-              <div
-                className="text-center text-pink-700 p-2 cursor-pointer"
-                onClick={showsecondnification}
-                id="hideshow1"
-              >
-                show more notification
-              </div>
-            </div>
-            <div id="notification2">
-              <ul>
-                <li>
-                  this is second notification for companion henry has been
-                  confirmed.
-                </li>
-                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
-                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
-              </ul>
-
-              <br />
-              <hr />
-              <div
-                className="text-center text-pink-700 p-2 cursor-pointer"
-                onClick={showthirdnification}
-                id="hideshow2"
-              >
-                show more notification
-              </div>
-            </div>
-
-            <div id="notification3">
-              <ul>
-                <li>
-                  this is third notification for companion henry has been
-                  confirmed.
-                </li>
-                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
-                <li>Scheduled from 11.00AM - 1.00PM on 17 Jan</li>
-              </ul>
-
-              <br />
-              <hr />
-              <div
-                className="text-center text-pink-700 p-2 cursor-pointer"
-                onClick={hideallnotification}
-              >
-                Hide all notification
-              </div>
+                  {/* Content */}
+                  <div className="flex-1">
+                    <div className="flex justify-between items-center">
+                      <h4 className="font-semibold text-gray-800">
+                        {notification.title}
+                      </h4>
+                      <button
+                        onClick={() => removeNotification(notification.id)}
+                        className="text-blue-800 hover:text-red-500"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      {notification.description}
+                    </p>
+                    <small className="text-xs text-red-700">
+                      {notification.time}
+                    </small>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
