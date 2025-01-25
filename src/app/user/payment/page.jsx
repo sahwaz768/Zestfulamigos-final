@@ -1,10 +1,12 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
 import Image from 'next/image';
 import Payment from 'src/app/payment1.png';
 import { Threeline } from '../swipepage/page';
+import { redirect } from 'next/navigation';
+import { getBookingDetails } from '@/services/user/bookings.service';
 
 const page = () => {
   const [checkboxes, setCheckboxes] = useState({
@@ -16,6 +18,27 @@ const page = () => {
     checkbox1: '',
     checkbox2: ''
   });
+
+  const [bookingDetails, setBookingDetails] = useState(null);
+
+  useEffect(() => {
+    const params = new URL(document.location.toString()).searchParams;
+    const bookingId = params.get('bookingId');
+    if (!bookingId) {
+      redirect('/');
+    } else {
+      getBookingDetails(bookingId).then(({ data }) => {
+        const values = {
+          amount: data.bookingduration * data.bookingrate,
+          user: data.User?.filter((l) => !l.isCompanion)[0],
+          companion: data.User?.filter((l) => l.isCompanion)[0],
+          id: data.id
+        };
+        console.log(values);
+        setBookingDetails(values);
+      });
+    }
+  }, []);
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
@@ -32,11 +55,9 @@ const page = () => {
     }
   };
 
-  const handlePayment = async ({ amount = '', email = '', firstname = '' }) => {
+  const handlePayment = async (paymentValues) => {
     const paymentData = {
-      amount,
-      email,
-      firstname,
+      ...paymentValues,
       productinfo: 'Web',
       phone: '9896014946'
     };
@@ -52,12 +73,12 @@ const page = () => {
       };
       const response = await initiateTransaction(values);
       const formContainer = document.createElement('div');
-        formContainer.innerHTML = response;
-        document.body.appendChild(formContainer);
-        const form = document.forms['payment_post'];
-        if (form) {
-          form.submit();
-        }
+      formContainer.innerHTML = response;
+      document.body.appendChild(formContainer);
+      const form = document.forms['payment_post'];
+      if (form) {
+        form.submit();
+      }
     } catch (error) {
       console.log('Payment Request Failed', error);
     }
@@ -79,27 +100,30 @@ const page = () => {
     e.preventDefault();
     if (validate()) {
       const values = {
-        amount: '1200',
-        email: 'abc@gmail.com',
-        firstname: 'Mukul'
-      }
-      await handlePayment(values)
+        amount: String(bookingDetails.amount),
+        email: bookingDetails.user.email,
+        firstname: bookingDetails.user.firstname,
+        bookingId: bookingDetails.id
+      };
+      await handlePayment(values);
     }
   };
 
-
-
-
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "About Us", href: "./aboutus" },
-    { name: "Privacy Policy", href: "./privacypolicy" },
-    { name: "Contact", href: "./contactus" }
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: './aboutus' },
+    { name: 'Privacy Policy', href: './privacypolicy' },
+    { name: 'Contact', href: './contactus' }
   ];
+  if (!bookingDetails) return <div>Loading....</div>;
   return (
     <div>
-      <Chatheader rightElement={<Notification />} backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={navLinks}/>
-      <Threeline/>
+      <Chatheader
+        rightElement={<Notification />}
+        backgroundColor="rgba(250, 236, 236, 0.8)"
+        navLinks={navLinks}
+      />
+      <Threeline />
       <div className="paymentsummarybox">
         <div className="paymentsummary">
           <div className="paymentbox">
@@ -109,21 +133,22 @@ const page = () => {
               <tbody>
                 <tr>
                   <th className="text-sm font-normal">Base price</th>
-                  <td className="text-sm font-normal ">: ₹1200.00</td>
+                  <td className="text-sm font-normal ">: ₹{bookingDetails.amount.toFixed(2)} </td>
                 </tr>
 
                 <tr>
-                  <th className="text-sm font-normal">Gst(18%) fee(Included)</th>
+                  <th className="text-sm font-normal">
+                    Gst(18%) fee(Included)
+                  </th>
                   <td className="text-sm font-normal">: ₹0.00</td>
                 </tr>
 
                 <tr>
                   <th className="text-sm font-normal">Total Amount</th>
-                  <td className="text-sm font-normal">: ₹1200.00</td>
+                  <td className="text-sm font-normal">:₹{bookingDetails.amount.toFixed(2)}</td>
                 </tr>
               </tbody>
             </table>
-            <form onSubmit={handleSubmit}>
               <div className="flex mt-3">
                 <input
                   type="checkbox"
@@ -134,10 +159,10 @@ const page = () => {
                 <p className="text-xs font-normal ml-2">
                   I agree to the <a>Term and Condition</a> and Privacy policy
                 </p>
-                
-               
               </div>
-              {errors.checkbox1 && <p className='text-xs text-red-800'>{errors.checkbox1}</p>}
+              {errors.checkbox1 && (
+                <p className="text-xs text-red-800">{errors.checkbox1}</p>
+              )}
               <div className="flex my-2">
                 <input
                   type="checkbox"
@@ -149,19 +174,17 @@ const page = () => {
                   I authorize the merchant to debit the above amount for
                   selected service
                 </p>
-               
               </div>
               {errors.checkbox2 && (
-                  <p className="text-xs text-red-800">{errors.checkbox2}</p>
-                )}
-              <button className="paymentbtn" type="submit">
+                <p className="text-xs text-red-800">{errors.checkbox2}</p>
+              )}
+              <button className="paymentbtn" type="submit" onClick={handleSubmit}>
                 proceed to payment
               </button>
-            </form>
           </div>
         </div>
         <div className="paymentimage">
-          <Image src={Payment} alt='payment image'/>
+          <Image src={Payment} alt="payment image" />
         </div>
       </div>
     </div>

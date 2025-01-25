@@ -91,7 +91,7 @@ const Page = () => {
         selectedTimes
       );
       const values = {
-        userId: tokenredux.userId || 'c2fbcbd2-687e-4054-833e-9d237e03ef8b',
+        userId: tokenredux.userId,
         companionId,
         purpose,
         bookingdate: formattedDate,

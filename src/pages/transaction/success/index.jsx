@@ -1,13 +1,15 @@
-
+import { successTransaction } from '@/services/user/bookings.service';
+import { redirect } from 'next/navigation';
 import querystring from 'querystring';
+import { useEffect } from 'react';
 
 export async function getServerSideProps({ req, res }) {
   if (req.method === 'POST') {
     // Handle POST request here
     let data;
     try {
-       await new Promise((resolve, reject) => {
-        req.on('data', chunk => {
+      await new Promise((resolve, reject) => {
+        req.on('data', (chunk) => {
           data += chunk;
         });
 
@@ -23,7 +25,6 @@ export async function getServerSideProps({ req, res }) {
     } catch (error) {
       console.log('Error parsing POST data:', error);
     }
-    // Respond with a result, but keep the page rendering
     return {
       props: {
         message: 'POST request received and processed',
@@ -43,7 +44,18 @@ export async function getServerSideProps({ req, res }) {
 }
 
 export default function Page(props) {
-  console.log('Props received:', props);
+  useEffect(() => {
+    if (props && props.data) {
+      successTransaction(props.data).then(({ data, error }) => {
+        if (error) {
+          redirect('/');
+        } else {
+          redirect('/user/chat');
+        }
+      });
+    }
+  }, [props]);
+
   return (
     <div>
       <h1>Payment Successful</h1>
