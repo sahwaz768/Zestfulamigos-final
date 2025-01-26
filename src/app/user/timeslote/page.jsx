@@ -3,9 +3,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Guidmodel } from '../chat/page';
 import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
-import { redirect } from 'next/dist/server/api-utils';
+
 import withAuth from '@/app/hoc/wihAuth';
 import { useSelector } from 'react-redux';
+import { redirect } from 'next/navigation';
+import { Threeline } from '../swipepage/page';
+
+
 
 const Page = () => {
   const times = [
@@ -131,6 +135,7 @@ const Page = () => {
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />
+      <Threeline/>
       <Guidmodel />
       <form onSubmit={handleFormSubmit} className="flex flex-col space-y-4">
         <div className="flex flex-wrap ">
