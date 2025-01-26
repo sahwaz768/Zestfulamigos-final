@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
 import { IoIosArrowRoundForward } from 'react-icons/io';
@@ -11,9 +11,11 @@ import { MdPendingActions } from 'react-icons/md';
 import { MdOutlinePaid } from 'react-icons/md';
 import { Mastersidebar } from '../swipepage/page';
 import { Notify } from '../swipepage/page';
+import { capitalizedWord } from '@/utils/common.utils';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [historydata, setHistoryData] = useState(null);
 
   const showupcomingbooking = () => {
     document.getElementById('upcomingbtn').classList.add('bottomline');
@@ -29,23 +31,55 @@ const page = () => {
     document.getElementById('upcoming-booking-box').style.display = 'none';
   };
 
+  useEffect(() => {
+    import('../../../services/user/bookings.service')
+      .then(({ getPreviousBookings }) => getPreviousBookings())
+      .then(async ({ data, error }) => {
+        if (data) {
+          const { formatBookingTimingsforUi } = await import(
+            '../../../utils/bookings.utils'
+          );
+          const values = { pastBooking: [], upcoming: [] };
+          for (let i = 0; i < data.length; i += 1) {
+            const value = {
+              companion: data[i].users.filter((l) => l.isCompanion)[0],
+              bookingdate: formatBookingTimingsforUi(
+                data[i].bookingstart,
+                data[i].bookingend
+              ),
+              isPast:
+                new Date(Number(data[i].bookingstart)).getTime() > Date.now(),
+              status: data[i].status,
+              amount: data[i].amount
+            };
+            if (value.isPast) values.pastBooking.push(value);
+            values.upcoming.push(value);
+          }
+          console.log(values);
+          setHistoryData(values);
+        }
+      });
+  }, []);
+
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "About Us", href: "./aboutus" },
-    { name: "Privacy Policy", href: "./privacypolicy" },
-    { name: "Contact", href: "./contactus" }
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: './aboutus' },
+    { name: 'Privacy Policy', href: './privacypolicy' },
+    { name: 'Contact', href: './contactus' }
   ];
-
-
 
   return (
     <div>
-       <Chatheader rightElement={<Notification />} backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={navLinks}/>
-       <div className='notifymbsecond'>
-      <Notify backgroundColor='transparent' color='black'/>
+      <Chatheader
+        rightElement={<Notification />}
+        backgroundColor="rgba(250, 236, 236, 0.8)"
+        navLinks={navLinks}
+      />
+      <div className="notifymbsecond">
+        <Notify backgroundColor="transparent" color="black" />
       </div>
       <div className="bookingbox">
-      <Mastersidebar/>
+        <Mastersidebar />
 
         {isOpen && (
           <div className="modal-overlay-cancel">
@@ -53,15 +87,15 @@ const page = () => {
               className="modal-container-cancel"
               onClick={(e) => e.stopPropagation()}
             >
-             
-             <div className=''>
-             <h1 className='text-center text-2xl font-bold'>Are you sure</h1>
-             <div className='flex justify-center gap-2 mr-3 my-3'>
-             <button className='yes'>Yes</button>
-             <button className='no' onClick={() => setIsOpen(false)}>No</button>
-
-             </div>
-             </div>
+              <div className="">
+                <h1 className="text-center text-2xl font-bold">Are you sure</h1>
+                <div className="flex justify-center gap-2 mr-3 my-3">
+                  <button className="yes">Yes</button>
+                  <button className="no" onClick={() => setIsOpen(false)}>
+                    No
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -84,76 +118,83 @@ const page = () => {
           </div>
           <div className="booking-box">
             <div className="upcoming-booking-box" id="upcoming-booking-box">
-              <div className="upcoming-slot">
-                <h1 className="text-sm font-bold text-gray-500">
-                  Upcoming meting with sandhiya
-                </h1>
-                <div className="flex mt-4 gap-8">
-                  <div className="flex items-center text-sm gap-2">
-                    <IoCalendarOutline />
-                    <h1>Thus,oct 24</h1>
-                  </div>
-                  <div className="flex items-center text-sm gap-2">
+              {historydata &&
+                historydata.upcoming ?
+                historydata.upcoming?.map((l, i) => (
+                  <div className="upcoming-slot" key={i * 500}>
+                    <h1 className="text-sm font-bold text-gray-500">
+                      Upcoming meting with {l.companion?.firstname}
+                    </h1>
+                    <div className="flex mt-4 gap-8">
+                      <div className="flex items-center text-sm gap-2">
+                        <IoCalendarOutline />
+                        <h1>{l.bookingdate}</h1>
+                      </div>
+                      {/* <div className="flex items-center text-sm gap-2">
                     <PiTimerThin />
                     <h1>11.00AM-12.00PM</h1>
-                  </div>
-                </div>
-                <div className="flex mt-4 text-sm gap-2 items-center">
+                  </div> */}
+                    </div>
+                    {/* <div className="flex mt-4 text-sm gap-2 items-center">
                   <GrTransaction />
                   <h1>Transaction id: 123456789</h1>
-                </div>
-                <div className="flex mt-4 text-sm gap-2 items-center">
-                  <RiServiceLine /> <h1>Service booked</h1>
-                </div>
-                <div className="flex mt-4 text-sm gap-2 items-center">
-                  <MdPendingActions />
-                  <h1>Status: completed</h1>
-                </div>
-                <div className="flex mt-4 text-sm gap-2 items-center">
-                  <MdOutlinePaid />
-                  <h1>Paid amount: 2000INR</h1>
-                </div>
-                <div>
-                  <button onClick={() => setIsOpen(true)}>cancel</button>
-                  
-                </div>
-              </div>
+                </div> */}
+                    <div className="flex mt-4 text-sm gap-2 items-center">
+                      <RiServiceLine /> <h1>Service booked</h1>
+                    </div>
+                    <div className="flex mt-4 text-sm gap-2 items-center">
+                      <MdPendingActions />
+                      <h1>Status: {capitalizedWord(l.status)}</h1>
+                    </div>
+                    <div className="flex mt-4 text-sm gap-2 items-center">
+                      <MdOutlinePaid />
+                      <h1>Paid amount: {l.amount}</h1>
+                    </div>
+                    <div>
+                      <button onClick={() => setIsOpen(true)}>cancel</button>
+                    </div>
+                  </div>
+                )): <div>No Upcoming Bookings found</div>}
             </div>
             <div className="closed-booking-box" id="closed-booking-box">
-              <div className="upcoming-slot">
-                <h1 className="text-sm font-bold text-gray-500">
-                  Completed meting with sandhiya
-                </h1>
-                <div className="flex mt-4 gap-8">
-                  <div className="flex items-center text-sm gap-2">
-                    <IoCalendarOutline />
-                    <h1>Thus,oct 24</h1>
-                  </div>
-                  <div className="flex items-center text-sm gap-2">
+              {historydata &&
+                historydata.pastBooking ?
+                historydata.pastBooking?.map((l, i) => (
+                  <div className="upcoming-slot" key={i * 300}>
+                    <h1 className="text-sm font-bold text-gray-500">
+                      Last meting with {l.companion?.firstname}
+                    </h1>
+                    <div className="flex mt-4 gap-8">
+                      <div className="flex items-center text-sm gap-2">
+                        <IoCalendarOutline />
+                        <h1>{l.bookingdate}</h1>
+                      </div>
+                      {/* <div className="flex items-center text-sm gap-2">
                     <PiTimerThin />
                     <h1>11.00AM-12.00PM</h1>
-                  </div>
-                </div>
-                <div className="flex mt-4 text-sm gap-2 items-center">
+                  </div> */}
+                    </div>
+                    {/* <div className="flex mt-4 text-sm gap-2 items-center">
                   <GrTransaction />
                   <h1>Transaction id: 123456789</h1>
-                </div>
-                <div className="flex mt-4 text-sm gap-2 items-center">
-                  <RiServiceLine /> <h1>Service booked</h1>
-                </div>
-                <div className="flex mt-4 text-sm gap-2 items-center">
-                  <MdPendingActions />
-                  <h1>Status: completed</h1>
-                </div>
-                <div className="flex mt-4 text-sm gap-2 items-center">
-                  <MdOutlinePaid />
-                  <h1>Paid amount: 2000INR</h1>
-                </div>
-                <div>
-                  <button>Rate</button>
-                  <button className="ml-4">Book again</button>
-                </div>
-              </div>
+                </div> */}
+                    <div className="flex mt-4 text-sm gap-2 items-center">
+                      <RiServiceLine /> <h1>Service booked</h1>
+                    </div>
+                    <div className="flex mt-4 text-sm gap-2 items-center">
+                      <MdPendingActions />
+                      <h1>Status: {capitalizedWord(l.status)}</h1>
+                    </div>
+                    <div className="flex mt-4 text-sm gap-2 items-center">
+                      <MdOutlinePaid />
+                      <h1>Paid amount: {l.amount}</h1>
+                    </div>
+                    <div>
+                      <button>Rate</button>
+                      <button className="ml-4">Book again</button>
+                    </div>
+                  </div>
+                )): <div>No Booking History Found</div>}
             </div>
           </div>
         </div>

@@ -76,7 +76,7 @@ const Sidebar = ({ menuItems , user }) => {
                     {dropdownItem.route ? (
                       <Link href={dropdownItem.route}>{dropdownItem.label}</Link>
                     ) : (
-                      <span>{dropdownItem.label}</span>
+                      <span onClick={dropdownItem.handleclick}>{dropdownItem.label}</span>
                     )}
                   </li>
                 ))}
