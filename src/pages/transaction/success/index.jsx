@@ -1,5 +1,5 @@
 import { successTransaction } from '@/services/user/bookings.service';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/router';
 import querystring from 'querystring';
 import { useEffect } from 'react';
 
@@ -44,15 +44,19 @@ export async function getServerSideProps({ req, res }) {
 }
 
 export default function Page(props) {
+  const router = useRouter();
+
   useEffect(() => {
     if (props && props.data) {
       successTransaction(props.data).then(({ data, error }) => {
         if (error) {
-          redirect('/');
+          router.push('/');
         } else {
-          redirect('/user/chat');
+          router.push('/user/chat');
         }
       });
+    } else {
+      router.push('/');
     }
   }, [props]);
 

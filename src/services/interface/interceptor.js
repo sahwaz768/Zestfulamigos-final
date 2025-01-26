@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable operator-linebreak */
 import axios from "axios";
-import { setCookie, parseCookies } from 'nookies';
+import { setCookie, parseCookies, destroyCookie } from 'nookies';
 import {
   ACCESS_TOKEN_LOC,
   REFRESH_TOKEN_LOC,
@@ -59,8 +59,9 @@ const refreshAccessToken = async (refreshToken) => {
       throw new Error('Failed to refresh token');
     }
     const data = await response.json();
+    destroyCookie(ACCESS_TOKEN_LOC);
     const access_token = data.access_token;
-    setCookie(null, ACCESS_TOKEN_LOC, access_token);
+    setCookie(null, ACCESS_TOKEN_LOC, access_token , { path: '/' });
     axios.defaults.headers.common.Authorization = "Bearer " + access_token;
     processQueue(null, access_token);
     return access_token;
@@ -98,7 +99,7 @@ axios.interceptors.response.use(
       let exp = decodedToken ? decodedToken.exp : null;
 
       // Check if the access token is expired and if we should refresh it
-      if (exp && exp < Date.now() / 1000) {
+      // if (exp && exp < Date.now() / 1000) {
         if (isRefreshing) {
           // Queue the request if refresh is in progress
           return new Promise((resolve, reject) => {
@@ -125,7 +126,7 @@ axios.interceptors.response.use(
         } catch (error) {
           return Promise.reject(error);
         }
-      }
+      // }
     }
 
     // If none of the above conditions are met, reject the error

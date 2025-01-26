@@ -105,6 +105,7 @@ const Page = () => {
       );
       const { data } = await bookaCompanionService(values);
       console.log(data);
+      router.push(`./payment?bookingId=${data.bookingid}`);
     } catch (err) {
       console.log(err);
       setSelectedDateIndex(null);
@@ -114,7 +115,6 @@ const Page = () => {
       setErrorMessage('');
     }
     // Clear all fields
-    // router.push("./payment");
   };
 
   const navLinks = [

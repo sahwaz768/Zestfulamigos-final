@@ -79,14 +79,6 @@ const Page = () => {
                 />
                 <div>
                   <div>{companions[currentIndex].firstname}</div>
-                  <div>
-                    <span>Booking Rate</span>
-                    {companions[currentIndex].bookingrate} /{' '}
-                    {companions[currentIndex].bookingrateunit}
-                  </div>
-                  <div>
-                    {companions[currentIndex].distance.toFixed(2)} Km away
-                  </div>
                   <div className="card-footer">
                     <Link
                       href={`./companiondetail/?companionId=${companions[currentIndex].userid}`}
@@ -95,6 +87,14 @@ const Page = () => {
                         {'Dig deeper'}
                       </div>
                     </Link>
+                  <div>
+                    <span>Booking Rate</span>
+                    {companions[currentIndex].bookingrate} /{' '}
+                    {companions[currentIndex].bookingrateunit}
+                  </div>
+                  <div>
+                    {companions[currentIndex].distance.toFixed(2)} Km away
+                  </div>
                   </div>
                 </div>
               </div>
@@ -146,6 +146,13 @@ export const Threeline = () => {
 };
 
 export const Mastersidebar = () => {
+  const handleLogout = async () => {
+    const { logoutUserService } = await import("../../../services/auth/logout.service");
+    const { removeUserData } = await import('../../../utils/removeUserData')
+    await logoutUserService()
+    await removeUserData()
+    redirect('/')
+  }
   const menuItems = [
     { label: 'Chats', route: './chat', icon: RiChatSmile3Line },
     {
@@ -164,7 +171,7 @@ export const Mastersidebar = () => {
           route: '/page-one/raise-concern',
           icon: MdOutlineReportProblem
         },
-        { label: 'Logout', route: './concern', icon: MdLogout }
+        { label: 'Logout', icon: MdLogout, handleclick :handleLogout }
       ]
     }
   ];
