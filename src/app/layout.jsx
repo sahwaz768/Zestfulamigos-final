@@ -1,7 +1,9 @@
+
 import { Sacramento, Manrope } from 'next/font/google';
 import "./globals.css";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import StoreProvider from './StoreProvider';
+import { ErrorManager } from '@/components/ErrorManager';
 
 const manrope = Manrope({
   weight: ['400', '600'], 
@@ -27,8 +29,12 @@ export default function RootLayout({ children }) {
       <body
         className={`${sacramento.variable} ${manrope.variable}`}
       >
+            
+
         <GoogleOAuthProvider clientId="224317892665-p9offtd3il7ll89u0bki3jbl184nimre.apps.googleusercontent.com">
+        <ErrorManager>
         {children}
+        </ErrorManager>
         </GoogleOAuthProvider>
       </body>
     </html>
