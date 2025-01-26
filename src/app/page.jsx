@@ -11,11 +11,11 @@ import Link from 'next/link';
 import axios from 'axios';
 import { useAppDispatch } from '@/Redux/store/store';
 import Footer from '@/components/Footer';
+import { useError } from '@/components/ErrorManager';
+
 
 const page = () => {
-  const hideinvalide = () => {
-    document.getElementById('invalide-email').style.display = 'none';
-  };
+  const { showError } = useError();
 
 
   const navLinks = [
@@ -27,14 +27,7 @@ const page = () => {
 
   return (
     <>
-      <div className="flex justify-center">
-        <div className="invalide-email " id="invalide-email">
-          <h1 className="text-sm font-bold"> Invalide email or password </h1>
-          <span className="close ml-2" onClick={hideinvalide}>
-            &times;
-          </span>
-        </div>
-      </div>
+    
       <div className="herosection">
         {/* nav bar start here */}
         <div className="herobox">
