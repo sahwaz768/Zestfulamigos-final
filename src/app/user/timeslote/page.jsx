@@ -3,10 +3,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Guidmodel } from '../chat/page';
 import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
-import { redirect } from 'next/dist/server/api-utils';
+
 import withAuth from '@/app/hoc/wihAuth';
 import { useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 
 const Page = () => {
