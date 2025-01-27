@@ -2,26 +2,21 @@
 import React, { createContext, useContext, useState } from 'react';
 import { IoIosInformationCircle } from 'react-icons/io';
 
-
 const ErrorContext = createContext();
-
 
 export const ErrorManager = ({ children }) => {
   const [isErrorVisible, setIsErrorVisible] = useState(false); 
   const [errorMessage, setErrorMessage] = useState(''); 
 
-  
   const showError = (message = 'Something went wrong!') => {
     setErrorMessage(message);
     setIsErrorVisible(true);
 
-    
     setTimeout(() => {
       setIsErrorVisible(false);
     }, 2000);
   };
-
-  
+ 
   const hideError = () => {
     setIsErrorVisible(false);
   };
