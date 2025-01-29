@@ -29,7 +29,7 @@ export function formatBookingDate(month, date, timeslots) {
   });
 
   return {
-    formattedDate: `${formattedDate} ${String(baseDate.getHours()).padStart(2, '0')} :${String(baseDate.getMinutes()).padStart(2, '0')} :${String(baseDate.getSeconds()).padStart(2, '0')}`,
+    formattedDate: `${formattedDate} ${String(baseDate.getHours()).padStart(2, '0')}:${String(baseDate.getMinutes()).padStart(2, '0')}:${String(baseDate.getSeconds()).padStart(2, '0')}`,
     totalDuration: totalDuration
   };
 }

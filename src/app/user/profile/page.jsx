@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
@@ -21,6 +21,17 @@ const Page = () => {
   const [imageUrl, setImageUrl] = useState(preExistingData.profilePicture);
   const [errors, setErrors] = useState({});
 
+  useEffect(() => {
+    import('../../../services/user/userprofile.service')
+      .then(({ userProfileDetailsService }) => userProfileDetailsService())
+      .then(({ data, error }) => {
+        if (data) {
+          console.log(data);
+        } else {
+          console.log(error);
+        }
+      });
+  }, []);
   const validate = () => {
     const newErrors = {};
 
@@ -94,11 +105,11 @@ const Page = () => {
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />
-       <div className='notifymbsecond'>
-      <Notify backgroundColor='transparent' color='black'/>
+      <div className="notifymbsecond">
+        <Notify backgroundColor="transparent" color="black" />
       </div>
       <div className="profilebox">
-        <Mastersidebar/>
+        <Mastersidebar />
         <div className="profiledetail ">
           <form onSubmit={handleSubmit}>
             <div className="">
