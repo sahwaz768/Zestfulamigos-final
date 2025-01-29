@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Guidmodel } from '../chat/page';
 import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
-
+import { useRouter } from 'next/navigation'
 import withAuth from '@/app/hoc/wihAuth';
 import { useSelector } from 'react-redux';
 import { redirect } from 'next/navigation';
@@ -23,6 +23,7 @@ const Page = () => {
     '7:00 PM - 8:00 PM',
     '8:00 PM - 9:00 PM'
   ];
+  const router = useRouter();
 
   useEffect(() => {
     let params = new URL(document.location.toString()).searchParams;
