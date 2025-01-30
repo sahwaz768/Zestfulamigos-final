@@ -1,5 +1,5 @@
 'use client';
-import Notify from '@/components/Notify';
+
 import Image from 'next/image';
 import Profile from '@/app/homepageimg.jpg';
 import Companionchatwindow from '@/components/companionchatwindow';
@@ -14,6 +14,7 @@ import { CiSettings } from "react-icons/ci";
 import Sidebar from '@/components/sidebar';
 import { useSelector } from 'react-redux';
 //import withAuth from '@/app/hoc/wihAuth';
+import Notify from '@/components/Notify';
 
 
 
