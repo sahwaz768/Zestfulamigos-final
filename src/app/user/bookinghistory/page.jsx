@@ -48,12 +48,12 @@ const page = () => {
                 data[i].bookingend
               ),
               isPast:
-                new Date(Number(data[i].bookingstart)).getTime() > Date.now(),
+                new Date(Number(data[i].bookingstart)).getTime() < Date.now(),
               status: data[i].status,
               amount: data[i].amount
             };
             if (value.isPast) values.pastBooking.push(value);
-            values.upcoming.push(value);
+            else values.upcoming.push(value);
           }
           console.log(values);
           setHistoryData(values);
@@ -102,14 +102,14 @@ const page = () => {
         <div className="booking-side">
           <div className="booking-type">
             <div
-              className="text-sm font-bold flex  items-center pb-2 "
+              className="text-sm font-bold flex  items-center pb-2 cursor-pointer"
               id="upcomingbtn"
               onClick={showupcomingbooking}
             >
               Upcoming{' '}
             </div>
             <div
-              className="text-sm font-bold flex items-center bottomline2"
+              className="text-sm font-bold flex items-center bottomline2 cursor-pointer"
               id="historybtn"
               onClick={showcompletedbooking}
             >
@@ -118,8 +118,7 @@ const page = () => {
           </div>
           <div className="booking-box">
             <div className="upcoming-booking-box" id="upcoming-booking-box">
-              {historydata &&
-                historydata.upcoming ?
+              {historydata?.upcoming.length ? (
                 historydata.upcoming?.map((l, i) => (
                   <div className="upcoming-slot" key={i * 500}>
                     <h1 className="text-sm font-bold text-gray-500">
@@ -154,11 +153,13 @@ const page = () => {
                       <button onClick={() => setIsOpen(true)}>cancel</button>
                     </div>
                   </div>
-                )): <div>No Upcoming Bookings found</div>}
+                ))
+              ) : (
+                <div>No Upcoming Bookings found</div>
+              )}
             </div>
             <div className="closed-booking-box" id="closed-booking-box">
-              {historydata &&
-                historydata.pastBooking ?
+              {historydata?.pastBooking.length ? (
                 historydata.pastBooking?.map((l, i) => (
                   <div className="upcoming-slot" key={i * 300}>
                     <h1 className="text-sm font-bold text-gray-500">
@@ -194,7 +195,10 @@ const page = () => {
                       <button className="ml-4">Book again</button>
                     </div>
                   </div>
-                )): <div>No Booking History Found</div>}
+                ))
+              ) : (
+                <div>No Booking History Found</div>
+              )}
             </div>
           </div>
         </div>
