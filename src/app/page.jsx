@@ -125,8 +125,8 @@ export const Login = () => {
         dispatch(
           datafetched(decodeAccessToken(data.access_token).decodedToken)
         );
-        setCookie(null, ACCESS_TOKEN_LOC, data.access_token);
-        setCookie(null, REFRESH_TOKEN_LOC, data.refresh_token);
+        setCookie(null, ACCESS_TOKEN_LOC, data.access_token, { path: '/' });
+        setCookie(null, REFRESH_TOKEN_LOC, data.refresh_token, { path: '/' });
         router.push('/user/genderchoose'); // Navigate to your desired route
       } else {
         const response = error;
