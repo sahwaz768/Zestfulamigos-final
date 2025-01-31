@@ -4,14 +4,16 @@ import Chatheader from '@/components/Masterheader';
 import Notify from '@/components/Notify';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { PiTimerThin } from 'react-icons/pi';
-import { GrTransaction } from 'react-icons/gr';
 import { RiServiceLine } from 'react-icons/ri';
 import { MdPendingActions } from 'react-icons/md';
 import { FaRegStar } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
-import { Secondsidebar } from '../chat/page';
 import { CompanionNotification } from '../chat/page';
-import { Companionsidebar } from '../chat/page';
+import Sidebar from '@/components/sidebar';
+import { navLinks } from 'src/utils/constants.js';
+import { companionsidebarlink } from 'src/utils/constants.js';
+import { companionsidebardetail } from 'src/utils/constants.js';
+
 
 const Page = () => {
   const showupcomingbooking = () => {
@@ -27,20 +29,17 @@ const Page = () => {
     document.getElementById('upcoming-booking-box').style.display = 'none';
   };
 
-  const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "About Us", href: "./aboutus" },
-    { name: "Privacy Policy", href: "./privacypolicy" },
-    { name: "Contact", href: "./contactus" }
-  ];
+  const links = navLinks; 
+  const companionmenulink = companionsidebarlink; 
+const companiondetail = companionsidebardetail; 
   return (
     <div>
-      <Chatheader rightElement={< CompanionNotification />}  backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={navLinks}   />
+      <Chatheader rightElement={< CompanionNotification />}  backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={links}   />
       <div className='notifymbsecond'>
       <Notify backgroundColor='transparent' color='black'/>
       </div>
       <div className="bookingbox">
-      <Companionsidebar/>
+      <Sidebar menuItems={companionmenulink}  user={companiondetail}/>
         <div className="booking-side">
           <div className="booking-type">
             <div

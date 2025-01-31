@@ -4,13 +4,16 @@ import PropTypes from "prop-types";
 import Chatheader from '@/components/Masterheader';
 import Notify from '@/components/Notify';
 import { CompanionNotification } from "../chat/page";
-import { Companionsidebar } from "../chat/page";
+import Sidebar from '@/components/sidebar';
+import { navLinks } from 'src/utils/constants.js';
+import { companionsidebarlink } from 'src/utils/constants.js';
+import { companionsidebardetail } from 'src/utils/constants.js';
 
 
 const Page = ({ existingData }) => {
   const [formData, setFormData] = useState({
-    firstName: "sahwaz",
-    lastName: "yaser",
+    firstName: "John",
+    lastName: "Doe",
     gender: "male",
     skinTone: "fair",
     bodyType: "Muscular",
@@ -19,7 +22,7 @@ const Page = ({ existingData }) => {
     drinkingHabit: "occasionally",
     location: "New York",
     height: "6'0",
-    description: [true,true], // Updated to 24 checkboxes
+    description: [true, false, true,], 
     images: [],
   });
 
@@ -30,26 +33,40 @@ const Page = ({ existingData }) => {
     if (existingData) {
       setFormData({
         ...existingData,
-        description: existingData.description || new Array(24).fill(false), // Ensure description is initialized
-        images: existingData.images || [], // Ensure images are initialized
+        description: existingData.description || new Array(24).fill(false), // Ensure description is always an array
+        images: existingData.images || [], // Ensure images is always an array
       });
     }
   }, [existingData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: "" }); // Clear error on change
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
   };
 
   const handleCheckboxChange = (index) => {
-    const updatedDescription = [...formData.description];
-    updatedDescription[index] = !updatedDescription[index];
-    setFormData({ ...formData, description: updatedDescription });
+    setFormData((prevData) => {
+      const updatedDescription = [...prevData.description];
+      updatedDescription[index] = !updatedDescription[index];
+      return {
+        ...prevData,
+        description: updatedDescription,
+      };
+    });
   };
 
   const handleImageUpload = (images) => {
-    setFormData({ ...formData, images });
+    setFormData((prevData) => ({
+      ...prevData,
+      images,
+    }));
   };
 
   const validateForm = () => {
@@ -68,7 +85,6 @@ const Page = ({ existingData }) => {
     if (formData.description.filter((checked) => checked).length < 2)
       newErrors.description = "Select at least 2 checkboxes";
 
-    // Profile picture validation: At least 4 images must be uploaded
     if (formData.images.length < 4) {
       newErrors.images = "Upload at least 4 profile pictures";
     }
@@ -121,12 +137,11 @@ const Page = ({ existingData }) => {
     "Last Unique Request",
   ];
 
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About Us', href: './aboutus' },
-    { name: 'Privacy Policy', href: './privacypolicy' },
-    { name: 'Contact', href: './contactus' }
-  ];
+
+  const links = navLinks; 
+  const companionmenulink = companionsidebarlink; 
+  const companiondetail = companionsidebardetail; 
+ 
 
   return (
 
@@ -134,15 +149,15 @@ const Page = ({ existingData }) => {
      <Chatheader
         rightElement={< CompanionNotification  />}
         backgroundColor="rgba(250, 236, 236, 0.8)"
-        navLinks={navLinks}
+        navLinks={links}
         />
         <div className='notifymbsecond'>
       <Notify backgroundColor='transparent' color='black'/>
       </div>
       
     <div className="profilebox">
-      <Companionsidebar/>
-      <form onSubmit={handleSubmit}>
+    <Sidebar menuItems={companionmenulink}  user={companiondetail} height="160%"/>
+      <form onSubmit={handleSubmit} className="profiledetail">
        {/* Image Uploader */}
        <div className="form-group mt-2 mb-3">
           <label className="text-sm mb-3">Profile Pictures</label>
@@ -161,6 +176,7 @@ const Page = ({ existingData }) => {
             onChange={handleInputChange}
              className="userprofile-input-text"
           />
+          <br/>
           {errors.firstName && <span className="text-xs">{errors.firstName}</span>}
         </div>
         {/* Last Name */}
@@ -174,6 +190,7 @@ const Page = ({ existingData }) => {
             onChange={handleInputChange}
              className="userprofile-input-text"
           />
+           <br/>
           {errors.lastName && <span className="text-xs">{errors.lastName}</span>}
         </div>
         </div>
@@ -193,6 +210,7 @@ const Page = ({ existingData }) => {
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
+          <br/>
           {errors.gender && <span className="text-sm">{errors.gender}</span>}
         </div>
 
@@ -211,6 +229,7 @@ const Page = ({ existingData }) => {
             <option value="brown">Brown</option>
             <option value="dark">Dark</option>
           </select>
+          <br/>
           {errors.skinTone && <span className="text-xs">{errors.skinTone}</span>}
         </div>
         </div>
@@ -233,6 +252,7 @@ const Page = ({ existingData }) => {
                 </option>
               ))}
           </select>
+          <br/>
           {errors.bodyType && <span className="text-xs">{errors.bodyType}</span>}
         </div>
 
@@ -253,6 +273,7 @@ const Page = ({ existingData }) => {
             <option value="jain">Jain</option>
             <option value="vegan">Vegan</option>
           </select>
+          <br/>
           {errors.eatingHabit && <span className="text-xs">{errors.eatingHabit}</span>}
         </div>
         </div>
@@ -273,6 +294,7 @@ const Page = ({ existingData }) => {
             <option value="active-smoker">Active Smoker</option>
             <option value="occasionally">Occasionally</option>
           </select>
+          <br/>
           {errors.smokingHabit && <span className="text-xs">{errors.smokingHabit}</span>}
         </div>
 
@@ -291,6 +313,7 @@ const Page = ({ existingData }) => {
             <option value="drinker">Drinker</option>
             <option value="occasionally">Occasionally</option>
           </select>
+          <br/>
           {errors.drinkingHabit && <span className="text-xs">{errors.drinkingHabit}</span>}
         </div>
         </div>
@@ -307,7 +330,8 @@ const Page = ({ existingData }) => {
             onChange={handleInputChange}
             className="userprofile-input-text"
           />
-          {errors.location && <span className="error">{errors.location}</span>}
+           <br/>
+          {errors.location && <span className="text-sm">{errors.location}</span>}
         </div>
 
         {/* Height */}
@@ -321,34 +345,34 @@ const Page = ({ existingData }) => {
             onChange={handleInputChange}
              className="userprofile-input-text"
           />
-          {errors.height && <span className="error">{errors.height}</span>}
+           <br/>
+          {errors.height && <span className="text-sm">{errors.height}</span>}
         </div>
         </div>
 
         {/* Description Checkboxes */}
-        <div className="form-group mt-2">
-          <label className="text-sm ">Description (Select at least 2)</label>
-          <div className="grid grid-cols-4 gap-1 mt-3">
+        <div className="form-group ">
+          <label className="text-sm my-3">Description (Select at least 2)</label>
+          <div className="grid md:grid-cols-4 md:gap-3  gap-2  grid-cols-2">
             {checkboxLabels.map((label, index) => (
               <div key={index}>
-                <label className="md:text-sm text-xs">
+                <label className="md:text-sm text-xs ">
                   <input
                     type="checkbox"
-                    checked={formData.description[index]}
+                    checked={formData.description[index] || false} // Ensure checked is always a boolean
                     onChange={() => handleCheckboxChange(index)}
-                    
                   />
                   {label}
                 </label>
               </div>
             ))}
           </div>
-          {errors.description && <span className="text-xs">{errors.description}</span>}
+          {errors.description && <span className="text-sm">{errors.description}</span>}
         </div>
 
         {/* Submit Button */}
         <button type="submit" className="savechgbtn">
-          Update Profile
+        Send update request
         </button>
       </form>
     </div>
@@ -404,7 +428,7 @@ const ImageUploader = ({ images, onUpload }) => {
               {index + 1}
             </span>
           )}
-          <button className="remove-button" onClick={() => handleRemoveImage(index)}>
+          <button className="remove-button-4" onClick={() => handleRemoveImage(index)}>
             &times;
           </button>
         </div>

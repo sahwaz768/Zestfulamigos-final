@@ -4,7 +4,7 @@ import { FaChevronDown } from 'react-icons/fa';
 import Link from 'next/link';
 
 
-const Sidebar = ({ menuItems , user }) => {
+const Sidebar = ({ menuItems , user, height  = "100%"}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -39,6 +39,7 @@ const Sidebar = ({ menuItems , user }) => {
       className={`sidebar ${isSidebarOpen ? 'open' : ''}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      style={{ height }}
     >
  
         {/* User profile section */}
