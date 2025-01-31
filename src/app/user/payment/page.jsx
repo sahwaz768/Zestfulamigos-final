@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Payment from 'src/app/payment1.png';
 import { Threeline } from '../swipepage/page';
 import { useRouter } from 'next/navigation';
+import { navLinks } from 'src/utils/constants.js';
 
 import { redirect } from 'next/navigation';
 import { getBookingDetails } from '@/services/user/bookings.service';
@@ -111,19 +112,15 @@ const page = () => {
     }
   };
 
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About Us', href: './aboutus' },
-    { name: 'Privacy Policy', href: './privacypolicy' },
-    { name: 'Contact', href: './contactus' }
-  ];
+  const links = navLinks; 
+
   if (!bookingDetails) return <div>Loading....</div>;
   return (
     <div>
       <Chatheader
         rightElement={<Notification />}
         backgroundColor="rgba(250, 236, 236, 0.8)"
-        navLinks={navLinks}
+        navLinks={links}
       />
       <Threeline />
       <div className="paymentsummarybox">

@@ -8,6 +8,8 @@ import withAuth from '@/app/hoc/wihAuth';
 import { useSelector } from 'react-redux';
 import { redirect } from 'next/navigation';
 import { Threeline } from '../swipepage/page';
+import { navLinks } from 'src/utils/constants.js';
+
 
 
 
@@ -122,19 +124,14 @@ const Page = () => {
     // Clear all fields
   };
 
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About Us', href: './aboutus' },
-    { name: 'Privacy Policy', href: './privacypolicy' },
-    { name: 'Contact', href: './contactus' }
-  ];
+  const links = navLinks; 
 
   return (
     <>
       <Chatheader
         rightElement={<Notification />}
         backgroundColor="rgba(250, 236, 236, 0.8)"
-        navLinks={navLinks}
+        navLinks={links}
       />
       <Threeline/>
       <Guidmodel />

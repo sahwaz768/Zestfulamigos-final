@@ -1,7 +1,10 @@
 'use client';
 import React, { useState } from 'react';
-import Header from '@/components/Homeheader';
+import Masterheader from '@/components/Masterheader';
 import { Login } from '@/app/page';
+import { navLinks } from 'src/utils/constants.js';
+
+
 import Link from 'next/link';
 
 const page = () => {
@@ -79,9 +82,10 @@ const page = () => {
       setErrors({});
     }
   };
+  const links = navLinks; 
   return (
     <div>
-      <Header rightElement={<Login />} />
+      <Masterheader rightElement={<Login />} navLinks={links} backgroundColor="rgba(250, 236, 236, 0.8)"/>
       <h1 className=" font-bold my-5 text-2xl ml-10">Be a companion</h1>
       <div className="flex md:justify-center ml-4">
         <form onSubmit={handleSubmit} className="">

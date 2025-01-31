@@ -13,6 +13,8 @@ import { BiLocationPlus } from 'react-icons/bi';
 import { IoIosTimer } from 'react-icons/io';
 import { Mastersidebar } from '../swipepage/page';
 import Notify from '@/components/Notify';
+import { navLinks } from 'src/utils/constants.js';
+
 
 const Page = React.memo((props) => {
   const handleResize = () => {
@@ -32,21 +34,13 @@ const Page = React.memo((props) => {
     document.getElementById('chatwindow').style.display = 'block';
   };
 
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About Us', href: './aboutus' },
-    { name: 'Privacy Policy', href: './privacypolicy' },
-    { name: 'Contact', href: './contactus' }
-  ];
-
-
-
+  const links = navLinks; 
   return (
     <>
       <Chatheader
         rightElement={<Notification />}
         backgroundColor="rgba(250, 236, 236, 0.8)"
-        navLinks={navLinks}
+        navLinks={links}
       />
       <div className='notifymbsecond'>
       <Notify backgroundColor='transparent' color='black'/>

@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
+import { navLinks } from 'src/utils/constants.js';
+
 
 const page = () => {
   const [hasReplied, setHasReplied] = useState(false); // Track if the user has replied
@@ -18,9 +20,11 @@ const page = () => {
       setUserComment(""); // Clear the text area
     }
   };
+
+  const links = navLinks; 
   return (
     <>
-    <Chatheader rightElement={<Notification />} />
+    <Chatheader rightElement={<Notification />} navLinks={links} backgroundColor="rgba(250, 236, 236, 0.8)" />
     <div className='ticket-head'>
       <h1 className='text-lg font-bold'>Transaction error</h1>
       <div className='support-row text-sm font-bold pending'>

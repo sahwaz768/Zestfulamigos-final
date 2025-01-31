@@ -20,9 +20,9 @@ const page = () => {
 
   const navLinks = [
     { name: "Home", href: "./" },
-    { name: "About Us", href: "./user/aboutus" },
-    { name: "Privacy Policy", href: "./user/privacypolicy" },
-    { name: "Contact", href: "./user/contactus" }
+    { name: "About Us", href: "./aboutus" },
+    { name: "Privacy Policy", href: "./privacypolicy" },
+    { name: "Contact", href: "./contactus" }
   ];
 
   return (

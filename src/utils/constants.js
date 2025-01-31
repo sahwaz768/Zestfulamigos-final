@@ -1,5 +1,5 @@
-import { FaRegBell } from 'react-icons/fa6';
-import { MdLogout, MdOutlineReportProblem } from 'react-icons/md';
+
+import { MdLogout } from 'react-icons/md';
 import { RiChatSmile3Line } from "react-icons/ri";
 import { MdOutlineHistory } from "react-icons/md";
 import { CiSettings } from "react-icons/ci";
@@ -7,9 +7,9 @@ import { CiSettings } from "react-icons/ci";
  
  export const navLinks = [
     { name: 'Home', href: '/' },
-    { name: 'About Us', href: '/user/aboutus' },
-    { name: 'Privacy Policy', href: '/user/privacypolicy' },
-    { name: 'Contact', href: '/user/contactus' }
+    { name: 'About Us', href: '/aboutus' },
+    { name: 'Privacy Policy', href: '/privacypolicy' },
+    { name: 'Contact', href: './contactus' }
   ];
 
 export const companionsidebarlink = [

@@ -16,6 +16,7 @@ import { companionDetailsService } from 'src/services/user/companionDetails.serv
 import { BASEURL } from '@/Constants/services.constants';
 import { Threeline } from '../swipepage/page';
 import { capitalizedWord } from '@/utils/common.utils';
+import { navLinks } from 'src/utils/constants.js';
 
 const page = () => {
   const [companionDetails, setCompanionDetails] = useState({});
@@ -35,19 +36,14 @@ const page = () => {
 
   if (!Object.keys(companionDetails).length) return <p>Loading...</p>;
 
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About Us', href: './aboutus' },
-    { name: 'Privacy Policy', href: './privacypolicy' },
-    { name: 'Contact', href: './contactus' }
-  ];
+  const links = navLinks; 
 
   return (
     <>
       <Chatheader
         rightElement={<Notification />}
         backgroundColor="rgba(250, 236, 236, 0.8)"
-        navLinks={navLinks}
+        navLinks={links}
       />
       <Threeline />
       <h1 className="text-2xl font-semibold mx-6 my-4 profile-text">

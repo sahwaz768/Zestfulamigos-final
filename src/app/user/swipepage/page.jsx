@@ -12,6 +12,8 @@ import { useSelector } from 'react-redux';
 import { redirect } from 'next/navigation';
 import { BASEURL } from '@/Constants/services.constants';
 import Notify from '@/components/Notify';
+import { navLinks } from 'src/utils/constants.js';
+
 
 const Page = () => {
   const companions = useSelector((state) => state.companionFind.data?.data);
@@ -33,19 +35,14 @@ const Page = () => {
     );
   };
 
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About Us', href: './aboutus' },
-    { name: 'Privacy Policy', href: './privacypolicy' },
-    { name: 'Contact', href: './contactus' }
-  ];
+  const links = navLinks; 
   return (
     <>
       <div className="swipebox">
         <Chatheader
           rightElement={<Notification />}
           backgroundColor="rgba(250, 236, 236, 0.8)"
-          navLinks={navLinks}
+          navLinks={links}
         />
         <Threeline />
         <div className="swipe-container-first">
