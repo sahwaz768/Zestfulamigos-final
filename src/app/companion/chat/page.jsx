@@ -101,7 +101,7 @@ export const CompanionNotification = () => {
 
 export const Companionsidebar = () => {
   const menuItems = [
-    { label: 'Chats', route: './chats', icon: RiChatSmile3Line  },
+    { label: 'Chats', route: './chat', icon: RiChatSmile3Line  },
     { label: 'Booking History', route: './bookinghistory', icon: MdOutlineHistory },
     { 
       label: 'Settings', 

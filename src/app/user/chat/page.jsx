@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Profile from 'src/app/homepageimg.jpg';
 import Chatwindow from '@/components/chatwindow';
@@ -13,8 +13,26 @@ import { BiLocationPlus } from 'react-icons/bi';
 import { IoIosTimer } from 'react-icons/io';
 import { Mastersidebar } from '../swipepage/page';
 import Notify from '@/components/Notify';
+import { BASEURL } from '@/Constants/services.constants';
 
 const Page = React.memo((props) => {
+  const [chatrooms, setChatRooms] = useState(null);
+
+  useEffect(() => {
+    import('../../../services/user/chats.service')
+      .then(({ getActiveChatsService }) => getActiveChatsService())
+      .then(({ data }) => {
+        if (data) {
+          const values = data.map((l) => ({
+            user: l.User.filter((p) => !p.isCompanion)[0],
+            companion: l.User.filter((p) => p.isCompanion)[0],
+            id: l.id
+          }));
+          setChatRooms(values);
+        }
+      });
+  }, []);
+
   const handleResize = () => {
     if (window.matchMedia('(min-width: 768px)').matches) {
       showchat1();
@@ -39,7 +57,7 @@ const Page = React.memo((props) => {
     { name: 'Contact', href: './contactus' }
   ];
 
-
+  if (!chatrooms) return <div>Loading...</div>;
 
   return (
     <>
@@ -48,34 +66,32 @@ const Page = React.memo((props) => {
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />
-      <div className='notifymbsecond'>
-      <Notify backgroundColor='transparent' color='black'/>
+      <div className="notifymbsecond">
+        <Notify backgroundColor="transparent" color="black" />
       </div>
-
       <div className="chatpage">
         <div>
-        <Mastersidebar/>
+          <Mastersidebar />
         </div>
-        
-        
-     
-
         <div className="chatsection">
           <div className="chatlist" id="chatlist">
             <div className=" chatlistbox">
               <h1 className="">Chats</h1>
             </div>
             <div className="userlistbox">
-              <div className="userdetail" onClick={handleResize}>
-                <Image src={Profile} alt="profile" />
-                <h1 className="ml-2 text-sm">Alisha</h1>
-                <div className="userstatus text-xs">today</div>
-              </div>
-              <div className="userdetail">
-                <Image src={Profile} alt="profile" />
-                <h1 className="ml-2 text-sm">Berlin</h1>
-                <div className="userstatus text-xs">today</div>
-              </div>
+              {chatrooms?.length &&
+                chatrooms.map((l) => (
+                  <div className="userdetail" onClick={handleResize} key={l.id}>
+                    <Image
+                      src={BASEURL + '/UserPhotos/companion1.jpg'}
+                      alt="profile"
+                      width={20}
+                      height={20}
+                    />
+                    <h1 className="ml-2 text-sm">{l.companion.firstname}</h1>
+                    <div className="userstatus text-xs">today</div>
+                  </div>
+                ))}
             </div>
           </div>
           <div className="chatwindow" id="chatwindow">
