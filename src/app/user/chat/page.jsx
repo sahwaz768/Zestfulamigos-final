@@ -14,6 +14,7 @@ import { IoIosTimer } from 'react-icons/io';
 import { Mastersidebar } from '../swipepage/page';
 import Notify from '@/components/Notify';
 import { navLinks } from 'src/utils/constants.js';
+import Chatpicture  from 'src/app/chatblank.png';
 
 
 const Page = React.memo((props) => {
@@ -27,6 +28,7 @@ const Page = React.memo((props) => {
 
   const showchat1 = () => {
     document.getElementById('chatwindow').style.display = 'block';
+    document.getElementById('chatblankpage').style.display = 'none';
   };
 
   const showchat = () => {
@@ -74,6 +76,9 @@ const Page = React.memo((props) => {
           </div>
           <div className="chatwindow" id="chatwindow">
             <Chatwindow />
+          </div>
+          <div className='chatblankpage' id='chatblankpage'>
+          <Image src={Chatpicture} alt="profile" />
           </div>
         </div>
       </div>

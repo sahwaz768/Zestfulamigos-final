@@ -29,11 +29,7 @@ const page = () => {
     let formErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!formData.email) {
-      formErrors.email = 'Email is required.';
-    } else if (!emailRegex.test(formData.email)) {
-      formErrors.email = 'Please enter a valid email.';
-    }
+   
 
     if (!formData.problem) {
       formErrors.problem = 'Problem description is required.';
@@ -127,22 +123,7 @@ const page = () => {
               &times;
             </button>
             <form onSubmit={handleSubmit} className="form-container">
-              <div className="form-group">
-                <label htmlFor="email" className="text-sm">
-                  Email
-                </label>
-
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="inputfield-glg"
-                  placeholder="Email"
-                />
-                {errors.email && <p className="text-sm">{errors.email}</p>}
-              </div>
+              
 
               <div className="form-group">
                 <label htmlFor="problem" className="text-sm">

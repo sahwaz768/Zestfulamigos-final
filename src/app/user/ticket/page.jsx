@@ -4,84 +4,97 @@ import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
 import { navLinks } from 'src/utils/constants.js';
 
-
-const page = () => {
-  const [hasReplied, setHasReplied] = useState(false); // Track if the user has replied
+const Page = () => {
+  const [hasReplied, setHasReplied] = useState(false);
   const [userComment, setUserComment] = useState("");
   const [comment, setComment] = useState("");
+  const [image, setImage] = useState(null);
 
   const handleReplyClick = () => {
-    setHasReplied(true); // Show the reply box
+    setHasReplied(true);
   };
 
   const handleSendClick = () => {
-    if (userComment.trim()) {
-      setComment(userComment); // Save the user's reply
-      setUserComment(""); // Clear the text area
+    if (userComment.trim() || image) {
+      setComment(userComment);
+      setUserComment("");
+      setHasReplied(false);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(URL.createObjectURL(file));
     }
   };
 
   const links = navLinks; 
   return (
     <>
-    <Chatheader rightElement={<Notification />} navLinks={links} backgroundColor="rgba(250, 236, 236, 0.8)" />
-    <div className='ticket-head'>
-      <h1 className='text-lg font-bold'>Transaction error</h1>
-      <div className='support-row text-sm font-bold pending'>
-      pending
-     </div>
-    </div>
-    <div className='ticket-body'>
-    <div className="message-container">
-      <div className="admin-message">
-        <div className="message-header">
-          <span>Created On: Aug 27, 2024, 01:11 PM</span>
-          <span><strong>Admin</strong></span>
-        </div>
-        <div className="message-body">
-          <p>
-            Sir/madam, we need to install Visual C++, that we can find from{" "}
-           
-            . Please find the attachment.
-          </p>
-        </div>
-        {!comment && !hasReplied && (
-          <button className="reply-button" onClick={handleReplyClick}>
-            Reply
-          </button>
-        )}
+      <Chatheader rightElement={<Notification />} navLinks={links} backgroundColor="rgba(250, 236, 236, 0.8)" />
+      <div className='ticket-head'>
+        <h1 className='text-lg font-bold'>Transaction error</h1>
+        <div className='support-row text-sm font-bold pending'>pending</div>
       </div>
-
-      {hasReplied && !comment && (
-        <div className="reply-box">
-          <textarea
-            value={userComment}
-            onChange={(e) => setUserComment(e.target.value)}
-            rows="4"
-            placeholder="Write your reply here..."
-            className="reply-textarea"
-          />
-          <button className="send-button" onClick={handleSendClick}>
-            Send
-          </button>
-        </div>
-      )}
-
-      {comment && (
-        <div className="reply-message">
-          <div className="reply-header">
-            <span>Replied On: {new Date().toLocaleString()}</span>
-            <span className="font-bold">user</span>
+      <div className='ticket-body'>
+        <div className="message-container">
+          <div className="admin-message">
+            <div className="message-header">
+              <span>Created On: Aug 27, 2024, 01:11 PM</span>
+              <span><strong>Admin</strong></span>
+            </div>
+            <div className="message-body">
+              <p>
+                Sir/madam, we need to install Visual C++, that we can find from
+                . Please find the attachment.
+              </p>
+            </div>
+            {!comment && !hasReplied && (
+              <button className="reply-button" onClick={handleReplyClick}>
+                Reply
+              </button>
+            )}
           </div>
-          <div className="reply-body">
-            <p>{comment}</p>
-          </div>
+
+          {hasReplied && !comment && (
+            <div className="reply-box">
+              <textarea
+                value={userComment}
+                onChange={(e) => setUserComment(e.target.value)}
+                rows="4"
+                placeholder="Write your reply here..."
+                className="reply-textarea"
+              />
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleImageChange} 
+                className="image-uploader"
+              />
+              {image && <img src={image} alt="Preview" className="image-preview-ticket" />}
+              <button className="send-button" onClick={handleSendClick}>
+                Send
+              </button>
+            </div>
+          )}
+
+          {comment && (
+            <div className="reply-message">
+              <div className="reply-header">
+                <span>Replied On: {new Date().toLocaleString()}</span>
+                <span className="font-bold">User</span>
+              </div>
+              <div className="reply-body">
+                <p>{comment}</p>
+                {image && <img src={image} alt="Uploaded" className="image-preview-ticket" />}
+              </div>
+            </div>
+          )}
         </div>
-      )}
-    </div>
-    </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default page
+export default Page;

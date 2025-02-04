@@ -47,6 +47,7 @@ const sendMessage = () => {
   const backbtn = () => {
     document.getElementById('chatlist').style.display = 'block';
     document.getElementById('chatwindow').style.display = 'none';
+    document.getElementById('chatblankpage').style.display = 'block';
   };
 
   // funtion for drop-down

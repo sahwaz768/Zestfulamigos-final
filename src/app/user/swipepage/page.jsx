@@ -165,7 +165,7 @@ export const Mastersidebar = () => {
         { label: 'Profile Settings', route: './profile' },
         {
           label: 'Raise a Concern',
-          route: '/page-one/raise-concern',
+          route: '/user/concern',
           icon: MdOutlineReportProblem
         },
         { label: 'Logout', icon: MdLogout, handleclick :handleLogout }
