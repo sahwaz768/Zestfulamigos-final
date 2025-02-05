@@ -62,7 +62,6 @@ const Page = React.memo((props) => {
   return (
     <>
       <Chatheader
-        rightElement={<Notification />}
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />
@@ -79,7 +78,7 @@ const Page = React.memo((props) => {
               <h1 className="">Chats</h1>
             </div>
             <div className="userlistbox">
-              {chatrooms?.length &&
+              {chatrooms?.length ? (
                 chatrooms.map((l) => (
                   <div className="userdetail" onClick={handleResize} key={l.id}>
                     <Image
@@ -91,7 +90,10 @@ const Page = React.memo((props) => {
                     <h1 className="ml-2 text-sm">{l.companion.firstname}</h1>
                     <div className="userstatus text-xs">today</div>
                   </div>
-                ))}
+                ))
+              ) : (
+                <div>No Active Chats Available</div>
+              )}
             </div>
           </div>
           <div className="chatwindow" id="chatwindow">

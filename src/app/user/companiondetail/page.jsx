@@ -45,7 +45,6 @@ const page = () => {
   return (
     <>
       <Chatheader
-        rightElement={<Notification />}
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />

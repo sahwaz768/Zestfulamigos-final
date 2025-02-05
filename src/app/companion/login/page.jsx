@@ -1,12 +1,10 @@
-
 'use client';
 import React, { useState } from 'react';
 import Forgotpassword from '@/components/Forgotpassword';
 import { useGoogleLogin } from '@react-oauth/google';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import Companion from 'src/app/complogin.png';
-import Image from 'next/image'
-
+import Image from 'next/image';
 
 const page = () => {
   /* Logic for modal */
@@ -62,7 +60,7 @@ const page = () => {
     if (validateForm()) {
       console.log('Login successful:', formData);
       // Login logic goes here
-      router.push("./dashboard");
+      router.push('./dashboard');
     }
   };
 
@@ -76,36 +74,32 @@ const page = () => {
   };
 
   const login = useGoogleLogin({
-    onSuccess: tokenResponse => console.log(tokenResponse),
+    onSuccess: (tokenResponse) => console.log(tokenResponse)
   });
-
-
 
   return (
     <>
-    <div className='companion-login-box flex'>
-      <div className='comp-lg-box'>
-        <h1 className='zestful-companion'>zestful amigos</h1>
-        <h1 className='text-3xl '>You want to work as our "Amigos"</h1>
-        <button className='companion-login-btn' onClick={handleOpenModal1}>Start here</button>
+      <div className="companion-login-box flex">
+        <div className="comp-lg-box">
+          <h1 className="zestful-companion">zestful amigos</h1>
+          <h1 className="text-3xl ">You want to work as our "Amigos"</h1>
+          <button className="companion-login-btn" onClick={handleOpenModal1}>
+            Start here
+          </button>
+        </div>
+        <div className="comp-lg-image">
+          <Image src={Companion} />
+        </div>
       </div>
-      <div className='comp-lg-image'>
-      <Image
-     src={Companion}
-    />
-      </div>
-    </div>
-  {/* First Modal */}
-  {showModal1 && (
+      {/* First Modal */}
+      {showModal1 && (
         <div className="modal">
           <div className="modal-content animate">
             <span className="close" onClick={handleCloseModal1}>
               &times;
             </span>
             <h1 className="text-center text-xl font-semibold mb-3">Log in</h1>
-           
 
-            
             {/* login form start here */}
             <div>
               <form onSubmit={handleSubmit}>
@@ -151,7 +145,6 @@ const page = () => {
                 </button>
               </form>
               {/* login form end here */}
-              
             </div>
           </div>
         </div>
@@ -218,33 +211,25 @@ const page = () => {
                   oninput="if(this.value.length > 1) this.value=this.value.slice(0,1)"
                 />
               </div>
-            <div className='text-sm text-gray-700 flex justify-center my-2'>
-              <span>If you dont' receive code click  </span><span className='text-pink-600'>Resend Code</span>
-            </div>
-            <button
+              <div className="text-sm text-gray-700 flex justify-center my-2">
+                <span>If you dont' receive code click </span>
+                <span className="text-pink-600">Resend Code</span>
+              </div>
+              <button
                 className="w-full loginbtn text-center"
-               onClick={resetpassword}
+                onClick={resetpassword}
               >
                 Proceed
               </button>
             </div>
-            <div className='resetpassword' id='resetpassword' >
-            <Forgotpassword/>
-           
-            
-               
-
+            <div className="resetpassword" id="resetpassword">
+              <Forgotpassword />
             </div>
           </div>
         </div>
       )}
-
-
-
-
-
     </>
-  )
-}
+  );
+};
 
-export default page
+export default page;

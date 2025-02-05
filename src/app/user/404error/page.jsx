@@ -5,9 +5,7 @@ const Page = () => {
     <div className="min-h-screen bg-pink-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full text-center space-y-8">
         {/* Error Number */}
-        <h1 className="text-pink-600 font-bold text-9xl animate-pulse">
-          404
-        </h1>
+        <h1 className="text-pink-600 font-bold text-9xl animate-pulse">404</h1>
 
         {/* Error Message */}
         <div className="space-y-4">
@@ -15,7 +13,8 @@ const Page = () => {
             Page Not Found
           </h2>
           <p className="text-pink-700">
-            Oops! The page you're looking for seems to have gone on vacation. Let's get you back home.
+            Oops! The page you're looking for seems to have gone on vacation.
+            Let's get you back home.
           </p>
         </div>
 
@@ -25,20 +24,19 @@ const Page = () => {
         </div>
 
         {/* Back Button with Custom Arrow SVG */}
-        <button 
-          
+        <button
           className="inline-flex items-center px-6 py-3 text-pink-700 bg-pink-100 rounded-lg 
                      hover:bg-pink-200 transition-colors duration-200 gap-2"
         >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            width="20" 
-            height="20" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
             strokeLinejoin="round"
             className="w-5 h-5"
           >

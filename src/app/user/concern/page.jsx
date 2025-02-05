@@ -7,7 +7,6 @@ import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
 import { Threeline } from '../swipepage/page';
 
-
 const page = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -67,17 +66,19 @@ const page = () => {
     }
   };
 
-
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "About Us", href: "./aboutus" },
-    { name: "Privacy Policy", href: "./privacypolicy" },
-    { name: "Contact", href: "./contactus" }
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: './aboutus' },
+    { name: 'Privacy Policy', href: './privacypolicy' },
+    { name: 'Contact', href: './contactus' }
   ];
   return (
     <div>
-        <Chatheader rightElement={<Notification />} backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={navLinks} />
-        <Threeline/>
+      <Chatheader
+        backgroundColor="rgba(250, 236, 236, 0.8)"
+        navLinks={navLinks}
+      />
+      <Threeline />
       <div className="support-head">
         <div className="support-txt">
           <h1 className="md:text-xl ml-3 md:font-bold mt-2">

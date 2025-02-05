@@ -121,7 +121,6 @@ const page = () => {
   return (
     <div>
       <Chatheader
-        rightElement={<Notification />}
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />
@@ -135,7 +134,9 @@ const page = () => {
               <tbody>
                 <tr>
                   <th className="text-sm font-normal">Base price</th>
-                  <td className="text-sm font-normal ">: ₹{bookingDetails.amount.toFixed(2)} </td>
+                  <td className="text-sm font-normal ">
+                    : ₹{bookingDetails.amount.toFixed(2)}{' '}
+                  </td>
                 </tr>
 
                 <tr>
@@ -147,42 +148,44 @@ const page = () => {
 
                 <tr>
                   <th className="text-sm font-normal">Total Amount</th>
-                  <td className="text-sm font-normal">:₹{bookingDetails.amount.toFixed(2)}</td>
+                  <td className="text-sm font-normal">
+                    :₹{bookingDetails.amount.toFixed(2)}
+                  </td>
                 </tr>
               </tbody>
             </table>
-              <div className="flex mt-3">
-                <input
-                  type="checkbox"
-                  name="checkbox1"
-                  checked={checkboxes.checkbox1}
-                  onChange={handleCheckboxChange}
-                />
-                <p className="text-xs font-normal ml-2">
-                  I agree to the <a>Term and Condition</a> and Privacy policy
-                </p>
-              </div>
-              {errors.checkbox1 && (
-                <p className="text-xs text-red-800">{errors.checkbox1}</p>
-              )}
-              <div className="flex my-2">
-                <input
-                  type="checkbox"
-                  name="checkbox2"
-                  checked={checkboxes.checkbox2}
-                  onChange={handleCheckboxChange}
-                />
-                <p className="text-xs font-normal ml-2">
-                  I authorize the merchant to debit the above amount for
-                  selected service
-                </p>
-              </div>
-              {errors.checkbox2 && (
-                <p className="text-xs text-red-800">{errors.checkbox2}</p>
-              )}
-              <button className="paymentbtn" type="submit" onClick={handleSubmit}>
-                proceed to payment
-              </button>
+            <div className="flex mt-3">
+              <input
+                type="checkbox"
+                name="checkbox1"
+                checked={checkboxes.checkbox1}
+                onChange={handleCheckboxChange}
+              />
+              <p className="text-xs font-normal ml-2">
+                I agree to the <a>Term and Condition</a> and Privacy policy
+              </p>
+            </div>
+            {errors.checkbox1 && (
+              <p className="text-xs text-red-800">{errors.checkbox1}</p>
+            )}
+            <div className="flex my-2">
+              <input
+                type="checkbox"
+                name="checkbox2"
+                checked={checkboxes.checkbox2}
+                onChange={handleCheckboxChange}
+              />
+              <p className="text-xs font-normal ml-2">
+                I authorize the merchant to debit the above amount for selected
+                service
+              </p>
+            </div>
+            {errors.checkbox2 && (
+              <p className="text-xs text-red-800">{errors.checkbox2}</p>
+            )}
+            <button className="paymentbtn" type="submit" onClick={handleSubmit}>
+              proceed to payment
+            </button>
           </div>
         </div>
         <div className="paymentimage">

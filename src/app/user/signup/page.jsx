@@ -53,7 +53,8 @@ const Page = () => {
     const newErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{10}$/;
-    const passwordRegex =  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+    const passwordRegex =
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 
     if (!formData.name) newErrors.name = 'Name is required.';
     if (!formData.email) {
@@ -348,7 +349,7 @@ const Page = () => {
                   <span className="text-xs text-pink-700">{errors.gender}</span>
                 )}
               </div>
-              
+
               <div
                 className=" flex  cntbtn justify-center mt-3"
                 onClick={handleContinue}
@@ -408,7 +409,7 @@ const Page = () => {
                               <IoCloudUploadOutline size={30} />
                             </div>
                             <p className="text-sm text-gray-700">
-                              Click to upload 
+                              Click to upload
                             </p>
                             <p className="text-xs text-gray-700">
                               use portrait image for better show
@@ -421,9 +422,8 @@ const Page = () => {
                 </div>
                 {photoError && (
                   <span className="text-xs text-pink-700">{photoError}</span>
-                  
                 )}
-                <p className='text-sm text-pink-700' id='response'></p>
+                <p className="text-sm text-pink-700" id="response"></p>
                 <button onClick={handleSubmit} className="sbtbtm">
                   Submit
                 </button>
@@ -500,8 +500,7 @@ function GoogleSignUp() {
     if (!profilePicture)
       newErrors.profilePicture = 'Profile picture is required.';
     if (!age) newErrors.age = 'Age is required.';
-    else if (age < 18 || age > 100)
-      newErrors.age = 'Age must be above 18.';
+    else if (age < 18 || age > 100) newErrors.age = 'Age must be above 18.';
     if (!gender) newErrors.gender = 'Gender is required.';
 
     if (Object.keys(newErrors).length > 0) {

@@ -1,11 +1,11 @@
-'use client'
+'use client';
 import React, { useState } from 'react';
 import { Secondsidebar } from '../chat/page';
-import { PiSquaresFourDuotone } from "react-icons/pi";
+import { PiSquaresFourDuotone } from 'react-icons/pi';
 import Profile from 'src/app/Rectangle 12.png';
 import Couple from 'src/app/dashcouple.png';
-import Image from 'next/image'
-import { IoIosStar } from "react-icons/io";
+import Image from 'next/image';
+import { IoIosStar } from 'react-icons/io';
 import { Companionsidebar } from '../chat/page';
 import Notify from '@/components/Notify';
 
@@ -35,129 +35,139 @@ const page = () => {
   };
   return (
     <>
-    <div className='dashboard-threeline'>
-    <div className='notifymbsecond'>
-      <Notify backgroundColor='transparent' color='black'/>
-      </div>
-    </div>
-    <div className='flex'>
-    <div>
-    <Companionsidebar/>
-    </div>
-    <div className='dashboard'>
-    <div className='dashboard-header '>
-    <div className='flex justify-center items-center ml-4 '>
-    <div className='dots4'>
-    <PiSquaresFourDuotone  color='gray' size={50}/>
-    </div>
-    <div>
-      <h1 className='font-bold'>Dashboard</h1>
-      <h1 className='text-sm text-pink-700'>Monday <span className='text-black'>20 Jan</span></h1>
-    </div>
-    </div>
-    <div className='comp-admin flex justify-center items-center'>
-    <Image
-      src={Profile}
-      alt="Picture of the author"
-    />
-    <h1 className='text-sm'>Alysaa jones</h1>
-    </div>
-
-    </div>
-    <div className='dashboard-midsection flex'>
-    <div className='mt-5'>
-      <h1 className='md:text-3xl font-bold ml-5 '>Hi, Alyssa</h1>
-      <h1 className='md:mt-3 ml-5 md:text-base text-sm'>Ready to start your day with same pitch decks</h1>
-    </div>
-    <div className='midsection-image'>
-    <Image
-      src={Couple}
-      alt="Picture of the author"
-    />
-    </div>
-    </div>
-    <div className='dashboard-overview'>
-    <h1 >Overview</h1>
-    <div className='flex gap-4'>
-      <div className='overview-box'>
-      <IoIosStar  color='yellow' size={30}/>
-      <div>
-        Last rating
-        <div className='flex  items-center'>
-        <IoIosStar  color='yellow' size={15}/>
-        <IoIosStar  color='yellow' size={15}/>
+      <div className="dashboard-threeline">
+        <div className="notifymbsecond">
+          <Notify backgroundColor="transparent" color="black" />
         </div>
       </div>
+      <div className="flex">
+        <div>
+          <Companionsidebar />
+        </div>
+        <div className="dashboard">
+          <div className="dashboard-header ">
+            <div className="flex justify-center items-center ml-4 ">
+              <div className="dots4">
+                <PiSquaresFourDuotone color="gray" size={50} />
+              </div>
+              <div>
+                <h1 className="font-bold">Dashboard</h1>
+                <h1 className="text-sm text-pink-700">
+                  Monday <span className="text-black">20 Jan</span>
+                </h1>
+              </div>
+            </div>
+            <div className="comp-admin flex justify-center items-center">
+              <Image src={Profile} alt="Picture of the author" />
+              <h1 className="text-sm">Alysaa jones</h1>
+            </div>
+          </div>
+          <div className="dashboard-midsection flex">
+            <div className="mt-5">
+              <h1 className="md:text-3xl font-bold ml-5 ">Hi, Alyssa</h1>
+              <h1 className="md:mt-3 ml-5 md:text-base text-sm">
+                Ready to start your day with same pitch decks
+              </h1>
+            </div>
+            <div className="midsection-image">
+              <Image src={Couple} alt="Picture of the author" />
+            </div>
+          </div>
+          <div className="dashboard-overview">
+            <h1>Overview</h1>
+            <div className="flex gap-4">
+              <div className="overview-box">
+                <IoIosStar color="yellow" size={30} />
+                <div>
+                  Last rating
+                  <div className="flex  items-center">
+                    <IoIosStar color="yellow" size={15} />
+                    <IoIosStar color="yellow" size={15} />
+                  </div>
+                </div>
+              </div>
+              <div className="overview-box">
+                <IoIosStar color="yellow" size={30} />
+                <div>
+                  <h1>Total rating</h1>
+                  <h1 className="font-bold">400/500</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="dashboard-userdetail">
+            <div className="dashboard-userprofile">
+              <Image src={Profile} alt="Picture of the author" />
+            </div>
+            <div className="flex flex-wrap">
+              <div className="md:mt-2 ml-2 gap-2">
+                <h1 className="text-sm md:text-base">
+                  Name:<span className="md:font-bold">Alysaa</span>
+                </h1>
+                <h1 className="text-sm md:text-base">
+                  Age:<span className="md:font-bold">20</span>
+                </h1>
+                <h1 className="text-sm md:text-base">
+                  Gender:<span className="md:font-bold">Male</span>
+                </h1>
+              </div>
+              <div className="dashboard-purpose md:mt-2  gap-2">
+                <h1 className="text-sm md:text-base">
+                  Time and date:
+                  <span className="md:font-bold ">8.00pm / 5-01-2025 </span>
+                </h1>
+                <h1 className="text-sm md:text-base">
+                  Location of meet- up:
+                  <span className="md:font-bold ">Bkc Mumbai</span>
+                </h1>
+                <h1 className="text-sm md:text-base">
+                  Purpose of meet:<span className="md:font-bold ">Dinner</span>
+                </h1>
+              </div>
+            </div>
+            <div className="dashboard-cancel">
+              <button onClick={openModal}>Cancel</button>
+            </div>
+          </div>
+          <div className="dashboard-userdetail">
+            <div className="dashboard-userprofile">
+              <Image src={Profile} alt="Picture of the author" />
+            </div>
+            <div className="flex flex-wrap">
+              <div className="md:mt-2 ml-2 gap-2">
+                <h1 className="text-sm md:text-base">
+                  Name:<span className="md:font-bold">Alysaa</span>
+                </h1>
+                <h1 className="text-sm md:text-base">
+                  Age:<span className="md:font-bold">20</span>
+                </h1>
+                <h1 className="text-sm md:text-base">
+                  Gender:<span className="md:font-bold">Male</span>
+                </h1>
+              </div>
+              <div className="dashboard-purpose md:mt-2  gap-2">
+                <h1 className="text-sm md:text-base">
+                  Time and date:
+                  <span className="md:font-bold">8.00pm / 5-01-2025 </span>
+                </h1>
+                <h1 className="text-sm md:text-base">
+                  Location of meet- up:
+                  <span className="md:font-bold">Bkc Mumbai</span>
+                </h1>
+                <h1 className="text-sm md:text-base">
+                  Purpose of meet:<span className="md:font-bold">Dinner</span>
+                </h1>
+              </div>
+            </div>
+            <div className="dashboard-cancel">
+              <button onClick={openModal}>Cancel</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className='overview-box'>
-      <IoIosStar  color='yellow' size={30}/>
-      <div>
-        <h1 >Total rating</h1>
-        <h1 className='font-bold'>400/500</h1>
-        
-      </div>
-      </div>
-    </div>
 
-    </div>
-    <div className='dashboard-userdetail'>
-    <div className='dashboard-userprofile'>
-    <Image
-      src={Profile}
-      alt="Picture of the author"
-    />
-   
-    </div>
-    <div className='flex flex-wrap'>
-    <div className='md:mt-2 ml-2 gap-2'>
-      <h1 className='text-sm md:text-base'>Name:<span className='md:font-bold'>Alysaa</span></h1>
-      <h1 className='text-sm md:text-base'>Age:<span className='md:font-bold'>20</span></h1>
-      <h1 className='text-sm md:text-base'>Gender:<span className='md:font-bold'>Male</span></h1>
-    </div>
-    <div className='dashboard-purpose md:mt-2  gap-2'>
-    <h1 className='text-sm md:text-base'>Time and date:<span className='md:font-bold '>8.00pm / 5-01-2025 </span></h1>
-      <h1 className='text-sm md:text-base'>Location of meet- up:<span className='md:font-bold '>Bkc Mumbai</span></h1>
-      <h1 className='text-sm md:text-base'>Purpose of meet:<span className='md:font-bold '>Dinner</span></h1>
-
-    </div>
-    </div>
-    <div className='dashboard-cancel'>
-      <button onClick={openModal}>Cancel</button>
-    </div>
-
-    </div>
-    <div className='dashboard-userdetail'>
-    <div className='dashboard-userprofile'>
-    <Image
-      src={Profile}
-      alt="Picture of the author"
-    />
-   
-    </div>
-    <div className='flex flex-wrap'>
-    <div className='md:mt-2 ml-2 gap-2'>
-      <h1 className='text-sm md:text-base'>Name:<span className='md:font-bold'>Alysaa</span></h1>
-      <h1 className='text-sm md:text-base'>Age:<span className='md:font-bold'>20</span></h1>
-      <h1 className='text-sm md:text-base'>Gender:<span className='md:font-bold'>Male</span></h1>
-    </div>
-    <div className='dashboard-purpose md:mt-2  gap-2'>
-    <h1 className='text-sm md:text-base'>Time and date:<span className='md:font-bold'>8.00pm / 5-01-2025 </span></h1>
-      <h1 className='text-sm md:text-base'>Location of meet- up:<span className='md:font-bold'>Bkc Mumbai</span></h1>
-      <h1 className='text-sm md:text-base'>Purpose of meet:<span className='md:font-bold'>Dinner</span></h1>
-
-    </div>
-    </div>
-    <div className='dashboard-cancel'>
-      <button onClick={openModal}>Cancel</button>
-    </div>
-
-    </div>
-    </div>
-      
-    </div>
-
-    {isOpen && (
-        <div className="companion-modal-overlay" >
+      {isOpen && (
+        <div className="companion-modal-overlay">
           <div
             className="companion-modal-content"
             onClick={(e) => e.stopPropagation()}
@@ -168,7 +178,7 @@ const page = () => {
             <h1 className="text-center font-bold">Please specify the reason</h1>
 
             <form onSubmit={handleSubmit}>
-              <div >
+              <div>
                 <textarea
                   id="textarea"
                   value={text}
@@ -186,8 +196,7 @@ const page = () => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default page
-
+export default page;

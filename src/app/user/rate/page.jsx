@@ -64,7 +64,9 @@ const page = () => {
                   </button>
                 ))}
               </div>
-              <h1 className="text-center md:my-2 my-5">What all did you enjoy?</h1>
+              <h1 className="text-center md:my-2 my-5">
+                What all did you enjoy?
+              </h1>
               <textarea
                 className="rate-text"
                 placeholder="Write your review here..."

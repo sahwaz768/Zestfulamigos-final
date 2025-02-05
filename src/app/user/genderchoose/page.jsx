@@ -13,7 +13,8 @@ const Page = () => {
     lng: 72.84055556,
     state: 'Maharashtra',
     city: 'Mumbai',
-    address: 'Kamal Building, B/1, New, Linking Rd, next to Burger King, Bandra West'
+    address:
+      'Kamal Building, B/1, New, Linking Rd, next to Burger King, Bandra West'
   });
   const router = useRouter();
   const dispatch = useDispatch();

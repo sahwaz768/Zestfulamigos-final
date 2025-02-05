@@ -43,7 +43,6 @@ const Page = () => {
     <>
       <div className="swipebox">
         <Chatheader
-          rightElement={<Notification />}
           backgroundColor="rgba(250, 236, 236, 0.8)"
           navLinks={navLinks}
         />
@@ -87,14 +86,14 @@ const Page = () => {
                         {'Dig deeper'}
                       </div>
                     </Link>
-                  <div>
-                    <span>Booking Rate</span>
-                    {companions[currentIndex].bookingrate} /{' '}
-                    {companions[currentIndex].bookingrateunit}
-                  </div>
-                  <div>
-                    {companions[currentIndex].distance.toFixed(2)} Km away
-                  </div>
+                    <div>
+                      <span>Booking Rate</span>
+                      {companions[currentIndex].bookingrate} /{' '}
+                      {companions[currentIndex].bookingrateunit}
+                    </div>
+                    <div>
+                      {companions[currentIndex].distance.toFixed(2)} Km away
+                    </div>
                   </div>
                 </div>
               </div>
@@ -109,19 +108,6 @@ const Page = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-export const Notification = () => {
-  return (
-    <>
-      <div className="flex gap-2 mr-4">
-        <Notify backgroundColor="black" color="white" />
-        <div className="bellicon">
-          <CgProfile color="white" size={20} />
         </div>
       </div>
     </>
@@ -147,12 +133,14 @@ export const Threeline = () => {
 
 export const Mastersidebar = () => {
   const handleLogout = async () => {
-    const { logoutUserService } = await import("../../../services/auth/logout.service");
-    const { removeUserData } = await import('../../../utils/removeUserData')
-    await logoutUserService()
-    await removeUserData()
-    redirect('/')
-  }
+    const { logoutUserService } = await import(
+      '../../../services/auth/logout.service'
+    );
+    const { removeUserData } = await import('../../../utils/removeUserData');
+    await logoutUserService();
+    await removeUserData();
+    redirect('/');
+  };
   const menuItems = [
     { label: 'Chats', route: './chat', icon: RiChatSmile3Line },
     {
@@ -171,7 +159,7 @@ export const Mastersidebar = () => {
           route: '/page-one/raise-concern',
           icon: MdOutlineReportProblem
         },
-        { label: 'Logout', icon: MdLogout, handleclick :handleLogout }
+        { label: 'Logout', icon: MdLogout, handleclick: handleLogout }
       ]
     }
   ];
@@ -188,7 +176,5 @@ export const Mastersidebar = () => {
     </>
   );
 };
-
-
 
 export default Page;

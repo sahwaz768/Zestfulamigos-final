@@ -15,7 +15,7 @@ const loadGoogleMapsScript = () => {
         if (window.google && window.google.maps) {
           resolve();
         } else {
-          reject(new Error("Google Maps API failed to load."));
+          reject(new Error('Google Maps API failed to load.'));
         }
       };
 
@@ -30,12 +30,18 @@ const Page = () => {
   const [map, setMap] = useState(null);
   const [directionsService, setDirectionsService] = useState(null);
   const [directionsDisplay, setDirectionsDisplay] = useState(null);
-  const [originLocation, setOriginLocation] = useState({ lat: 28.6139, lng: 77.2090 }); // Delhi
-  const [destinationLocation, setDestinationLocation] = useState({ lat: 19.0760, lng: 72.8777 }); // Mumbai
+  const [originLocation, setOriginLocation] = useState({
+    lat: 28.6139,
+    lng: 77.209
+  }); // Delhi
+  const [destinationLocation, setDestinationLocation] = useState({
+    lat: 19.076,
+    lng: 72.8777
+  }); // Mumbai
 
   const updateLocation = () => {
-    setOriginLocation({ lat: 28.6139, lng: 77.2090 }); // Keep Delhi static
-    setDestinationLocation({ lat: 19.0760, lng: 72.8777 }); // Keep Mumbai static
+    setOriginLocation({ lat: 28.6139, lng: 77.209 }); // Keep Delhi static
+    setDestinationLocation({ lat: 19.076, lng: 72.8777 }); // Keep Mumbai static
   };
 
   const initializeMap = () => {
@@ -43,7 +49,7 @@ const Page = () => {
       const mapOptions = {
         center: originLocation,
         zoom: 7,
-        mapTypeId: window.google.maps.MapTypeId.ROADMAP,
+        mapTypeId: window.google.maps.MapTypeId.ROADMAP
       };
       const newMap = new window.google.maps.Map(mapRef.current, mapOptions);
       setMap(newMap);
@@ -59,20 +65,25 @@ const Page = () => {
   };
 
   const calculateRoute = (directionsService, directionsDisplay) => {
-    if (directionsService && directionsDisplay && originLocation && destinationLocation) {
+    if (
+      directionsService &&
+      directionsDisplay &&
+      originLocation &&
+      destinationLocation
+    ) {
       const request = {
         origin: originLocation,
         destination: destinationLocation,
-        travelMode: window.google.maps.TravelMode.DRIVING,
+        travelMode: window.google.maps.TravelMode.DRIVING
       };
 
       directionsService.route(request, (result, status) => {
         if (status === window.google.maps.DirectionsStatus.OK) {
-          console.log("Distance:", result.routes[0].legs[0].distance.text);
+          console.log('Distance:', result.routes[0].legs[0].distance.text);
           directionsDisplay.setDirections(result);
         } else {
           directionsDisplay.setDirections({ routes: [] });
-          console.log("Error fetching directions: ", status);
+          console.log('Error fetching directions: ', status);
         }
       });
     }
@@ -92,18 +103,19 @@ const Page = () => {
         return () => clearInterval(interval);
       })
       .catch((error) => {
-        console.log("Failed to load Google Maps API:", error);
+        console.log('Failed to load Google Maps API:', error);
       });
   }, [directionsService, directionsDisplay]);
 
   return (
     <div>
-      <div id="googlemap" ref={mapRef} style={{ width: '100%', height: '582px' }}></div>
+      <div
+        id="googlemap"
+        ref={mapRef}
+        style={{ width: '100%', height: '582px' }}
+      ></div>
     </div>
   );
 };
 
 export default Page;
-
-
-

@@ -7,8 +7,8 @@ import { PiTimerThin } from 'react-icons/pi';
 import { GrTransaction } from 'react-icons/gr';
 import { RiServiceLine } from 'react-icons/ri';
 import { MdPendingActions } from 'react-icons/md';
-import { FaRegStar } from "react-icons/fa";
-import { CiLocationOn } from "react-icons/ci";
+import { FaRegStar } from 'react-icons/fa';
+import { CiLocationOn } from 'react-icons/ci';
 import { Secondsidebar } from '../chat/page';
 import { CompanionNotification } from '../chat/page';
 import { Companionsidebar } from '../chat/page';
@@ -28,19 +28,22 @@ const Page = () => {
   };
 
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "About Us", href: "./aboutus" },
-    { name: "Privacy Policy", href: "./privacypolicy" },
-    { name: "Contact", href: "./contactus" }
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: './aboutus' },
+    { name: 'Privacy Policy', href: './privacypolicy' },
+    { name: 'Contact', href: './contactus' }
   ];
   return (
     <div>
-      <Chatheader rightElement={< CompanionNotification />}  backgroundColor="rgba(250, 236, 236, 0.8)" navLinks={navLinks}   />
-      <div className='notifymbsecond'>
-      <Notify backgroundColor='transparent' color='black'/>
+      <Chatheader
+        backgroundColor="rgba(250, 236, 236, 0.8)"
+        navLinks={navLinks}
+      />
+      <div className="notifymbsecond">
+        <Notify backgroundColor="transparent" color="black" />
       </div>
       <div className="bookingbox">
-      <Companionsidebar/>
+        <Companionsidebar />
         <div className="booking-side">
           <div className="booking-type">
             <div
@@ -52,7 +55,7 @@ const Page = () => {
             </div>
             <div
               className="text-sm font-bold flex items-center bottomline2"
-               id="historybtn"
+              id="historybtn"
               onClick={showcompletedbooking}
             >
               History
@@ -74,7 +77,7 @@ const Page = () => {
                     <h1>11.00AM-12.00PM</h1>
                   </div>
                 </div>
-                
+
                 <div className="flex mt-4 text-sm gap-2 items-center">
                   <RiServiceLine /> <h1>Service booked</h1>
                 </div>
@@ -83,10 +86,9 @@ const Page = () => {
                   <h1>Status: Upcoming</h1>
                 </div>
                 <div className="flex mt-4 text-sm gap-2 items-center">
-                <CiLocationOn />
+                  <CiLocationOn />
                   <h1>Meetup Location: Mumbai</h1>
                 </div>
-               
               </div>
             </div>
             <div className="closed-booking-box" id="closed-booking-box">
@@ -105,7 +107,7 @@ const Page = () => {
                   </div>
                 </div>
                 <div className="flex mt-4 text-sm gap-2 items-center">
-                <FaRegStar />
+                  <FaRegStar />
                   <h1>Rate given: 4/5</h1>
                 </div>
                 <div className="flex mt-4 text-sm gap-2 items-center">
@@ -115,10 +117,9 @@ const Page = () => {
                   <MdPendingActions />
                   <h1>Status: completed</h1>
                 </div>
-                
+
                 <div>
                   <button>Rate</button>
-               
                 </div>
               </div>
             </div>
