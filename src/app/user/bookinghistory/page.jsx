@@ -8,10 +8,12 @@ import { MdOutlinePaid } from 'react-icons/md';
 import { Mastersidebar } from '../swipepage/page';
 import Notify from '@/components/Notify';
 import { capitalizedWord } from '@/utils/common.utils';
+import { useSelector } from 'react-redux';
 
 const page = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(null);
   const [historydata, setHistoryData] = useState(null);
+  const userDetails = useSelector((state) => state.AuthReducer.data);
 
   const showupcomingbooking = () => {
     document.getElementById('upcomingbtn').classList.add('bottomline');
@@ -38,6 +40,7 @@ const page = () => {
           const values = { pastBooking: [], upcoming: [] };
           for (let i = 0; i < data.length; i += 1) {
             const value = {
+              id: data[i].id,
               companion: data[i].users.filter((l) => l.isCompanion)[0],
               bookingdate: formatBookingTimingsforUi(
                 data[i].bookingstart,
@@ -59,17 +62,16 @@ const page = () => {
 
   const handleCancelClick = async () => {
     const bookingDetails = {
-      userId: '',
-      bookingid: ''
+      userId: userDetails?.userId,
+      bookingid: isOpen.id
     };
-
     try {
       const { cancelBooking } = await import(
         '../../../services/user/bookings.service'
       );
       const { data } = await cancelBooking(bookingDetails);
       if (data) {
-        console.log(data);
+        setIsOpen(null);
       }
     } catch (error) {
       console.log(error);
@@ -107,7 +109,7 @@ const page = () => {
                   <button className="yes" onClick={handleCancelClick}>
                     Yes
                   </button>
-                  <button className="no" onClick={() => setIsOpen(false)}>
+                  <button className="no" onClick={() => setIsOpen(null)}>
                     No
                   </button>
                 </div>
@@ -165,9 +167,11 @@ const page = () => {
                       <MdOutlinePaid />
                       <h1>Paid amount: {l.amount}</h1>
                     </div>
-                    <div>
-                      <button onClick={() => setIsOpen(true)}>cancel</button>
-                    </div>
+                    {l.status !== 'CANCELLED' && (
+                      <div>
+                        <button onClick={() => setIsOpen(l)}>cancel</button>
+                      </div>
+                    )}
                   </div>
                 ))
               ) : (

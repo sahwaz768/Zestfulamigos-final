@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Chatwindow from '@/components/chatwindow';
-//import withAuth from '@/app/hoc/wihAuth';
 import Chatheader from '@/components/Masterheader';
 import { GoLocation } from 'react-icons/go';
 import { AiOutlineSafety } from 'react-icons/ai';

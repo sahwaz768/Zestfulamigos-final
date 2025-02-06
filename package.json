@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "start:dev": "cross-env NODE_OPTIONS=--max-old-space-size=4096 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -15,10 +15,12 @@
     "@tailwindcss/postcss": "^4.0.0",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.9",
+    "cross-env": "^7.0.3",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "js-cookie": "^3.0.5",
     "next": "^15.1.6",
+    "next-optimized-images": "^2.6.2",
     "next-redux-wrapper": "^8.1.0",
     "nookies": "^2.5.2",
     "react": "^19.0.0",

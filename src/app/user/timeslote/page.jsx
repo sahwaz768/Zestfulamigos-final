@@ -2,9 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Guidmodel } from '../chat/page';
 import Chatheader from '@/components/Masterheader';
-import { Notification } from '../swipepage/page';
 import { useRouter } from 'next/navigation';
-import withAuth from '@/app/hoc/wihAuth';
 import { useSelector } from 'react-redux';
 import { redirect } from 'next/navigation';
 import { Threeline } from '../swipepage/page';
@@ -309,4 +307,4 @@ const LocationInput = ({ location, setLocation }) => {
   );
 };
 
-export default withAuth(Page);
+export default Page

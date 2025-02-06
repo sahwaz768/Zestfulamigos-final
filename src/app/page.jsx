@@ -1,8 +1,14 @@
 import React from 'react';
-import Homeheader from '@/components/Masterheader';
-import Homemidsection from '@/components/homemidsection';
-import Footer from '@/components/Footer';
-import Login from '@/components/Login';
+import dynamic from 'next/dynamic';
+// import Homeheader from '@/components/Masterheader';
+// import Homemidsection from '@/components/homemidsection';
+// import Footer from '@/components/Footer';
+// import Login from '@/components/Login';
+
+const Homeheader = dynamic(() => import('@/components/Masterheader'));
+const Homemidsection = dynamic(() => import('@/components/homemidsection'));
+const Footer = dynamic(() => import('@/components/Footer'));
+const Login = dynamic(() => import('@/components/Login'));
 
 const page = () => {
   const navLinks = [

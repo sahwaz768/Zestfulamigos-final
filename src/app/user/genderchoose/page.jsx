@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 // import Swipepagemodal from '@/components/swipepagemodal';
 import { useRouter } from 'next/navigation';
-import withAuth from '@/app/hoc/wihAuth';
 import { useDispatch } from 'react-redux';
 
 const Page = () => {
@@ -109,4 +108,4 @@ const Page = () => {
   );
 };
 
-export default withAuth(Page);
+export default Page
