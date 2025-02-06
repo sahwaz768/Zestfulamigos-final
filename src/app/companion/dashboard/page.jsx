@@ -1,6 +1,5 @@
 'use client';
 import React, { useState } from 'react';
-import { Secondsidebar } from '../chat/page';
 import { PiSquaresFourDuotone } from 'react-icons/pi';
 import Profile from 'src/app/Rectangle 12.png';
 import Couple from 'src/app/dashcouple.png';
@@ -8,6 +7,9 @@ import Image from 'next/image';
 import { IoIosStar } from 'react-icons/io';
 import { Companionsidebar } from '../chat/page';
 import Notify from '@/components/Notify';
+import withAuth from '@/app/hoc/wihAuth';
+import { useSelector } from 'react-redux';
+import { BASEURL } from '@/Constants/services.constants';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +20,7 @@ const page = () => {
   const [text, setText] = useState('');
   const [error, setError] = useState('');
 
+  const userDetails = useSelector((state) => state.AuthReducer.data);
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -33,6 +36,8 @@ const page = () => {
     alert('Form submitted successfully!');
     setText(''); // Clear the textarea after submission
   };
+  if(!userDetails) return <div>Loading....</div>
+
   return (
     <>
       <div className="dashboard-threeline">
@@ -42,7 +47,7 @@ const page = () => {
       </div>
       <div className="flex">
         <div>
-          <Companionsidebar />
+          <Companionsidebar userDetails={userDetails} />
         </div>
         <div className="dashboard">
           <div className="dashboard-header ">
@@ -53,18 +58,32 @@ const page = () => {
               <div>
                 <h1 className="font-bold">Dashboard</h1>
                 <h1 className="text-sm text-pink-700">
-                  Monday <span className="text-black">20 Jan</span>
+                  {new Date().toLocaleString('en-US', { weekday: 'long' })}{' '}
+                  <span className="text-black">
+                    {' '}
+                    {new Date().toLocaleString('en-US', {
+                      day: 'numeric',
+                      month: 'short'
+                    })}
+                  </span>
                 </h1>
               </div>
             </div>
             <div className="comp-admin flex justify-center items-center">
-              <Image src={Profile} alt="Picture of the author" />
-              <h1 className="text-sm">Alysaa jones</h1>
+              <Image
+                src={BASEURL + '/UserPhotos/companion1.jpg'}
+                alt="Picture of the author"
+                width={20}
+                height={20}
+              />
+              <h1 className="text-sm">{userDetails?.name}</h1>
             </div>
           </div>
           <div className="dashboard-midsection flex">
             <div className="mt-5">
-              <h1 className="md:text-3xl font-bold ml-5 ">Hi, Alyssa</h1>
+              <h1 className="md:text-3xl font-bold ml-5 ">
+                Hi, {userDetails?.name}
+              </h1>
               <h1 className="md:mt-3 ml-5 md:text-base text-sm">
                 Ready to start your day with same pitch decks
               </h1>
@@ -199,4 +218,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default withAuth(page);

@@ -1,20 +1,17 @@
 'use client';
-
 import Image from 'next/image';
 import Profile from '@/app/homepageimg.jpg';
 import Companionchatwindow from '@/components/companionchatwindow';
 import Chatheader from '@/components/Masterheader';
 import { CgProfile } from 'react-icons/cg';
-import React, { useState } from 'react';
-import { FaRegBell } from 'react-icons/fa6';
-import { MdLogout, MdOutlineReportProblem } from 'react-icons/md';
+import { MdLogout } from 'react-icons/md';
 import { RiChatSmile3Line } from 'react-icons/ri';
 import { MdOutlineHistory } from 'react-icons/md';
 import { CiSettings } from 'react-icons/ci';
 import Sidebar from '@/components/sidebar';
-import { useSelector } from 'react-redux';
-//import withAuth from '@/app/hoc/wihAuth';
 import Notify from '@/components/Notify';
+import { BASEURL } from '@/Constants/services.constants';
+import { redirect } from 'next/navigation';
 
 const page = () => {
   const handleResize = () => {
@@ -93,7 +90,17 @@ export const CompanionNotification = () => {
   );
 };
 
-export const Companionsidebar = () => {
+export const Companionsidebar = ({ userDetails: { name, email } }) => {
+  const handleLogout = async () => {
+    const { logoutUserService } = await import(
+      '../../../services/auth/logout.service'
+    );
+    const { removeUserData } = await import('../../../utils/removeUserData');
+    await logoutUserService();
+    await removeUserData();
+    redirect('/');
+  };
+
   const menuItems = [
     { label: 'Chats', route: './chat', icon: RiChatSmile3Line },
     {
@@ -108,16 +115,19 @@ export const Companionsidebar = () => {
       dropdownItems: [
         //   { label: 'Profile Settings', route: '/page-one/profile-settings',  },
         //    { label: 'Raise a Concern', route: '/page-one/raise-concern', icon: MdOutlineReportProblem },
-        { label: 'Logout', route: '/', icon: MdLogout }
+        {
+          label: 'Logout',
+          icon: MdLogout,
+          handleclick: handleLogout
+        }
       ]
     }
   ];
 
   const user = {
-    photo:
-      'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmVtYWxlJTIwbW9kZWx8ZW58MHx8MHx8fDA%3D',
-    name: 'John Doe',
-    email: 'johndoe@example.com'
+    photo: BASEURL + '/UserPhotos/companion1.jpg',
+    name,
+    email
   };
   return (
     <>

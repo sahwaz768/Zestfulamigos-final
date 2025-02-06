@@ -1,11 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Profile from 'src/app/homepageimg.jpg';
 import Chatwindow from '@/components/chatwindow';
 //import withAuth from '@/app/hoc/wihAuth';
 import Chatheader from '@/components/Masterheader';
-import { Notification } from '../swipepage/page';
 import { GoLocation } from 'react-icons/go';
 import { AiOutlineSafety } from 'react-icons/ai';
 import { CiLocationOff } from 'react-icons/ci';
@@ -17,6 +15,7 @@ import { BASEURL } from '@/Constants/services.constants';
 
 const Page = React.memo((props) => {
   const [chatrooms, setChatRooms] = useState(null);
+  const [selectedChat, setSelectedChat] = useState(null);
 
   useEffect(() => {
     import('../../../services/user/chats.service')
@@ -33,21 +32,10 @@ const Page = React.memo((props) => {
       });
   }, []);
 
-  const handleResize = () => {
-    if (window.matchMedia('(min-width: 768px)').matches) {
-      showchat1();
-    } else {
-      showchat();
-    }
-  };
-
-  const showchat1 = () => {
-    document.getElementById('chatwindow').style.display = 'block';
-  };
-
-  const showchat = () => {
-    document.getElementById('chatlist').style.display = 'none';
-    document.getElementById('chatwindow').style.display = 'block';
+  const handleSelectChat = (id) => {
+    // if (window.matchMedia('(min-width: 768px)').matches) {
+    // }
+    setSelectedChat(id);
   };
 
   const navLinks = [
@@ -80,7 +68,11 @@ const Page = React.memo((props) => {
             <div className="userlistbox">
               {chatrooms?.length ? (
                 chatrooms.map((l) => (
-                  <div className="userdetail" onClick={handleResize} key={l.id}>
+                  <div
+                    className="userdetail"
+                    onClick={() => handleSelectChat(l)}
+                    key={l.id}
+                  >
                     <Image
                       src={BASEURL + '/UserPhotos/companion1.jpg'}
                       alt="profile"
@@ -97,7 +89,7 @@ const Page = React.memo((props) => {
             </div>
           </div>
           <div className="chatwindow" id="chatwindow">
-            <Chatwindow />
+            {selectedChat && <Chatwindow selected={selectedChat} />}
           </div>
         </div>
       </div>

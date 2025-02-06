@@ -1,11 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Chatheader from '@/components/Masterheader';
-import { Notification } from '../swipepage/page';
-import { IoIosArrowRoundForward } from 'react-icons/io';
 import { IoCalendarOutline } from 'react-icons/io5';
-import { PiTimerThin } from 'react-icons/pi';
-import { GrTransaction } from 'react-icons/gr';
 import { RiServiceLine } from 'react-icons/ri';
 import { MdPendingActions } from 'react-icons/md';
 import { MdOutlinePaid } from 'react-icons/md';
@@ -61,6 +57,25 @@ const page = () => {
       });
   }, []);
 
+  const handleCancelClick = async () => {
+    const bookingDetails = {
+      userId: '',
+      bookingid: ''
+    };
+
+    try {
+      const { cancelBooking } = await import(
+        '../../../services/user/bookings.service'
+      );
+      const { data } = await cancelBooking(bookingDetails);
+      if (data) {
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'About Us', href: './aboutus' },
@@ -89,7 +104,9 @@ const page = () => {
               <div className="">
                 <h1 className="text-center text-2xl font-bold">Are you sure</h1>
                 <div className="flex justify-center gap-2 mr-3 my-3">
-                  <button className="yes">Yes</button>
+                  <button className="yes" onClick={handleCancelClick}>
+                    Yes
+                  </button>
                   <button className="no" onClick={() => setIsOpen(false)}>
                     No
                   </button>

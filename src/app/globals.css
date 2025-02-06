@@ -2124,7 +2124,6 @@ th {
 }
 .chatwindow {
   flex: 1;
-  display: none;
 
   max-width: 100%;
 }
@@ -2462,9 +2461,7 @@ th {
   .chatlist {
     width: 100%;
   }
-  .chatwindow {
-    display: none;
-  }
+
 }
 
 /* profile page */
