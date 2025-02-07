@@ -5,6 +5,7 @@ import { VscSend } from 'react-icons/vsc';
 import { CiLocationOn } from 'react-icons/ci';
 import { IoIosArrowBack } from 'react-icons/io';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import { BASEURL } from '@/Constants/services.constants';
 
 const chatwindow = ({ selected }) => {
   const [messages, setMessages] = useState([
@@ -15,112 +16,110 @@ const chatwindow = ({ selected }) => {
 
   const filteredWords = ['badword1', 'badword2'];
 
-  useEffect(() => {
-    const initializeSocket = async () => {
-      const {
-       setCookie, parseCookies
-      } = await import('nookies');
-      const { deletecookie } = await import('../utils/removeUserData')
-      const cookie = parseCookies();
-      // const { getRefreshToken } = await import(
-      //   'src/services/login/login.services'
-      // );
-      const { ACCESS_TOKEN_LOC } = await import(
-        '../Constants/common.constants'
-      );
-      const sendData = {
-        roomid: selected?.chatroomid,
-        username
-      };
+  // useEffect(() => {
+  //   const initializeSocket = async () => {
+  //     const { setCookie, parseCookies } = await import('nookies');
+  //     const { deletecookie } = await import('../utils/removeUserData');
+  //     const cookie = parseCookies();
+  //     // const { getRefreshToken } = await import(
+  //     //   'src/services/login/login.services'
+  //     // );
+  //     const { ACCESS_TOKEN_LOC } = await import(
+  //       '../Constants/common.constants'
+  //     );
+  //     const sendData = {
+  //       roomid: selected.id,
+  //       username
+  //     };
 
-      const verifyFriendOnline = (data) => {
-        const selectedUser = data.users?.find(
-          (l) => l.username === selected?.user?.username
-        );
-      };
+  //     const verifyFriendOnline = (data) => {
+  //       const selectedUser = data.users?.find(
+  //         (l) => l.username === selected?.user?.username
+  //       );
+  //     };
 
-      const socket = socketinit.socket();
-      socket.on('joinedUser', (data) => {
-        verifyFriendOnline(data);
-        setMessageData(() => data);
-      });
+  //     const socket = socketinit.socket();
+  //     socket.on('joinedUser', (data) => {
+  //       verifyFriendOnline(data);
+  //       setMessageData(() => data);
+  //     });
 
-      socket.on('message', (data) => {
-        verifyFriendOnline(data);
-        setMessageData(() => data);
-      });
+  //     socket.on('message', (data) => {
+  //       verifyFriendOnline(data);
+  //       setMessageData(() => data);
+  //     });
 
-      socket.on('leaveroom', (data) => {
-        verifyFriendOnline(data);
-        setMessageData(() => data);
-      });
+  //     socket.on('leaveroom', (data) => {
+  //       verifyFriendOnline(data);
+  //       setMessageData(() => data);
+  //     });
 
-      socket.on('tokenexpired', () => {
-        socketinit.removetoken();
-        // getRefreshToken().then((token) => {
-        //   socket.auth = { token: 'Bearer ' + token };
-        //   socket.disconnect().connect();
-        //   socketinit.addtoken((token) || '');
-        //   const lastEmit = cookie['lastEmit'];
-        //   if (lastEmit) {
-        //     const emitted = JSON.parse(lastEmit || '{}');
-        //     Object.keys(emitted).forEach((l) => {
-        //       setTimeout(() => socket.emit(l, emitted[l]), 500);
-        //     });
-        //     deletecookie('lastEmit');
-        //   }
-        // });
-      });
+  //     socket.on('tokenexpired', () => {
+  //       socketinit.removetoken();
+  //       // getRefreshToken().then((token) => {
+  //       //   socket.auth = { token: 'Bearer ' + token };
+  //       //   socket.disconnect().connect();
+  //       //   socketinit.addtoken((token) || '');
+  //       //   const lastEmit = cookie['lastEmit'];
+  //       //   if (lastEmit) {
+  //       //     const emitted = JSON.parse(lastEmit || '{}');
+  //       //     Object.keys(emitted).forEach((l) => {
+  //       //       setTimeout(() => socket.emit(l, emitted[l]), 500);
+  //       //     });
+  //       //     deletecookie('lastEmit');
+  //       //   }
+  //       // });
+  //     });
 
-      socket.on('invalidUser', () => {
-        const token = get(ACCESS_TOKEN_LOC);
-        if (token) {
-          socketinit.addtoken(token || '');
-          const lastEmit = JSON.parse(get('lastEmit') || '{}');
-          if (lastEmit && Object.keys(lastEmit).length) {
-            Object.keys(lastEmit).forEach((l) => {
-              socket.emit(l, lastEmit[l]);
-              deletecookie('lastEmit');
-            });
-          }
-        }
-      });
+  //     socket.on('invalidUser', () => {
+  //       const token = get(ACCESS_TOKEN_LOC);
+  //       if (token) {
+  //         socketinit.addtoken(token || '');
+  //         const lastEmit = JSON.parse(get('lastEmit') || '{}');
+  //         if (lastEmit && Object.keys(lastEmit).length) {
+  //           Object.keys(lastEmit).forEach((l) => {
+  //             socket.emit(l, lastEmit[l]);
+  //             deletecookie('lastEmit');
+  //           });
+  //         }
+  //       }
+  //     });
 
-      setCookie(null,
-        'lastEmit',
-        JSON.stringify({
-          joinchatroom: sendData
-        }),
-        { path: '/' }
-      );
-      socket.emit('joinchatroom', sendData);
-    };
-    if (selected) {
-      initializeSocket();
-    }
-    return () => {
-      const deinitializeSocket = async () => {
-        const {
-         setCookie
-        } = await import('nookies');
-        const socket = socketinit.socket();
-        socket.emit('leavechatroom', {
-          roomid: selected?.chatroomid,
-          username
-        });
-        setCookie(null,
-          'lastEmit',
-          JSON.stringify({
-            leavechatroom: { roomid: selected?.chatroomid, username }
-          }),
-          { path: '/' }
-        );
-      };
-      if (selected) {
-        deinitializeSocket();
-      }
-    };
-  }, [selected]);
+  //     setCookie(
+  //       null,
+  //       'lastEmit',
+  //       JSON.stringify({
+  //         joinchatroom: sendData
+  //       }),
+  //       { path: '/' }
+  //     );
+  //     socket.emit('joinchatroom', sendData);
+  //   };
+  //   if (selected) {
+  //     initializeSocket();
+  //   }
+  //   return () => {
+  //     const deinitializeSocket = async () => {
+  //       const { setCookie } = await import('nookies');
+  //       const socket = socketinit.socket();
+  //       socket.emit('leavechatroom', {
+  //         roomid: selected.id,
+  //         username
+  //       });
+  //       setCookie(
+  //         null,
+  //         'lastEmit',
+  //         JSON.stringify({
+  //           leavechatroom: { roomid: selected.id, username }
+  //         }),
+  //         { path: '/' }
+  //       );
+  //     };
+  //     if (selected) {
+  //       deinitializeSocket();
+  //     }
+  //   };
+  // }, [selected]);
 
   const censorMessage = (message) => {
     const regex = new RegExp(`\\b(${filteredWords.join('|')})\\b`, 'gi');
@@ -193,13 +192,14 @@ const chatwindow = ({ selected }) => {
                 <div className="mt-2 mx-2 chatbackbtn" onClick={backbtn}>
                   <IoIosArrowBack color="black" size={25} />
                 </div>
-
                 <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
-                  alt=""
+                  src={BASEURL + '/UserPhotos/companion1.jpg'}
+                  alt="profile"
+                  width={20}
+                  height={20}
                 />
                 <div className="ml-5 my-1">
-                  <h1 className=" font-bold">Olivia Rhye</h1>
+                  <h1 className=" font-bold">{selected.companion.firstname}</h1>
                   <p className="text-xs text-pink-700 ml-1 font-light">
                     Online
                   </p>
@@ -289,19 +289,19 @@ const Extensionbtn = () => {
           className={`extent-slot-button ${selectedSlot === 1 ? 'selected' : ''}`}
           onClick={() => handleSlotClick(1)}
         >
-          Slot 1
+          1 HOUR
         </button>
         <button
           className={`extent-slot-button ${selectedSlot === 2 ? 'selected' : ''}`}
           onClick={() => handleSlotClick(2)}
         >
-          Slot 2
+          2 HOURS
         </button>
         <button
           className={`extent-slot-button ${selectedSlot === 3 ? 'selected' : ''}`}
           onClick={() => handleSlotClick(3)}
         >
-          Slot 3
+          3 HOURS
         </button>
         <br />
 

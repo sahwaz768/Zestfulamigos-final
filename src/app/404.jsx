@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Page = () => {
+const Custom404 = () => {
   return (
     <div className="min-h-screen bg-pink-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full text-center space-y-8">
@@ -54,4 +54,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Custom404;

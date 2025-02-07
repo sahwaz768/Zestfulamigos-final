@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { FaRegBell } from 'react-icons/fa6';
 import Image from 'next/image'
-import Logo from 'src/app/companylogo.jpeg';
+import Logo from '@/shared/Assets/companylogo.jpeg';
 
 const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
   const [isOpen, setIsOpen] = useState(false);

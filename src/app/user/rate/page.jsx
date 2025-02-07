@@ -1,8 +1,8 @@
 'use client';
 import Image from 'next/image';
-import Party1 from 'src/app/party1.png';
-import Party2 from 'src/app/party2.png';
-import Photo from 'src/app/Rectangle 12.png';
+import Party1 from '@/shared/Assets/party1.png';
+import Party2 from '@/shared/Assets/party2.png';
+import Photo from '@/shared/Assets/Rectangle 12.png';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import React, { useState } from 'react';
 
@@ -64,7 +64,9 @@ const page = () => {
                   </button>
                 ))}
               </div>
-              <h1 className="text-center md:my-2 my-5">What all did you enjoy?</h1>
+              <h1 className="text-center md:my-2 my-5">
+                What all did you enjoy?
+              </h1>
               <textarea
                 className="rate-text"
                 placeholder="Write your review here..."

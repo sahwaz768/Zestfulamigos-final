@@ -1,14 +1,12 @@
 import React from 'react';
 
 const Page = () => {
- 
-
   return (
     <div className="min-h-screen bg-pink-50 flex items-center justify-center p-4">
       <div className="max-w-lg w-full space-y-8">
         {/* Error Icon */}
         <div className="flex justify-center">
-          <svg 
+          <svg
             className="w-24 h-24 text-pink-500"
             viewBox="0 0 24 24"
             fill="none"
@@ -27,7 +25,8 @@ const Page = () => {
             Oops! Something Went Wrong
           </h1>
           <p className="text-pink-700 text-lg">
-            We've encountered an unexpected error. Don't worry, it's not your fault!
+            We've encountered an unexpected error. Don't worry, it's not your
+            fault!
           </p>
           <p className="text-pink-600 text-sm">
             Error Code: 500 - Internal Server Error
@@ -37,11 +36,10 @@ const Page = () => {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
-            
             className="px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 
                      transition-colors duration-200 flex items-center justify-center gap-2"
           >
-            <svg 
+            <svg
               className="w-5 h-5"
               viewBox="0 0 24 24"
               fill="none"
@@ -55,11 +53,10 @@ const Page = () => {
             Retry
           </button>
           <button
-            
             className="px-6 py-3 bg-pink-100 text-pink-700 rounded-lg hover:bg-pink-200 
                      transition-colors duration-200 flex items-center justify-center gap-2"
           >
-            <svg 
+            <svg
               className="w-5 h-5"
               viewBox="0 0 24 24"
               fill="none"
@@ -75,7 +72,9 @@ const Page = () => {
 
         {/* Help Section */}
         <div className="bg-pink-100 p-6 rounded-lg">
-          <h2 className="text-pink-800 font-semibold mb-2">What you can try:</h2>
+          <h2 className="text-pink-800 font-semibold mb-2">
+            What you can try:
+          </h2>
           <ul className="text-pink-700 space-y-2 list-disc list-inside">
             <li>Refresh the page</li>
             <li>Check your internet connection</li>
@@ -87,7 +86,9 @@ const Page = () => {
         {/* Support Info */}
         <div className="text-center text-pink-600">
           <p>If the problem persists, please contact our support team</p>
-          <p className="text-sm mt-1">Reference ID: {Date.now().toString(36)}</p>
+          <p className="text-sm mt-1">
+            Reference ID: {Date.now().toString(36)}
+          </p>
         </div>
       </div>
     </div>

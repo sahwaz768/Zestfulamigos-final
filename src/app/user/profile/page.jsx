@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import Chatheader from '@/components/Masterheader';
-import { Notification } from '../swipepage/page';
-import withAuth from '@/app/hoc/wihAuth';
 import { Mastersidebar } from '../swipepage/page';
 import Notify from '@/components/Notify';
 
@@ -101,7 +99,6 @@ const Page = () => {
   return (
     <>
       <Chatheader
-        rightElement={<Notification />}
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />

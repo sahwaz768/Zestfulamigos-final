@@ -1,21 +1,19 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Chatheader from '@/components/Masterheader';
-import { Notification } from '../swipepage/page';
-import { IoIosArrowRoundForward } from 'react-icons/io';
 import { IoCalendarOutline } from 'react-icons/io5';
-import { PiTimerThin } from 'react-icons/pi';
-import { GrTransaction } from 'react-icons/gr';
 import { RiServiceLine } from 'react-icons/ri';
 import { MdPendingActions } from 'react-icons/md';
 import { MdOutlinePaid } from 'react-icons/md';
 import { Mastersidebar } from '../swipepage/page';
 import Notify from '@/components/Notify';
 import { capitalizedWord } from '@/utils/common.utils';
+import { useSelector } from 'react-redux';
 
 const page = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(null);
   const [historydata, setHistoryData] = useState(null);
+  const userDetails = useSelector((state) => state.AuthReducer.data);
 
   const showupcomingbooking = () => {
     document.getElementById('upcomingbtn').classList.add('bottomline');
@@ -42,6 +40,7 @@ const page = () => {
           const values = { pastBooking: [], upcoming: [] };
           for (let i = 0; i < data.length; i += 1) {
             const value = {
+              id: data[i].id,
               companion: data[i].users.filter((l) => l.isCompanion)[0],
               bookingdate: formatBookingTimingsforUi(
                 data[i].bookingstart,
@@ -61,6 +60,24 @@ const page = () => {
       });
   }, []);
 
+  const handleCancelClick = async () => {
+    const bookingDetails = {
+      userId: userDetails?.userId,
+      bookingid: isOpen.id
+    };
+    try {
+      const { cancelBooking } = await import(
+        '../../../services/user/bookings.service'
+      );
+      const { data } = await cancelBooking(bookingDetails);
+      if (data) {
+        setIsOpen(null);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'About Us', href: './aboutus' },
@@ -71,7 +88,6 @@ const page = () => {
   return (
     <div>
       <Chatheader
-        rightElement={<Notification />}
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />
@@ -90,8 +106,10 @@ const page = () => {
               <div className="">
                 <h1 className="text-center text-2xl font-bold">Are you sure</h1>
                 <div className="flex justify-center gap-2 mr-3 my-3">
-                  <button className="yes">Yes</button>
-                  <button className="no" onClick={() => setIsOpen(false)}>
+                  <button className="yes" onClick={handleCancelClick}>
+                    Yes
+                  </button>
+                  <button className="no" onClick={() => setIsOpen(null)}>
                     No
                   </button>
                 </div>
@@ -149,9 +167,11 @@ const page = () => {
                       <MdOutlinePaid />
                       <h1>Paid amount: {l.amount}</h1>
                     </div>
-                    <div>
-                      <button onClick={() => setIsOpen(true)}>cancel</button>
-                    </div>
+                    {l.status !== 'CANCELLED' && (
+                      <div>
+                        <button onClick={() => setIsOpen(l)}>cancel</button>
+                      </div>
+                    )}
                   </div>
                 ))
               ) : (
