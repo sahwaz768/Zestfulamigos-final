@@ -1,24 +1,54 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PiSquaresFourDuotone } from 'react-icons/pi';
-import Profile from 'src/app/Rectangle 12.png';
-import Couple from 'src/app/dashcouple.png';
+import Couple from '@/shared/Assets/dashcouple.png';
 import Image from 'next/image';
 import { IoIosStar } from 'react-icons/io';
 import { Companionsidebar } from '../chat/page';
 import Notify from '@/components/Notify';
-import withAuth from '@/app/hoc/wihAuth';
 import { useSelector } from 'react-redux';
 import { BASEURL } from '@/Constants/services.constants';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [historyData, setHistoryData] = useState(null);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
   // validation for text area
   const [text, setText] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    import('../../../services/user/bookings.service')
+      .then(({ getPreviousBookings }) => getPreviousBookings())
+      .then(async ({ data, error }) => {
+        if (data) {
+          const { formatBookingTimingsforUi } = await import(
+            '../../../utils/bookings.utils'
+          );
+          const values = { pastBooking: [], upcoming: [] };
+          for (let i = 0; i < data.length; i += 1) {
+            const value = {
+              id: data[i].id,
+              companion: data[i].users.filter((l) => l.isCompanion)[0],
+              bookingdate: formatBookingTimingsforUi(
+                data[i].bookingstart,
+                data[i].bookingend
+              ),
+              isPast:
+                new Date(Number(data[i].bookingstart)).getTime() < Date.now(),
+              status: data[i].status,
+              amount: data[i].amount
+            };
+            if (value.isPast) values.pastBooking.push(value);
+            else values.upcoming.push(value);
+          }
+          console.log(values);
+          setHistoryData(values);
+        }
+      });
+  }, []);
 
   const userDetails = useSelector((state) => state.AuthReducer.data);
   const handleSubmit = (e) => {
@@ -36,7 +66,7 @@ const page = () => {
     alert('Form submitted successfully!');
     setText(''); // Clear the textarea after submission
   };
-  if(!userDetails) return <div>Loading....</div>
+  if (!userDetails) return <div>Loading....</div>;
 
   return (
     <>
@@ -114,74 +144,52 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className="dashboard-userdetail">
-            <div className="dashboard-userprofile">
-              <Image src={Profile} alt="Picture of the author" />
-            </div>
-            <div className="flex flex-wrap">
-              <div className="md:mt-2 ml-2 gap-2">
-                <h1 className="text-sm md:text-base">
-                  Name:<span className="md:font-bold">Alysaa</span>
-                </h1>
-                <h1 className="text-sm md:text-base">
-                  Age:<span className="md:font-bold">20</span>
-                </h1>
-                <h1 className="text-sm md:text-base">
-                  Gender:<span className="md:font-bold">Male</span>
-                </h1>
+          {historyData?.upcoming.length ? (
+            historyData.upcoming?.map((l) => (
+              <div className="dashboard-userdetail">
+                <div className="dashboard-userprofile">
+                  <Image
+                    src={BASEURL + '/UserPhotos/companion1.jpg'}
+                    alt="Picture of the author"
+                    width={20}
+                    height={20}
+                  />
+                </div>
+                <div className="flex flex-wrap">
+                  <div className="md:mt-2 ml-2 gap-2">
+                    <h1 className="text-sm md:text-base">
+                      Name:<span className="md:font-bold">{l.user?.firstname}</span>
+                    </h1>
+                    <h1 className="text-sm md:text-base">
+                      Age:<span className="md:font-bold">20</span>
+                    </h1>
+                    <h1 className="text-sm md:text-base">
+                      Gender:<span className="md:font-bold">Male</span>
+                    </h1>
+                  </div>
+                  <div className="dashboard-purpose md:mt-2  gap-2">
+                    <h1 className="text-sm md:text-base">
+                      Time and date:
+                      <span className="md:font-bold ">{l.bookingdate} </span>
+                    </h1>
+                    <h1 className="text-sm md:text-base">
+                      Location of meet- up:
+                      <span className="md:font-bold ">Bkc Mumbai</span>
+                    </h1>
+                    <h1 className="text-sm md:text-base">
+                      Purpose of meet:
+                      <span className="md:font-bold ">Dinner</span>
+                    </h1>
+                  </div>
+                </div>
+                <div className="dashboard-cancel">
+                  <button onClick={openModal}>Cancel</button>
+                </div>
               </div>
-              <div className="dashboard-purpose md:mt-2  gap-2">
-                <h1 className="text-sm md:text-base">
-                  Time and date:
-                  <span className="md:font-bold ">8.00pm / 5-01-2025 </span>
-                </h1>
-                <h1 className="text-sm md:text-base">
-                  Location of meet- up:
-                  <span className="md:font-bold ">Bkc Mumbai</span>
-                </h1>
-                <h1 className="text-sm md:text-base">
-                  Purpose of meet:<span className="md:font-bold ">Dinner</span>
-                </h1>
-              </div>
-            </div>
-            <div className="dashboard-cancel">
-              <button onClick={openModal}>Cancel</button>
-            </div>
-          </div>
-          <div className="dashboard-userdetail">
-            <div className="dashboard-userprofile">
-              <Image src={Profile} alt="Picture of the author" />
-            </div>
-            <div className="flex flex-wrap">
-              <div className="md:mt-2 ml-2 gap-2">
-                <h1 className="text-sm md:text-base">
-                  Name:<span className="md:font-bold">Alysaa</span>
-                </h1>
-                <h1 className="text-sm md:text-base">
-                  Age:<span className="md:font-bold">20</span>
-                </h1>
-                <h1 className="text-sm md:text-base">
-                  Gender:<span className="md:font-bold">Male</span>
-                </h1>
-              </div>
-              <div className="dashboard-purpose md:mt-2  gap-2">
-                <h1 className="text-sm md:text-base">
-                  Time and date:
-                  <span className="md:font-bold">8.00pm / 5-01-2025 </span>
-                </h1>
-                <h1 className="text-sm md:text-base">
-                  Location of meet- up:
-                  <span className="md:font-bold">Bkc Mumbai</span>
-                </h1>
-                <h1 className="text-sm md:text-base">
-                  Purpose of meet:<span className="md:font-bold">Dinner</span>
-                </h1>
-              </div>
-            </div>
-            <div className="dashboard-cancel">
-              <button onClick={openModal}>Cancel</button>
-            </div>
-          </div>
+            ))
+          ) : (
+            <div>No Upcoming Bookings...</div>
+          )}
         </div>
       </div>
 
@@ -218,4 +226,4 @@ const page = () => {
   );
 };
 
-export default withAuth(page);
+export default page;

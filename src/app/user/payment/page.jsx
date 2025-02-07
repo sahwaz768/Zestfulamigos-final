@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
 import Image from 'next/image';
-import Payment from 'src/app/payment1.png';
+import Payment from '@/shared/Assets/payment1.png';
 import { Threeline } from '../swipepage/page';
 import { useRouter } from 'next/navigation';
 

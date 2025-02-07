@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Forgotpassword from '@/components/Forgotpassword';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useRouter } from 'next/navigation';
-import Companion from 'src/app/complogin.png';
+import Companion from '@/shared/Assets/complogin.png';
 import Image from 'next/image';
 
 const page = () => {

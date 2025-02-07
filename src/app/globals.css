@@ -48,7 +48,7 @@ body {
 .herosection {
   width: 100%;
   height: 100vh;
-  background-image: url('homepageimg.jpg');
+  background-image: url('../shared/Assets/homepageimg.jpg');
 
   background-size: cover;
   background-repeat: no-repeat;
@@ -359,7 +359,7 @@ body {
   border-radius: 0 0 200px 0;
 
   border: 1px solid #fff;
-  background: url('Ellipse\ .jpg'),
+  background: url('../shared/Assets/Ellipse\ .jpg'),
     radial-gradient(
       77.84% 77.84% at 45.87% 14.53%,
       rgba(0, 0, 0, 0) 0%,
@@ -376,7 +376,7 @@ body {
 .quarter-circle2 {
   width: 200px;
   height: 200px;
-  background: url('Ellipse\ .jpg'),
+  background: url('../shared/Assets/Ellipse\ .jpg'),
     radial-gradient(
       77.84% 77.84% at 45.87% 14.53%,
       rgba(0, 0, 0, 0) 0%,
@@ -861,7 +861,7 @@ body {
 
   float: right;
   cursor: pointer;
-  background-image: url('Malegender.svg');
+  background-image: url('../shared//Assets/Malegender.svg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -872,7 +872,7 @@ body {
   width: 200px;
   height: 200px;
 
-  background-image: url('Femalegender.svg');
+  background-image: url('../shared//Assets/Femalegender.svg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -905,7 +905,7 @@ body {
   width: 200px;
   height: 200px;
   border-radius: 0 200px 0 0;
-  background: url('Ellipse\ .jpg'),
+  background: url('../shared/Assets/Ellipse\ .jpg'),
     radial-gradient(
       77.84% 77.84% at 45.87% 14.53%,
       rgba(0, 0, 0, 0) 0%,
@@ -924,7 +924,7 @@ body {
   height: 200px;
   border-radius: 200px 0 0 0;
   margin-left: auto;
-  background: url('Ellipse\ .jpg'),
+  background: url('../shared/Assets/Ellipse\ .jpg'),
     radial-gradient(
       77.84% 77.84% at 45.87% 14.53%,
       rgba(0, 0, 0, 0) 0%,
