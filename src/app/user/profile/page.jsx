@@ -4,6 +4,8 @@ import { CgProfile } from 'react-icons/cg';
 import Chatheader from '@/components/Masterheader';
 import { Mastersidebar } from '@/components/MasterSidebar';
 import Notify from '@/components/Notify';
+import { useDispatch } from 'react-redux';
+import { notitrigger } from '@/Redux/notiReducer/notiReducer';
 
 const Page = () => {
   const preExistingData = {
@@ -14,6 +16,7 @@ const Page = () => {
     age: '30',
     gender: 'male'
   };
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState(preExistingData);
   const [imageUrl, setImageUrl] = useState(preExistingData.profilePicture);
@@ -84,6 +87,7 @@ const Page = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(notitrigger({ message: 'Just Testing...', type: 'success' }));
     if (validate()) {
       console.log('Form data submitted:', formData);
     }

@@ -1,8 +1,7 @@
 'use client';
 import withAuth from '../hoc/wihAuth';
 
-const CompanionLayout = ({ children }) => {
-  console.log('Companion Layout');
+const CompanionLayout = ({ children }) => {Ī
   return <div>{children}</div>;
 };
 

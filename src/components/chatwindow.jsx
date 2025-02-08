@@ -211,18 +211,7 @@ const chatwindow = ({ selected }) => {
 
   return (
     <>
-      {isOpenexmodel && (
-        <div className="extension-modal-overlay">
-          <div className="extension-modal-content">
-            <span className="close" onClick={closeModal}>
-              &times;
-            </span>
-            <h1 className="text-2xl">slot extension</h1>
-            <h1 className="text-xl text-center my-4">Extent your duration</h1>
-            <Extensionbtn />
-          </div>
-        </div>
-      )}
+      {isOpenexmodel && <Extensionbtn closeModal={closeModal} bookingid={selected.booking} />}
       <div className="chat-window">
         <div className="chat-header">
           <div className="chatheader">
@@ -257,14 +246,18 @@ const chatwindow = ({ selected }) => {
               </div>
               {/* Dropdown Menu */}
               {isOpen && (
-                <ul
-                  className="dropdown-menu-extension"
-                  style={{ cursor: 'pointer' }}
-                >
-                  <div className="extension-slote" onClick={openModal}>
-                    slote extension
-                  </div>
-                </ul>
+                <div>
+                  {/* {selected.session && selected.session?.length && ( */}
+                    <ul
+                      className="dropdown-menu-extension"
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <div className="extension-slote" onClick={openModal}>
+                        slote extension
+                      </div>
+                    </ul>
+                  {/* )} */}
+                </div>
               )}
             </div>
           </div>

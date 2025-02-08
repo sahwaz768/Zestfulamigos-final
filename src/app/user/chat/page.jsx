@@ -24,7 +24,9 @@ const Page = React.memo((props) => {
           const values = data.map((l) => ({
             user: l.User.filter((p) => !p.isCompanion)[0],
             companion: l.User.filter((p) => p.isCompanion)[0],
-            id: l.id
+            id: l.id,
+            booking: l.Bookings,
+            session: l.Bookings?.Sessions
           }));
           setChatRooms(values);
         }
