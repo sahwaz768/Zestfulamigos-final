@@ -5,7 +5,7 @@ import { IoCalendarOutline } from 'react-icons/io5';
 import { RiServiceLine } from 'react-icons/ri';
 import { MdPendingActions } from 'react-icons/md';
 import { MdOutlinePaid } from 'react-icons/md';
-import { Mastersidebar } from '../swipepage/page';
+import { Mastersidebar } from '@/components/MasterSidebar';
 import Notify from '@/components/Notify';
 import { capitalizedWord } from '@/utils/common.utils';
 import { useSelector } from 'react-redux';

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import Chatheader from '@/components/Masterheader';
-import { Mastersidebar } from '../swipepage/page';
+import { Mastersidebar } from '@/components/MasterSidebar';
 import Notify from '@/components/Notify';
 
 const Page = () => {

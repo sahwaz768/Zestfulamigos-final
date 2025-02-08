@@ -4,12 +4,11 @@ import { FaChevronDown } from 'react-icons/fa';
 import Link from 'next/link';
 import Image from 'next/image';
 import { BASEURL } from '@/Constants/services.constants';
-import { useSelector } from 'react-redux';
 
-const Sidebar = ({ menuItems }) => {
+const Sidebar = ({ menuItems, userDetails }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const userDetails = useSelector((state) => state.AuthReducer.data);
+  
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);

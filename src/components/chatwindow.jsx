@@ -1,149 +1,188 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { IoCallOutline } from 'react-icons/io5';
 import { VscSend } from 'react-icons/vsc';
 import { CiLocationOn } from 'react-icons/ci';
 import { IoIosArrowBack } from 'react-icons/io';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { BASEURL } from '@/Constants/services.constants';
+import { socketinit } from '@/Constants/socket.io.config';
+import dynamic from 'next/dynamic';
+
+const Extensionbtn = dynamic(() => import('./extentionslotmodel'), {
+  ssr: false
+});
 
 const chatwindow = ({ selected }) => {
-  const [messages, setMessages] = useState([
-    { text: 'Hi there!', sender: 'receiver', time: '12:00 PM' },
-    { text: 'Hello!', sender: 'sender', time: '12:01 PM' }
-  ]);
+  const socket = socketinit.socket();
+  const [messagedata, setMessageData] = useState(null);
   const [inputValue, setInputValue] = useState('');
 
   const filteredWords = ['badword1', 'badword2'];
 
-  // useEffect(() => {
-  //   const initializeSocket = async () => {
-  //     const { setCookie, parseCookies } = await import('nookies');
-  //     const { deletecookie } = await import('../utils/removeUserData');
-  //     const cookie = parseCookies();
-  //     // const { getRefreshToken } = await import(
-  //     //   'src/services/login/login.services'
-  //     // );
-  //     const { ACCESS_TOKEN_LOC } = await import(
-  //       '../Constants/common.constants'
-  //     );
-  //     const sendData = {
-  //       roomid: selected.id,
-  //       username
-  //     };
+  useEffect(() => {
+    const initializeSocket = async () => {
+      const { setCookie, parseCookies } = await import('nookies');
+      const { deletecookie } = await import('../utils/removeUserData');
+      const cookie = parseCookies();
+      const { getAccessTokenFromRefreshTokenService } = await import(
+        '../services/auth/login.service'
+      );
+      const { ACCESS_TOKEN_LOC } = await import(
+        '../Constants/common.constants'
+      );
+      const sendData = {
+        roomid: selected.id,
+        userid: selected.user?.id
+      };
 
-  //     const verifyFriendOnline = (data) => {
-  //       const selectedUser = data.users?.find(
-  //         (l) => l.username === selected?.user?.username
-  //       );
-  //     };
+      const verifyFriendOnline = (data) => {
+        const selectedUser = data.users?.find(
+          (l) => l.username === selected?.user?.username
+        );
+      };
+      socket.on('joinedUser', (data) => {
+        const values = data.map((l) => ({
+          text: l.body,
+          id: l.id,
+          sender: l.senderid === selected.userid ? 'receiver' : 'sender',
+          time: new Date(l.createdAt).toLocaleString('en-US', {
+            hour: 'numeric',
+            hour12: true
+          })
+        }));
+        setMessageData(() => values);
+      });
 
-  //     const socket = socketinit.socket();
-  //     socket.on('joinedUser', (data) => {
-  //       verifyFriendOnline(data);
-  //       setMessageData(() => data);
-  //     });
+      socket.on('message', (data) => {
+        const values = data.map((l) => ({
+          text: l.body,
+          id: l.id,
+          sender: l.senderid === selected.userid ? 'receiver' : 'sender',
+          time: new Date(l.createdAt).toLocaleString('en-US', {
+            hour: 'numeric',
+            hour12: true
+          })
+        }));
+        setMessageData(() => values);
+      });
 
-  //     socket.on('message', (data) => {
-  //       verifyFriendOnline(data);
-  //       setMessageData(() => data);
-  //     });
+      // socket.on('leaveroom', (data) => {
+      //   verifyFriendOnline(data);
+      //   setMessageData(() => data);
+      // });
 
-  //     socket.on('leaveroom', (data) => {
-  //       verifyFriendOnline(data);
-  //       setMessageData(() => data);
-  //     });
+      socket.on('tokenexpired', () => {
+        console.log('TokenExpired Emitted');
+        socketinit.removetoken();
+        // getRefreshToken().then((token) => {
+        //   socket.auth = { token: 'Bearer ' + token };
+        //   socket.disconnect().connect();
+        //   socketinit.addtoken((token) || '');
+        //   const lastEmit = cookie['lastEmit'];
+        //   if (lastEmit) {
+        //     const emitted = JSON.parse(lastEmit || '{}');
+        //     Object.keys(emitted).forEach((l) => {
+        //       setTimeout(() => socket.emit(l, emitted[l]), 500);
+        //     });
+        //     deletecookie('lastEmit');
+        //   }
+        // });
+      });
 
-  //     socket.on('tokenexpired', () => {
-  //       socketinit.removetoken();
-  //       // getRefreshToken().then((token) => {
-  //       //   socket.auth = { token: 'Bearer ' + token };
-  //       //   socket.disconnect().connect();
-  //       //   socketinit.addtoken((token) || '');
-  //       //   const lastEmit = cookie['lastEmit'];
-  //       //   if (lastEmit) {
-  //       //     const emitted = JSON.parse(lastEmit || '{}');
-  //       //     Object.keys(emitted).forEach((l) => {
-  //       //       setTimeout(() => socket.emit(l, emitted[l]), 500);
-  //       //     });
-  //       //     deletecookie('lastEmit');
-  //       //   }
-  //       // });
-  //     });
+      socket.on('invalidUser', () => {
+        const token = cookie[ACCESS_TOKEN_LOC];
+        console.log('InvalidUser Emitted', token);
+        if (token) {
+          socketinit.addtoken(token || '');
+          const lastEmit = JSON.parse(get('lastEmit') || '{}');
+          if (lastEmit && Object.keys(lastEmit).length) {
+            Object.keys(lastEmit).forEach((l) => {
+              socket.emit(l, lastEmit[l]);
+              deletecookie('lastEmit');
+            });
+          }
+        }
+      });
 
-  //     socket.on('invalidUser', () => {
-  //       const token = get(ACCESS_TOKEN_LOC);
-  //       if (token) {
-  //         socketinit.addtoken(token || '');
-  //         const lastEmit = JSON.parse(get('lastEmit') || '{}');
-  //         if (lastEmit && Object.keys(lastEmit).length) {
-  //           Object.keys(lastEmit).forEach((l) => {
-  //             socket.emit(l, lastEmit[l]);
-  //             deletecookie('lastEmit');
-  //           });
-  //         }
-  //       }
-  //     });
+      setCookie(
+        null,
+        'lastEmit',
+        JSON.stringify({
+          joinchatroom: sendData
+        }),
+        { path: '/' }
+      );
+      socket.emit('joinchatroom', sendData);
+      console.log('Joinchatroomemitted');
+    };
+    if (selected) {
+      initializeSocket();
+    }
+    return () => {
+      const deinitializeSocket = async () => {
+        // const { setCookie } = await import('nookies');
 
-  //     setCookie(
-  //       null,
-  //       'lastEmit',
-  //       JSON.stringify({
-  //         joinchatroom: sendData
-  //       }),
-  //       { path: '/' }
-  //     );
-  //     socket.emit('joinchatroom', sendData);
-  //   };
-  //   if (selected) {
-  //     initializeSocket();
-  //   }
-  //   return () => {
-  //     const deinitializeSocket = async () => {
-  //       const { setCookie } = await import('nookies');
-  //       const socket = socketinit.socket();
-  //       socket.emit('leavechatroom', {
-  //         roomid: selected.id,
-  //         username
-  //       });
-  //       setCookie(
-  //         null,
-  //         'lastEmit',
-  //         JSON.stringify({
-  //           leavechatroom: { roomid: selected.id, username }
-  //         }),
-  //         { path: '/' }
-  //       );
-  //     };
-  //     if (selected) {
-  //       deinitializeSocket();
-  //     }
-  //   };
-  // }, [selected]);
+        console.log('Disconnected');
+        // socket.emit('leavechatroom', {
+        //   roomid: selected.id,
+        //   username
+        // });
+        // setCookie(
+        //   null,
+        //   'lastEmit',
+        //   JSON.stringify({
+        //     leavechatroom: { roomid: selected.id, username }
+        //   }),
+        //   { path: '/' }
+        // );
+      };
+      if (selected) {
+        socket.disconnect();
+      }
+    };
+  }, [selected]);
 
   const censorMessage = (message) => {
     const regex = new RegExp(`\\b(${filteredWords.join('|')})\\b`, 'gi');
     return message.replace(regex, '****');
   };
 
-  const getCurrentTime = () => {
-    const now = new Date();
-    const hours = now.getHours() % 12 || 12;
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
-    return `${hours}:${minutes} ${ampm}`;
-  };
-
-  const sendMessage = () => {
-    if (inputValue.trim()) {
-      const cleanMessage = censorMessage(inputValue);
-      setMessages([
-        ...messages,
-        { text: cleanMessage, sender: 'sender', time: getCurrentTime() }
-      ]);
-      setInputValue('');
-    }
-  };
+  const sendNewMessage = useCallback(
+    async (content) => {
+      if (inputValue && content) {
+        // set(
+        //   'lastEmit',
+        //   JSON.stringify({
+        //     sendMessage: { roomid: selected.chatroomid, username, message }
+        //   }),
+        //   { expires: 1 / 288 }
+        // );
+        socket.emit('sendMessage', {
+          roomid: selected.id,
+          userid: selected.user?.id,
+          message: {
+            content,
+            sender: selected.user?.id
+          }
+        });
+        setInputValue('');
+        // socket.on('tokenexpired', () => {
+        //   getRefreshToken().then((token) => {
+        //     socket.auth = { token: 'Bearer ' + token };
+        //     socket.disconnect().connect();
+        //     socketinit.addtoken((token as string) || '');
+        //     socket.emit('sendMessage', {
+        //       roomid: selected.chatroomid,
+        //       username,
+        //       message
+        //     });
+        //   });
+        // });
+      }
+    },
+    [inputValue]
+  );
 
   const handlePhoneCall = () => {
     const phoneNumber = '+1234567890';
@@ -209,12 +248,19 @@ const chatwindow = ({ selected }) => {
                 <IoCallOutline size={20} color="white" />
                 <h1 className="text-lg">call</h1>
               </div>
-              <div className="mt-3 mr-4" onClick={toggleDropdown}>
+              <div
+                className="mt-3 mr-4"
+                onClick={toggleDropdown}
+                style={{ cursor: 'pointer' }}
+              >
                 <BsThreeDotsVertical color="pink" size={30} />
               </div>
               {/* Dropdown Menu */}
               {isOpen && (
-                <ul className="dropdown-menu-extension">
+                <ul
+                  className="dropdown-menu-extension"
+                  style={{ cursor: 'pointer' }}
+                >
                   <div className="extension-slote" onClick={openModal}>
                     slote extension
                   </div>
@@ -226,17 +272,21 @@ const chatwindow = ({ selected }) => {
             <Timer />
           </div>
           <div className="chat-body">
-            {messages.map((msg, index) => (
-              <div key={index} className={`message ${msg.sender}`}>
-                {msg.text}
-                <br />
-                <p className="msgtime">{msg.time}</p>
-              </div>
-            ))}
+            {messagedata &&
+              messagedata.map((msg) => (
+                <div key={msg.id} className={`message ${msg.sender}`}>
+                  {msg.text}
+                  <br />
+                  <p className="msgtime">{msg.time}</p>
+                </div>
+              ))}
           </div>
         </div>
 
-        <div className="chat-input">
+        <div
+          className="chat-input"
+          onKeyUp={(e) => e.key === 'Enter' && sendNewMessage(inputValue)}
+        >
           <div className="chat-input-container">
             <input
               type="text"
@@ -249,7 +299,10 @@ const chatwindow = ({ selected }) => {
               <div className="flex justify-center items-center mx-4">
                 <CiLocationOn color="white" size={20} />
               </div>
-              <div className="msgsendbtn" onClick={sendMessage}>
+              <div
+                className="msgsendbtn"
+                onClick={() => sendNewMessage(inputValue)}
+              >
                 <h1>Send</h1>
                 <div>
                   <VscSend color="black" size={20} />
@@ -258,60 +311,6 @@ const chatwindow = ({ selected }) => {
             </div>
           </div>
         </div>
-      </div>
-    </>
-  );
-};
-
-const Extensionbtn = () => {
-  const [selectedSlot, setSelectedSlot] = useState(null);
-  const [error, setError] = useState('');
-
-  const handleSlotClick = (slot) => {
-    setSelectedSlot(slot);
-    setError(''); // Clear the error if a slot is selected
-  };
-
-  const handleSubmit = () => {
-    if (!selectedSlot) {
-      setError('Please select a slot before submitting.');
-      return;
-    }
-
-    console.log(`Selected slot: ${selectedSlot}`);
-    setError('');
-  };
-
-  return (
-    <>
-      <div className="slot-extension-btn">
-        <button
-          className={`extent-slot-button ${selectedSlot === 1 ? 'selected' : ''}`}
-          onClick={() => handleSlotClick(1)}
-        >
-          1 HOUR
-        </button>
-        <button
-          className={`extent-slot-button ${selectedSlot === 2 ? 'selected' : ''}`}
-          onClick={() => handleSlotClick(2)}
-        >
-          2 HOURS
-        </button>
-        <button
-          className={`extent-slot-button ${selectedSlot === 3 ? 'selected' : ''}`}
-          onClick={() => handleSlotClick(3)}
-        >
-          3 HOURS
-        </button>
-        <br />
-
-        {error && <p className="text-sm text-gray-600">{error}</p>}
-        <button className="extention-submit-button" onClick={handleSubmit}>
-          Requested access
-        </button>
-        <h1 className="text-center text-sm text-gray-600">
-          Your Request is under process
-        </h1>
       </div>
     </>
   );

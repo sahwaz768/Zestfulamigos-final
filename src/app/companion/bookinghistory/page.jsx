@@ -1,11 +1,12 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Chatheader from '@/components/Masterheader';
 import Notify from '@/components/Notify';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { RiServiceLine } from 'react-icons/ri';
 import { MdPendingActions } from 'react-icons/md';
-import { Companionsidebar } from '../chat/page';
+import { Mastersidebar } from '@/components/MasterSidebar';
+import { capitalizedWord } from '@/utils/common.utils';
 
 const Page = () => {
     const [historydata, setHistoryData] = useState(null);
@@ -23,6 +24,7 @@ const Page = () => {
               const value = {
                 id: data[i].id,
                 companion: data[i].users.filter((l) => l.isCompanion)[0],
+                user: data[i].users.filter((l) => !l.isCompanion)[0],
                 bookingdate: formatBookingTimingsforUi(
                   data[i].bookingstart,
                   data[i].bookingend
@@ -60,6 +62,7 @@ const Page = () => {
     { name: 'Privacy Policy', href: './privacypolicy' },
     { name: 'Contact', href: './contactus' }
   ];
+
   return (
     <div>
       <Chatheader
@@ -70,7 +73,7 @@ const Page = () => {
         <Notify backgroundColor="transparent" color="black" />
       </div>
       <div className="bookingbox">
-        <Companionsidebar />
+        <Mastersidebar isCompanion={true}/>
         <div className="booking-side">
           <div className="booking-type">
             <div
@@ -125,7 +128,7 @@ const Page = () => {
                 historydata.pastBooking?.map((l, i) => (
                   <div className="upcoming-slot" key={i * 300}>
                     <h1 className="text-sm font-bold text-gray-500">
-                      Last meting with {l.companion?.firstname}
+                      Last meting with {l.user?.firstname}
                     </h1>
                     <div className="flex mt-4 gap-8">
                       <div className="flex items-center text-sm gap-2">

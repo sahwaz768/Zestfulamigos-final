@@ -8,7 +8,7 @@ import { AiOutlineSafety } from 'react-icons/ai';
 import { CiLocationOff } from 'react-icons/ci';
 import { BiLocationPlus } from 'react-icons/bi';
 import { IoIosTimer } from 'react-icons/io';
-import { Mastersidebar } from '../swipepage/page';
+import { Mastersidebar } from '@/components/MasterSidebar';
 import Notify from '@/components/Notify';
 import { BASEURL } from '@/Constants/services.constants';
 
@@ -71,6 +71,7 @@ const Page = React.memo((props) => {
                     className="userdetail"
                     onClick={() => handleSelectChat(l)}
                     key={l.id}
+                    style={{ cursor: 'pointer' }}
                   >
                     <Image
                       src={BASEURL + '/UserPhotos/companion1.jpg'}
