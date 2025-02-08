@@ -3,9 +3,12 @@ import React, { useState } from 'react';
 import { FaRegBell } from 'react-icons/fa6';
 import Image from 'next/image'
 import Logo from '@/shared/Assets/companylogo.jpeg';
+import { useSelector } from 'react-redux';
 
 const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const notificationRedux = useSelector((state) => state.userNotifications.data);
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -59,7 +62,7 @@ const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
           </div>
           <div className="notificatioview text-sm text-gray-900">
             <div className="">
-              {notifications.map((notification) => (
+              {notificationRedux && notificationRedux.map((notification) => (
                 <div
                   key={notification.id}
                   className="notification-card   flex items-start  bg-white shadow-sm  relative gap-3 py-3"
@@ -75,10 +78,10 @@ const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
                   <div className="">
                     <div className="flex justify-between items-center gap-4">
                       <p className="text-xs text-gray-600 ">
-                        {notification.description}
+                        {notification.content}
                       </p>
                       <button
-                        onClick={() => removeNotification(notification.id)}
+                        onClick={() => console.log(notification.id)}
                         className="text-blue-800 hover:text-red-500 crossbtn"
                       >
                         ✕
@@ -86,7 +89,7 @@ const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
                     </div>
 
                     <small className="text-xs text-red-700 pt-6 ">
-                      {notification.time}
+                    4 minutes ago
                     </small>
                   </div>
                 </div>
