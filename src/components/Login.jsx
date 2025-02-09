@@ -215,7 +215,7 @@ const Login = () => {
               {/* login form end here */}
               <div className="flex mt-3 mb-1 justify-center ">
                 <p className="text-xs text-black">Dont have an account ? </p>{' '}
-                <Link href={'./user/signup'}>
+                <Link href={'./signup'}>
                   <p className="text-pink-600 text-xs">Sign up here</p>
                 </Link>
               </div>

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect } from 'react';
-import withAuth from '../hoc/wihAuth';
+import withAuth from '../../shared/hoc/wihAuth';
 
 const UserLayout = ({ children }) => {
   useEffect(() => {

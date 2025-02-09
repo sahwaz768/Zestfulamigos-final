@@ -2,11 +2,11 @@
 import React, { useState } from 'react';
 import Chatheader from '@/components/Masterheader';
 import Link from 'next/link';
-
 import { useSelector } from 'react-redux';
 import { redirect } from 'next/navigation';
 import { BASEURL } from '@/Constants/services.constants';
 import Notify from '@/components/Notify';
+import { Mastersidebar } from '@/components/MasterSidebar';
 
 const Page = () => {
   const companions = useSelector((state) => state.companionFind.data?.data);
@@ -62,47 +62,50 @@ const Page = () => {
               alt="Background card"
             />
           </div>
-
-          <div className="container">
-            <div className="card-container">
-              <div className="card">
-                <img
-                  src={BASEURL + `/` + 'UserPhotos/companion1.jpg'}
-                  alt={'profile image'}
-                  className="slide-image"
-                />
-                <div>
-                  <div>{companions[currentIndex].firstname}</div>
-                  <div className="card-footer">
-                    <Link
-                      href={`./companiondetail/?companionId=${companions[currentIndex].userid}`}
-                    >
-                      <div className="card-title text-center text-xs font-extrabold">
-                        {'Dig deeper'}
+          {companions && companions.length ? (
+            <div className="container">
+              <div className="card-container">
+                <div className="card">
+                  <img
+                    src={BASEURL + `/` + companions[currentIndex].images[0]}
+                    alt={'profile image'}
+                    className="slide-image"
+                  />
+                  <div>
+                    <div>{companions[currentIndex].firstname}</div>
+                    <div className="card-footer">
+                      <Link
+                        href={`./companiondetail/?companionId=${companions[currentIndex].userId}`}
+                      >
+                        <div className="card-title text-center text-xs font-extrabold">
+                          {'Dig deeper'}
+                        </div>
+                      </Link>
+                      <div>
+                        <span>Booking Rate</span>
+                        {companions[currentIndex].bookingrate} /{' '}
+                        {companions[currentIndex].bookingrateunit}
                       </div>
-                    </Link>
-                    <div>
-                      <span>Booking Rate</span>
-                      {companions[currentIndex].bookingrate} /{' '}
-                      {companions[currentIndex].bookingrateunit}
-                    </div>
-                    <div>
-                      {companions[currentIndex].distance.toFixed(2)} Km away
+                      <div>
+                        {companions[currentIndex].distance.toFixed(2)} Km away
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="navigation">
-                <button className="nav-button" onClick={handlePrev}>
-                  ←
-                </button>
-                <button className="nav-button" onClick={handleNext}>
-                  →
-                </button>
+                <div className="navigation">
+                  <button className="nav-button" onClick={handlePrev}>
+                    ←
+                  </button>
+                  <button className="nav-button" onClick={handleNext}>
+                    →
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div>No Companions find in your Area right now..</div>
+          )}
         </div>
       </div>
     </>
@@ -125,6 +128,5 @@ export const Threeline = () => {
     </>
   );
 };
-
 
 export default Page;

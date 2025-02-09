@@ -1,13 +1,15 @@
-
+import { failureTransaction } from '@/services/transactions/makepayement.service';
+import { useRouter } from 'next/router';
 import querystring from 'querystring';
+import { useEffect } from 'react';
 
 export async function getServerSideProps({ req, res }) {
   if (req.method === 'POST') {
     // Handle POST request here
     let data;
     try {
-       await new Promise((resolve, reject) => {
-        req.on('data', chunk => {
+      await new Promise((resolve, reject) => {
+        req.on('data', (chunk) => {
           data += chunk;
         });
 
@@ -23,7 +25,6 @@ export async function getServerSideProps({ req, res }) {
     } catch (error) {
       console.log('Error parsing POST data:', error);
     }
-    // Respond with a result, but keep the page rendering
     return {
       props: {
         message: 'POST request received and processed',
@@ -43,11 +44,29 @@ export async function getServerSideProps({ req, res }) {
 }
 
 export default function Page(props) {
-  console.log('Props received:', props);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (props && props.data) {
+      const params = new URL(document.location.toString()).searchParams;
+      const bookingId = params.get('bookingId');
+      failureTransaction(props.data).then(({ data, error }) => {
+        debugger;
+        if (error) {
+          router.push('/');
+        } else {
+          router.push(`/user/payment?bookingId=${bookingId}`);
+        }
+      });
+    } else {
+      router.push('/');
+    }
+  }, [props]);
+
   return (
     <div>
-      <h1>Payment Failed!</h1>
-      <p>Sorry to say!</p>
+      <h1>Payment Failure</h1>
+      <p>Transaction failed!! Sorry to inform you please make payment</p>
     </div>
   );
 }

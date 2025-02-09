@@ -1,4 +1,4 @@
-import { successTransaction } from '@/services/user/bookings.service';
+import { successTransaction } from '@/services/transactions/makepayement.service';
 import { useRouter } from 'next/router';
 import querystring from 'querystring';
 import { useEffect } from 'react';

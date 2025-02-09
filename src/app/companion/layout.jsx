@@ -1,7 +1,7 @@
 'use client';
-import withAuth from '../hoc/wihAuth';
+import withAuth from '../../shared/hoc/wihAuth';
 
-const CompanionLayout = ({ children }) => {Ī
+const CompanionLayout = ({ children }) => {
   return <div>{children}</div>;
 };
 

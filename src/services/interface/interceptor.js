@@ -67,7 +67,9 @@ axios.interceptors.response.use(
     const refreshToken = cookie[REFRESH_TOKEN_LOC];
 
     // Ignore token handling if there's no token and it's not a path that needs the token
-    if (!err.response?.config?.url?.includes(ignoretokenpaths) && !token) {
+    if (ignoretokenpaths.includes(err.response?.config?.url)) {
+      return Promise.reject(err);
+    }else if(!ignoretokenpaths.includes(err.response?.config?.url) && !token){
       window.location = "/";
       return Promise.reject(err);
     }
@@ -81,7 +83,7 @@ axios.interceptors.response.use(
       let exp = decodedToken ? decodedToken.exp : null;
 
       // Check if the access token is expired and if we should refresh it
-      // if (exp && exp < Date.now() / 1000) {
+      if (exp && exp < Date.now() / 1000) {
         if (isRefreshing) {
           // Queue the request if refresh is in progress
           return new Promise((resolve, reject) => {
@@ -108,7 +110,7 @@ axios.interceptors.response.use(
         } catch (error) {
           return Promise.reject(error);
         }
-      // }
+      }
     }
 
     // If none of the above conditions are met, reject the error
