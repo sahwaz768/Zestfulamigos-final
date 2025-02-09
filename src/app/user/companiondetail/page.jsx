@@ -57,7 +57,7 @@ const page = () => {
           <div className=" flex flex-wrap gap-3">
             <div className="horizontalimg flex gap-2">
               <Image
-                src={BASEURL + `/` + 'UserPhotos/companion1.jpg'}
+                src={BASEURL + `/` + companionDetails?.images[0]}
                 width={500}
                 height={300}
                 alt="profile"
@@ -65,14 +65,14 @@ const page = () => {
             </div>
             <div className="vertical img ">
               <Image
-                src={BASEURL + `/` + 'UserPhotos/companion1.jpg'}
+                src={BASEURL + `/` + companionDetails?.images[1]}
                 width={500}
                 height={300}
                 alt="profile"
               />
               {companionDetails.images[2] && (
                 <Image
-                  src={BASEURL + `/` + 'UserPhotos/companion1.jpg'}
+                  src={BASEURL + `/` + companionDetails?.images[2]}
                   className="md:mt-3"
                   width={500}
                   height={300}
@@ -83,7 +83,7 @@ const page = () => {
             <div className="horizontalimg-2 flex gap-2 ">
               {companionDetails.images[3] && (
                 <Image
-                  src={BASEURL + `/` + 'UserPhotos/companion1.jpg'}
+                  src={BASEURL + `/` + companionDetails?.images[3]}
                   width={500}
                   height={300}
                 />
@@ -115,7 +115,8 @@ const page = () => {
             </div>
             <div className="tag">
               <p>
-                Skin Tone: <span>{companionDetails?.Skintone}</span>
+                Skin Tone:{' '}
+                <span>{capitalizedWord(companionDetails?.Skintone)}</span>
               </p>
             </div>
             <div className="tag">
@@ -126,12 +127,14 @@ const page = () => {
             </div>
             <div className="tag">
               <p>
-                Drinking Habits: <span>{companionDetails.Skintone}</span>
+                Drinking Habits:{' '}
+                <span>{capitalizedWord(companionDetails.drinkinghabits)}</span>
               </p>
             </div>
             <div className="tag">
               <p>
-                Eating Habits: <span>{companionDetails.Skintone}</span>
+                Eating Habits:{' '}
+                <span>{capitalizedWord(companionDetails.eatinghabits)}</span>
               </p>
             </div>
           </div>

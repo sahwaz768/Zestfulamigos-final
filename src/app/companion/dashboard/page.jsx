@@ -4,7 +4,7 @@ import { PiSquaresFourDuotone } from 'react-icons/pi';
 import Couple from '@/shared/Assets/dashcouple.png';
 import Image from 'next/image';
 import { IoIosStar } from 'react-icons/io';
-import { Companionsidebar } from '../chat/page';
+import { Mastersidebar } from '@/components/MasterSidebar';
 import Notify from '@/components/Notify';
 import { useSelector } from 'react-redux';
 import { BASEURL } from '@/Constants/services.constants';
@@ -77,7 +77,7 @@ const page = () => {
       </div>
       <div className="flex">
         <div>
-          <Companionsidebar userDetails={userDetails} />
+          <Mastersidebar isCompanion={true} />
         </div>
         <div className="dashboard">
           <div className="dashboard-header ">
@@ -101,10 +101,10 @@ const page = () => {
             </div>
             <div className="comp-admin flex justify-center items-center">
               <Image
-                src={BASEURL + '/UserPhotos/companion1.jpg'}
+                src={BASEURL + '/' + userDetails?.Images[0]}
                 alt="Picture of the author"
-                width={20}
-                height={20}
+                width={117}
+                height={111}
               />
               <h1 className="text-sm">{userDetails?.name}</h1>
             </div>
@@ -146,19 +146,20 @@ const page = () => {
           </div>
           {historyData?.upcoming.length ? (
             historyData.upcoming?.map((l) => (
-              <div className="dashboard-userdetail">
+              <div className="dashboard-userdetail" key={l.id}>
                 <div className="dashboard-userprofile">
                   <Image
                     src={BASEURL + '/UserPhotos/companion1.jpg'}
                     alt="Picture of the author"
-                    width={20}
-                    height={20}
+                    width={117}
+                    height={111}
                   />
                 </div>
                 <div className="flex flex-wrap">
                   <div className="md:mt-2 ml-2 gap-2">
                     <h1 className="text-sm md:text-base">
-                      Name:<span className="md:font-bold">{l.user?.firstname}</span>
+                      Name:
+                      <span className="md:font-bold">{l.user?.firstname}</span>
                     </h1>
                     <h1 className="text-sm md:text-base">
                       Age:<span className="md:font-bold">20</span>
@@ -182,9 +183,11 @@ const page = () => {
                     </h1>
                   </div>
                 </div>
-                <div className="dashboard-cancel">
-                  <button onClick={openModal}>Cancel</button>
-                </div>
+                {l.status !== 'CANCELLED' && (
+                  <div className="dashboard-cancel">
+                    <button onClick={openModal}>Cancel</button>
+                  </div>
+                )}
               </div>
             ))
           ) : (

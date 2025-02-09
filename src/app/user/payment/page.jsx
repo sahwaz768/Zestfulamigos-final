@@ -1,12 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Chatheader from '@/components/Masterheader';
-import { Notification } from '../swipepage/page';
 import Image from 'next/image';
 import Payment from '@/shared/Assets/payment1.png';
 import { Threeline } from '../swipepage/page';
-import { useRouter } from 'next/navigation';
-
 import { redirect } from 'next/navigation';
 import { getBookingDetails } from '@/services/user/bookings.service';
 
@@ -22,6 +19,7 @@ const page = () => {
   });
 
   const [bookingDetails, setBookingDetails] = useState(null);
+  const [bookingError, setBookingError] = useState(null);
 
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
@@ -30,14 +28,17 @@ const page = () => {
       redirect('/');
     } else {
       getBookingDetails(bookingId).then(({ data }) => {
-        const values = {
-          amount: data.bookingduration * data.bookingrate,
-          user: data.User?.filter((l) => !l.isCompanion)[0],
-          companion: data.User?.filter((l) => l.isCompanion)[0],
-          id: data.id
-        };
-        console.log(values);
-        setBookingDetails(values);
+        if (data) {
+          const values = {
+            amount: data.bookingduration * data.bookingrate,
+            user: data.User?.filter((l) => !l.isCompanion)[0],
+            companion: data.User?.filter((l) => l.isCompanion)[0],
+            id: data.id
+          };
+          setBookingDetails(values);
+        } else {
+          redirect('/user/chat');
+        }
       });
     }
   }, []);
@@ -61,7 +62,7 @@ const page = () => {
     const paymentData = {
       ...paymentValues,
       productinfo: 'Web',
-      phone: '9896014946'
+      phone: '8168791042'
     };
 
     try {
@@ -71,7 +72,7 @@ const page = () => {
       const values = {
         ...paymentData,
         surl: 'http://localhost:3000/transaction/success',
-        furl: 'http://localhost:3000/transaction/failure'
+        furl: `http://localhost:3000/transaction/failure?bookingId=${paymentData.bookingId}`
       };
       const response = await initiateTransaction(values);
       const formContainer = document.createElement('div');

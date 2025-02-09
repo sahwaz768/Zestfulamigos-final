@@ -1,8 +1,7 @@
 'use client';
-import withAuth from '../hoc/wihAuth';
+import withAuth from '../../shared/hoc/wihAuth';
 
 const CompanionLayout = ({ children }) => {
-  console.log('Companion Layout');
   return <div>{children}</div>;
 };
 

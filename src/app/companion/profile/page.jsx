@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Chatheader from '@/components/Masterheader';
 import Notify from '@/components/Notify';
-import { CompanionNotification } from '../chat/page';
-import { Companionsidebar } from '../chat/page';
+import { Mastersidebar } from '@/components/MasterSidebar';
+// import { CompanionNotification } from '../chat/page';
 
 const Page = ({ existingData }) => {
   const [formData, setFormData] = useState({
@@ -157,7 +157,7 @@ const Page = ({ existingData }) => {
       </div>
 
       <div className="profilebox">
-        <Companionsidebar />
+        <Mastersidebar isCompanion={true}/>
         <form onSubmit={handleSubmit}>
           {/* Image Uploader */}
           <div className="form-group mt-2 mb-3">

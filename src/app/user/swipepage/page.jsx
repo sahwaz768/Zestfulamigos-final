@@ -1,17 +1,12 @@
 'use client';
 import React, { useState } from 'react';
-import { CgProfile } from 'react-icons/cg';
 import Chatheader from '@/components/Masterheader';
 import Link from 'next/link';
-import { MdLogout, MdOutlineReportProblem } from 'react-icons/md';
-import { RiChatSmile3Line } from 'react-icons/ri';
-import { MdOutlineHistory } from 'react-icons/md';
-import { CiSettings } from 'react-icons/ci';
-import Sidebar from '@/components/sidebar';
 import { useSelector } from 'react-redux';
 import { redirect } from 'next/navigation';
 import { BASEURL } from '@/Constants/services.constants';
 import Notify from '@/components/Notify';
+import { Mastersidebar } from '@/components/MasterSidebar';
 
 const Page = () => {
   const companions = useSelector((state) => state.companionFind.data?.data);
@@ -67,47 +62,50 @@ const Page = () => {
               alt="Background card"
             />
           </div>
-
-          <div className="container">
-            <div className="card-container">
-              <div className="card">
-                <img
-                  src={BASEURL + `/` + 'UserPhotos/companion1.jpg'}
-                  alt={'profile image'}
-                  className="slide-image"
-                />
-                <div>
-                  <div>{companions[currentIndex].firstname}</div>
-                  <div className="card-footer">
-                    <Link
-                      href={`./companiondetail/?companionId=${companions[currentIndex].userid}`}
-                    >
-                      <div className="card-title text-center text-xs font-extrabold">
-                        {'Dig deeper'}
+          {companions && companions.length ? (
+            <div className="container">
+              <div className="card-container">
+                <div className="card">
+                  <img
+                    src={BASEURL + `/` + companions[currentIndex].images[0]}
+                    alt={'profile image'}
+                    className="slide-image"
+                  />
+                  <div>
+                    <div>{companions[currentIndex].firstname}</div>
+                    <div className="card-footer">
+                      <Link
+                        href={`./companiondetail/?companionId=${companions[currentIndex].userId}`}
+                      >
+                        <div className="card-title text-center text-xs font-extrabold">
+                          {'Dig deeper'}
+                        </div>
+                      </Link>
+                      <div>
+                        <span>Booking Rate</span>
+                        {companions[currentIndex].bookingrate} /{' '}
+                        {companions[currentIndex].bookingrateunit}
                       </div>
-                    </Link>
-                    <div>
-                      <span>Booking Rate</span>
-                      {companions[currentIndex].bookingrate} /{' '}
-                      {companions[currentIndex].bookingrateunit}
-                    </div>
-                    <div>
-                      {companions[currentIndex].distance.toFixed(2)} Km away
+                      <div>
+                        {companions[currentIndex].distance.toFixed(2)} Km away
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="navigation">
-                <button className="nav-button" onClick={handlePrev}>
-                  ←
-                </button>
-                <button className="nav-button" onClick={handleNext}>
-                  →
-                </button>
+                <div className="navigation">
+                  <button className="nav-button" onClick={handlePrev}>
+                    ←
+                  </button>
+                  <button className="nav-button" onClick={handleNext}>
+                    →
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div>No Companions find in your Area right now..</div>
+          )}
         </div>
       </div>
     </>
@@ -127,52 +125,6 @@ export const Threeline = () => {
           </div>
         </div>
       </div>
-    </>
-  );
-};
-
-export const Mastersidebar = () => {
-  const handleLogout = async () => {
-    const { logoutUserService } = await import(
-      '../../../services/auth/logout.service'
-    );
-    const { removeUserData } = await import('../../../utils/removeUserData');
-    await logoutUserService();
-    await removeUserData();
-    redirect('/');
-  };
-  const menuItems = [
-    { label: 'Chats', route: './chat', icon: RiChatSmile3Line },
-    {
-      label: 'Booking History',
-      route: './bookinghistory',
-      icon: MdOutlineHistory
-    },
-    {
-      label: 'Settings',
-      icon: CiSettings,
-      isDropdown: true,
-      dropdownItems: [
-        { label: 'Profile Settings', route: './profile' },
-        {
-          label: 'Raise a Concern',
-          route: '/page-one/raise-concern',
-          icon: MdOutlineReportProblem
-        },
-        { label: 'Logout', icon: MdLogout, handleclick: handleLogout }
-      ]
-    }
-  ];
-
-  const user = {
-    photo:
-      'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmVtYWxlJTIwbW9kZWx8ZW58MHx8MHx8fDA%3D',
-    name: 'John Doe',
-    email: 'johndoe@example.com'
-  };
-  return (
-    <>
-      <Sidebar menuItems={menuItems} user={user} />
     </>
   );
 };

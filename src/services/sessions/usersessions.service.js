@@ -1,13 +1,12 @@
-export const extendCurrentSession = async () => {
+export const extendCurrentSession = async (values) => {
     const { BASEURL } = await import("../../Constants/services.constants");
     const {
       default: { post },
     } = await import("../interface/interceptor");
     try {
       const url = BASEURL + "/user/session/extendsession";
-      const { data:{ data } } = await post(url);
+      const { data:{ data } } = await post(url, values);
       return { data };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error) {
       if (error instanceof Error) {
         console.log("Error:", error.message);

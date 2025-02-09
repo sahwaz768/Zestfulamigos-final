@@ -1,15 +1,14 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable operator-linebreak */
 import axios from "axios";
-import { setCookie, parseCookies, destroyCookie } from 'nookies';
+import { parseCookies } from 'nookies';
 import {
   ACCESS_TOKEN_LOC,
   REFRESH_TOKEN_LOC,
 } from "src/Constants/common.constants";
 import { decodeAccessToken } from "src/utils/common.utils";
-import { removeUserData } from "@/utils/removeUserData";
 import { BASEURL, ignoretokenpaths } from "src/Constants/services.constants";
-// import { getAccessTokenFromRefreshTokenDto, ProcessQueDto } from "../dto/interface.ques.dto";
+import { getAccessTokenFromRefreshTokenService } from "../auth/login.service";
 
 let isRefreshing = false;
 let failedQueue = [];
@@ -44,30 +43,13 @@ axios.defaults.headers.common = {
 };
 
 const refreshAccessToken = async (refreshToken) => {
-  const setRefUrl = BASEURL + "/auth/refreshtoken";
   try {
-    const response = await fetch(setRefUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        refresh_token: refreshToken,
-      }),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to refresh token');
-    }
-    const data = await response.json();
-    destroyCookie(ACCESS_TOKEN_LOC);
-    const access_token = data.access_token;
-    setCookie(null, ACCESS_TOKEN_LOC, access_token , { path: '/' });
+    const access_token = await getAccessTokenFromRefreshTokenService(refreshToken)
     axios.defaults.headers.common.Authorization = "Bearer " + access_token;
     processQueue(null, access_token);
     return access_token;
   } catch (error) {
     console.log('Error refreshing token:', error);
-    await removeUserData();
     window.location = "/";
     processQueue(error, null);
     throw error;
@@ -85,7 +67,9 @@ axios.interceptors.response.use(
     const refreshToken = cookie[REFRESH_TOKEN_LOC];
 
     // Ignore token handling if there's no token and it's not a path that needs the token
-    if (!err.response?.config?.url?.includes(ignoretokenpaths) && !token) {
+    if (ignoretokenpaths.includes(err.response?.config?.url)) {
+      return Promise.reject(err);
+    }else if(!ignoretokenpaths.includes(err.response?.config?.url) && !token){
       window.location = "/";
       return Promise.reject(err);
     }
@@ -99,7 +83,7 @@ axios.interceptors.response.use(
       let exp = decodedToken ? decodedToken.exp : null;
 
       // Check if the access token is expired and if we should refresh it
-      // if (exp && exp < Date.now() / 1000) {
+      if (exp && exp < Date.now() / 1000) {
         if (isRefreshing) {
           // Queue the request if refresh is in progress
           return new Promise((resolve, reject) => {
@@ -126,7 +110,7 @@ axios.interceptors.response.use(
         } catch (error) {
           return Promise.reject(error);
         }
-      // }
+      }
     }
 
     // If none of the above conditions are met, reject the error

@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { IoCloudUploadOutline } from 'react-icons/io5';
 import Image from 'next/image';
-import Pikasho from '@/app/Pikasobg.png';
+import Pikasho from '@/shared/Assets/Pikasobg.png';
 import { useGoogleLogin } from '@react-oauth/google';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
+
 
 const Page = () => {
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ const Page = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const router = useRouter();
+
   const [photoError, setPhotoError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -108,13 +109,12 @@ const Page = () => {
       apiFormData.append('age', formData.age);
       apiFormData.append('gender', formData.gender.toLocaleUpperCase());
       apiFormData.append('images', formData.photo);
-      console.log(
-        'Signup successful:',
-        apiFormData.forEach((l) => console.log(l))
-      );
+
       const { registerUserService } = await import(
-        '../../../services/auth/register.service'
+        '../../services/auth/register.service'
       );
+      const { appDispatch } = await import('../../Redux/store/store')
+      const toast = (await import('../../Redux/notiReducer/notiReducer')).notitrigger
       const { data, error } = await registerUserService(apiFormData);
       if (data) {
         setFormData({
@@ -127,7 +127,10 @@ const Page = () => {
           photo: null
         });
         setIsModalOpen(false);
-        router.push('/user/genderchoose');
+        appDispatch(toast({ message: "Successfully Created!!. Please Login Now" , type: 'success'}))
+        setTimeout(() => {
+          redirect('/');
+        }, 3000)
       } else {
         const response = error;
         document.getElementById('response').innerText = response;
@@ -190,20 +193,8 @@ const Page = () => {
     onSuccess: (tokenResponse) => console.log(tokenResponse)
   });
 
-  const hideinvalide = () => {
-    document.getElementById('invalide-email').style.display = 'none';
-  };
-
   return (
     <>
-      <div className="flex justify-center">
-        <div className="invalide-email " id="invalide-email">
-          <h1 className="text-sm font-bold">Email already exist</h1>
-          <span className="close ml-2" onClick={hideinvalide}>
-            &times;
-          </span>
-        </div>
-      </div>
       <div className="flex">
         <div className="rightbox">
           <h1 className="zestful text-center mt-8 text-white font-light">
@@ -443,7 +434,6 @@ function GoogleSignUp() {
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
   const [errors, setErrors] = useState({});
-  const router = useRouter();
   const [user, setUser] = useState(null); // User data after Google login
 
   const login = useGoogleLogin({
@@ -517,7 +507,6 @@ function GoogleSignUp() {
 
     console.log('Profile Data Submitted:', profileData);
     setIsModalOpen(false);
-    router.push('/user/genderchoose');
   };
 
   return (
