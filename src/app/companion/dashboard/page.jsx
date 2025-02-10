@@ -32,6 +32,7 @@ const page = () => {
             const value = {
               id: data[i].id,
               companion: data[i].users.filter((l) => l.isCompanion)[0],
+              user: data[i].users.filter((l) => !l.isCompanion)[0],
               bookingdate: formatBookingTimingsforUi(
                 data[i].bookingstart,
                 data[i].bookingend
