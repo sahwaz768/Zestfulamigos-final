@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from 'react';
-import Header from '@/components/Homeheader';
-import { Login } from '@/app/page';
+import Header from '@/components/Masterheader';
 import Link from 'next/link';
+import Login from '@/components/Login';
 
 const page = () => {
   const initialFormData = {
@@ -81,7 +81,7 @@ const page = () => {
   };
   return (
     <div>
-      <Header rightElement={<Login />} />
+      <Header backgroundColor="rgba(250, 236, 236, 0.8)" isLogin />
       <h1 className=" font-bold my-5 text-2xl ml-10">Be a companion</h1>
       <div className="flex md:justify-center ml-4">
         <form onSubmit={handleSubmit} className="">
@@ -213,7 +213,7 @@ const page = () => {
           </div>
         </form>
       </div>
-      <Link href={'/companion/login'}>
+      <Link href={'/'}>
         <h1 className="text-sm text-center font-bold">login as a companion</h1>
       </Link>
     </div>

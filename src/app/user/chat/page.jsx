@@ -1,20 +1,15 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import Chatwindow from '@/components/chatwindow';
-import Chatheader from '@/components/Masterheader';
 import { GoLocation } from 'react-icons/go';
 import { AiOutlineSafety } from 'react-icons/ai';
 import { CiLocationOff } from 'react-icons/ci';
 import { BiLocationPlus } from 'react-icons/bi';
 import { IoIosTimer } from 'react-icons/io';
-import { Mastersidebar } from '@/components/MasterSidebar';
-import Notify from '@/components/Notify';
-import { BASEURL } from '@/Constants/services.constants';
+import ChatComponent from '@/components/ChatComponent';
 
 const Page = React.memo((props) => {
   const [chatrooms, setChatRooms] = useState(null);
-  const [selectedChat, setSelectedChat] = useState(null);
+
 
   useEffect(() => {
     import('../../../services/user/chats.service')
@@ -33,70 +28,10 @@ const Page = React.memo((props) => {
       });
   }, []);
 
-  const handleSelectChat = (id) => {
-    // if (window.matchMedia('(min-width: 768px)').matches) {
-    // }
-    setSelectedChat(id);
-  };
-
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About Us', href: './aboutus' },
-    { name: 'Privacy Policy', href: './privacypolicy' },
-    { name: 'Contact', href: './contactus' }
-  ];
 
   if (!chatrooms) return <div>Loading...</div>;
 
-  return (
-    <>
-      <Chatheader
-        backgroundColor="rgba(250, 236, 236, 0.8)"
-        navLinks={navLinks}
-      />
-      <div className="notifymbsecond">
-        <Notify backgroundColor="transparent" color="black" />
-      </div>
-      <div className="chatpage">
-        <div>
-          <Mastersidebar />
-        </div>
-        <div className="chatsection">
-          <div className="chatlist" id="chatlist">
-            <div className=" chatlistbox">
-              <h1 className="">Chats</h1>
-            </div>
-            <div className="userlistbox">
-              {chatrooms?.length ? (
-                chatrooms.map((l) => (
-                  <div
-                    className="userdetail"
-                    onClick={() => handleSelectChat(l)}
-                    key={l.id}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <Image
-                      src={BASEURL + '/UserPhotos/companion1.jpg'}
-                      alt="profile"
-                      width={20}
-                      height={20}
-                    />
-                    <h1 className="ml-2 text-sm">{l.companion.firstname}</h1>
-                    <div className="userstatus text-xs">today</div>
-                  </div>
-                ))
-              ) : (
-                <div>No Active Chats Available</div>
-              )}
-            </div>
-          </div>
-          <div className="chatwindow" id="chatwindow">
-            {selectedChat && <Chatwindow selected={selectedChat} />}
-          </div>
-        </div>
-      </div>
-    </>
-  );
+  return <ChatComponent chatrooms={chatrooms} />
 });
 
 export const Guidmodel = () => {

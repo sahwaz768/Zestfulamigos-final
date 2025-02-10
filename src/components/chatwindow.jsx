@@ -13,7 +13,7 @@ const Extensionbtn = dynamic(() => import('./extentionslotmodel'), {
   ssr: false
 });
 
-const chatwindow = ({ selected }) => {
+const Chatwindow = ({ selected, isCompanion }) => {
   const socket = socketinit.socket();
   const [messagedata, setMessageData] = useState(null);
   const [inputValue, setInputValue] = useState('');
@@ -211,7 +211,9 @@ const chatwindow = ({ selected }) => {
 
   return (
     <>
-      {isOpenexmodel && <Extensionbtn closeModal={closeModal} bookingid={selected.booking} />}
+      {isOpenexmodel && (
+        <Extensionbtn closeModal={closeModal} bookingid={selected.booking} />
+      )}
       <div className="chat-window">
         <div className="chat-header">
           <div className="chatheader">
@@ -221,13 +223,21 @@ const chatwindow = ({ selected }) => {
                   <IoIosArrowBack color="black" size={25} />
                 </div>
                 <img
-                  src={BASEURL + '/UserPhotos/companion1.jpg'}
+                  src={
+                    isCompanion
+                      ? BASEURL + '/' + selected.user?.Images[0]
+                      : BASEURL + '/' + selected.companion?.Images[0]
+                  }
                   alt="profile"
                   width={20}
                   height={20}
                 />
                 <div className="ml-5 my-1">
-                  <h1 className=" font-bold">{selected.companion.firstname}</h1>
+                  <h1 className=" font-bold">
+                    {isCompanion
+                      ? selected.user.firstname
+                      : selected.companion.firstname}
+                  </h1>
                   <p className="text-xs text-pink-700 ml-1 font-light">
                     Online
                   </p>
@@ -247,16 +257,33 @@ const chatwindow = ({ selected }) => {
               {/* Dropdown Menu */}
               {isOpen && (
                 <div>
-                  {/* {selected.session && selected.session?.length && ( */}
-                    <ul
-                      className="dropdown-menu-extension"
-                      style={{ cursor: 'pointer' }}
-                    >
+                  <ul
+                    className="dropdown-menu-extension"
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {/* {selected.session && selected.session?.length && ( */}
+                    {isCompanion ? (
+                      <>
+                        <div
+                          className="extension-slote"
+                          onClick={() => console.log('')}
+                        >
+                          start session
+                        </div>
+                        <div
+                          className="extension-slote mt-2"
+                          onClick={() => console.log('')}
+                        >
+                          end session
+                        </div>
+                      </>
+                    ) : (
                       <div className="extension-slote" onClick={openModal}>
                         slote extension
                       </div>
-                    </ul>
-                  {/* )} */}
+                    )}
+                    {/* )} */}
+                  </ul>
                 </div>
               )}
             </div>
@@ -351,4 +378,4 @@ const Timer = () => {
   );
 };
 
-export default chatwindow;
+export default Chatwindow;

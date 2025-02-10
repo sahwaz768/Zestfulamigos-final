@@ -75,6 +75,7 @@ body {
 .logo {
   font-family: var(--font-Sacramento);
   font-weight: 700;
+  cursor: pointer;
   font-size: 35px;
   color: rgb(241, 71, 128);
   margin-left: 20px;

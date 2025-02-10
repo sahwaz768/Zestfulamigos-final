@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Chatheader from '@/components/Masterheader';
 import Notify from '@/components/Notify';
 import { Mastersidebar } from '@/components/MasterSidebar';
-// import { CompanionNotification } from '../chat/page';
 
 const Page = ({ existingData }) => {
   const [formData, setFormData] = useState({
