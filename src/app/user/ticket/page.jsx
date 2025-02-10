@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
+import { Mastersidebar } from '@/components/MasterSidebar';
 
 const page = () => {
   const [hasReplied, setHasReplied] = useState(false); // Track if the user has replied
@@ -21,6 +22,7 @@ const page = () => {
   return (
     <>
       <Chatheader />
+      <Mastersidebar />
       <div className="ticket-head">
         <h1 className="text-lg font-bold">Transaction error</h1>
         <div className="support-row text-sm font-bold pending">pending</div>

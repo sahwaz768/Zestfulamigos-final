@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
 import { Threeline } from '../swipepage/page';
+import { Mastersidebar } from '@/components/MasterSidebar';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -79,6 +80,7 @@ const page = () => {
         navLinks={navLinks}
       />
       <Threeline />
+      <Mastersidebar />
       <div className="support-head">
         <div className="support-txt">
           <h1 className="md:text-xl ml-3 md:font-bold mt-2">
