@@ -9,39 +9,39 @@ import { Mastersidebar } from '@/components/MasterSidebar';
 import { capitalizedWord } from '@/utils/common.utils';
 
 const Page = () => {
-    const [historydata, setHistoryData] = useState(null);
+  const [historydata, setHistoryData] = useState(null);
 
-    useEffect(() => {
-      import('../../../services/user/bookings.service')
-        .then(({ getPreviousBookings }) => getPreviousBookings())
-        .then(async ({ data, error }) => {
-          if (data) {
-            const { formatBookingTimingsforUi } = await import(
-              '../../../utils/bookings.utils'
-            );
-            const values = { pastBooking: [], upcoming: [] };
-            for (let i = 0; i < data.length; i += 1) {
-              const value = {
-                id: data[i].id,
-                companion: data[i].users.filter((l) => l.isCompanion)[0],
-                user: data[i].users.filter((l) => !l.isCompanion)[0],
-                bookingdate: formatBookingTimingsforUi(
-                  data[i].bookingstart,
-                  data[i].bookingend
-                ),
-                isPast:
-                  new Date(Number(data[i].bookingstart)).getTime() < Date.now(),
-                status: data[i].status,
-                amount: data[i].amount
-              };
-              if (value.isPast) values.pastBooking.push(value);
-              else values.upcoming.push(value);
-            }
-            console.log(values);
-            setHistoryData(values);
+  useEffect(() => {
+    import('../../../services/user/bookings.service')
+      .then(({ getPreviousBookings }) => getPreviousBookings())
+      .then(async ({ data, error }) => {
+        if (data) {
+          const { formatBookingTimingsforUi } = await import(
+            '../../../utils/bookings.utils'
+          );
+          const values = { pastBooking: [], upcoming: [] };
+          for (let i = 0; i < data.length; i += 1) {
+            const value = {
+              id: data[i].id,
+              companion: data[i].users.filter((l) => l.isCompanion)[0],
+              user: data[i].users.filter((l) => !l.isCompanion)[0],
+              bookingdate: formatBookingTimingsforUi(
+                data[i].bookingstart,
+                data[i].bookingend
+              ),
+              isPast:
+                new Date(Number(data[i].bookingstart)).getTime() < Date.now(),
+              status: data[i].status,
+              amount: data[i].amount
+            };
+            if (value.isPast) values.pastBooking.push(value);
+            else values.upcoming.push(value);
           }
-        });
-    }, []);
+          console.log(values);
+          setHistoryData(values);
+        }
+      });
+  }, []);
 
   const showupcomingbooking = () => {
     document.getElementById('closed-booking-box').style.display = 'none';
@@ -73,7 +73,7 @@ const Page = () => {
         <Notify backgroundColor="transparent" color="black" />
       </div>
       <div className="bookingbox">
-        <Mastersidebar isCompanion={true}/>
+        <Mastersidebar isCompanion={true} />
         <div className="booking-side">
           <div className="booking-type">
             <div
@@ -112,7 +112,7 @@ const Page = () => {
                       <MdPendingActions />
                       <h1>Status: {capitalizedWord(l.status)}</h1>
                     </div>
-                    {l.status !== 'CANCELLED' && (
+                    {l.status === 'ACCEPTED' && (
                       <div>
                         <button onClick={() => setIsOpen(l)}>cancel</button>
                       </div>

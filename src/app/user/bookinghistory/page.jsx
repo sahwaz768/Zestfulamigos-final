@@ -167,7 +167,7 @@ const page = () => {
                       <MdOutlinePaid />
                       <h1>Paid amount: {l.amount}</h1>
                     </div>
-                    {l.status !== 'CANCELLED' && (
+                    {l.status === 'ACCEPTED' && (
                       <div>
                         <button onClick={() => setIsOpen(l)}>cancel</button>
                       </div>

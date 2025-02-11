@@ -6,10 +6,11 @@ import { Mastersidebar } from '@/components/MasterSidebar';
 import Notify from '@/components/Notify';
 import { useDispatch } from 'react-redux';
 import { notitrigger } from '@/Redux/notiReducer/notiReducer';
+import { BASEURL } from '@/Constants/services.constants';
 
 const Page = () => {
   const preExistingData = {
-    profilePicture: '', // Pre-existing profile picture URL, if available
+    imageUrl: '', // Pre-existing profile picture URL, if available
     fullName: 'John Doe',
     email: 'johndoe@example.com',
     phoneNumber: '1234567890',
@@ -17,9 +18,7 @@ const Page = () => {
     gender: 'male'
   };
   const dispatch = useDispatch();
-
   const [formData, setFormData] = useState(preExistingData);
-  const [imageUrl, setImageUrl] = useState(preExistingData.profilePicture);
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -27,7 +26,15 @@ const Page = () => {
       .then(({ userProfileDetailsService }) => userProfileDetailsService())
       .then(({ data, error }) => {
         if (data) {
-          console.log(data);
+          const values = {
+            imageUrl: BASEURL + '/' + data.data?.Images[0], 
+            fullName: data.data?.firstname + ' ' + data.data?.lastname,
+            email: data.data?.email,
+            phoneNumber: data.data.phoneno,
+            age: data.data?.age,
+            gender: data.data?.gender?.toLocaleLowerCase()
+          }
+          setFormData(() => ({...values}))
         } else {
           console.log(error);
         }
@@ -80,8 +87,7 @@ const Page = () => {
     const file = e.target.files[0];
     if (file) {
       const url = URL.createObjectURL(file);
-      setImageUrl(url);
-      setFormData({ ...formData, profilePicture: file });
+      setFormData({ ...formData, imageUrl: file });
     }
   };
 
@@ -118,9 +124,9 @@ const Page = () => {
                 <label
                   htmlFor="file-input"
                   className="profile-picturex"
-                  style={{ backgroundImage: `url(${imageUrl})` }}
+                  style={{ backgroundImage: `url(${formData.imageUrl})` }}
                 >
-                  {!imageUrl && (
+                  {!formData.imageUrl && (
                     <span className="userx">
                       <CgProfile size={30} />
                     </span>

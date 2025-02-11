@@ -1,8 +1,9 @@
 'use client';
 import { useEffect } from 'react';
 import withAuth from '../../shared/hoc/wihAuth';
+import { redirect } from 'next/navigation';
 
-const UserLayout = ({ children }) => {
+const UserLayout = ({ children, userDetails }) => {
   useEffect(() => {
     import('../..//services/user/notifications.service')
       .then(({ getNotifications }) => getNotifications())
@@ -18,6 +19,11 @@ const UserLayout = ({ children }) => {
         }
       });
   }, []);
+  useEffect(() => {
+    if (userDetails && userDetails.isCompanion) {
+      redirect('/companion/dashboard');
+    }
+  }, [userDetails]);
   return <div>{children}</div>;
 };
 

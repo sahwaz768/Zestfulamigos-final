@@ -20,7 +20,7 @@ const withAuth = (WrappedComponent) => {
       }
     }, [tokenredux, dispatch]);
 
-    return <WrappedComponent {...props} />;
+    return <WrappedComponent {...props} userDetails={tokenredux} />;
   };
 };
 

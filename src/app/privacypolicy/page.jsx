@@ -7,11 +7,13 @@ import { CiMedicalClipboard } from 'react-icons/ci';
 import { RiLinksLine } from 'react-icons/ri';
 import { TbRating18Plus } from 'react-icons/tb';
 import Footer from '@/components/Footer';
+import Masterheader from '@/components/Masterheader';
 
 const page = () => {
   return (
     <>
-      <div className="md:mx-14 mx-4 ">
+      <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" isLogin />
+      <div className="md:mx-14 mx-4">
         <h1 className="text-2xl text-center font-bold">Privacy Policy</h1>
         <p className="text-center font-bold">Our terms and conditions</p>
         <div className="mt-7">

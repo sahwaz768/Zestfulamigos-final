@@ -33,7 +33,7 @@ export const Mastersidebar = ({ isCompanion }) => {
         { label: 'Profile Settings', route: './profile' },
         {
           label: 'Raise a Concern',
-          route: '/page-one/raise-concern',
+          route: './concern',
           icon: MdOutlineReportProblem
         },
         { label: 'Logout', icon: MdLogout, handleclick: handleLogout }

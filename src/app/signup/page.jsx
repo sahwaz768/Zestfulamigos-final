@@ -107,6 +107,7 @@ const Page = () => {
       apiFormData.append('email', formData.email);
       apiFormData.append('password', formData.password);
       apiFormData.append('age', formData.age);
+      apiFormData.append('phoneno', formData.phone);
       apiFormData.append('gender', formData.gender.toLocaleUpperCase());
       apiFormData.append('images', formData.photo);
 

@@ -4,10 +4,12 @@ import { GiHealthPotion } from 'react-icons/gi';
 import { IoHeartDislikeOutline } from 'react-icons/io5';
 import { FaHandshake } from 'react-icons/fa6';
 import Footer from '@/components/Footer';
+import Masterheader from '@/components/Masterheader';
 
 const page = () => {
   return (
     <>
+      <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" isLogin />
       <div className="md:mx-14 mx-4 ">
         <h1 className="text-2xl text-center font-bold">About us </h1>
         <div className="mt-7">

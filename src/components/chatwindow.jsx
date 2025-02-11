@@ -7,13 +7,37 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { BASEURL } from '@/Constants/services.constants';
 import { socketinit } from '@/Constants/socket.io.config';
-import dynamic from 'next/dynamic';
+import { EndSessionModel, StartSessionModel, ExtensionModel } from './Models';
 
-const Extensionbtn = dynamic(() => import('./extentionslotmodel'), {
-  ssr: false
-});
+const GetSessionModel = (model, selected, closeModal) => {
+  switch (model) {
+    case 'Extended':
+      return (
+        <ExtensionModel closeModal={closeModal} bookingid={selected.booking} />
+      );
 
-const chatwindow = ({ selected }) => {
+    case 'StartSession':
+      return (
+        <StartSessionModel
+          closeModal={closeModal}
+          bookingid={selected.booking}
+        />
+      );
+
+    case 'EndSession':
+      return (
+        <EndSessionModel
+          closeModal={closeModal}
+          session={selected?.session[0]}
+        />
+      );
+
+    default:
+      return null;
+  }
+};
+
+const Chatwindow = ({ selected, isCompanion }) => {
   const socket = socketinit.socket();
   const [messagedata, setMessageData] = useState(null);
   const [inputValue, setInputValue] = useState('');
@@ -33,7 +57,7 @@ const chatwindow = ({ selected }) => {
       );
       const sendData = {
         roomid: selected.id,
-        userid: selected.user?.id
+        userid: isCompanion ? selected.companion?.id : selected.user?.id
       };
 
       const verifyFriendOnline = (data) => {
@@ -42,10 +66,11 @@ const chatwindow = ({ selected }) => {
         );
       };
       socket.on('joinedUser', (data) => {
+        const userId = isCompanion ? selected.companion?.id : selected.user?.id;
         const values = data.map((l) => ({
           text: l.body,
           id: l.id,
-          sender: l.senderid === selected.userid ? 'receiver' : 'sender',
+          sender: l.senderid === userId ? 'sender' : 'receiver',
           time: new Date(l.createdAt).toLocaleString('en-US', {
             hour: 'numeric',
             hour12: true
@@ -55,10 +80,11 @@ const chatwindow = ({ selected }) => {
       });
 
       socket.on('message', (data) => {
+        const userId = isCompanion ? selected.companion?.id : selected.user?.id;
         const values = data.map((l) => ({
           text: l.body,
           id: l.id,
-          sender: l.senderid === selected.userid ? 'receiver' : 'sender',
+          sender: l.senderid === userId ? 'sender' : 'receiver',
           time: new Date(l.createdAt).toLocaleString('en-US', {
             hour: 'numeric',
             hour12: true
@@ -160,10 +186,10 @@ const chatwindow = ({ selected }) => {
         // );
         socket.emit('sendMessage', {
           roomid: selected.id,
-          userid: selected.user?.id,
+          userid: isCompanion ? selected.companion?.id : selected.user?.id,
           message: {
             content,
-            sender: selected.user?.id
+            sender: isCompanion ? selected.companion?.id : selected.user?.id
           }
         });
         setInputValue('');
@@ -189,45 +215,43 @@ const chatwindow = ({ selected }) => {
     window.location.href = `tel:${phoneNumber}`;
   };
 
-  const backbtn = () => {
-    document.getElementById('chatlist').style.display = 'block';
-    document.getElementById('chatwindow').style.display = 'none';
-  };
-
-  // funtion for drop-down
-
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+  const [isOpenexmodel, setIsOpenexmodel] = useState(null);
 
-  // funtion for extension model //
-
-  const [isOpenexmodel, setIsOpenexmodel] = useState(false);
-
-  const openModal = () => setIsOpenexmodel(true);
-  const closeModal = () => setIsOpenexmodel(false);
+  const openModal = (model) => setIsOpenexmodel(model);
+  const closeModal = () => setIsOpenexmodel(null);
 
   return (
     <>
-      {isOpenexmodel && <Extensionbtn closeModal={closeModal} bookingid={selected.booking} />}
+      {isOpenexmodel && GetSessionModel(isOpenexmodel, selected, closeModal)}
       <div className="chat-window">
         <div className="chat-header">
           <div className="chatheader">
             <div className="user-details">
               <div className="flex">
-                <div className="mt-2 mx-2 chatbackbtn" onClick={backbtn}>
+                <div className="mt-2 mx-2 chatbackbtn">
                   <IoIosArrowBack color="black" size={25} />
                 </div>
                 <img
-                  src={BASEURL + '/UserPhotos/companion1.jpg'}
+                  src={
+                    isCompanion
+                      ? BASEURL + '/' + selected.user?.Images[0]
+                      : BASEURL + '/' + selected.companion?.Images[0]
+                  }
                   alt="profile"
                   width={20}
                   height={20}
                 />
                 <div className="ml-5 my-1">
-                  <h1 className=" font-bold">{selected.companion.firstname}</h1>
+                  <h1 className=" font-bold">
+                    {isCompanion
+                      ? selected.user.firstname
+                      : selected.companion.firstname}
+                  </h1>
                   <p className="text-xs text-pink-700 ml-1 font-light">
                     Online
                   </p>
@@ -247,16 +271,39 @@ const chatwindow = ({ selected }) => {
               {/* Dropdown Menu */}
               {isOpen && (
                 <div>
-                  {/* {selected.session && selected.session?.length && ( */}
-                    <ul
-                      className="dropdown-menu-extension"
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <div className="extension-slote" onClick={openModal}>
+                  <ul
+                    className="dropdown-menu-extension"
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {isCompanion ? (
+                      <>
+                        {selected.session && selected.session?.length ? (
+                          <div
+                            className="extension-slote mt-2"
+                            onClick={() => openModal('EndSession')}
+                          >
+                            end session
+                          </div>
+                        ) : (
+                          <div
+                            className="extension-slote"
+                            onClick={() => openModal('StartSession')}
+                          >
+                            start session
+                          </div>
+                        )}
+                      </>
+                    ) : selected.session &&
+                      selected.session?.length &&
+                      !selected?.session[0]?.isExtended ? (
+                      <div
+                        className="extension-slote"
+                        onClick={() => openModal('Extended')}
+                      >
                         slote extension
                       </div>
-                    </ul>
-                  {/* )} */}
+                    ) : null}
+                  </ul>
                 </div>
               )}
             </div>
@@ -351,4 +398,4 @@ const Timer = () => {
   );
 };
 
-export default chatwindow;
+export default Chatwindow;
