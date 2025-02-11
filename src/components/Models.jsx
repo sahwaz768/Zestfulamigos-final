@@ -187,3 +187,152 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
   );
 };
 
+export const RaiseaIssueModel = ({ closeModal }) => {
+  const [formData, setFormData] = useState({
+    // email: '',
+    subject: '',
+    explanation: '',
+    image: null
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    let formErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // if (!formData.email) {
+    //   formErrors.email = 'Email is required.';
+    // } else if (!emailRegex.test(formData.email)) {
+    //   formErrors.email = 'Please enter a valid email.';
+    // }
+
+    if (!formData.subject) {
+      formErrors.subject = 'Problem description is required.';
+    }
+
+    if (!formData.explanation) {
+      formErrors.explanation = 'Please elaborate on your problem.';
+    }
+
+    return formErrors;
+  };
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === 'image') {
+      setFormData({ ...formData, image: files[0] });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formErrors = validateForm();
+
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+    } else {
+      setErrors({});
+      console.log('Form submitted successfully:', formData);
+      const userData = new FormData();
+      userData.append('subject', formData.subject);
+      userData.append('explanation', formData.explanation);
+      userData.append('images', formData.image);
+      userData.append('userid', 'userId');
+      const { createNewIssue } = await import(
+        '@/services/issues/userissues.service'
+      );
+      const { data } = await createNewIssue(userData);
+      if (data) {
+        closeModal();
+      }
+      // Perform further actions like sending data to the server here
+    }
+  };
+
+  return (
+    <div className="ticket-modal-overlay">
+      <div
+        className="ticket-modal-content"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="font-bold">Raise your issue</h2>
+
+        <button onClick={closeModal} className="close">
+          &times;
+        </button>
+        <form onSubmit={handleSubmit} className="form-container">
+          {/* <div className="form-group">
+          <label htmlFor="email" className="text-sm">
+            Email
+          </label>
+
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="inputfield-glg"
+            placeholder="Email"
+          />
+          {errors.email && <p className="text-sm">{errors.email}</p>}
+        </div> */}
+
+          <div className="form-group">
+            <label htmlFor="problem" className="text-sm">
+              Problem related
+            </label>
+            <textarea
+              id="subject"
+              name="subject"
+              value={formData.subject}
+              onChange={handleChange}
+              className="inputfield-glg"
+              placeholder="payment issue"
+            />
+            {errors.subject && <p className="text-xs">{errors.subject}</p>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="elaborateProblem" className="text-sm">
+              Elaborate Your Problem:
+            </label>
+            <textarea
+              id="explanation"
+              name="explanation"
+              value={formData.explanation}
+              onChange={handleChange}
+              className="inputfield-glg"
+              placeholder="Hii sir i have payment issue will booking"
+            />
+            {errors.explanation && (
+              <p className="text-xs">{errors.explanation}</p>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="image" className="text-sm">
+              Attachment (optional):
+            </label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              onChange={handleChange}
+              className="my-3"
+            />
+          </div>
+          <div className="mt-2">
+            <button type="submit" className="sbtbtm">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};

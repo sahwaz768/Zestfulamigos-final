@@ -30,11 +30,11 @@ const Page = () => {
             imageUrl: BASEURL + '/' + data.data?.Images[0], 
             fullName: data.data?.firstname + ' ' + data.data?.lastname,
             email: data.data?.email,
-            phoneNumber: '1234567890',
+            phoneNumber: data.data.phoneno,
             age: data.data?.age,
             gender: data.data?.gender?.toLocaleLowerCase()
           }
-          setFormData(values)
+          setFormData(() => ({...values}))
         } else {
           console.log(error);
         }
