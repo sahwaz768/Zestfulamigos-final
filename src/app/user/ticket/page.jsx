@@ -1,44 +1,57 @@
-'use client';
-import React, { useState } from 'react';
+'use client'
+import React, { useState } from "react";
 import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
-import { Mastersidebar } from '@/components/MasterSidebar';
 
-const page = () => {
-  const [hasReplied, setHasReplied] = useState(false); // Track if the user has replied
-  const [userComment, setUserComment] = useState('');
-  const [comment, setComment] = useState('');
+
+const Page = () => {
+  const [hasReplied, setHasReplied] = useState(false);
+  const [userComment, setUserComment] = useState("");
+  const [comment, setComment] = useState("");
+  const [image, setImage] = useState(null);
 
   const handleReplyClick = () => {
-    setHasReplied(true); // Show the reply box
+    setHasReplied(true);
   };
-
+ 
   const handleSendClick = () => {
-    if (userComment.trim()) {
-      setComment(userComment); // Save the user's reply
-      setUserComment(''); // Clear the text area
+    if (userComment.trim() || image) {
+      setComment(userComment);
+      setUserComment("");
+      setHasReplied(false);
     }
   };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(URL.createObjectURL(file));
+    }
+  };
+
+  const navLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: './aboutus' },
+    { name: 'Privacy Policy', href: './privacypolicy' },
+    { name: 'Contact', href: './contactus' }
+  ];
   return (
     <>
-      <Chatheader />
-      <Mastersidebar />
-      <div className="ticket-head">
-        <h1 className="text-lg font-bold">Transaction error</h1>
-        <div className="support-row text-sm font-bold pending">pending</div>
+      <Chatheader rightElement={<Notification />} navLinks={navLinks} backgroundColor="rgba(250, 236, 236, 0.8)" />
+      <div className='ticket-head'>
+        <h1 className='text-lg font-bold'>Transaction error</h1>
+        <div className='support-row text-sm font-bold pending'>pending</div>
       </div>
-      <div className="ticket-body">
+      <div className='ticket-body'>
         <div className="message-container">
           <div className="admin-message">
             <div className="message-header">
               <span>Created On: Aug 27, 2024, 01:11 PM</span>
-              <span>
-                <strong>Admin</strong>
-              </span>
+              <span><strong>Admin</strong></span>
             </div>
             <div className="message-body">
               <p>
-                Sir/madam, we need to install Visual C++, that we can find from{' '}
+                Sir/madam, we need to install Visual C++, that we can find from
                 . Please find the attachment.
               </p>
             </div>
@@ -58,6 +71,13 @@ const page = () => {
                 placeholder="Write your reply here..."
                 className="reply-textarea"
               />
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleImageChange} 
+                className="image-uploader"
+              />
+              {image && <img src={image} alt="Preview" className="image-preview-ticket" />}
               <button className="send-button" onClick={handleSendClick}>
                 Send
               </button>
@@ -68,10 +88,11 @@ const page = () => {
             <div className="reply-message">
               <div className="reply-header">
                 <span>Replied On: {new Date().toLocaleString()}</span>
-                <span className="font-bold">user</span>
+                <span className="font-bold">User</span>
               </div>
               <div className="reply-body">
                 <p>{comment}</p>
+                {image && <img src={image} alt="Uploaded" className="image-preview-ticket" />}
               </div>
             </div>
           )}
@@ -81,4 +102,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

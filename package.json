@@ -6,7 +6,9 @@
     "start:dev": "cross-env NODE_OPTIONS=--max-old-space-size=4096 next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev": "next dev"
+
   },
   "dependencies": {
     "@react-oauth/google": "^0.12.1",
