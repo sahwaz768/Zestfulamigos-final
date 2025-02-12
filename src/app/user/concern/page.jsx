@@ -1,5 +1,4 @@
 'use client';
-
 import { FiPlus } from 'react-icons/fi';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -38,8 +37,8 @@ const page = () => {
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />
-      <Threeline />
-      <Mastersidebar />
+    <Threeline/>
+      
       <div className="support-head">
         <div className="support-txt">
           <h1 className="md:text-xl ml-3 md:font-bold mt-2">
