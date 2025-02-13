@@ -4,16 +4,17 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Chatheader from '@/components/Masterheader';
 import { Threeline } from '../swipepage/page';
-import { Mastersidebar } from '@/components/MasterSidebar';
+// import { Mastersidebar } from '@/components/MasterSidebar';
 import { capitalizedWord } from '@/utils/common.utils';
 import { RaiseaIssueModel } from '@/components/Models';
+import { useSelector } from 'react-redux';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [issuedata, setissuedata] = useState(null);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
-
+  const userDetails = useSelector((state) => state.AuthReducer.data);
 
   useEffect(() => {
     import('@/services/issues/userissues.service')
@@ -24,6 +25,10 @@ const page = () => {
         }
       });
   }, []);
+
+  if(!userDetails){
+    return <div>Loading....</div>
+  }
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -67,7 +72,7 @@ const page = () => {
                 {capitalizedWord(l.status)}
               </div>
               <div className="support-row-2 text-sm font-bold">
-                <Link href={'/user/ticket'}>
+                <Link href={`/user/ticket?ticketId=${l.issueId}`}>
                   {' '}
                   <h1>view</h1>{' '}
                 </Link>
@@ -82,7 +87,7 @@ const page = () => {
       )}
 
       {isOpen && (
-        <RaiseaIssueModel closeModal={closeModal} />
+        <RaiseaIssueModel closeModal={closeModal} userDetails={userDetails} />
       )}
     </div>
   );

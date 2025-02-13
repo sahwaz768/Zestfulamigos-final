@@ -187,7 +187,7 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
   );
 };
 
-export const RaiseaIssueModel = ({ closeModal }) => {
+export const RaiseaIssueModel = ({ closeModal, userDetails }) => {
   const [formData, setFormData] = useState({
     // email: '',
     subject: '',
@@ -239,8 +239,9 @@ export const RaiseaIssueModel = ({ closeModal }) => {
       const userData = new FormData();
       userData.append('subject', formData.subject);
       userData.append('explanation', formData.explanation);
+      if(formData.image)
       userData.append('images', formData.image);
-      userData.append('userid', 'userId');
+      userData.append('userid', userDetails.userId);
       const { createNewIssue } = await import(
         '@/services/issues/userissues.service'
       );

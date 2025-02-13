@@ -4,6 +4,7 @@ import { FaRegBell } from 'react-icons/fa6';
 import Image from 'next/image'
 import Logo from '@/shared/Assets/companylogo.jpeg';
 import { useSelector } from 'react-redux';
+import Link from 'next/link';
 
 const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -110,7 +111,7 @@ const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
           </div>
           <div className="notificatioview text-sm text-gray-900">
             <div>
-              {notifications.map((notification) => (
+              {notificationRedux && notificationRedux.map((notification) => (
                 <div
                   key={notification.id}
                   className="notification-card flex items-start bg-white shadow-sm relative gap-3 py-3"

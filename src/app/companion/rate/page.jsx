@@ -4,67 +4,33 @@ import Party1 from '@/shared/Assets/party1.png';
 import Party2 from '@/shared/Assets/party2.png';
 import Photo from '@/shared/Assets/Rectangle 12.png';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
-import React, { useEffect, useState } from 'react';
-import { getBookingDetailsforAll } from '@/services/user/bookings.service';
-import { redirect } from 'next/navigation';
-import { BASEURL } from '@/Constants/services.constants';
+import React, { useState } from 'react';
 
 const page = () => {
+  const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
-  const [data, setData] = useState({ rating: 0, comment: '' });
-  const [bookingDetails, setBookingDetails] = useState(null);
+  const [review, setReview] = useState('');
   const [errors, setErrors] = useState([]);
 
-  useEffect(() => {
-    const params = new URL(document.location.toString()).searchParams;
-    const bookingId = params.get('bookingId');
-    if (!bookingId) {
-      redirect('/');
-    } else {
-      getBookingDetailsforAll(bookingId).then(({ data: resdata }) => {
-        if (resdata) {
-          const values = {
-            user: resdata.User?.filter((l) => !l.isCompanion)[0],
-            companion: resdata.User?.filter((l) => l.isCompanion)[0]
-          };
-          setBookingDetails(values);
-        } else {
-          redirect('/user/chat');
-        }
-      });
-    }
-  }, []);
-
-  const handleSubmit = async (e) => {
+  
+  const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = [];
-    if (!data.rating) {
+    if (rating === 0) {
       newErrors.push('Please select a rating.');
     }
-    if (!data.comment.trim().length) {
+    if (review.trim() === '') {
       newErrors.push('Please provide a review.');
     }
     setErrors(newErrors);
     if (newErrors.length > 0) {
       return;
     }
-    const { rateaBookingService } = await import(
-      '@/services/user/bookings.service'
-    );
-    const params = new URL(document.location.toString()).searchParams;
-    const bookingId = params.get('bookingId');
-    const { data: bookingdata } = await rateaBookingService({
-      ...data,
-      bookingid: Number(bookingId)
-    });
-    if (bookingdata) {
-      setData({ rating: 0, comment: '' });
-      setErrors([]);
-      redirect('/user/chat');
-    }
+    alert(`Rating: ${rating}\nReview: ${review}`);
+    setRating(0);
+    setReview('');
+    setErrors([]);
   };
-
-  if (!bookingDetails) return <div>Loading...</div>;
   return (
     <>
       <div className="rate-box">
@@ -79,16 +45,10 @@ const page = () => {
             Meet - up Successful
           </h1>
           <div className="rate-photo flex justify-center md:my-2 my-6">
-            <Image
-              src={BASEURL + '/' + bookingDetails?.companion?.Images[0]}
-              alt="Picture of the author"
-              width={200}
-              height={200}
-            />
+            <Image src={Photo} alt="Picture of the author" />
           </div>
           <h1 className="text-center ">
-            How would you Rate your Experience with our “
-            {bookingDetails?.companion?.firstname || 'Sarah'}”
+            How would you Rate your Experience with our “Amigo”
           </h1>
 
           <div>
@@ -98,8 +58,8 @@ const page = () => {
                   <button
                     type="button"
                     key={star}
-                    className={`star-button ${(hover || data.rating) >= star ? 'active-star' : 'inactive-star'}`}
-                    onClick={() => setData((l) => ({ ...l, rating: star }))}
+                    className={`star-button ${(hover || rating) >= star ? 'active-star' : 'inactive-star'}`}
+                    onClick={() => setRating(star)}
                   >
                     ★
                   </button>
@@ -111,10 +71,8 @@ const page = () => {
               <textarea
                 className="rate-text"
                 placeholder="Write your review here..."
-                value={data.comment}
-                onChange={(e) =>
-                  setData((l) => ({ ...l, comment: e.target.value }))
-                }
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
               />
               <div className="flex justify-center">
                 <button type="submit" className="rate-btn">
