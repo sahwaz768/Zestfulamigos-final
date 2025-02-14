@@ -1,3 +1,5 @@
+import { useRouter } from 'next/navigation';
+
 const { useState } = require('react');
 
 export const StartSessionModel = ({ closeModal, bookingid }) => {
@@ -119,6 +121,7 @@ export const EndSessionModel = ({ closeModal, session }) => {
 };
 export const ExtensionModel = ({ closeModal, bookingid }) => {
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const router = useRouter()
   const [error, setError] = useState('');
 
   const handleSlotClick = (slot) => {
@@ -132,6 +135,8 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
       return;
     }
     try {
+      router.push('./extendsession')
+      return;
       const { extendCurrentSession } = await import(
         '../services/sessions/usersessions.service'
       );

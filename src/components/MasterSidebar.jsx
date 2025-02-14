@@ -30,7 +30,7 @@ export const Mastersidebar = ({ isCompanion }) => {
       icon: CiSettings,
       isDropdown: true,
       dropdownItems: [
-        { label: 'Profile Settings', route: './profile' },
+        { label: 'Profile Settings', route: './extendsession' },
         {
           label: 'Raise a Concern',
           route: './concern',
