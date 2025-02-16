@@ -104,9 +104,14 @@ const Page = () => {
       const { bookaCompanionService } = await import(
         '../../../services/user/bookings.service'
       );
-      const { data } = await bookaCompanionService(values);
-      console.log(data);
-      router.push(`./payment?bookingId=${data.bookingid}`);
+      const { toast } = await import('@/utils/reduxtrigger.utils');
+      const { data, error } = await bookaCompanionService(values);
+      if (data) {
+        console.log(data);
+        router.push(`./payment?bookingId=${data.bookingid}`);
+      } else {
+        toast.error(error);
+      }
     } catch (err) {
       console.log(err);
       setSelectedDateIndex(null);
@@ -307,4 +312,4 @@ const LocationInput = ({ location, setLocation }) => {
   );
 };
 
-export default Page
+export default Page;

@@ -1,6 +1,9 @@
 module.exports = {
-  reactStrictMode: false,
-
+  reactStrictMode: process.env.NODE_ENV === 'production', // Enable strict mode to highlight potential problems in the app
+  experimental: {
+    turbo: {
+    },
+  },
   webpack: (config, { isServer  }) => {
     if (!isServer) {
       config.cache = {

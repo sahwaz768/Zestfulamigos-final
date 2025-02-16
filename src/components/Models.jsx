@@ -94,6 +94,7 @@ export const EndSessionModel = ({ closeModal, session }) => {
       };
       const { data } = await endSession(values);
       if (data) {
+        window.location.reload();
         closeModal();
       } else {
         console.log('Error Occured');
@@ -121,7 +122,7 @@ export const EndSessionModel = ({ closeModal, session }) => {
 };
 export const ExtensionModel = ({ closeModal, bookingid }) => {
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const router = useRouter()
+  const router = useRouter();
   const [error, setError] = useState('');
 
   const handleSlotClick = (slot) => {
@@ -135,17 +136,16 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
       return;
     }
     try {
-      router.push('./extendsession')
-      return;
-      const { extendCurrentSession } = await import(
+      const { startextendCurrentSession } = await import(
         '../services/sessions/usersessions.service'
       );
       const values = {
         bookingid: bookingid?.id,
         extentedhours: selectedSlot
       };
-      const { data } = await extendCurrentSession(values);
+      const { data } = await startextendCurrentSession(values);
       if (data) {
+        router.push(`./extendsession?bookingId=${values.bookingid}`);
         closeModal();
       } else {
         console.log('Error Occured');
@@ -244,8 +244,7 @@ export const RaiseaIssueModel = ({ closeModal, userDetails }) => {
       const userData = new FormData();
       userData.append('subject', formData.subject);
       userData.append('explanation', formData.explanation);
-      if(formData.image)
-      userData.append('images', formData.image);
+      if (formData.image) userData.append('images', formData.image);
       userData.append('userid', userDetails.userId);
       const { createNewIssue } = await import(
         '@/services/issues/userissues.service'

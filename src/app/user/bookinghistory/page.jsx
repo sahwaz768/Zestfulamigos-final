@@ -9,11 +9,13 @@ import { Mastersidebar } from '@/components/MasterSidebar';
 import Notify from '@/components/Notify';
 import { capitalizedWord } from '@/utils/common.utils';
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(null);
   const [historydata, setHistoryData] = useState(null);
   const userDetails = useSelector((state) => state.AuthReducer.data);
+  const router = useRouter();
 
   const showupcomingbooking = () => {
     document.getElementById('upcomingbtn').classList.add('bottomline');
@@ -170,6 +172,17 @@ const page = () => {
                     {l.status === 'ACCEPTED' && (
                       <div>
                         <button onClick={() => setIsOpen(l)}>cancel</button>
+                      </div>
+                    )}
+                    {l.status == 'TRANSACTIONPENDING' && (
+                      <div>
+                        <button
+                          onClick={() =>
+                            router.push(`/user/payment?bookingId=${l.id}`)
+                          }
+                        >
+                          Complete your Payment
+                        </button>
                       </div>
                     )}
                   </div>

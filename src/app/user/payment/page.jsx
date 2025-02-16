@@ -62,7 +62,6 @@ const page = () => {
     const paymentData = {
       ...paymentValues,
       productinfo: 'Web',
-      phone: '8168791042'
     };
 
     try {
@@ -106,7 +105,8 @@ const page = () => {
         amount: String(bookingDetails.amount),
         email: bookingDetails.user.email,
         firstname: bookingDetails.user.firstname,
-        bookingId: bookingDetails.id
+        bookingId: bookingDetails.id,
+        phone: bookingDetails.user.phoneno
       };
       await handlePayment(values);
     }

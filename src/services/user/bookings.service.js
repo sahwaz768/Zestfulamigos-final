@@ -12,6 +12,7 @@ export const bookaCompanionService = async (values) => {
     if (error.response?.status >= 400)
       return { error: error.response.data.message };
   }
+  return { error: 'Server error' }
 };
 
 export const getBookingDetails = async (bookingid) => {

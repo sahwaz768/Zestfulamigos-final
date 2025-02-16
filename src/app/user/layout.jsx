@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import withAuth from '../../shared/hoc/wihAuth';
 import { redirect } from 'next/navigation';
+import { getNotificationButton } from '@/utils/notification.utils';
 
 const UserLayout = ({ children, userDetails }) => {
   useEffect(() => {
@@ -15,7 +16,11 @@ const UserLayout = ({ children, userDetails }) => {
             )
           ).datafetched;
           const { appDispatch } = await import('../../Redux/store/store');
-          appDispatch(datafetched(data?.data?.filter((l) => l)));
+          appDispatch(
+            datafetched(
+              data?.data?.map((l) => ({ ...l, ...getNotificationButton(l) }))
+            )
+          );
         }
       });
   }, []);

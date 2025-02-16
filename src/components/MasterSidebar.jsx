@@ -40,12 +40,19 @@ export const Mastersidebar = ({ isCompanion }) => {
       ]
     }
   ];
-  if (isCompanion)
+  if (isCompanion){
     menuItems.unshift({
       label: 'Dashboard',
       route: './dashboard',
       icon: MdOutlineReportProblem
     });
+  }else {
+    menuItems.unshift({
+      label: 'Choose Companion',
+      route: '/user/genderchoose',
+      icon: RiChatSmile3Line
+    });
+  }
 
   if (!userDetails) return <div>Loading...</div>;
   return (

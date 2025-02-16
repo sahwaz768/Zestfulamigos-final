@@ -223,7 +223,12 @@ const Chatwindow = ({ selected, isCompanion }) => {
   const [isOpenexmodel, setIsOpenexmodel] = useState(null);
 
   const openModal = (model) => setIsOpenexmodel(model);
-  const closeModal = () => setIsOpenexmodel(null);
+  const closeModal = () => {
+    setIsOpenexmodel(null);
+    if (isOpen) {
+      setIsOpen(false);
+    }
+  };
 
   return (
     <>
