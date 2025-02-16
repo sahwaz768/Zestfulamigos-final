@@ -1,23 +1,33 @@
-'use client'
-import React, { useState } from "react";
+'use client';
+import React, { useEffect, useState } from 'react';
 import Chatheader from '@/components/Masterheader';
 import { Notification } from '../swipepage/page';
 
-
 const Page = () => {
   const [hasReplied, setHasReplied] = useState(false);
-  const [userComment, setUserComment] = useState("");
-  const [comment, setComment] = useState("");
+  const [userComment, setUserComment] = useState('');
+  const [comment, setComment] = useState('');
   const [image, setImage] = useState(null);
+  useEffect(() => {
+    const params = new URL(document.location.toString()).searchParams;
+    const ticketId = params.get('ticketId');
+    import('@/services/issues/userissues.service')
+      .then(({ getIssueDetails }) => getIssueDetails(ticketId))
+      .then(({ data }) => {
+        if (data) {
+          console.log(data);
+        }
+      });
+  }, []);
 
   const handleReplyClick = () => {
     setHasReplied(true);
   };
- 
+
   const handleSendClick = () => {
     if (userComment.trim() || image) {
       setComment(userComment);
-      setUserComment("");
+      setUserComment('');
       setHasReplied(false);
     }
   };
@@ -37,17 +47,23 @@ const Page = () => {
   ];
   return (
     <>
-      <Chatheader rightElement={<Notification />} navLinks={navLinks} backgroundColor="rgba(250, 236, 236, 0.8)" />
-      <div className='ticket-head'>
-        <h1 className='text-lg font-bold'>Transaction error</h1>
-        <div className='support-row text-sm font-bold pending'>pending</div>
+      <Chatheader
+        rightElement={<Notification />}
+        navLinks={navLinks}
+        backgroundColor="rgba(250, 236, 236, 0.8)"
+      />
+      <div className="ticket-head">
+        <h1 className="text-lg font-bold">Transaction error</h1>
+        <div className="support-row text-sm font-bold pending">pending</div>
       </div>
-      <div className='ticket-body'>
+      <div className="ticket-body">
         <div className="message-container">
           <div className="admin-message">
             <div className="message-header">
               <span>Created On: Aug 27, 2024, 01:11 PM</span>
-              <span><strong>Admin</strong></span>
+              <span>
+                <strong>Admin</strong>
+              </span>
             </div>
             <div className="message-body">
               <p>
@@ -71,13 +87,19 @@ const Page = () => {
                 placeholder="Write your reply here..."
                 className="reply-textarea"
               />
-              <input 
-                type="file" 
-                accept="image/*" 
-                onChange={handleImageChange} 
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
                 className="image-uploader"
               />
-              {image && <img src={image} alt="Preview" className="image-preview-ticket" />}
+              {image && (
+                <img
+                  src={image}
+                  alt="Preview"
+                  className="image-preview-ticket"
+                />
+              )}
               <button className="send-button" onClick={handleSendClick}>
                 Send
               </button>
@@ -92,7 +114,13 @@ const Page = () => {
               </div>
               <div className="reply-body">
                 <p>{comment}</p>
-                {image && <img src={image} alt="Uploaded" className="image-preview-ticket" />}
+                {image && (
+                  <img
+                    src={image}
+                    alt="Uploaded"
+                    className="image-preview-ticket"
+                  />
+                )}
               </div>
             </div>
           )}

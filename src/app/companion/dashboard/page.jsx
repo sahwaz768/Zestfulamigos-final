@@ -21,8 +21,10 @@ const page = () => {
 
   useEffect(() => {
     import('../../../services/user/bookings.service')
-      .then(({ getPreviousBookings }) => getPreviousBookings())
-      .then(async ({ data, error }) => {
+      .then(({ getPreviousBookings, getRatingforUser }) =>
+        Promise.all([getPreviousBookings(), getRatingforUser()])
+      )
+      .then(async ([{ data }, { data: ratingdata }]) => {
         if (data) {
           const { formatBookingTimingsforUi } = await import(
             '../../../utils/bookings.utils'
@@ -45,10 +47,13 @@ const page = () => {
             if (value.isPast) values.pastBooking.push(value);
             else values.upcoming.push(value);
           }
-          console.log(values);
           setHistoryData(values);
+        } 
+        if(ratingdata){
+          console.log(ratingdata[0]);
         }
-      });
+      })
+      .catch((err) => console.log('Error', err));
   }, []);
 
   const userDetails = useSelector((state) => state.AuthReducer.data);

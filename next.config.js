@@ -1,12 +1,14 @@
 module.exports = {
-  reactStrictMode: false,
-
+  reactStrictMode: process.env.NODE_ENV === 'production', // Enable strict mode to highlight potential problems in the app
+  experimental: {
+    turbo: {
+    },
+  },
   webpack: (config, { isServer  }) => {
     if (!isServer) {
       config.cache = {
-        type: 'filesystem', // Enable filesystem caching for faster development builds
+        type: 'filesystem',
       };
-      // Speed up builds by excluding large unnecessary dependencies
       config.optimization.splitChunks = {
         chunks: 'all',
       };

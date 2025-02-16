@@ -77,7 +77,7 @@ const Login = () => {
         if (decodedToken.isCompanion) {
           router.push('/companion/dashboard');
         } else {
-          router.push('/user/genderchoose'); // Navigate to your desired route
+          router.push('/user/chat'); // Navigate to your desired route
         }
       } else {
         const response = error;

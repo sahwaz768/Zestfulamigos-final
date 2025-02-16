@@ -1,3 +1,5 @@
+import { useRouter } from 'next/navigation';
+
 const { useState } = require('react');
 
 export const StartSessionModel = ({ closeModal, bookingid }) => {
@@ -92,6 +94,7 @@ export const EndSessionModel = ({ closeModal, session }) => {
       };
       const { data } = await endSession(values);
       if (data) {
+        window.location.reload();
         closeModal();
       } else {
         console.log('Error Occured');
@@ -119,6 +122,7 @@ export const EndSessionModel = ({ closeModal, session }) => {
 };
 export const ExtensionModel = ({ closeModal, bookingid }) => {
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const router = useRouter();
   const [error, setError] = useState('');
 
   const handleSlotClick = (slot) => {
@@ -132,15 +136,16 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
       return;
     }
     try {
-      const { extendCurrentSession } = await import(
+      const { startextendCurrentSession } = await import(
         '../services/sessions/usersessions.service'
       );
       const values = {
         bookingid: bookingid?.id,
         extentedhours: selectedSlot
       };
-      const { data } = await extendCurrentSession(values);
+      const { data } = await startextendCurrentSession(values);
       if (data) {
+        router.push(`./extendsession?bookingId=${values.bookingid}`);
         closeModal();
       } else {
         console.log('Error Occured');
@@ -187,7 +192,7 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
   );
 };
 
-export const RaiseaIssueModel = ({ closeModal }) => {
+export const RaiseaIssueModel = ({ closeModal, userDetails }) => {
   const [formData, setFormData] = useState({
     // email: '',
     subject: '',
@@ -239,8 +244,8 @@ export const RaiseaIssueModel = ({ closeModal }) => {
       const userData = new FormData();
       userData.append('subject', formData.subject);
       userData.append('explanation', formData.explanation);
-      userData.append('images', formData.image);
-      userData.append('userid', 'userId');
+      if (formData.image) userData.append('images', formData.image);
+      userData.append('userid', userDetails.userId);
       const { createNewIssue } = await import(
         '@/services/issues/userissues.service'
       );
