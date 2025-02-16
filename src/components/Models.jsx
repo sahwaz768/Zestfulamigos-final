@@ -41,6 +41,7 @@ export const StartSessionModel = ({ closeModal, bookingid }) => {
         const { data } = await startSession(values);
         if (data) {
           closeModal();
+          window.location.reload();
         } else {
           console.log('Error Occured');
           closeModal();

@@ -52,3 +52,19 @@ export function formatBookingTimingsforUi(startTime, endtime) {
   };
   return `${startdate.toLocaleString('en-US', options)} - ${enddate.toLocaleString('en-US', endtimeoptions)}`;
 }
+
+export const parseTimeSlot = (timeString) => {
+  const [startTime, endTime] = timeString.split(' - ');
+  const [startHour, startMinute] = startTime.split(' ')[0].split(':');
+  const startAMPM = startTime.split(' ')[1];
+  
+  let hours = parseInt(startHour);
+  if (startAMPM === 'PM' && hours !== 12) hours += 12;
+  if (startAMPM === 'AM' && hours === 12) hours = 0;
+  
+  const date = new Date();
+  date.setHours(hours);
+  date.setMinutes(parseInt(startMinute));
+  date.setSeconds(0);
+  return date;
+};

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { redirect } from 'next/navigation';
 import { Threeline } from '../swipepage/page';
+import { parseTimeSlot } from '@/utils/bookings.utils';
 
 const Page = () => {
   const times = [
@@ -24,8 +25,14 @@ const Page = () => {
   useEffect(() => {
     let params = new URL(document.location.toString()).searchParams;
     let companionId = params.get('companionId');
-    if (!companionId) {
-      redirect('/');
+    if (companionId) {
+      import('@/services/user/companionDetails.service')
+        .then(({ checkCompanionSlots }) => checkCompanionSlots(companionId))
+        .then(({ data }) => {
+          if (data) {
+            console.log(data);
+          }
+        });
     }
   }, []);
   const tokenredux = useSelector((state) => state.AuthReducer.data);
@@ -157,18 +164,23 @@ const Page = () => {
               ))}
             </div>
             <div className="time-slots-container mt-4 md:ml-6 ml-3">
-              {times.map((time, index) => (
-                <div
-                  key={index}
-                  onClick={() => handleTimeSlotClick(index)}
-                  className={`time-slot ${selectedSlots.includes(index) ? 'selected' : ''}`}
-                >
-                  {time}
-                </div>
-              ))}
+              {times.map((time, index) => {
+                const slotStartTime = parseTimeSlot(time);
+                const isPast = new Date() > slotStartTime;
+                const selected = dates[selectedDateIndex]?.day;
+                return (
+                  <button
+                    disabled={isPast && new Date().getDate() == selected}
+                    key={index}
+                    onClick={() => handleTimeSlotClick(index)}
+                    className={`time-slot ${selectedSlots.includes(index) ? 'selected' : ''}`}
+                  >
+                    {time}
+                  </button>
+                );
+              })}
             </div>
           </div>
-
           <div className="timeslotebox timeslote-textarea">
             <h1 className="text-black md:text-2xl font-semibold my-4">
               Purpose of Engagement

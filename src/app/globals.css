@@ -1819,6 +1819,10 @@ body {
   margin: 5px 19px;
 }
 
+.time-slot:disabled {
+  background-color: #767676;
+}
+
 .time-slot.selected {
   background-color: #b42b50;
   color: black;

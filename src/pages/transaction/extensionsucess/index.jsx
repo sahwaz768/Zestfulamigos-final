@@ -49,6 +49,7 @@ export default function Page(props) {
   useEffect(() => {
     if (props && props.data) {
       extensionsuccessTransaction(props.data).then(({ data, error }) => {
+        debugger;
         if (error) {
           router.push('/');
         } else {
