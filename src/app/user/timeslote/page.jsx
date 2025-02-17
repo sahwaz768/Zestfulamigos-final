@@ -59,7 +59,8 @@ const Page = () => {
     };
   });
 
-  const handleTimeSlotClick = (index) => {
+  const handleTimeSlotClick = (e,index) => {
+    e.preventDefault();
     if (selectedSlots.includes(index)) {
       setSelectedSlots(selectedSlots.filter((slotIndex) => slotIndex < index));
     } else if (
@@ -172,7 +173,7 @@ const Page = () => {
                   <button
                     disabled={isPast && new Date().getDate() == selected}
                     key={index}
-                    onClick={() => handleTimeSlotClick(index)}
+                    onClick={(e) => handleTimeSlotClick(e, index)}
                     className={`time-slot ${selectedSlots.includes(index) ? 'selected' : ''}`}
                   >
                     {time}

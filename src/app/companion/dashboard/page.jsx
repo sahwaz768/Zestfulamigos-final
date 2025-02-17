@@ -8,6 +8,7 @@ import { Mastersidebar } from '@/components/MasterSidebar';
 import Notify from '@/components/Notify';
 import { useSelector } from 'react-redux';
 import { BASEURL } from '@/Constants/services.constants';
+import { capitalizedWord } from '@/utils/common.utils';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,8 +49,8 @@ const page = () => {
             else values.upcoming.push(value);
           }
           setHistoryData(values);
-        } 
-        if(ratingdata){
+        }
+        if (ratingdata) {
           console.log(ratingdata[0]);
         }
       })
@@ -155,7 +156,7 @@ const page = () => {
               <div className="dashboard-userdetail" key={l.id}>
                 <div className="dashboard-userprofile">
                   <Image
-                    src={BASEURL + '/UserPhotos/companion1.jpg'}
+                    src={BASEURL + '/' + l?.user?.Images[0]}
                     alt="Picture of the author"
                     width={117}
                     height={111}
@@ -168,7 +169,7 @@ const page = () => {
                       <span className="md:font-bold">{l.user?.firstname}</span>
                     </h1>
                     <h1 className="text-sm md:text-base">
-                      Age:<span className="md:font-bold">20</span>
+                      Age:<span className="md:font-bold">{l.user?.age}</span>
                     </h1>
                     <h1 className="text-sm md:text-base">
                       Gender:<span className="md:font-bold">Male</span>
@@ -187,9 +188,15 @@ const page = () => {
                       Purpose of meet:
                       <span className="md:font-bold ">Dinner</span>
                     </h1>
+                    <h1 className="text-sm md:text-base">
+                      status:
+                      <span className="md:font-bold ">
+                        {capitalizedWord(l.status)}
+                      </span>
+                    </h1>
                   </div>
                 </div>
-                {l.status !== 'CANCELLED' && (
+                {l.status === 'ACCEPTED' && (
                   <div className="dashboard-cancel">
                     <button onClick={openModal}>Cancel</button>
                   </div>

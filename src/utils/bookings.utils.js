@@ -4,17 +4,15 @@ export function formatBookingDate(month, date, timeslots) {
     let [hours, minutes] = time.split(':');
     hours = parseInt(hours, 10);
     minutes = parseInt(minutes, 10);
-
     if (modifier === 'PM' && hours !== 12) hours += 12;
     if (modifier === 'AM' && hours === 12) hours = 0;
-
     dateObj.setHours(hours, minutes, 0, 0);
     return dateObj;
   }
 
-  const startHours = Number(timeslots[0].split(' - ')[0].split(':')[0]);
+  const startHours = parseTime(timeslots[0].split(' - ')[0], new Date());
   const yearnow = new Date().getFullYear();
-  const baseDate = new Date(yearnow, month - 1, date, startHours);
+  const baseDate = new Date(yearnow, month - 1, date, startHours.getHours());
   const formattedDate = `${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}-${yearnow}`;
   let totalDuration = 0;
   timeslots.forEach((slot) => {
