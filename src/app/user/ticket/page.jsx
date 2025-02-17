@@ -1,13 +1,14 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Chatheader from '@/components/Masterheader';
-import { Notification } from '../swipepage/page';
 
 const Page = () => {
   const [hasReplied, setHasReplied] = useState(false);
   const [userComment, setUserComment] = useState('');
   const [comment, setComment] = useState('');
   const [image, setImage] = useState(null);
+  const [userIssue, setUserIssue] = useState(null);
+
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
     const ticketId = params.get('ticketId');
@@ -16,6 +17,7 @@ const Page = () => {
       .then(({ data }) => {
         if (data) {
           console.log(data);
+          setUserIssue(data);
         }
       });
   }, []);
@@ -39,22 +41,16 @@ const Page = () => {
     }
   };
 
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About Us', href: './aboutus' },
-    { name: 'Privacy Policy', href: './privacypolicy' },
-    { name: 'Contact', href: './contactus' }
-  ];
+  if (!userIssue) return <div>Loading...</div>;
+
   return (
     <>
-      <Chatheader
-        rightElement={<Notification />}
-        navLinks={navLinks}
-        backgroundColor="rgba(250, 236, 236, 0.8)"
-      />
+      <Chatheader backgroundColor="rgba(250, 236, 236, 0.8)" />
       <div className="ticket-head">
-        <h1 className="text-lg font-bold">Transaction error</h1>
-        <div className="support-row text-sm font-bold pending">pending</div>
+        <h1 className="text-lg font-bold">{userIssue.subject}</h1>
+        <div className="support-row text-sm font-bold pending">
+          {userIssue.status}
+        </div>
       </div>
       <div className="ticket-body">
         <div className="message-container">

@@ -66,3 +66,34 @@ export const parseTimeSlot = (timeString) => {
   date.setSeconds(0);
   return date;
 };
+
+export function convertToTimeSlots(startMs, endMs, intervalMinutes = 60) {
+  const startTime = new Date(startMs);
+  const endTime = new Date(endMs);
+  function formatTime(date) {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    
+    return `${hours}:${minutes} ${ampm}`;
+  }
+  const timeSlots = [];
+  
+  while (startTime < endTime) {
+    const slotEndTime = new Date(startTime.getTime() + intervalMinutes * 60000);
+    
+    const actualEndTime = slotEndTime > endTime ? endTime : slotEndTime;
+ 
+    const startStr = formatTime(startTime);
+    const endStr = formatTime(actualEndTime);
+    
+    timeSlots.push(`${startStr} - ${endStr}`);
+   
+    startTime.setTime(actualEndTime.getTime());
+  }
+  
+  return timeSlots;
+}

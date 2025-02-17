@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import Party1 from '@/shared/Assets/party1.png';
 import Party2 from '@/shared/Assets/party2.png';
-import Photo from '@/shared/Assets/Rectangle 12.png';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import React, { useEffect, useState } from 'react';
 import { getBookingDetailsforAll } from '@/services/user/bookings.service';

@@ -4,21 +4,10 @@ import { CgProfile } from 'react-icons/cg';
 import Chatheader from '@/components/Masterheader';
 import { Mastersidebar } from '@/components/MasterSidebar';
 import Notify from '@/components/Notify';
-import { useDispatch } from 'react-redux';
-import { notitrigger } from '@/Redux/notiReducer/notiReducer';
 import { BASEURL } from '@/Constants/services.constants';
 
 const Page = () => {
-  const preExistingData = {
-    imageUrl: '', // Pre-existing profile picture URL, if available
-    fullName: 'John Doe',
-    email: 'johndoe@example.com',
-    phoneNumber: '1234567890',
-    age: '30',
-    gender: 'male'
-  };
-  const dispatch = useDispatch();
-  const [formData, setFormData] = useState(preExistingData);
+  const [formData, setFormData] = useState(null);
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -27,14 +16,15 @@ const Page = () => {
       .then(({ data, error }) => {
         if (data) {
           const values = {
-            imageUrl: BASEURL + '/' + data.data?.Images[0], 
+            imageUrl: BASEURL + '/' + data.data?.Images[0],
             fullName: data.data?.firstname + ' ' + data.data?.lastname,
             email: data.data?.email,
             phoneNumber: data.data.phoneno,
             age: data.data?.age,
-            gender: data.data?.gender?.toLocaleLowerCase()
-          }
-          setFormData(() => ({...values}))
+            gender: data.data?.gender?.toLocaleLowerCase(),
+            id: data.data?.id
+          };
+          setFormData(() => ({ ...values }));
         } else {
           console.log(error);
         }
@@ -43,35 +33,16 @@ const Page = () => {
   const validate = () => {
     const newErrors = {};
 
-    if (!formData.fullName.trim()) {
+    if (!formData.fullName.trim().length) {
       newErrors.fullName = 'Full Name is required';
+    } else if (formData.fullName.split(' ').length !== 2) {
+      newErrors.fullName = 'Name must be valid first firstname and lastname';
     }
-
-    if (
-      !formData.email.trim() ||
-      !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email)
-    ) {
-      newErrors.email = 'Valid Email is required';
-    }
-
     if (
       !formData.phoneNumber.trim() ||
       !/^\d{10}$/.test(formData.phoneNumber)
     ) {
       newErrors.phoneNumber = 'Valid Phone Number is required';
-    }
-
-    if (
-      !formData.age.trim() ||
-      isNaN(formData.age) ||
-      formData.age < 1 ||
-      formData.age > 100
-    ) {
-      newErrors.age = 'Age must be between 1 and 100';
-    }
-
-    if (!formData.gender.trim()) {
-      newErrors.gender = 'Gender is required';
     }
 
     setErrors(newErrors);
@@ -86,16 +57,37 @@ const Page = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const url = URL.createObjectURL(file);
       setFormData({ ...formData, imageUrl: file });
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(notitrigger({ message: 'Just Testing...', type: 'success' }));
     if (validate()) {
-      console.log('Form data submitted:', formData);
+      try {
+        const { updateuserProfileDetailsService } = await import(
+          '@/services/user/userprofile.service'
+        );
+        const { toast } = await import('@/utils/reduxtrigger.utils');
+        const userData = new FormData();
+        const firstname = formData.fullName.split(' ')[0];
+        const lastname = formData.fullName.split(' ')[1];
+        userData.append('firstname', firstname);
+        userData.append('lastname', lastname);
+        userData.append('phoneno', formData.phoneNumber);
+        if (typeof formData.imageUrl === 'object') {
+          userData.append('images', formData.imageUrl);
+        }
+        const { data, error } = await updateuserProfileDetailsService(
+          userData,
+          formData.id
+        );
+        if (data) {
+          toast.success('Successfully updated your profile');
+        } else {
+          toast.error(error);
+        }
+      } catch (error) {}
     }
   };
 
@@ -105,7 +97,7 @@ const Page = () => {
     { name: 'Privacy Policy', href: './privacypolicy' },
     { name: 'Contact', href: './contactus' }
   ];
-
+  if (!formData) return <div>Loading...</div>;
   return (
     <>
       <Chatheader
@@ -117,14 +109,16 @@ const Page = () => {
       </div>
       <div className="profilebox">
         <Mastersidebar />
-        <div className="profiledetail ">
+        <div className="profiledetail">
           <form onSubmit={handleSubmit}>
             <div className="">
               <div className="profile-containerx">
                 <label
                   htmlFor="file-input"
                   className="profile-picturex"
-                  style={{ backgroundImage: `url(${formData.imageUrl})` }}
+                  style={{
+                    backgroundImage: `url(${typeof formData.imageUrl === 'object' ? URL.createObjectURL(formData.imageUrl) : formData.imageUrl})`
+                  }}
                 >
                   {!formData.imageUrl && (
                     <span className="userx">
@@ -159,13 +153,13 @@ const Page = () => {
               </div>
 
               <div className="">
-                <label className="text-sm ">Email</label>
+                <label className="text-sm">Email</label>
                 <br />
                 <input
                   type="email"
                   name="email"
+                  disabled
                   value={formData.email}
-                  onChange={handleChange}
                   placeholder="Enter your email"
                   className="userprofile-input-text"
                 />
@@ -199,7 +193,6 @@ const Page = () => {
                   type="number"
                   name="age"
                   value={formData.age}
-                  onChange={handleChange}
                   placeholder="Enter your age"
                   min="1"
                   max="100"
@@ -215,7 +208,6 @@ const Page = () => {
               <select
                 name="gender"
                 value={formData.gender}
-                onChange={handleChange}
                 className="userprofile-input-text"
                 disabled
               >

@@ -43,7 +43,9 @@ const page = () => {
               isPast:
                 new Date(Number(data[i].bookingstart)).getTime() < Date.now(),
               status: data[i].status,
-              amount: data[i].amount
+              amount: data[i].amount,
+              purpose: data[i].purpose,
+              meetinglocation: data[i].meetinglocation
             };
             if (value.isPast) values.pastBooking.push(value);
             else values.upcoming.push(value);
@@ -172,21 +174,21 @@ const page = () => {
                       Age:<span className="md:font-bold">{l.user?.age}</span>
                     </h1>
                     <h1 className="text-sm md:text-base">
-                      Gender:<span className="md:font-bold">Male</span>
+                      Gender:<span className="md:font-bold">{l.user?.gender}</span>
                     </h1>
                   </div>
                   <div className="dashboard-purpose md:mt-2  gap-2">
                     <h1 className="text-sm md:text-base">
                       Time and date:
-                      <span className="md:font-bold ">{l.bookingdate} </span>
+                      <span className="md:font-bold ">{l?.bookingdate} </span>
                     </h1>
-                    <h1 className="text-sm md:text-base">
+                    {/* <h1 className="text-sm md:text-base">
                       Location of meet- up:
                       <span className="md:font-bold ">Bkc Mumbai</span>
-                    </h1>
+                    </h1> */}
                     <h1 className="text-sm md:text-base">
                       Purpose of meet:
-                      <span className="md:font-bold ">Dinner</span>
+                      <span className="md:font-bold ">{l?.purpose}</span>
                     </h1>
                     <h1 className="text-sm md:text-base">
                       status:
