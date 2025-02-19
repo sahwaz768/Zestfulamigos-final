@@ -1,9 +1,7 @@
-import React from 'react';
+'use client';
+import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic';
-// import Homeheader from '@/components/Masterheader';
-// import Homemidsection from '@/components/homemidsection';
-// import Footer from '@/components/Footer';
-// import Login from '@/components/Login';
+import { redirect } from 'next/navigation';
 
 const Homeheader = dynamic(() => import('@/components/Masterheader'));
 const Homemidsection = dynamic(() => import('@/components/homemidsection'));
@@ -11,23 +9,29 @@ const Footer = dynamic(() => import('@/components/Footer'));
 const Login = dynamic(() => import('@/components/Login'));
 
 const page = () => {
-  const navLinks = [
-    { name: 'Home', href: './' },
-    { name: 'About Us', href: './user/aboutus' },
-    { name: 'Privacy Policy', href: './user/privacypolicy' },
-    { name: 'Contact', href: './user/contactus' }
-  ];
+  useEffect(() => {
+    import('nookies').then(async ({ parseCookies }) => {
+      const { ACCESS_TOKEN_LOC } = await import('@/Constants/common.constants');
+      const { decodeAccessToken } = await import('@/utils/common.utils');
+      const cookies = parseCookies();
+      const token = cookies[ACCESS_TOKEN_LOC];
+      if (token) {
+        const user = decodeAccessToken(token).decodedToken;
+        if (user && user.isCompanion) {
+          redirect('/companion/dashboard');
+        } else if (user && !user.isCompanion) {
+          redirect('/user/chat');
+        }
+      }
+    });
+  }, []);
 
   return (
     <>
       <div className="herosection">
         {/* nav bar start here */}
         <div className="herobox">
-          <Homeheader
-            isLogin
-            backgroundColor="rgba(250, 236, 236, 0.3)"
-            navLinks={navLinks}
-          />
+          <Homeheader isLogin backgroundColor="rgba(250, 236, 236, 0.3)" />
         </div>
         {/* hero section */}
         <div className="herocont">
