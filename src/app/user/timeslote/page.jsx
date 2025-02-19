@@ -4,7 +4,6 @@ import { Guidmodel } from '../chat/page';
 import Chatheader from '@/components/Masterheader';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import { redirect } from 'next/navigation';
 import { Threeline } from '../swipepage/page';
 import { parseTimeSlot } from '@/utils/bookings.utils';
 
