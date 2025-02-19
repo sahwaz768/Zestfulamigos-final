@@ -94,10 +94,46 @@ const Page = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       console.log('Form submitted:', formData);
+      const companionetails = new FormData();
+      const previousImages = [];
+      for (let key in formData) {
+        if (key === 'images') {
+          formData[key].forEach((img) => {
+            if (typeof img === 'string') {
+              previousImages.push(img);
+            } else {
+              companionetails.append('images', img.file);
+            }
+          });
+        } else if (key === 'description') {
+          companionetails.append(key, JSON.stringify(formData[key]));
+        } else if (key !== 'id') {
+          companionetails.append(key, formData[key]);
+        }
+      }
+      if (previousImages.length > 0) {
+        companionetails.append(
+          'previousImages',
+          JSON.stringify(previousImages)
+        );
+      }
+      const { updateCompanionProfileService } = await import(
+        '@/services/user/userprofile.service'
+      );
+      const { toast } = await import('@/utils/reduxtrigger.utils');
+      const { data, error } = await updateCompanionProfileService(
+        companionetails,
+        formData.id
+      );
+      if (data) {
+        toast.success('Profile has been requested for approval');
+      } else {
+        toast.error(error);
+      }
       // Submit form data to backend or perform further actions
     } else {
       console.log('Form has errors');
@@ -358,6 +394,12 @@ const Page = () => {
 const ImageUploader = ({ images, onUpload }) => {
   const [localImages, setLocalImages] = useState(() => images);
   const maxImages = 4;
+
+  useEffect(() => {
+    if (images.length > 0 && images !== localImages) {
+      setLocalImages(() => images);
+    }
+  }, [images]);
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);

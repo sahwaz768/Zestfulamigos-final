@@ -15,6 +15,7 @@ export const getAddressFromLatLng = async (lat, lng, apiKey) => {
 
   export function convertCompanionData(input) {
     return {
+        id: input.Companion && input.Companion[0].id || '',
         images: input.Images || [],
         firstname: input.firstname || '',
         lastname: input.lastname || '',
@@ -29,6 +30,8 @@ export const getAddressFromLatLng = async (lat, lng, apiKey) => {
         drinkinghabits: input.Companion && input.Companion[0].drinkinghabits || '',
         city: input.Companion && input.Companion[0].baselocation ? input.Companion[0].baselocation[0].city : '',
         description: input.Companion && input.Companion[0].description || [],
-        height: input.Companion && input.Companion[0].height || ''
+        height: input.Companion && input.Companion[0].height || '',
+        lat: input.Companion && input.Companion[0].baselocation ? input.Companion[0].baselocation[0].lat : '',
+        lng: input.Companion && input.Companion[0].baselocation ? input.Companion[0].baselocation[0].lng : '',
     };
 }

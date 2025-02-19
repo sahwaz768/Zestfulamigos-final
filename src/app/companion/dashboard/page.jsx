@@ -30,7 +30,7 @@ const page = () => {
           const { formatBookingTimingsforUi } = await import(
             '../../../utils/bookings.utils'
           );
-          const values = { pastBooking: [], upcoming: [] };
+          const values = { pastBooking: [], upcoming: [], rating: null };
           for (let i = 0; i < data.length; i += 1) {
             const value = {
               id: data[i].id,
@@ -50,10 +50,10 @@ const page = () => {
             if (value.isPast) values.pastBooking.push(value);
             else values.upcoming.push(value);
           }
+          if (ratingdata) {
+            values.rating = ratingdata[0];
+          }
           setHistoryData(values);
-        }
-        if (ratingdata) {
-          console.log(ratingdata[0]);
         }
       })
       .catch((err) => console.log('Error', err));
@@ -139,16 +139,28 @@ const page = () => {
                 <div>
                   Last rating
                   <div className="flex  items-center">
-                    <IoIosStar color="yellow" size={15} />
-                    <IoIosStar color="yellow" size={15} />
+                    {historyData?.rating?.last_rating ? (
+                      Array.from(
+                        { length: Number(historyData?.rating?.last_rating) },
+                        (_, i) => i
+                      ).map((l) => (
+                        <IoIosStar color="yellow" size={15} key={l} />
+                      ))
+                    ) : (
+                      <IoIosStar color="gray" size={15} />
+                    )}
                   </div>
                 </div>
               </div>
               <div className="overview-box">
                 <IoIosStar color="yellow" size={30} />
                 <div>
-                  <h1>Total rating</h1>
-                  <h1 className="font-bold">400/500</h1>
+                  <h1>Average rating</h1>
+                  <h1 className="font-bold">
+                    {historyData?.rating?.bayesian_avg
+                      ? `${Number(historyData?.rating?.bayesian_avg).toFixed(2)}/${historyData.rating.rating_count}`
+                      : ''}
+                  </h1>
                 </div>
               </div>
             </div>
@@ -174,7 +186,8 @@ const page = () => {
                       Age:<span className="md:font-bold">{l.user?.age}</span>
                     </h1>
                     <h1 className="text-sm md:text-base">
-                      Gender:<span className="md:font-bold">{l.user?.gender}</span>
+                      Gender:
+                      <span className="md:font-bold">{l.user?.gender}</span>
                     </h1>
                   </div>
                   <div className="dashboard-purpose md:mt-2  gap-2">
