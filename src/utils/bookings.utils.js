@@ -97,3 +97,34 @@ export function convertToTimeSlots(startMs, endMs, intervalMinutes = 60) {
   
   return timeSlots;
 }
+
+export function generateStimeSlots(startMs, endMs) {
+  let startTime = new Date(startMs);
+  let endTime = new Date(endMs);
+  let times = [];
+  while (startTime <= endTime) {
+
+      let starthours = startTime.getHours();
+      // let minutes = startTime.getMinutes();
+      let startampm = starthours >= 12 ? 'PM' : 'AM';
+
+      starthours = starthours % 12;
+      starthours = starthours ? starthours : 12;
+      // minutes = minutes < 10 ? '0' + minutes : minutes; // 
+      let formattedstartTime = starthours + ':' + '00' + ' ' + startampm;
+      
+      let endhours = new Date(startTime.getHours() + 1);
+      // let minutes = startTime.getMinutes();
+      let endampm = endhours >= 12 ? 'PM' : 'AM';
+
+      endhours = endhours % 12;
+      endhours = endhours ? endhours : 12;
+      // minutes = minutes < 10 ? '0' + minutes : minutes; // 
+      let formattedendTime = endhours + ':' + '00' + ' ' + endampm;
+      
+      times.push(`${formattedstartTime} - ${formattedendTime}`);
+      startTime.setHours(startTime.getHours() + 1);
+  }
+
+  return times;
+}

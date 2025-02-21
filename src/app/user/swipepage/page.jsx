@@ -41,7 +41,7 @@ const Page = () => {
           backgroundColor="rgba(250, 236, 236, 0.8)"
           navLinks={navLinks}
         />
-        <Threeline />
+        < />
         <div className="swipe-container-first">
           <h1 className="font-extrabold text-center">Select your amigo</h1>
           <p className="text-sm mt-2 px-8 text-center">

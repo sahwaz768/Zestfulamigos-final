@@ -4,7 +4,6 @@ import { Guidmodel } from '../chat/page';
 import Chatheader from '@/components/Masterheader';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import { Threeline } from '../swipepage/page';
 import { parseTimeSlot } from '@/utils/bookings.utils';
 
 const Page = () => {
@@ -143,7 +142,6 @@ const Page = () => {
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />
-      <Threeline />
       <Guidmodel />
       <form onSubmit={handleFormSubmit} className="flex flex-col space-y-4">
         <div className="flex flex-wrap ">
