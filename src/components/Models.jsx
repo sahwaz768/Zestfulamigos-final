@@ -500,7 +500,7 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
   );
 };
 
-export const SetNewPasswordModel = ({ closeModal }) => {
+export const SetNewPasswordModel = ({ handleModel }) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState({ newPassword: '', confirmPassword: '' });
@@ -631,7 +631,7 @@ export const LoginModel = ({ handleModel }) => {
     const { loginUserService } = await import('../services/auth/login.service');
     const { datafetched } = await import('../Redux/auth/auth.reducer');
     const { decodeAccessToken } = await import('../utils/common.utils');
-    const { appDispatch } = await import('@/Redux/store/store')
+    const { appDispatch } = await import('@/Redux/store/store');
     const { ACCESS_TOKEN_LOC, REFRESH_TOKEN_LOC } = await import(
       '../Constants/common.constants'
     );
@@ -727,6 +727,71 @@ export const LoginModel = ({ handleModel }) => {
             </Link>
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
+
+export const CancelBookingModel = ({ closeModal, bookingDetail }) => {
+  const [text, setText] = useState('');
+  const [error, setError] = useState('');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (text.trim() === '') {
+      setError('please specify the reason');
+      return;
+    }
+    const bookingDetails = {
+      userId: bookingDetail?.userId,
+      bookingid: bookingDetail.id,
+      reason: text
+    };
+    try {
+      const { cancelBooking } = await import(
+        '../services/user/bookings.service'
+      );
+      const { toast } = await import('@/utils/reduxtrigger.utils');
+      const { data } = await cancelBooking(bookingDetails);
+      if (data) {
+        toast.success('Booking Cancelled Successfully');
+        closeModal();
+      } else {
+        toast.error('Error Occured');
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setError('');
+      console.log('Submitted text:', text);
+      setText('');
+    }
+  };
+  return (
+    <div className="companion-modal-overlay">
+      <div
+        className="companion-modal-content"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button onClick={closeModal} className="close">
+          &times;
+        </button>
+        <h1 className="text-center font-bold">Please specify the reason</h1>
+
+        <form onSubmit={handleSubmit}>
+          <div>
+            <textarea
+              id="textarea"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Reason...."
+              className="companion-textarea"
+            ></textarea>
+          </div>
+          {error && <div className="text-xs">{error}</div>}
+          <button type="submit" className="companion-cancel-btn">
+            Submit
+          </button>
+        </form>
       </div>
     </div>
   );

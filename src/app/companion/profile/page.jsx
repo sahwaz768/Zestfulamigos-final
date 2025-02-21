@@ -7,13 +7,14 @@ import {
   descriptionData,
   drinkingHabitsData,
   eatingHabitsData,
-  GenderData,
+  // GenderData,
   getBodyTypes,
   SkinToneData,
   smokingHabitsData
 } from '@/shared/data/companion.data';
 import { convertCompanionData } from '@/utils/location';
 import { BASEURL } from '@/Constants/services.constants';
+import { validateCompanion } from '@/shared/validations/companion.validation';
 
 const initialFormData = {
   images: [],
@@ -57,41 +58,17 @@ const Page = () => {
     setErrors({ ...errors, [name]: '' }); // Clear error on change
   };
 
-  const handleCheckboxChange = (index) => {
-    const updatedDescription = [...formData.description];
-    updatedDescription[index] = !updatedDescription[index];
-    setFormData({ ...formData, description: updatedDescription });
-  };
-
   const handleImageUpload = (images) => {
     setFormData({ ...formData, images });
   };
 
   const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.firstname.trim())
-      newErrors.firstname = 'First name is required';
-    if (!formData.lastname.trim()) newErrors.lastname = 'Last name is required';
-    if (!formData.gender) newErrors.gender = 'Gender is required';
-    if (!formData.skintone) newErrors.skintone = 'Skin tone is required';
-    if (!formData.bodytype) newErrors.bodytype = 'Body type is required';
-    if (!formData.eatinghabits)
-      newErrors.eatinghabits = 'Eating habit is required';
-    if (!formData.smokinghabits)
-      newErrors.smokinghabits = 'Smoking habit is required';
-    if (!formData.drinkinghabits)
-      newErrors.drinkinghabits = 'Drinking habit is required';
-    if (formData.description.filter((checked) => checked).length < 2)
-      newErrors.description = 'Select at least 2 checkboxes';
-
-    // Profile picture validation: At least 4 images must be uploaded
-    // if (formData.images.length < 4) {
-    //   newErrors.images = 'Upload at least 4 profile pictures';
-    // }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const errors = validateCompanion(formData)
+    if(Object.keys(errors).length > 0) {
+      setErrors(errors);
+      return false;
+    }
+    return true;
   };
 
   const handleSubmit = async (e) => {

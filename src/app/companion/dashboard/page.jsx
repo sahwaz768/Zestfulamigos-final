@@ -9,12 +9,23 @@ import Notify from '@/components/Notify';
 import { useSelector } from 'react-redux';
 import { BASEURL } from '@/Constants/services.constants';
 import { capitalizedWord } from '@/utils/common.utils';
+import { CancelBookingModel } from '@/components/Models';
 
 const page = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [openModel, setOpenModel] = useState({ data: null, open: false });
+
+  const userDetails = useSelector((state) => state.AuthReducer.data);
   const [historyData, setHistoryData] = useState(null);
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+
+  const openModal = (id) => {
+    setOpenModel({
+      data: { userId: userDetails?.userId, bookingid: id },
+      open: true
+    });
+  };
+  const closeModal = () => {
+    setOpenModel({ data: null, open: false });
+  };
 
   // validation for text area
   const [text, setText] = useState('');
@@ -59,8 +70,7 @@ const page = () => {
       .catch((err) => console.log('Error', err));
   }, []);
 
-  const userDetails = useSelector((state) => state.AuthReducer.data);
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validation check
@@ -68,12 +78,25 @@ const page = () => {
       setError('please specify the reason');
       return;
     }
-
-    // If validation passes
-    setError('');
-    console.log('Submitted text:', text); // Log the textarea content to the console
-    alert('Form submitted successfully!');
-    setText(''); // Clear the textarea after submission
+    const bookingDetails = {
+      userId: userDetails?.userId,
+      bookingid: isOpen.id
+    };
+    try {
+      const { cancelBooking } = await import(
+        '../../../services/user/bookings.service'
+      );
+      const { data } = await cancelBooking(bookingDetails);
+      if (data) {
+        setIsOpen(null);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setError('');
+      console.log('Submitted text:', text);
+      setText('');
+    }
   };
   if (!userDetails) return <div>Loading....</div>;
 
@@ -213,7 +236,7 @@ const page = () => {
                 </div>
                 {l.status === 'ACCEPTED' && (
                   <div className="dashboard-cancel">
-                    <button onClick={openModal}>Cancel</button>
+                    <button onClick={() => openModal(l.id)}>Cancel</button>
                   </div>
                 )}
               </div>
@@ -224,34 +247,11 @@ const page = () => {
         </div>
       </div>
 
-      {isOpen && (
-        <div className="companion-modal-overlay">
-          <div
-            className="companion-modal-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button onClick={closeModal} className="close">
-              &times;
-            </button>
-            <h1 className="text-center font-bold">Please specify the reason</h1>
-
-            <form onSubmit={handleSubmit}>
-              <div>
-                <textarea
-                  id="textarea"
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  placeholder="Reason...."
-                  className="companion-textarea"
-                ></textarea>
-              </div>
-              {error && <div className="text-xs">{error}</div>}
-              <button type="submit" className="companion-cancel-btn">
-                Submit
-              </button>
-            </form>
-          </div>
-        </div>
+      {openModel.open && (
+        <CancelBookingModel
+          closeModal={closeModal}
+          bookingDetail={openModel.data}
+        />
       )}
     </>
   );
