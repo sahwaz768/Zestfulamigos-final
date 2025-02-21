@@ -102,7 +102,7 @@ export function generateStimeSlots(startMs, endMs) {
   let startTime = new Date(startMs);
   let endTime = new Date(endMs);
   let times = [];
-  while (startTime <= endTime) {
+  while (startTime < endTime) {
 
       let starthours = startTime.getHours();
       // let minutes = startTime.getMinutes();
