@@ -7,9 +7,11 @@ import { RiServiceLine } from 'react-icons/ri';
 import { MdPendingActions } from 'react-icons/md';
 import { Mastersidebar } from '@/components/MasterSidebar';
 import { capitalizedWord } from '@/utils/common.utils';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const [historydata, setHistoryData] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     import('../../../services/user/bookings.service')
@@ -144,7 +146,11 @@ const Page = () => {
                       <h1>Status: {capitalizedWord(l.status)}</h1>
                     </div>
                     <div>
-                      <button>Rate</button>
+                      <button
+                        onClick={() => router.push(`./rate?bookingId=${l.id}`)}
+                      >
+                        Rate
+                      </button>
                     </div>
                   </div>
                 ))

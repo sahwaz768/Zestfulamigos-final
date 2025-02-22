@@ -11,6 +11,11 @@ import { EndSessionModel, StartSessionModel, ExtensionModel } from './Models';
 import { parseCookies, setCookie } from 'nookies';
 import { getAccessTokenFromRefreshTokenService } from '../services/auth/login.service';
 import { deletecookie } from '@/utils/removeUserData';
+import dynamic from 'next/dynamic';
+
+const CountdownTimer = dynamic(() => import('@/components/CountdownTimer'), {
+  ssr: false
+});
 
 const GetSessionModel = (model, selected, closeModal) => {
   switch (model) {
@@ -286,7 +291,10 @@ const Chatwindow = ({ selected, isCompanion }) => {
             </div>
           </div>
           <div className="timer">
-            <Timer />
+            <CountdownTimer
+              startTime={Number(selected.booking.bookingstart)}
+              endTime={Number(selected.booking.bookingend)}
+            />
           </div>
           <div className="chat-body">
             {messagedata &&
@@ -327,48 +335,6 @@ const Chatwindow = ({ selected, isCompanion }) => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const Timer = () => {
-  const [time, setTime] = useState({ hours: 0, minutes: 0 });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime((prevTime) => {
-        const newMinutes = (prevTime.minutes + 1) % 60;
-        const newHours =
-          prevTime.minutes + 1 === 60 ? prevTime.hours + 1 : prevTime.hours;
-
-        // Stop the timer when it reaches 2 hours
-        if (newHours === 2 && newMinutes === 0) {
-          clearInterval(timer);
-          return prevTime; // Stop updating
-        }
-
-        return { hours: newHours, minutes: newMinutes };
-      });
-    }, 60000); // Updates every 60 seconds
-
-    return () => clearInterval(timer); // Cleanup interval on unmount
-  }, []);
-  return (
-    <>
-      <div className="countup-container">
-        <div className="countup-box">
-          <div className="countup-time">
-            {time.hours.toString().padStart(2, '0')}
-          </div>
-          <div className="countup-label">Hrs</div>
-        </div>
-        <div className="countup-box">
-          <div className="countup-time">
-            {time.minutes.toString().padStart(2, '0')}
-          </div>
-          <div className="countup-label">Mins</div>
         </div>
       </div>
     </>

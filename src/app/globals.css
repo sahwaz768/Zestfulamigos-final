@@ -2360,7 +2360,6 @@ th {
 .timer {
   display: flex;
   justify-content: center;
-  display: none;
 }
 
 .countup-container {

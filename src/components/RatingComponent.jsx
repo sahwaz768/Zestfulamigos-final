@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { BASEURL } from '@/Constants/services.constants';
 import Image from 'next/image';
 import Party1 from '@/shared/Assets/party1.png';

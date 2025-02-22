@@ -224,7 +224,11 @@ const page = () => {
                       <h1>Paid amount: {l.amount}</h1>
                     </div>
                     <div>
-                      <button>Rate</button>
+                      <button
+                        onClick={() => router.push(`./rate?bookindId=${l.d}`)}
+                      >
+                        Rate
+                      </button>
                       <button className="ml-4">Book again</button>
                     </div>
                   </div>
