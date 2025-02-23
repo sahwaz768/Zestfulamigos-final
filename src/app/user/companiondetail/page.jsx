@@ -1,20 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { CiShoppingBasket } from 'react-icons/ci';
-// import { FaPersonHiking } from 'react-icons/fa6';
-// import { FaRoad } from 'react-icons/fa';
-// import { GiCampingTent } from 'react-icons/gi';
 import Image from 'next/image';
 import Link from 'next/link';
 import Chatheader from '@/components/Masterheader';
-import { Notification } from '../swipepage/page';
-// import Profile1 from '@/shared/Assets/Rectangle 10.png';
-// import Profile2 from '@/shared/Assets/Rectangle 11.png';
-// import Profile3 from '@/shared/Assets/Rectangle 12.png';
-// import Profile4 from '@/shared/Assets/Rectangle 14.png';
 import { companionDetailsService } from 'src/services/user/companionDetails.service';
 import { BASEURL } from '@/Constants/services.constants';
-import { Threeline } from '../swipepage/page';
 import { capitalizedWord } from '@/utils/common.utils';
 
 const page = () => {
@@ -48,7 +39,6 @@ const page = () => {
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />
-      <Threeline />
       <h1 className="text-2xl font-semibold mx-6 my-4 profile-text">
         Full Profile detail
       </h1>

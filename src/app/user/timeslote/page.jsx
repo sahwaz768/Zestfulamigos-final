@@ -4,10 +4,10 @@ import { Guidmodel } from '../chat/page';
 import Chatheader from '@/components/Masterheader';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import { redirect } from 'next/navigation';
-import { Threeline } from '../swipepage/page';
+import { generateStimeSlots, parseTimeSlot } from '@/utils/bookings.utils';
 
 const Page = () => {
+  const [bookedSlots, setBookedSlots] = useState({});
   const times = [
     '11:00 AM - 12:00 PM',
     '12:00 PM - 1:00 PM',
@@ -24,14 +24,28 @@ const Page = () => {
   useEffect(() => {
     let params = new URL(document.location.toString()).searchParams;
     let companionId = params.get('companionId');
-    if (!companionId) {
-      redirect('/');
+    if (companionId) {
+      import('@/services/user/companionDetails.service')
+        .then(({ checkCompanionSlots }) => checkCompanionSlots(companionId))
+        .then(({ data }) => {
+          if (data) {
+            const bookSlots = {};
+            data.forEach((l) => {
+              const todaydate = new Date().getDate();
+              const start = Number(l.start);
+              const end = Number(l.end);
+              const getCurrentIndex = new Date(start).getDate() - todaydate;
+              bookSlots[getCurrentIndex] = generateStimeSlots(start, end);
+            });
+            setBookedSlots(bookSlots);
+          }
+        });
     }
   }, []);
   const tokenredux = useSelector((state) => state.AuthReducer.data);
 
   const [selectedSlots, setSelectedSlots] = useState([]);
-  const [selectedDateIndex, setSelectedDateIndex] = useState(null);
+  const [selectedDateIndex, setSelectedDateIndex] = useState(0);
   const [purpose, setPurpose] = useState('');
   const [location, setLocation] = useState({
     lat: 19.05444444,
@@ -52,7 +66,8 @@ const Page = () => {
     };
   });
 
-  const handleTimeSlotClick = (index) => {
+  const handleTimeSlotClick = (e, index) => {
+    e.preventDefault();
     if (selectedSlots.includes(index)) {
       setSelectedSlots(selectedSlots.filter((slotIndex) => slotIndex < index));
     } else if (
@@ -136,7 +151,6 @@ const Page = () => {
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />
-      <Threeline />
       <Guidmodel />
       <form onSubmit={handleFormSubmit} className="flex flex-col space-y-4">
         <div className="flex flex-wrap ">
@@ -157,18 +171,28 @@ const Page = () => {
               ))}
             </div>
             <div className="time-slots-container mt-4 md:ml-6 ml-3">
-              {times.map((time, index) => (
-                <div
-                  key={index}
-                  onClick={() => handleTimeSlotClick(index)}
-                  className={`time-slot ${selectedSlots.includes(index) ? 'selected' : ''}`}
-                >
-                  {time}
-                </div>
-              ))}
+              {times.map((time, index) => {
+                const slotStartTime = parseTimeSlot(time);
+                const isPast = new Date() > slotStartTime;
+                const selected = dates[selectedDateIndex]?.day;
+                const selectedBookedSlot = bookedSlots[selectedDateIndex]
+                let disabledSlot =false;
+                if(selectedBookedSlot){
+                  disabledSlot = selectedBookedSlot.includes(time)
+                }
+                return (
+                  <button
+                    disabled={(isPast && new Date().getDate() == selected ) || disabledSlot}
+                    key={index}
+                    onClick={(e) => handleTimeSlotClick(e, index)}
+                    className={`time-slot ${selectedSlots.includes(index) ? 'selected' : ''}`}
+                  >
+                    {time}
+                  </button>
+                );
+              })}
             </div>
           </div>
-
           <div className="timeslotebox timeslote-textarea">
             <h1 className="text-black md:text-2xl font-semibold my-4">
               Purpose of Engagement

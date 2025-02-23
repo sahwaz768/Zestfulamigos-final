@@ -8,12 +8,24 @@ import { Mastersidebar } from '@/components/MasterSidebar';
 import Notify from '@/components/Notify';
 import { useSelector } from 'react-redux';
 import { BASEURL } from '@/Constants/services.constants';
+import { capitalizedWord } from '@/utils/common.utils';
+import { CancelBookingModel } from '@/components/Models';
 
 const page = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [openModel, setOpenModel] = useState({ data: null, open: false });
+
+  const userDetails = useSelector((state) => state.AuthReducer.data);
   const [historyData, setHistoryData] = useState(null);
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+
+  const openModal = (id) => {
+    setOpenModel({
+      data: { userId: userDetails?.userId, bookingid: id },
+      open: true
+    });
+  };
+  const closeModal = () => {
+    setOpenModel({ data: null, open: false });
+  };
 
   // validation for text area
   const [text, setText] = useState('');
@@ -29,7 +41,7 @@ const page = () => {
           const { formatBookingTimingsforUi } = await import(
             '../../../utils/bookings.utils'
           );
-          const values = { pastBooking: [], upcoming: [] };
+          const values = { pastBooking: [], upcoming: [], rating: null };
           for (let i = 0; i < data.length; i += 1) {
             const value = {
               id: data[i].id,
@@ -42,22 +54,23 @@ const page = () => {
               isPast:
                 new Date(Number(data[i].bookingstart)).getTime() < Date.now(),
               status: data[i].status,
-              amount: data[i].amount
+              amount: data[i].amount,
+              purpose: data[i].purpose,
+              meetinglocation: data[i].meetinglocation
             };
             if (value.isPast) values.pastBooking.push(value);
             else values.upcoming.push(value);
           }
+          if (ratingdata) {
+            values.rating = ratingdata[0];
+          }
           setHistoryData(values);
-        } 
-        if(ratingdata){
-          console.log(ratingdata[0]);
         }
       })
       .catch((err) => console.log('Error', err));
   }, []);
 
-  const userDetails = useSelector((state) => state.AuthReducer.data);
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validation check
@@ -65,12 +78,25 @@ const page = () => {
       setError('please specify the reason');
       return;
     }
-
-    // If validation passes
-    setError('');
-    console.log('Submitted text:', text); // Log the textarea content to the console
-    alert('Form submitted successfully!');
-    setText(''); // Clear the textarea after submission
+    const bookingDetails = {
+      userId: userDetails?.userId,
+      bookingid: isOpen.id
+    };
+    try {
+      const { cancelBooking } = await import(
+        '../../../services/user/bookings.service'
+      );
+      const { data } = await cancelBooking(bookingDetails);
+      if (data) {
+        setIsOpen(null);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setError('');
+      console.log('Submitted text:', text);
+      setText('');
+    }
   };
   if (!userDetails) return <div>Loading....</div>;
 
@@ -136,16 +162,28 @@ const page = () => {
                 <div>
                   Last rating
                   <div className="flex  items-center">
-                    <IoIosStar color="yellow" size={15} />
-                    <IoIosStar color="yellow" size={15} />
+                    {historyData?.rating?.last_rating ? (
+                      Array.from(
+                        { length: Number(historyData?.rating?.last_rating) },
+                        (_, i) => i
+                      ).map((l) => (
+                        <IoIosStar color="yellow" size={15} key={l} />
+                      ))
+                    ) : (
+                      <IoIosStar color="gray" size={15} />
+                    )}
                   </div>
                 </div>
               </div>
               <div className="overview-box">
                 <IoIosStar color="yellow" size={30} />
                 <div>
-                  <h1>Total rating</h1>
-                  <h1 className="font-bold">400/500</h1>
+                  <h1>Average rating</h1>
+                  <h1 className="font-bold">
+                    {historyData?.rating?.bayesian_avg
+                      ? `${Number(historyData?.rating?.bayesian_avg).toFixed(2)}/${historyData.rating.rating_count}`
+                      : ''}
+                  </h1>
                 </div>
               </div>
             </div>
@@ -155,7 +193,7 @@ const page = () => {
               <div className="dashboard-userdetail" key={l.id}>
                 <div className="dashboard-userprofile">
                   <Image
-                    src={BASEURL + '/UserPhotos/companion1.jpg'}
+                    src={BASEURL + '/' + l?.user?.Images[0]}
                     alt="Picture of the author"
                     width={117}
                     height={111}
@@ -168,30 +206,37 @@ const page = () => {
                       <span className="md:font-bold">{l.user?.firstname}</span>
                     </h1>
                     <h1 className="text-sm md:text-base">
-                      Age:<span className="md:font-bold">20</span>
+                      Age:<span className="md:font-bold">{l.user?.age}</span>
                     </h1>
                     <h1 className="text-sm md:text-base">
-                      Gender:<span className="md:font-bold">Male</span>
+                      Gender:
+                      <span className="md:font-bold">{l.user?.gender}</span>
                     </h1>
                   </div>
                   <div className="dashboard-purpose md:mt-2  gap-2">
                     <h1 className="text-sm md:text-base">
                       Time and date:
-                      <span className="md:font-bold ">{l.bookingdate} </span>
+                      <span className="md:font-bold ">{l?.bookingdate} </span>
                     </h1>
-                    <h1 className="text-sm md:text-base">
+                    {/* <h1 className="text-sm md:text-base">
                       Location of meet- up:
                       <span className="md:font-bold ">Bkc Mumbai</span>
-                    </h1>
+                    </h1> */}
                     <h1 className="text-sm md:text-base">
                       Purpose of meet:
-                      <span className="md:font-bold ">Dinner</span>
+                      <span className="md:font-bold ">{l?.purpose}</span>
+                    </h1>
+                    <h1 className="text-sm md:text-base">
+                      status:
+                      <span className="md:font-bold ">
+                        {capitalizedWord(l.status)}
+                      </span>
                     </h1>
                   </div>
                 </div>
-                {l.status !== 'CANCELLED' && (
+                {l.status === 'ACCEPTED' && (
                   <div className="dashboard-cancel">
-                    <button onClick={openModal}>Cancel</button>
+                    <button onClick={() => openModal(l.id)}>Cancel</button>
                   </div>
                 )}
               </div>
@@ -202,34 +247,11 @@ const page = () => {
         </div>
       </div>
 
-      {isOpen && (
-        <div className="companion-modal-overlay">
-          <div
-            className="companion-modal-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button onClick={closeModal} className="close">
-              &times;
-            </button>
-            <h1 className="text-center font-bold">Please specify the reason</h1>
-
-            <form onSubmit={handleSubmit}>
-              <div>
-                <textarea
-                  id="textarea"
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  placeholder="Reason...."
-                  className="companion-textarea"
-                ></textarea>
-              </div>
-              {error && <div className="text-xs">{error}</div>}
-              <button type="submit" className="companion-cancel-btn">
-                Submit
-              </button>
-            </form>
-          </div>
-        </div>
+      {openModel.open && (
+        <CancelBookingModel
+          closeModal={closeModal}
+          bookingDetail={openModel.data}
+        />
       )}
     </>
   );

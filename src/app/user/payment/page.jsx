@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import Chatheader from '@/components/Masterheader';
 import Image from 'next/image';
 import Payment from '@/shared/Assets/payment1.png';
-import { Threeline } from '../swipepage/page';
 import { redirect } from 'next/navigation';
 import { getBookingDetails } from '@/services/user/bookings.service';
 
@@ -125,7 +124,6 @@ const page = () => {
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />
-      <Threeline />
       <div className="paymentsummarybox">
         <div className="paymentsummary">
           <div className="paymentbox">

@@ -67,16 +67,39 @@ const page = () => {
     setPreviewImages(updatedPreviewImages);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      alert('Form submitted successfully!');
-      console.log(formData);
-
+      try {
+        const { requestforCompanionService } = await import(
+          '@/services/user/userprofile.service'
+        );
+        const { toast } = await import('@/utils/reduxtrigger.utils');
+        const userData = new FormData();
+        userData.append('firstname', formData.firstName);
+        userData.append('lastname', formData.lastName);
+        userData.append('email', formData.email);
+        userData.append('age', formData.age);
+        userData.append('phoneno', formData.phone);
+        userData.append('gender', formData.gender?.toUpperCase());
+        formData.profilePictures.forEach((l) => {
+          userData.append('images', l);
+        });
+        const { data, error } = await requestforCompanionService(userData);
+        if (data) {
+          toast.success(
+            'Successfully requested for companion Will contact you soon!!'
+          );
+        } else {
+          toast.error(error);
+        }
+      } catch (error) {
+      } finally {
+        setFormData(initialFormData);
+        setPreviewImages([]);
+        setErrors({});
+      }
       // Clear the form
-      setFormData(initialFormData);
-      setPreviewImages([]);
-      setErrors({});
     }
   };
   return (

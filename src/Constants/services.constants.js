@@ -5,5 +5,6 @@ export const ignoretokenpaths = [
     `${BASEURL}/auth/login`,
     `${BASEURL}/auth/register`,
     `${BASEURL}/auth/password/email`,
-    `${BASEURL}/auth/password/reset`
+    `${BASEURL}/auth/password/reset`,
+    `${BASEURL}/companion/request/requestforcompanion`
   ];

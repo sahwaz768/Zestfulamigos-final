@@ -1,21 +1,19 @@
 module.exports = {
   reactStrictMode: process.env.NODE_ENV === 'production', // Enable strict mode to highlight potential problems in the app
-  experimental: {
-    turbo: {
-    },
-  },
-  webpack: (config, { isServer  }) => {
-    if (!isServer) {
-      config.cache = {
-        type: 'filesystem',
-      };
-      config.optimization.splitChunks = {
-        chunks: 'all',
-      };
-    }
+  webpack: (config, { isServer }) => {
+    config.cache = {
+      type: 'filesystem',
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    };
+    config.optimization.splitChunks = {
+      chunks: 'all'
+    };
     return config;
+  },
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'react-icons/*']
   },
   images: {
     domains: ['localhost']
   }
-}
+};

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Chatheader from '@/components/Masterheader';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
@@ -9,22 +9,32 @@ import Notify from '@/components/Notify';
 import { Mastersidebar } from '@/components/MasterSidebar';
 
 const Page = () => {
+  const [companiondata, setcompaniondata] = useState(null);
   const companions = useSelector((state) => state.companionFind.data?.data);
-  if (!companions) {
-    redirect('/user/genderchoose');
-  }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!companions) {
+        redirect('/user/genderchoose');
+      }
+    }, 10000);
+    if (companions && !companiondata) {
+      setcompaniondata(companions);
+      clearTimeout(timer);
+    }
+  }, [companions]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? companions.length - 1 : prevIndex - 1
+      prevIndex === 0 ? companiondata.length - 1 : prevIndex - 1
     );
   };
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === companions.length - 1 ? 0 : prevIndex + 1
+      prevIndex === companiondata.length - 1 ? 0 : prevIndex + 1
     );
   };
 
@@ -34,6 +44,9 @@ const Page = () => {
     { name: 'Privacy Policy', href: './privacypolicy' },
     { name: 'Contact', href: './contactus' }
   ];
+  if (!companiondata) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       <div className="swipebox">
@@ -41,7 +54,6 @@ const Page = () => {
           backgroundColor="rgba(250, 236, 236, 0.8)"
           navLinks={navLinks}
         />
-        <Threeline />
         <div className="swipe-container-first">
           <h1 className="font-extrabold text-center">Select your amigo</h1>
           <p className="text-sm mt-2 px-8 text-center">
@@ -62,7 +74,7 @@ const Page = () => {
               alt="Background card"
             />
           </div>
-          {companions && companions.length ? (
+          {companiondata && companiondata.length ? (
             <div className="container">
               <div className="card-container">
                 <div className="card">

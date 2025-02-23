@@ -8,6 +8,14 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { BASEURL } from '@/Constants/services.constants';
 import { socketinit } from '@/Constants/socket.io.config';
 import { EndSessionModel, StartSessionModel, ExtensionModel } from './Models';
+import { parseCookies, setCookie } from 'nookies';
+import { getAccessTokenFromRefreshTokenService } from '../services/auth/login.service';
+import { deletecookie } from '@/utils/removeUserData';
+import dynamic from 'next/dynamic';
+
+const CountdownTimer = dynamic(() => import('@/components/CountdownTimer'), {
+  ssr: false
+});
 
 const GetSessionModel = (model, selected, closeModal) => {
   switch (model) {
@@ -46,24 +54,10 @@ const Chatwindow = ({ selected, isCompanion }) => {
 
   useEffect(() => {
     const initializeSocket = async () => {
-      const { setCookie, parseCookies } = await import('nookies');
-      const { deletecookie } = await import('../utils/removeUserData');
       const cookie = parseCookies();
-      const { getAccessTokenFromRefreshTokenService } = await import(
-        '../services/auth/login.service'
-      );
-      const { ACCESS_TOKEN_LOC } = await import(
-        '../Constants/common.constants'
-      );
       const sendData = {
         roomid: selected.id,
         userid: isCompanion ? selected.companion?.id : selected.user?.id
-      };
-
-      const verifyFriendOnline = (data) => {
-        const selectedUser = data.users?.find(
-          (l) => l.username === selected?.user?.username
-        );
       };
       socket.on('joinedUser', (data) => {
         const userId = isCompanion ? selected.companion?.id : selected.user?.id;
@@ -93,27 +87,21 @@ const Chatwindow = ({ selected, isCompanion }) => {
         setMessageData(() => values);
       });
 
-      // socket.on('leaveroom', (data) => {
-      //   verifyFriendOnline(data);
-      //   setMessageData(() => data);
-      // });
-
       socket.on('tokenexpired', () => {
-        console.log('TokenExpired Emitted');
         socketinit.removetoken();
-        // getRefreshToken().then((token) => {
-        //   socket.auth = { token: 'Bearer ' + token };
-        //   socket.disconnect().connect();
-        //   socketinit.addtoken((token) || '');
-        //   const lastEmit = cookie['lastEmit'];
-        //   if (lastEmit) {
-        //     const emitted = JSON.parse(lastEmit || '{}');
-        //     Object.keys(emitted).forEach((l) => {
-        //       setTimeout(() => socket.emit(l, emitted[l]), 500);
-        //     });
-        //     deletecookie('lastEmit');
-        //   }
-        // });
+        getAccessTokenFromRefreshTokenService().then((token) => {
+          socket.auth = { token: 'Bearer ' + token };
+          socket.disconnect().connect();
+          socketinit.addtoken(token || '');
+          const lastEmit = cookie['lastEmit'];
+          if (lastEmit) {
+            const emitted = JSON.parse(lastEmit || '{}');
+            Object.keys(emitted).forEach((l) => {
+              setTimeout(() => socket.emit(l, emitted[l]), 500);
+            });
+            deletecookie('lastEmit');
+          }
+        });
       });
 
       socket.on('invalidUser', () => {
@@ -130,7 +118,6 @@ const Chatwindow = ({ selected, isCompanion }) => {
           }
         }
       });
-
       setCookie(
         null,
         'lastEmit',
@@ -140,29 +127,11 @@ const Chatwindow = ({ selected, isCompanion }) => {
         { path: '/' }
       );
       socket.emit('joinchatroom', sendData);
-      console.log('Joinchatroomemitted');
     };
     if (selected) {
       initializeSocket();
     }
     return () => {
-      const deinitializeSocket = async () => {
-        // const { setCookie } = await import('nookies');
-
-        console.log('Disconnected');
-        // socket.emit('leavechatroom', {
-        //   roomid: selected.id,
-        //   username
-        // });
-        // setCookie(
-        //   null,
-        //   'lastEmit',
-        //   JSON.stringify({
-        //     leavechatroom: { roomid: selected.id, username }
-        //   }),
-        //   { path: '/' }
-        // );
-      };
       if (selected) {
         socket.disconnect();
       }
@@ -177,13 +146,21 @@ const Chatwindow = ({ selected, isCompanion }) => {
   const sendNewMessage = useCallback(
     async (content) => {
       if (inputValue && content) {
-        // set(
-        //   'lastEmit',
-        //   JSON.stringify({
-        //     sendMessage: { roomid: selected.chatroomid, username, message }
-        //   }),
-        //   { expires: 1 / 288 }
-        // );
+        setCookie(
+          null,
+          'lastEmit',
+          JSON.stringify({
+            sendMessage: {
+              roomid: selected.id,
+              userid: isCompanion ? selected.companion?.id : selected.user?.id,
+              message: {
+                content,
+                sender: isCompanion ? selected.companion?.id : selected.user?.id
+              }
+            }
+          }),
+          { path: '/', expires: 1 / 288 }
+        );
         socket.emit('sendMessage', {
           roomid: selected.id,
           userid: isCompanion ? selected.companion?.id : selected.user?.id,
@@ -314,7 +291,10 @@ const Chatwindow = ({ selected, isCompanion }) => {
             </div>
           </div>
           <div className="timer">
-            <Timer />
+            <CountdownTimer
+              startTime={Number(selected.booking.bookingstart)}
+              endTime={Number(selected.booking.bookingend)}
+            />
           </div>
           <div className="chat-body">
             {messagedata &&
@@ -355,48 +335,6 @@ const Chatwindow = ({ selected, isCompanion }) => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const Timer = () => {
-  const [time, setTime] = useState({ hours: 0, minutes: 0 });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime((prevTime) => {
-        const newMinutes = (prevTime.minutes + 1) % 60;
-        const newHours =
-          prevTime.minutes + 1 === 60 ? prevTime.hours + 1 : prevTime.hours;
-
-        // Stop the timer when it reaches 2 hours
-        if (newHours === 2 && newMinutes === 0) {
-          clearInterval(timer);
-          return prevTime; // Stop updating
-        }
-
-        return { hours: newHours, minutes: newMinutes };
-      });
-    }, 60000); // Updates every 60 seconds
-
-    return () => clearInterval(timer); // Cleanup interval on unmount
-  }, []);
-  return (
-    <>
-      <div className="countup-container">
-        <div className="countup-box">
-          <div className="countup-time">
-            {time.hours.toString().padStart(2, '0')}
-          </div>
-          <div className="countup-label">Hrs</div>
-        </div>
-        <div className="countup-box">
-          <div className="countup-time">
-            {time.minutes.toString().padStart(2, '0')}
-          </div>
-          <div className="countup-label">Mins</div>
         </div>
       </div>
     </>

@@ -51,7 +51,6 @@ export default function Page(props) {
       const params = new URL(document.location.toString()).searchParams;
       const bookingId = params.get('bookingId');
       extensionfailureTransaction(props.data).then(({ data, error }) => {
-        debugger;
         if (error) {
           router.push('/');
         } else {

@@ -13,7 +13,6 @@ const withAuth = (WrappedComponent) => {
       const cookies = parseCookies();
       const token = cookies['x-token'];
       if (!token && !tokenredux) {
-        debugger;
         redirect('/');
       } else if (!tokenredux) {
         dispatch(datafetched(decodeAccessToken(token).decodedToken));

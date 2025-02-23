@@ -6,7 +6,6 @@ import Forgotpassword from '@/components/Forgotpassword';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import axios from 'axios';
 import { useAppDispatch } from '@/Redux/store/store';
 
 const Login = () => {
@@ -73,7 +72,7 @@ const Login = () => {
         dispatch(datafetched(decodedToken));
         setCookie(null, ACCESS_TOKEN_LOC, data.access_token, { path: '/' });
         setCookie(null, REFRESH_TOKEN_LOC, data.refresh_token, { path: '/' });
-        console.log(decodedToken)
+        console.log(decodedToken);
         if (decodedToken.isCompanion) {
           router.push('/companion/dashboard');
         } else {
@@ -86,30 +85,16 @@ const Login = () => {
     }
   };
 
-  const sendotp = async (e) => {
-    const BASEURL = process.env.NEXT_PUBLIC_BASE_URL || '';
-    const forgotemail = document.getElementById('emailsend')?.value;
-
-    try {
-      const response = await axios.post(
-        `${BASEURL}/auth/forgot-password`,
-        { email: forgotemail },
-        { headers: { 'Content-Type': 'application/json' } }
-      );
-
-      console.log('API Response:', response);
-      console.log('API Response Message:', response.data.message);
-    } catch (err) {
-      console.log(
-        'Error Response Message:',
-        err.response?.data?.message || 'No error message provided.'
-      );
+  const showotpbox = async () => {
+    const { forgotEmail } = await import(
+      '@/services/auth/forgotpassword.service'
+    );
+    const value = document.getElementById('emailsend')?.value;
+    const { data } = await forgotEmail({ email: value });
+    if (data) {
+      document.getElementById('forgotpassword').style.display = 'none';
+      document.getElementById('optverify').style.display = 'block';
     }
-  };
-
-  const showotpbox = () => {
-    document.getElementById('forgotpassword').style.display = 'none';
-    document.getElementById('optverify').style.display = 'block';
   };
   const resetpassword = () => {
     document.getElementById('resetpassword').style.display = 'block';
@@ -242,7 +227,7 @@ const Login = () => {
 
               <input
                 placeholder="Enter your email"
-                className="inputfield "
+                className="inputfield"
                 type="email"
                 name="forgotpassword"
                 id="emailsend"
