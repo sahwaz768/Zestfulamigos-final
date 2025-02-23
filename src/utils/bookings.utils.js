@@ -128,3 +128,23 @@ export function generateStimeSlots(startMs, endMs) {
 
   return times;
 }
+
+export function formatBookingTime(startTime) {
+  const startdate = new Date(Number(startTime));
+  // const enddate = new Date(Number(endtime));
+
+  const options = {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true
+  };
+  const endtimeoptions = {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true
+  };
+  // return `${startdate.toLocaleString('en-US', options)} - ${enddate.toLocaleString('en-US', endtimeoptions)}`;
+  return `${startdate.toLocaleString('en-US', options)}`;
+}

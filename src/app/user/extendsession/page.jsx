@@ -3,18 +3,17 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Payment from '@/shared/Assets/payment1.png';
 import Masterheader from '@/components/Masterheader';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { cancelExtensionRecord } from '@/services/sessions/extension.service';
 
 const ExtensionBookingPage = () => {
   const [bookingdata, setBookingData] = useState(null);
   const router = useRouter();
 
-  const params = useSearchParams();
-  const bookingId = params.get('bookingId');
-
   useEffect(() => {
-    if (bookingId) {
+    const params = new URL(document.location.toString()).searchParams;
+    const bookingId = params.get('bookingId');
+    if (bookingId && !bookingdata) {
       import('@/services/sessions/extension.service')
         .then(({ getExtensionBookingDetails }) =>
           getExtensionBookingDetails(bookingId)
@@ -43,7 +42,7 @@ const ExtensionBookingPage = () => {
         }
       }
     };
-  }, [bookingId]);
+  }, [router]);
 
   const handlePayment = async (paymentValues) => {
     const paymentData = {
@@ -96,6 +95,8 @@ const ExtensionBookingPage = () => {
 
   const handleCancelExtension = async () => {
     try {
+      const params = new URL(document.location.toString()).searchParams;
+      const bookingId = params.get('bookingId');
       const { data } = await cancelExtensionRecord(bookingId);
       if (data) {
         router.push('/user/chat');

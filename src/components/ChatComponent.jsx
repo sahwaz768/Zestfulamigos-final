@@ -6,6 +6,7 @@ import { Mastersidebar } from './MasterSidebar';
 import Notify from './Notify';
 import Chatwindow from './chatwindow';
 import { BASEURL } from '@/Constants/services.constants';
+import { formatBookingTime } from '@/utils/bookings.utils';
 
 const ChatComponent = ({ chatrooms, isCompanion }) => {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -60,7 +61,7 @@ const ChatComponent = ({ chatrooms, isCompanion }) => {
                     <h1 className="ml-2 text-sm">
                       {isCompanion ? l.user.firstname : l.companion.firstname}
                     </h1>
-                    <div className="userstatus text-xs">today</div>
+                    <div className="userstatus text-xs">{formatBookingTime(l.booking.bookingstart)}</div>
                   </div>
                 ))
               ) : (
