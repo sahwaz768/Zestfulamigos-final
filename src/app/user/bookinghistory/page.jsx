@@ -225,7 +225,7 @@ const page = () => {
                     </div>
                     <div>
                       <button
-                        onClick={() => router.push(`./rate?bookindId=${l.d}`)}
+                        onClick={() => router.push(`./rate?bookingId=${l.id}`)}
                       >
                         Rate
                       </button>

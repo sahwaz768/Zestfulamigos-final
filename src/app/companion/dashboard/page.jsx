@@ -23,8 +23,48 @@ const page = () => {
       open: true
     });
   };
-  const closeModal = () => {
-    setOpenModel({ data: null, open: false });
+  const closeModal = (l) => {
+    if (l) {
+      import('../../../services/user/bookings.service')
+        .then(({ getPreviousBookings, getRatingforUser }) =>
+          Promise.all([getPreviousBookings(), getRatingforUser()])
+        )
+        .then(async ([{ data }, { data: ratingdata }]) => {
+          if (data) {
+            const { formatBookingTimingsforUi } = await import(
+              '../../../utils/bookings.utils'
+            );
+            const values = { pastBooking: [], upcoming: [], rating: null };
+            for (let i = 0; i < data.length; i += 1) {
+              const value = {
+                id: data[i].id,
+                companion: data[i].users.filter((l) => l.isCompanion)[0],
+                user: data[i].users.filter((l) => !l.isCompanion)[0],
+                bookingdate: formatBookingTimingsforUi(
+                  data[i].bookingstart,
+                  data[i].bookingend
+                ),
+                isPast:
+                  new Date(Number(data[i].bookingstart)).getTime() < Date.now(),
+                status: data[i].status,
+                amount: data[i].amount,
+                purpose: data[i].purpose,
+                meetinglocation: data[i].meetinglocation
+              };
+              if (value.isPast) values.pastBooking.push(value);
+              else values.upcoming.push(value);
+            }
+            if (ratingdata) {
+              values.rating = ratingdata[0];
+            }
+            setHistoryData(values);
+          }
+        })
+        .catch((err) => console.log('Error', err))
+        .finally(() => setOpenModel({ data: null, open: false }));
+    } else {
+      setOpenModel({ data: null, open: false });
+    }
   };
 
   // validation for text area

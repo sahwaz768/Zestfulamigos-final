@@ -8,9 +8,11 @@ import { MdPendingActions } from 'react-icons/md';
 import { Mastersidebar } from '@/components/MasterSidebar';
 import { capitalizedWord } from '@/utils/common.utils';
 import { useRouter } from 'next/navigation';
+import { CancelBookingModel } from '@/components/Models';
 
 const Page = () => {
   const [historydata, setHistoryData] = useState(null);
+  const [modelOpen, setModelOpen] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -44,6 +46,43 @@ const Page = () => {
         }
       });
   }, []);
+
+  const handleCancelBookingCloseModel = (l) => {
+    if (l) {
+      import('../../../services/user/bookings.service')
+        .then(({ getPreviousBookings }) => getPreviousBookings())
+        .then(async ({ data, error }) => {
+          if (data) {
+            const { formatBookingTimingsforUi } = await import(
+              '../../../utils/bookings.utils'
+            );
+            const values = { pastBooking: [], upcoming: [] };
+            for (let i = 0; i < data.length; i += 1) {
+              const value = {
+                id: data[i].id,
+                companion: data[i].users.filter((l) => l.isCompanion)[0],
+                user: data[i].users.filter((l) => !l.isCompanion)[0],
+                bookingdate: formatBookingTimingsforUi(
+                  data[i].bookingstart,
+                  data[i].bookingend
+                ),
+                isPast:
+                  new Date(Number(data[i].bookingstart)).getTime() < Date.now(),
+                status: data[i].status,
+                amount: data[i].amount
+              };
+              if (value.isPast) values.pastBooking.push(value);
+              else values.upcoming.push(value);
+            }
+            console.log(values);
+            setHistoryData(values);
+          }
+        })
+        .finally(() => setModelOpen(null));
+    } else {
+      setModelOpen(null);
+    }
+  };
 
   const showupcomingbooking = () => {
     document.getElementById('closed-booking-box').style.display = 'none';
@@ -116,7 +155,7 @@ const Page = () => {
                     </div>
                     {l.status === 'ACCEPTED' && (
                       <div>
-                        <button onClick={() => setIsOpen(l)}>cancel</button>
+                        <button onClick={() => setModelOpen(l)}>cancel</button>
                       </div>
                     )}
                   </div>
@@ -161,6 +200,12 @@ const Page = () => {
           </div>
         </div>
       </div>
+      {modelOpen && (
+        <CancelBookingModel
+          closeModal={handleCancelBookingCloseModel}
+          bookingDetail={modelOpen}
+        />
+      )}
     </div>
   );
 };

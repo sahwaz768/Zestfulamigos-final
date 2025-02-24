@@ -54,17 +54,17 @@ export const validateCompanion = (
     //   errors.zipcode = 'Zipcode is required';
     // }
   
-    if (!register.lat.trim() || isNaN(Number(register.lat))) {
-      errors.lat = 'Latitude must be a valid number';
-    }
+    // if (!register.lat.trim() || isNaN(Number(register.lat))) {
+    //   errors.lat = 'Latitude must be a valid number';
+    // }
   
-    if (!register.lng.trim() || isNaN(Number(register.lng))) {
-      errors.lng = 'Longitude must be a valid number';
-    }
+    // if (!register.lng.trim() || isNaN(Number(register.lng))) {
+    //   errors.lng = 'Longitude must be a valid number';
+    // }
   
-    if (!register.bookingrate) {
-      errors.bookingrate = "Booking rate must be a valid number";
-    }
+    // if (!register.bookingrate) {
+    //   errors.bookingrate = "Booking rate must be a valid number";
+    // }
   
     if (!register.height) {
       errors.height = "Height must be a valid number";
