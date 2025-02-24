@@ -27,17 +27,21 @@ export default function RatingComponent({ bookingDetails }) {
     const { rateaBookingService } = await import(
       '@/services/user/bookings.service'
     );
+    const { toast } = await import('@/utils/reduxtrigger.utils');
     const params = new URL(document.location.toString()).searchParams;
     const bookingId = params.get('bookingId');
-    const { data: bookingdata } = await rateaBookingService({
+    const { data: bookingdata, error } = await rateaBookingService({
       ...data,
       bookingid: Number(bookingId)
     });
     if (bookingdata) {
-      setData({ rating: 0, comment: '' });
-      setErrors([]);
-      redirect('./chat');
+      toast.success('Thanks for the rating! Appreciate your time!');
+    } else {
+      toast.error(error);
     }
+    setData({ rating: 0, comment: '' });
+    setErrors([]);
+    redirect('./chat');
   };
   return (
     <>

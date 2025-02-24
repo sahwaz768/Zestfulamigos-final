@@ -742,7 +742,6 @@ export const CancelBookingModel = ({ closeModal, bookingDetail }) => {
       return;
     }
     const bookingDetails = {
-      userId: bookingDetail?.userId,
       bookingid: bookingDetail.id,
       reason: text
     };
@@ -753,8 +752,8 @@ export const CancelBookingModel = ({ closeModal, bookingDetail }) => {
       const { toast } = await import('@/utils/reduxtrigger.utils');
       const { data } = await cancelBooking(bookingDetails);
       if (data) {
-        toast.success('Booking Cancelled Successfully');
-        closeModal();
+        toast.success('Booking Under consideration will update you soon!');
+        closeModal('Cancelled');
       } else {
         toast.error('Error Occured');
       }
@@ -772,7 +771,7 @@ export const CancelBookingModel = ({ closeModal, bookingDetail }) => {
         className="companion-modal-content"
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={closeModal} className="close">
+        <button onClick={() => closeModal()} className="close">
           &times;
         </button>
         <h1 className="text-center font-bold">Please specify the reason</h1>
