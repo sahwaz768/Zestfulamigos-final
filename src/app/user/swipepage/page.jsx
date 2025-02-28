@@ -83,24 +83,28 @@ const Page = () => {
                     alt={'profile image'}
                     className="slide-image"
                   />
-                  <div>
-                    <div>{companions[currentIndex].firstname}</div>
-                    <div className="card-footer">
+
+                  <div className="card-footer">
+                    <div>
+                      <div className="text-sm font-extrabold text-center">
+                        {companions[currentIndex].firstname}
+                      </div>
+                      <div className="flex justify-between">
+                        <div className="text-sm">
+                          {companions[currentIndex].bookingrate} /{' '}
+                          {companions[currentIndex].bookingrateunit}
+                        </div>
+                        <div className="text-sm">
+                          {companions[currentIndex].distance.toFixed(2)} Km
+                        </div>
+                      </div>
                       <Link
                         href={`./companiondetail/?companionId=${companions[currentIndex].userId}`}
                       >
-                        <div className="card-title text-center text-xs font-extrabold">
+                        <div className="card-title text-center text-xs font-extrabold mt-4">
                           {'Dig deeper'}
                         </div>
                       </Link>
-                      <div>
-                        <span>Booking Rate</span>
-                        {companions[currentIndex].bookingrate} /{' '}
-                        {companions[currentIndex].bookingrateunit}
-                      </div>
-                      <div>
-                        {companions[currentIndex].distance.toFixed(2)} Km away
-                      </div>
                     </div>
                   </div>
                 </div>

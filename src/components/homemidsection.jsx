@@ -6,11 +6,13 @@ const Homemidsection = () => {
   return (
     <>
       <div>
+        
         <div className=" circlebox">
           <div className="quarter-circle"></div>
-          <h1 className="text-center text-3xl text-red-900 font-bold">
+       <div className='hw-connect' >   <h1 className="text-center text-3xl  text-red-900 font-bold">
             How to Connect
           </h1>
+          </div>
         </div>
       </div>
       <div className="bodymid">

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Pikasho from '@/shared/Assets/Pikasobg.png';
 import { useGoogleLogin } from '@react-oauth/google';
 import { redirect } from 'next/navigation';
+import Link from "next/link";
 
 
 const Page = () => {
@@ -350,7 +351,7 @@ const Page = () => {
               </div>
               <div className="flex justify-center my-3">
                 <p className="text-sm">Already have an account ? </p>
-                <p className="text-pink-700 text-sm ml-2">Login</p>
+              <Link href={'/'}> <p className="text-pink-700 text-sm ml-2">Login</p></Link> 
               </div>
             </form>
           </div>
@@ -435,6 +436,7 @@ function GoogleSignUp() {
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
   const [errors, setErrors] = useState({});
+  const [phoneNumber, setPhoneNumber] = useState(""); 
   const [user, setUser] = useState(null); // User data after Google login
 
   const login = useGoogleLogin({
@@ -492,6 +494,8 @@ function GoogleSignUp() {
       newErrors.profilePicture = 'Profile picture is required.';
     if (!age) newErrors.age = 'Age is required.';
     else if (age < 18 || age > 100) newErrors.age = 'Age must be above 18.';
+    if (!phoneNumber) newErrors.phoneNumber = "Phone number is required.";
+    else if (!/^\d{10}$/.test(phoneNumber)) newErrors.phoneNumber = "Enter a valid 10-digit phone number.";
     if (!gender) newErrors.gender = 'Gender is required.';
 
     if (Object.keys(newErrors).length > 0) {
@@ -503,6 +507,7 @@ function GoogleSignUp() {
     const profileData = {
       profilePicture,
       age,
+      phoneNumber,
       gender
     };
 
@@ -589,6 +594,23 @@ function GoogleSignUp() {
 
               {errors.age && <p className="text-xs">{errors.age}</p>}
               <br />
+
+                   {/* Phone Number Input */}
+                   <p className="text-sm mt-2 mb-1">Phone Number</p>
+              <input
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) => {
+                  setPhoneNumber(e.target.value);
+                  setErrors((prev) => ({ ...prev, phoneNumber: "" }));
+                }}
+                pattern="[0-9]{10}"
+                maxLength="10"
+                required
+                placeholder="Enter 10-digit phone number"
+                className="inputfield-glg"
+              />
+              {errors.phoneNumber && <p className="text-xs">{errors.phoneNumber}</p>}
 
               <select
                 className="select-gender"

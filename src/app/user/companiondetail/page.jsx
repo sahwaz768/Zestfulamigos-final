@@ -53,16 +53,27 @@ const page = () => {
                 alt="profile"
               />
             </div>
-            <div className="vertical img ">
+            <div className="horizontalimg-2 flex gap-2 ">
+              {companionDetails.images[3] && (
+                <Image
+                  src={BASEURL + `/` + companionDetails?.images[1]}
+                  width={500}
+                  height={300}
+                  alt='profile'
+                />
+              )}
+            </div>
+            <div className="vertical-img ">
               <Image
-                src={BASEURL + `/` + companionDetails?.images[1]}
+                src={BASEURL + `/` + companionDetails?.images[2]}
                 width={500}
                 height={300}
                 alt="profile"
+                className='mt-3'
               />
               {companionDetails.images[2] && (
                 <Image
-                  src={BASEURL + `/` + companionDetails?.images[2]}
+                  src={BASEURL + `/` + companionDetails?.images[3]}
                   className="md:mt-3"
                   width={500}
                   height={300}
@@ -70,20 +81,12 @@ const page = () => {
                 />
               )}
             </div>
-            <div className="horizontalimg-2 flex gap-2 ">
-              {companionDetails.images[3] && (
-                <Image
-                  src={BASEURL + `/` + companionDetails?.images[3]}
-                  width={500}
-                  height={300}
-                />
-              )}
-            </div>
+            
           </div>
           <div style={{ fontSize: '2rem' }}>
             <b>{companionDetails.firstname}</b>
           </div>
-          <div className="flex mt-10">
+          <div className="flex flex-wrap gap-4 mt-10">
             <div className="tag">
               <p>
                 Gender: <span>{capitalizedWord(companionDetails?.gender)}</span>
@@ -160,12 +163,14 @@ const page = () => {
             <h1 className="text-center text-2xl font-bold my-8">
               If she is your favourite then
             </h1>
+            <Link href={`./timeslote?companionId=${companionDetails.id}`}>
             <div className=" cntbtn2">
-              <Link href={`./timeslote?companionId=${companionDetails.id}`}>
+              
                 {' '}
                 <div>Countinue</div>{' '}
-              </Link>
+              
             </div>
+            </Link>
           </div>
         </div>
       </div>

@@ -10,9 +10,16 @@ const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const notificationRedux = useSelector(
-    (state) => state.userNotifications.data
-  );
+  const notificationRedux = useSelector((state) => state.userNotifications.data);
+  
+  // Initialize state with notifications from Redux
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    if (notificationRedux) {
+      setNotifications(notificationRedux);
+    }
+  }, [notificationRedux]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -30,8 +37,11 @@ const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
     };
   }, []);
 
-  const removeNotification = (id) =>
-    setNotifications(notifications.filter((notif) => notif.id !== id));
+  const removeNotification = (id) => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.filter((notif) => notif.id !== id)
+    );
+  };
 
   return (
     <>
@@ -58,8 +68,8 @@ const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
             </div>
             <div className="notificatioview text-sm text-gray-900">
               <div>
-                {notificationRedux &&
-                  notificationRedux.map((notification) => (
+                {notifications.length > 0 ? (
+                  notifications.map((notification) => (
                     <div
                       key={notification.id}
                       className="notification-card flex items-start bg-white shadow-sm relative gap-3 py-3"
@@ -95,7 +105,10 @@ const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
                         </small>
                       </div>
                     </div>
-                  ))}
+                  ))
+                ) : (
+                  <p className="text-center text-gray-500">No notifications</p>
+                )}
               </div>
             </div>
           </div>
@@ -106,3 +119,4 @@ const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
 };
 
 export default Notify;
+

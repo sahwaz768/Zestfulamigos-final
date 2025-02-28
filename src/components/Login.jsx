@@ -248,7 +248,7 @@ const Login = () => {
               <div className="pin-inputs">
                 <input
                   type="text"
-                  className="pin-input"
+                  className="pin-input "
                   maxLength="1"
                   ref={(el) => (inputs.current[0] = el)}
                   onKeyUp={(e) => handleKeyUp(e, 0)}

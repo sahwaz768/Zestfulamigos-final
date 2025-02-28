@@ -153,7 +153,7 @@ const Page = () => {
       />
       <Guidmodel />
       <form onSubmit={handleFormSubmit} className="flex flex-col space-y-4">
-        <div className="flex flex-wrap ">
+        <div className="timeslote-box ">
           <div className="timeslotebox ">
             <h1 className="text-black md:text-2xl font-semibold my-4 md:ml-10 ml-4 timeslote-text">
               Time Slot and Date Availability
@@ -208,7 +208,7 @@ const Page = () => {
             <h1 className="my-3 text-sm">
               Specify the Location for Companion Meet-Up
             </h1>
-            {/* <LocationInput location={location} setLocation={setLocation} /> */}
+         <LocationInput location={location} setLocation={setLocation} />
 
             <div className="mt-2 ">
               <input
@@ -231,17 +231,19 @@ const Page = () => {
   );
 };
 
+
+
+
 const LocationInput = ({ location, setLocation }) => {
   const inputRef = useRef(null);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_KEY;
 
-  // Function to handle manual location submission
   const handleManualLocationSubmit = async () => {
     const manualLocation = inputRef.current.value;
     if (!manualLocation) {
-      setErrorMessage('Please enter a location.');
+      setErrorMessage("Please enter a location.");
       return;
     }
 
@@ -250,15 +252,16 @@ const LocationInput = ({ location, setLocation }) => {
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(manualLocation)}&key=${GOOGLE_API_KEY}`
       );
       const data = await response.json();
+
       if (data.results && data.results.length > 0) {
-        const manualAddress = data.results[0].formatted_address;
-        setLocation(manualAddress);
-        setErrorMessage(''); // Clear error on successful submission
+        const address = data.results[0].formatted_address;
+        setLocation(address); // ✅ Store only the string
+        setErrorMessage("");
       } else {
-        setErrorMessage('Failed to fetch coordinates for the location.');
+        setErrorMessage("Failed to fetch coordinates for the location.");
       }
     } catch {
-      setErrorMessage('Error fetching the location.');
+      setErrorMessage("Error fetching the location.");
     }
   };
 
@@ -266,14 +269,14 @@ const LocationInput = ({ location, setLocation }) => {
     if (inputRef.current) {
       const loadGoogleMapsScript = () => {
         return new Promise((resolve, reject) => {
-          if (typeof window.google !== 'undefined' && window.google.maps) {
+          if (typeof window.google !== "undefined" && window.google.maps) {
             resolve();
           } else {
-            const script = document.createElement('script');
+            const script = document.createElement("script");
             script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`;
             script.async = true;
             script.onload = resolve;
-            script.onerror = () => reject('Google Maps API failed to load.');
+            script.onerror = () => reject("Google Maps API failed to load.");
             document.body.appendChild(script);
           }
         });
@@ -284,32 +287,29 @@ const LocationInput = ({ location, setLocation }) => {
           if (window.google && inputRef.current) {
             const autocomplete = new window.google.maps.places.Autocomplete(
               inputRef.current,
-              {
-                types: ['(cities)']
-              }
+              { types: ["(cities)"] }
             );
 
-            autocomplete.addListener('place_changed', () => {
+            autocomplete.addListener("place_changed", () => {
               const place = autocomplete.getPlace();
               if (place && place.formatted_address) {
-                setLocation(place.formatted_address);
-                setErrorMessage(''); // Clear error on selecting from autocomplete
+                setLocation(place.formatted_address); // ✅ Store only the address
+                setErrorMessage("");
+              } else {
+                setErrorMessage("Invalid location. Please select a valid place.");
               }
             });
           }
         })
         .catch((error) => setErrorMessage(error));
 
-      // Optional: Clear error message when user starts typing in the input
-      const handleInput = () => {
-        setErrorMessage('');
-      };
-      inputRef.current.addEventListener('input', handleInput);
+      // Clear error when user types
+      const handleInput = () => setErrorMessage("");
+      inputRef.current.addEventListener("input", handleInput);
 
-      // Cleanup event listener
       return () => {
         if (inputRef.current) {
-          inputRef.current.removeEventListener('input', handleInput);
+          inputRef.current.removeEventListener("input", handleInput);
         }
       };
     }
@@ -317,23 +317,17 @@ const LocationInput = ({ location, setLocation }) => {
 
   return (
     <>
-      <input
-        ref={inputRef}
-        type="text"
-        placeholder="Enter location"
-        className="meetupinputfield"
-      />
-      <button
-        type="button"
-        onClick={handleManualLocationSubmit}
-        className="meet-up-btn"
-      >
-        check
+      <input ref={inputRef} type="text" placeholder="Enter location" className="meetupinputfield" />
+      <button type="button" onClick={handleManualLocationSubmit} className="meet-up-btn">
+        Check
       </button>
-      {location && <p className="text-xs">{location}</p>}
+      {location && typeof location === "string" && <p className="text-xs">{location}</p>}
       {errorMessage && <p className="error text-xs">{errorMessage}</p>}
     </>
   );
 };
+
+
+
 
 export default Page;
