@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 // import Swipepagemodal from '@/components/swipepagemodal';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
+import { Locationaccess } from '@/components/Models';
 
 const Page = () => {
   const [gender, setGender] = useState('');
@@ -55,9 +56,10 @@ const Page = () => {
 
   return (
     <>
+    <Locationaccess/>
       {/* <Swipepagemodal setLocation={setLocation} /> */}
       <div className="genderbox">
-        <h1 className="pt-10 text-xl font-extrabold sm:ml-3">
+        <h1 className=" text-xl font-extrabold sm:ml-3">
           Choose your companion gender
         </h1>
         <p className="mt-2 text-sm text-gray-700">
@@ -88,7 +90,7 @@ const Page = () => {
         </div>
 
         <div className="gendercntbtn flex justify-center mt-4">
-          {error && <p className="text-xs text-pink-700 mb-2">{error}</p>}
+          
           <button
             type="submit"
             className="submit-button"
@@ -96,7 +98,10 @@ const Page = () => {
           >
             Continue
           </button>
+
+          
         </div>
+        {error && <p className="text-xs text-pink-700 mb-2 text-center mt-3">{error}</p>}
         {/* </form> */}
 
         <div className="genderbottomdesign  ">

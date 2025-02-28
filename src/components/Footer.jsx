@@ -37,9 +37,9 @@ const Footer = () => {
               <div></div>
             </div>
             <div className="mt-4 ">
-              <p className="mt-1">Home</p>
-              <p className="mt-1">AboutUs</p>
-              <p className="mt-1">Privacy Policy</p>
+           <Link href={'/'}>  <p className="mt-1">Home</p> </Link> 
+            <Link href={'/aboutus'}>  <p className="mt-1">AboutUs</p> </Link>
+           <Link href={'/privacypolicy'}>   <p className="mt-1">Privacy Policy</p> </Link>
             </div>
 
             <div className="mt-4">

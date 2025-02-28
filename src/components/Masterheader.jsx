@@ -5,6 +5,7 @@ import Notify from './Notify';
 import { CgProfile } from 'react-icons/cg';
 import { BsArrowReturnRight } from 'react-icons/bs';
 import { FillOtpModel, ForgotPasswordModel, LoginModel } from './Models';
+import Headerprofilebutton from './headerprofilebutton';
 
 const Masterheader = ({
   isLogin,
@@ -81,10 +82,10 @@ const Masterheader = ({
             ) : (
               <div className="flex gap-2 mr-4">
                 <Notify backgroundColor="black" color="white" />
-                <div className="bellicon">
-                  <Link href={'./profile'}>
-                    <CgProfile color="white" size={20} />
-                  </Link>
+                <div >
+                  
+                  <Headerprofilebutton/>
+                  
                 </div>
               </div>
             )}
