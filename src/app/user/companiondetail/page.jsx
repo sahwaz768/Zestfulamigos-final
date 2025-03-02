@@ -9,7 +9,6 @@ import { BASEURL } from '@/Constants/services.constants';
 import { capitalizedWord } from '@/utils/common.utils';
 import { Threeline } from '../swipepage/page';
 
-
 const page = () => {
   const [companionDetails, setCompanionDetails] = useState({});
 
@@ -37,7 +36,7 @@ const page = () => {
 
   return (
     <>
-    <Threeline/>
+      <Threeline />
       <Chatheader
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
@@ -57,24 +56,26 @@ const page = () => {
               />
             </div>
             <div className="horizontalimg-2 flex gap-2 ">
-              {companionDetails.images[3] && (
+              {companionDetails.images[1] && (
                 <Image
                   src={BASEURL + `/` + companionDetails?.images[1]}
                   width={500}
                   height={300}
-                  alt='profile'
+                  alt="profile"
                 />
               )}
             </div>
             <div className="vertical-img ">
-              <Image
-                src={BASEURL + `/` + companionDetails?.images[2]}
-                width={500}
-                height={300}
-                alt="profile"
-                className='mt-3'
-              />
               {companionDetails.images[2] && (
+                <Image
+                  src={BASEURL + `/` + companionDetails?.images[2]}
+                  width={500}
+                  height={300}
+                  alt="profile"
+                  className="mt-3"
+                />
+              )}
+              {companionDetails.images[3] && (
                 <Image
                   src={BASEURL + `/` + companionDetails?.images[3]}
                   className="md:mt-3"
@@ -84,7 +85,6 @@ const page = () => {
                 />
               )}
             </div>
-            
           </div>
           <div style={{ fontSize: '2rem' }}>
             <b>{companionDetails.firstname}</b>
@@ -167,12 +167,10 @@ const page = () => {
               If she is your favourite then
             </h1>
             <Link href={`./timeslote?companionId=${companionDetails.id}`}>
-            <div className=" cntbtn2">
-              
+              <div className=" cntbtn2">
                 {' '}
                 <div>Countinue</div>{' '}
-              
-            </div>
+              </div>
             </Link>
           </div>
         </div>
