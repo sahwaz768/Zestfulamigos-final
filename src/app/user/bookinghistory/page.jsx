@@ -144,30 +144,23 @@ const page = () => {
                     <h1 className="text-sm font-bold text-gray-500">
                       Upcoming meting with {l.companion?.firstname}
                     </h1>
-                    <div className="flex mt-4 gap-8">
+                    <div className="flex flex-wrap mt-1 gap-4 md:gap-8">
                       <div className="flex items-center text-sm gap-2">
                         <IoCalendarOutline />
                         <h1>{l.bookingdate}</h1>
                       </div>
-                      {/* <div className="flex items-center text-sm gap-2">
-                    <PiTimerThin />
-                    <h1>11.00AM-12.00PM</h1>
-                  </div> */}
-                    </div>
-                    {/* <div className="flex mt-4 text-sm gap-2 items-center">
-                  <GrTransaction />
-                  <h1>Transaction id: 123456789</h1>
-                </div> */}
-                    <div className="flex mt-4 text-sm gap-2 items-center">
+                     
+                    <div className="flex  text-sm gap-2 items-center">
                       <RiServiceLine /> <h1>Service booked</h1>
                     </div>
-                    <div className="flex mt-4 text-sm gap-2 items-center">
+                    <div className="flex  text-sm gap-2 items-center">
                       <MdPendingActions />
                       <h1>Status: {capitalizedWord(l.status)}</h1>
                     </div>
-                    <div className="flex mt-4 text-sm gap-2 items-center">
+                    <div className="flex  text-sm gap-2 items-center">
                       <MdOutlinePaid />
                       <h1>Paid amount: {l.amount}</h1>
+                    </div>
                     </div>
                     {l.status === 'ACCEPTED' && (
                       <div>
@@ -191,37 +184,31 @@ const page = () => {
                 <div>No Upcoming Bookings found</div>
               )}
             </div>
-            <div className="closed-booking-box" id="closed-booking-box">
+            <div className="closed-booking-box " id="closed-booking-box">
               {historydata?.pastBooking.length ? (
                 historydata.pastBooking?.map((l, i) => (
                   <div className="upcoming-slot" key={i * 300}>
-                    <h1 className="text-sm font-bold text-gray-500">
+                    <h1 className="text-sm font-bold text-gray-500 mt-6">
                       Last meting with {l.companion?.firstname}
                     </h1>
-                    <div className="flex mt-4 gap-8">
+                    <div className="flex flex-wrap mt-1 md:gap-8 gap-4">
                       <div className="flex items-center text-sm gap-2">
                         <IoCalendarOutline />
                         <h1>{l.bookingdate}</h1>
                       </div>
-                      {/* <div className="flex items-center text-sm gap-2">
-                    <PiTimerThin />
-                    <h1>11.00AM-12.00PM</h1>
-                  </div> */}
-                    </div>
-                    {/* <div className="flex mt-4 text-sm gap-2 items-center">
-                  <GrTransaction />
-                  <h1>Transaction id: 123456789</h1>
-                </div> */}
-                    <div className="flex mt-4 text-sm gap-2 items-center">
+                    
+                    <div className="flex  text-sm gap-2 items-center">
                       <RiServiceLine /> <h1>Service booked</h1>
                     </div>
-                    <div className="flex mt-4 text-sm gap-2 items-center">
+                    <div className="flex  text-sm gap-2 items-center">
                       <MdPendingActions />
                       <h1>Status: {capitalizedWord(l.status)}</h1>
                     </div>
-                    <div className="flex mt-4 text-sm gap-2 items-center">
+                    <div className="flex  text-sm gap-2 items-center">
                       <MdOutlinePaid />
                       <h1>Paid amount: {l.amount}</h1>
+                    </div>
+                    
                     </div>
                     <div>
                       <button

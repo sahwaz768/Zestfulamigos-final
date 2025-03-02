@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Payment from '@/shared/Assets/payment1.png';
 import { redirect } from 'next/navigation';
 import { getBookingDetails } from '@/services/user/bookings.service';
+import { Threeline } from '../swipepage/page';
 
 const page = () => {
   const [checkboxes, setCheckboxes] = useState({
@@ -120,6 +121,7 @@ const page = () => {
   if (!bookingDetails) return <div>Loading....</div>;
   return (
     <div>
+      <Threeline/>
       <Chatheader
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}

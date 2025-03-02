@@ -5,6 +5,7 @@ import Chatheader from '@/components/Masterheader';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { generateStimeSlots, parseTimeSlot } from '@/utils/bookings.utils';
+import { Threeline } from '../swipepage/page';
 
 const Page = () => {
   const [bookedSlots, setBookedSlots] = useState({});
@@ -147,6 +148,7 @@ const Page = () => {
 
   return (
     <>
+    <Threeline/>
       <Chatheader
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}

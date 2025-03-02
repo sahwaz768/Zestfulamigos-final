@@ -18,10 +18,10 @@ body {
   gap: 5px;
   animation: popFromBottom 0.5s ease-in-out;
 }
-.showerror{
+.showerror {
   animation: popFromBottom 0.5s ease-in-out;
 }
-.closebtn{
+.closebtn {
   color: white;
   margin-left: auto;
   font-size: 23px;
@@ -214,7 +214,6 @@ body {
     font-size: medium;
     font-weight: bold;
   }
-  
 }
 @media (max-width: 660px) {
   .header {
@@ -246,7 +245,6 @@ body {
   .companionconnect {
     font-size: 20px;
   }
- 
 }
 
 .herocont {
@@ -290,8 +288,8 @@ body {
   display: flex;
   align-items: center;
 }
-.hw-connect{
- margin-left: 40px;
+.hw-connect {
+  margin-left: 40px;
 }
 
 .containermid {
@@ -406,9 +404,9 @@ body {
 
 /* Responsive Styles */
 @media (max-width: 1190px) {
-  .hw-connect{
+  .hw-connect {
     margin-left: 0px;
-   }
+  }
 }
 
 @media (max-width: 810px) {
@@ -424,9 +422,9 @@ body {
   .quarter-circle2 {
     display: none;
   }
-  .hw-connect{
-   margin: auto;
-   }
+  .hw-connect {
+    margin: auto;
+  }
 }
 @media (max-width: 768px) {
   .steps-container {
@@ -697,7 +695,7 @@ body {
   width: 567px;
   height: 570px;
   flex-shrink: 0;
-  
+
   bottom: 0;
 }
 .leftbox {
@@ -934,10 +932,6 @@ body {
 
 .genderbottomdesign {
   display: flex;
-  
-  
-  
-  
 }
 .gender-quarter-circle1 {
   width: 200px;
@@ -958,16 +952,13 @@ body {
   position: absolute;
   bottom: 0;
   left: 0;
-
-  
-  
 }
 
 .gender-quarter-circle2 {
   width: 200px;
   height: 200px;
   border-radius: 200px 0 0 0;
-  
+
   background: url('../shared/Assets/Ellipse\ .jpg'),
     radial-gradient(
       77.84% 77.84% at 45.87% 14.53%,
@@ -989,7 +980,7 @@ body {
   .genderbox {
     padding-top: 5px;
   }
-  
+
   .imgbox {
     margin-top: 50px;
   }
@@ -1292,6 +1283,23 @@ body {
     display: none;
   }
 }
+@media (max-width: 470px) {
+  
+.locationacessbtn button {
+  display: flex;
+
+  padding: 10px 40px;
+  
+}
+.enterlocationbtn input {
+  
+
+  padding: 8px 40px 8px 10px;
+
+  gap: 360px;
+  flex-shrink: 0;
+}
+}
 
 /* swipe header */
 .swipe-container-first {
@@ -1347,7 +1355,6 @@ body {
   display: flex;
   justify-content: center;
   margin-left: 75px;
-  
 }
 
 .notificatioview {
@@ -1357,14 +1364,15 @@ body {
   border-radius: 10px;
   margin-bottom: 10px;
   height: auto;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow:
+    rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   overflow-y: auto;
 }
-.notification-card{
+.notification-card {
   border-bottom: 1px rgb(192, 190, 190) solid;
-
 }
-.crossbtn{
+.crossbtn {
   color: black;
   margin-left: auto;
   font-size: 10px;
@@ -1372,13 +1380,10 @@ body {
   cursor: pointer;
 }
 
-
 .noti-mb-view {
   display: none;
 }
-.threelinembview {
-  float: left;
-}
+
 .belmbview {
   background-color: white;
   border-radius: 5px;
@@ -1518,7 +1523,6 @@ body {
 }
 
 .card-footer {
-  
   padding-left: 1rem;
   padding-right: 1rem;
   text-align: left;
@@ -1751,7 +1755,7 @@ body {
   height: 500px;
   border-radius: 10px;
 }
-.vertical-img img{
+.vertical-img img {
   width: 300px;
   height: 240px;
   flex-shrink: 0;
@@ -1762,7 +1766,6 @@ body {
   justify-content: center;
   align-items: center;
   gap: 10px;
- 
 }
 .tag {
   background-color: rgb(248, 199, 207);
@@ -1814,7 +1817,7 @@ body {
   }
 }
 @media (max-width: 810px) {
-  .detailbox{
+  .detailbox {
     max-width: 100%;
   }
   .profile-text {
@@ -1837,7 +1840,7 @@ body {
     flex-shrink: 0;
     border-radius: 10px;
   }
-  .vertical-img img{
+  .vertical-img img {
     width: 200px;
     height: 240px;
     flex-shrink: 0;
@@ -1863,7 +1866,7 @@ body {
     flex-shrink: 0;
     border-radius: 10px;
   }
-  .vertical-img img{
+  .vertical-img img {
     width: 200px;
     height: 240px;
     flex-shrink: 0;
@@ -1872,10 +1875,8 @@ body {
   .detailbox {
     margin: 0px 10px;
   }
- 
 }
 @media (max-width: 500px) {
- 
   .horizontalimg-2 img {
     width: 360px;
     height: 400px;
@@ -1892,7 +1893,7 @@ body {
     width: 295px;
     margin-top: 5px;
   }
-  .vertical-img img{
+  .vertical-img img {
     width: 160px;
     height: 180px;
     flex-shrink: 0;
@@ -2002,7 +2003,6 @@ body {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  
 }
 .arrowbtn3 {
   padding: 10px;
@@ -2025,7 +2025,7 @@ body {
   .timeslote-text {
     margin-top: 70px;
   }
-  
+
   .timeslote-textarea {
     margin-left: 10px;
     margin-top: 40px;
@@ -2508,12 +2508,8 @@ th {
 
 .countup-box {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  background-color: #9c2340; /* Maroon background color */
+
+  /* Maroon background color */
   border-radius: 5px;
 }
 
@@ -2601,7 +2597,6 @@ th {
   .chatlist {
     width: 100%;
   }
-
 }
 
 /* profile page */
@@ -2959,7 +2954,6 @@ th {
   margin-top: 20px;
 }
 @media (max-width: 810px) {
-  
   .companion-modal-overlay {
     align-items: normal;
   }
@@ -3293,7 +3287,7 @@ th {
     margin-top: 50px;
   }
 }
-.image-preview-ticket{
+.image-preview-ticket {
   height: 100px;
   width: 100px;
 }
@@ -3508,28 +3502,40 @@ th {
     margin-left: 50px;
   }
 }
-
-.notifymb {
-  margin-left: auto;
-}
-.notifymbsecond {
-  float: right;
-  display: none;
-}
-
 /* three line */
 
 .threeline {
   display: none;
 }
+.notifymb {
+  right: 0;
+  position: absolute;
+  
+}
+
+
+
+.notifymbsecond {
+  position: absolute;
+  right: 0;
+  display: none;
+}
+.threelinembview{
+  z-index: 1000;
+}
+
+
 
 @media screen and (max-width: 810px) {
   .threeline {
     display: block;
+    
   }
   .notifymbsecond {
     display: block;
+    
   }
+  
 }
 /* rate box */
 
@@ -3540,7 +3546,7 @@ th {
   display: flex;
   justify-content: space-between;
 }
-.rate{
+.rate {
   margin-top: 10px;
 }
 .party-1 img {
@@ -3606,37 +3612,37 @@ th {
 }
 
 @media screen and (max-width: 810px) {
-  .rate{
+  .rate {
     margin-top: 100px;
   }
   .party-1 img {
     width: 150.46px;
     height: 150.46px;
-  
+
     flex-shrink: 0;
   }
   .party-2 img {
     width: 150.46px;
     height: 150.46px;
-  
+
     flex-shrink: 0;
   }
 }
 
 @media screen and (max-width: 500px) {
-  .rate{
+  .rate {
     margin-top: 130px;
   }
   .party-1 img {
     width: 80.46px;
     height: 80.46px;
-  
+
     flex-shrink: 0;
   }
   .party-2 img {
     width: 80.46px;
     height: 80.46px;
-  
+
     flex-shrink: 0;
   }
   .rate-btn {
@@ -3644,28 +3650,30 @@ th {
   }
 }
 @media screen and (max-width: 450px) {
-  .rate{
+  .rate {
     margin-top: 130px;
   }
   .party-1 img {
     width: 100.46px;
     height: 100.46px;
-  
+
     flex-shrink: 0;
   }
   .party-2 img {
     width: 100.46px;
     height: 100.46px;
-  
+
     flex-shrink: 0;
   }
-  .rate-text{
+  .rate-text {
     width: 275px;
   }
 }
 
-
 /* companion profile */
+.margin-box {
+  margin-left: 85px;
+}
 
 .image-uploader {
   display: grid;
@@ -3712,7 +3720,7 @@ th {
   cursor: pointer;
 }
 
-.remove-button-4{
+.remove-button-4 {
   position: absolute;
   top: 8px;
   right: 8px;
@@ -3739,6 +3747,11 @@ th {
   cursor: pointer;
 }
 
+@media screen and (max-width: 810px) {
+  .margin-box {
+    margin-left: 15px;
+  }
+}
 
 /* header profile button */
 
@@ -3749,29 +3762,64 @@ th {
   background-color: transparent;
   color: black;
   list-style: none;
-  
+
   transition: all 0.3s ease-in-out;
   transform: translateY(-20px);
   z-index: 4;
-  
 }
-.dropdown-profilebtnbox{
- width:  200px;
+.dropdown-profilebtnbox {
+  width: 200px;
   padding: 5px;
   background-color: white;
   border-radius: 10px;
-  
 }
-.notificationsvg-second{
+.notificationsvg-second {
   display: flex;
   justify-content: center;
   margin-left: 110px;
   margin-top: 10px;
-  
 }
 
-.dropdown-menu-profilebtn img{
+.dropdown-menu-profilebtn img {
   width: 65px;
   height: 65px;
   border-radius: 50%;
+}
+
+/* no user chat box */
+.no-chatbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-chatbox img {
+  margin-top: 50px;
+  width: 70px;
+  height: 70px;
+}
+
+/* chat empty space */
+
+.chat-emptyspace {
+  width: 75%;
+  height: 88vh;
+}
+.chat-emptyspace img {
+  width: 80px;
+  height: 80px;
+  margin-top: 75px;
+}
+.chat-emptyspace-btn {
+  margin-top: 20px;
+  border-radius: 20px;
+  background-color: rgb(252, 46, 80);
+  padding: 8px 20px;
+  color: white;
+}
+
+@media screen and (max-width: 770px) {
+  .chat-emptyspace {
+    display: none;
+  }
 }

@@ -49,6 +49,7 @@ const Page = () => {
   }
   return (
     <>
+    <Threeline />
       <div className="swipebox">
         <Chatheader
           backgroundColor="rgba(250, 236, 236, 0.8)"
@@ -130,19 +131,19 @@ const Page = () => {
 
 export const Threeline = () => {
   return (
-    <>
-      <div className="threeline">
-        <div className="flex gap-2 mr-4 ">
-          <div className="threelinembview mt-3 ml-3">
-            <Mastersidebar />
-          </div>
-          <div className="notifymb">
-            <Notify backgroundColor="transparent" color="black" />
-          </div>
+    <div className="threeline  ">
+      <div className="flex justify-between    px-4">
+        <div className="threelinembview ">
+          <Mastersidebar />
+        </div>
+        <div className="notifymb mt-2">
+          <Notify backgroundColor="transparent" color="black" />
         </div>
       </div>
-    </>
+    </div>
   );
 };
+
+
 
 export default Page;

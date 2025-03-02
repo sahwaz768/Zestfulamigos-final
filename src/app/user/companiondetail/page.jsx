@@ -7,6 +7,8 @@ import Chatheader from '@/components/Masterheader';
 import { companionDetailsService } from 'src/services/user/companionDetails.service';
 import { BASEURL } from '@/Constants/services.constants';
 import { capitalizedWord } from '@/utils/common.utils';
+import { Threeline } from '../swipepage/page';
+
 
 const page = () => {
   const [companionDetails, setCompanionDetails] = useState({});
@@ -35,6 +37,7 @@ const page = () => {
 
   return (
     <>
+    <Threeline/>
       <Chatheader
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
