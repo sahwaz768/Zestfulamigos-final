@@ -45,7 +45,7 @@ const GetSessionModel = (model, selected, closeModal) => {
   }
 };
 
-const Chatwindow = ({ selected, isCompanion }) => {
+const Chatwindow = ({ selected, isCompanion,setblankspace, setchatlist, setSelectedChat }) => {
   const socket = socketinit.socket();
   const [messagedata, setMessageData] = useState(null);
   const [inputValue, setInputValue] = useState('');
@@ -207,6 +207,16 @@ const Chatwindow = ({ selected, isCompanion }) => {
     }
   };
 
+  const handlebackbutton = (id) => {
+    if (window.matchMedia('(min-width: 768px)').matches) {
+      setblankspace(true);
+      setSelectedChat(null);
+    } else {
+      setSelectedChat(null);
+     setchatlist(true)
+    }
+  };
+
   return (
     <>
       {isOpenexmodel && GetSessionModel(isOpenexmodel, selected, closeModal)}
@@ -215,7 +225,7 @@ const Chatwindow = ({ selected, isCompanion }) => {
           <div className="chatheader">
             <div className="user-details">
               <div className="flex">
-                <div className="mt-2 mx-2 chatbackbtn">
+                <div  className="mt-2 mx-2 chatbackbtn" onClick={handlebackbutton}>
                   <IoIosArrowBack color="black" size={25} />
                 </div>
                 <img

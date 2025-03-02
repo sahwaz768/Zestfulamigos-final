@@ -105,7 +105,7 @@ const page = () => {
       <div className="dashboard-threeline">
         <div className="notifymbsecond">
           <Notify backgroundColor="transparent" color="black" />
-        </div>
+        </div> 
       </div>
       <div className="flex">
         <div>

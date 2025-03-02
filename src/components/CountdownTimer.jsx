@@ -33,10 +33,10 @@ const CountdownTimer = ({ startTime, endTime }) => {
     <div className="countup-container">
       <div className="countup-box">
         <div className="countup-time">
-          <div style={{ color: isNearEnd ? 'red' : 'black', fontSize: '20px' }}>
-            <div>
-              Time Remaining: {hoursRemaining ? `${hoursRemaining}h` : null}{' '}
-              {minutesRemaining}m {secondsRemaining}s
+          <div style={{ color: isNearEnd ? '' : 'black', fontSize: '20px' }}>
+            <div className='flex justify-center text-sm'>
+           <div className='text-sm flex justify-center bg-red-400 p-2 text-white rounded'>  Time Remaining:  {hoursRemaining ? `${hoursRemaining}h` : null}{' '}
+              {minutesRemaining}m {secondsRemaining}s </div> 
             </div>
           </div>
         </div>

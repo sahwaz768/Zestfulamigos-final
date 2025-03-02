@@ -5,6 +5,7 @@ import { MdOutlineHistory } from 'react-icons/md';
 import { CiSettings } from 'react-icons/ci';
 import { useSelector } from 'react-redux';
 import { redirect } from 'next/navigation';
+import { MdOutlineSwipe } from "react-icons/md";
 
 export const Mastersidebar = ({ isCompanion }) => {
   const userDetails = useSelector((state) => state.AuthReducer.data);
@@ -50,7 +51,7 @@ export const Mastersidebar = ({ isCompanion }) => {
     menuItems.unshift({
       label: 'Choose Companion',
       route: '/user/genderchoose',
-      icon: RiChatSmile3Line
+      icon: MdOutlineSwipe
     });
   }
 

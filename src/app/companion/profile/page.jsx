@@ -126,6 +126,7 @@ const Page = () => {
 
       <div className="profilebox">
         <Mastersidebar isCompanion={true} />
+        <div className='margin-box'>
         <form onSubmit={handleSubmit}>
           {/* Image Uploader */}
           <div className="form-group mt-2 mb-3">
@@ -328,7 +329,7 @@ const Page = () => {
           {/* Description Checkboxes */}
           <div className="form-group mt-2">
             <label className="text-sm ">Description (Select at least 2)</label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid md:grid-cols-4 md:gap-3  gap-2  grid-cols-2">
               {descriptionData.map((desc) => (
                 <div key={desc} className="flex items-center">
                   <input
@@ -348,7 +349,7 @@ const Page = () => {
                     }}
                     className="mr-2"
                   />
-                  <span>{desc}</span>
+                  <span className='md:text-sm text-xs'>{desc}</span>
                 </div>
               ))}
             </div>
@@ -362,6 +363,7 @@ const Page = () => {
             Update Profile
           </button>
         </form>
+        </div>
       </div>
     </>
   );
