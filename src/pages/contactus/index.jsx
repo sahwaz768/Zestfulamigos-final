@@ -1,7 +1,7 @@
 import Masterheader from '@/components/Masterheader';
 import React from 'react';
 
-const page = () => {
+const ContactUsPage = () => {
   return (
     <div>
       <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" isLogin />
@@ -10,4 +10,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default ContactUsPage;

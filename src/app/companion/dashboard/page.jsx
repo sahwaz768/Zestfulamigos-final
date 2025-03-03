@@ -26,8 +26,8 @@ const page = () => {
   const closeModal = (l) => {
     if (l) {
       import('../../../services/user/bookings.service')
-        .then(({ getPreviousBookings, getRatingforUser }) =>
-          Promise.all([getPreviousBookings(), getRatingforUser()])
+        .then(({ getUpcomingBookingforCompanion, getRatingforUser }) =>
+          Promise.all([getUpcomingBookingforCompanion(), getRatingforUser()])
         )
         .then(async ([{ data }, { data: ratingdata }]) => {
           if (data) {
@@ -73,8 +73,8 @@ const page = () => {
 
   useEffect(() => {
     import('../../../services/user/bookings.service')
-      .then(({ getPreviousBookings, getRatingforUser }) =>
-        Promise.all([getPreviousBookings(), getRatingforUser()])
+      .then(({ getUpcomingBookingforCompanion, getRatingforUser }) =>
+        Promise.all([getUpcomingBookingforCompanion(), getRatingforUser()])
       )
       .then(async ([{ data }, { data: ratingdata }]) => {
         if (data) {
@@ -110,34 +110,34 @@ const page = () => {
       .catch((err) => console.log('Error', err));
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    // Validation check
-    if (text.trim() === '') {
-      setError('please specify the reason');
-      return;
-    }
-    const bookingDetails = {
-      userId: userDetails?.userId,
-      bookingid: isOpen.id
-    };
-    try {
-      const { cancelBooking } = await import(
-        '../../../services/user/bookings.service'
-      );
-      const { data } = await cancelBooking(bookingDetails);
-      if (data) {
-        setIsOpen(null);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setError('');
-      console.log('Submitted text:', text);
-      setText('');
-    }
-  };
+  //   // Validation check
+  //   if (text.trim() === '') {
+  //     setError('please specify the reason');
+  //     return;
+  //   }
+  //   const bookingDetails = {
+  //     userId: userDetails?.userId,
+  //     bookingid: isOpen.id
+  //   };
+  //   try {
+  //     const { cancelBooking } = await import(
+  //       '../../../services/user/bookings.service'
+  //     );
+  //     const { data } = await cancelBooking(bookingDetails);
+  //     if (data) {
+  //       setIsOpen(null);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setError('');
+  //     console.log('Submitted text:', text);
+  //     setText('');
+  //   }
+  // };
   if (!userDetails) return <div>Loading....</div>;
 
   return (

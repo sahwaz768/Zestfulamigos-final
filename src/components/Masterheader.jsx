@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Notify from './Notify';
-import { CgProfile } from 'react-icons/cg';
 import { BsArrowReturnRight } from 'react-icons/bs';
 import { FillOtpModel, ForgotPasswordModel, LoginModel } from './Models';
 import Headerprofilebutton from './headerprofilebutton';
@@ -82,10 +81,8 @@ const Masterheader = ({
             ) : (
               <div className="flex gap-2 mr-4">
                 <Notify backgroundColor="black" color="white" />
-                <div >
-                  
-                  <Headerprofilebutton/>
-                  
+                <div>
+                  <Headerprofilebutton />
                 </div>
               </div>
             )}

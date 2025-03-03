@@ -9,7 +9,7 @@ import { TbRating18Plus } from 'react-icons/tb';
 import Footer from '@/components/Footer';
 import Masterheader from '@/components/Masterheader';
 
-const page = () => {
+const PrivacyPolicyPage = () => {
   return (
     <>
       <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" isLogin />
@@ -173,4 +173,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default PrivacyPolicyPage;
