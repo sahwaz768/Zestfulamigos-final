@@ -6,7 +6,8 @@ import { FaHandshake } from 'react-icons/fa6';
 import Footer from '@/components/Footer';
 import Masterheader from '@/components/Masterheader';
 
-const page = () => {
+const AboutUsPage = () => {
+  console.log('About us Page');
   return (
     <>
       <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" isLogin />
@@ -102,4 +103,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default AboutUsPage;

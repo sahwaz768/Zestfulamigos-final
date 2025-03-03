@@ -1,10 +1,8 @@
-'use client';
 import React, { useState } from 'react';
 import Header from '@/components/Masterheader';
 import Link from 'next/link';
-import Login from '@/components/Login';
 
-const page = () => {
+const BeCompanionPage = () => {
   const initialFormData = {
     firstName: '',
     lastName: '',
@@ -243,4 +241,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default BeCompanionPage;

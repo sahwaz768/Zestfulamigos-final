@@ -45,7 +45,13 @@ const GetSessionModel = (model, selected, closeModal) => {
   }
 };
 
-const Chatwindow = ({ selected, isCompanion,setblankspace, setchatlist, setSelectedChat }) => {
+const Chatwindow = ({
+  selected,
+  isCompanion,
+  setblankspace,
+  setchatlist,
+  setSelectedChat
+}) => {
   const socket = socketinit.socket();
   const [messagedata, setMessageData] = useState(null);
   const [inputValue, setInputValue] = useState('');
@@ -124,7 +130,7 @@ const Chatwindow = ({ selected, isCompanion,setblankspace, setchatlist, setSelec
         JSON.stringify({
           joinchatroom: sendData
         }),
-        { path: '/' }
+        { path: '/', maxAge: 8 * 60 * 60 }
       );
       socket.emit('joinchatroom', sendData);
     };
@@ -159,7 +165,7 @@ const Chatwindow = ({ selected, isCompanion,setblankspace, setchatlist, setSelec
               }
             }
           }),
-          { path: '/', expires: 1 / 288 }
+          { path: '/', maxAge: 8 * 60 * 60 }
         );
         socket.emit('sendMessage', {
           roomid: selected.id,
@@ -213,7 +219,7 @@ const Chatwindow = ({ selected, isCompanion,setblankspace, setchatlist, setSelec
       setSelectedChat(null);
     } else {
       setSelectedChat(null);
-     setchatlist(true)
+      setchatlist(true);
     }
   };
 
@@ -225,7 +231,10 @@ const Chatwindow = ({ selected, isCompanion,setblankspace, setchatlist, setSelec
           <div className="chatheader">
             <div className="user-details">
               <div className="flex">
-                <div  className="mt-2 mx-2 chatbackbtn" onClick={handlebackbutton}>
+                <div
+                  className="mt-2 mx-2 chatbackbtn"
+                  onClick={handlebackbutton}
+                >
                   <IoIosArrowBack color="black" size={25} />
                 </div>
                 <img
@@ -301,10 +310,12 @@ const Chatwindow = ({ selected, isCompanion,setblankspace, setchatlist, setSelec
             </div>
           </div>
           <div className="timer">
-            <CountdownTimer
-              startTime={Number(selected.booking.bookingstart)}
-              endTime={Number(selected.booking.bookingend)}
-            />
+            {selected.session?.length && (
+              <CountdownTimer
+                startTime={Number(selected.booking.bookingstart)}
+                endTime={Number(selected.booking.bookingend)}
+              />
+            )}
           </div>
           <div className="chat-body">
             {messagedata &&

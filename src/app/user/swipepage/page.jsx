@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation';
 import { BASEURL } from '@/Constants/services.constants';
 import Notify from '@/components/Notify';
 import { Mastersidebar } from '@/components/MasterSidebar';
+import { capitalizedWord } from '@/utils/common.utils';
 
 const Page = () => {
   const [companiondata, setcompaniondata] = useState(null);
@@ -93,7 +94,7 @@ const Page = () => {
                       <div className="flex justify-between">
                         <div className="text-sm">
                           {companions[currentIndex].bookingrate} /{' '}
-                          {companions[currentIndex].bookingrateunit}
+                          {capitalizedWord(companions[currentIndex].bookingrateunit)}
                         </div>
                         <div className="text-sm">
                           {companions[currentIndex].distance.toFixed(2)} Km

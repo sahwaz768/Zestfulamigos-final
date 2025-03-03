@@ -1,5 +1,5 @@
 import { Sacramento, Manrope } from 'next/font/google';
-import './globals.css';
+import '@/shared/css/globals.css';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import StoreProvider from './StoreProvider';
 import NotificationManager from '@/components/NotificationManager';
