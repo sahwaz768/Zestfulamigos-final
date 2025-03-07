@@ -6,6 +6,7 @@ import { CiLocationOff } from 'react-icons/ci';
 import { BiLocationPlus } from 'react-icons/bi';
 import { IoIosTimer } from 'react-icons/io';
 import ChatComponent from '@/components/ChatComponent';
+import Loadingbar from '@/components/Loadingbar';
 
 const Page = React.memo((props) => {
   const [chatrooms, setChatRooms] = useState(null);
@@ -29,7 +30,7 @@ const Page = React.memo((props) => {
   }, []);
 
 
-  if (!chatrooms) return <div>Loading...</div>;
+  if (!chatrooms) return <div><Loadingbar/></div>;
 
   return <ChatComponent chatrooms={chatrooms} />
 });

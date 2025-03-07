@@ -9,6 +9,7 @@ import { Mastersidebar } from '@/components/MasterSidebar';
 import { capitalizedWord } from '@/utils/common.utils';
 import { useRouter } from 'next/navigation';
 import { CancelBookingModel } from '@/components/Models';
+import Pagination from '@/components/Pagination';
 
 const Page = () => {
   const [historydata, setHistoryData] = useState(null);
@@ -137,21 +138,21 @@ const Page = () => {
               {historydata?.upcoming.length ? (
                 historydata.upcoming?.map((l, i) => (
                   <div className="upcoming-slot" key={i * 500}>
-                    <h1 className="text-sm font-bold text-gray-500">
+                    <h1 className="text-sm font-bold text-gray-500 mt-2">
                       Upcoming meting with {l.companion?.firstname}
                     </h1>
-                    <div className="flex mt-4 gap-8">
+                    <div className="flex flex-wrap mt-1  md:gap-8 gap-4">
                       <div className="flex items-center text-sm gap-2">
                         <IoCalendarOutline />
                         <h1>{l.bookingdate}</h1>
                       </div>
-                    </div>
-                    <div className="flex mt-4 text-sm gap-2 items-center">
+                    <div className="flex  text-sm gap-2 items-center">
                       <RiServiceLine /> <h1>Service booked</h1>
                     </div>
-                    <div className="flex mt-4 text-sm gap-2 items-center">
+                    <div className="flex  text-sm gap-2 items-center">
                       <MdPendingActions />
                       <h1>Status: {capitalizedWord(l.status)}</h1>
+                    </div>
                     </div>
                     {l.status === 'ACCEPTED' && (
                       <div>
@@ -168,21 +169,22 @@ const Page = () => {
               {historydata?.pastBooking.length ? (
                 historydata.pastBooking?.map((l, i) => (
                   <div className="upcoming-slot" key={i * 300}>
-                    <h1 className="text-sm font-bold text-gray-500">
+                    <h1 className="text-sm font-bold text-gray-500 mt-3">
                       Last meting with {l.user?.firstname}
                     </h1>
-                    <div className="flex mt-4 gap-8">
+                    <div className="flex flex-wrap mt-4 md:gap-8 gap-4">
                       <div className="flex items-center text-sm gap-2">
                         <IoCalendarOutline />
                         <h1>{l.bookingdate}</h1>
                       </div>
-                    </div>
-                    <div className="flex mt-4 text-sm gap-2 items-center">
+                    
+                    <div className="flex  text-sm gap-2 items-center">
                       <RiServiceLine /> <h1>Service booked</h1>
                     </div>
-                    <div className="flex mt-4 text-sm gap-2 items-center">
+                    <div className="flex  text-sm gap-2 items-center">
                       <MdPendingActions />
                       <h1>Status: {capitalizedWord(l.status)}</h1>
+                    </div>
                     </div>
                     <div>
                       <button
@@ -206,6 +208,7 @@ const Page = () => {
           bookingDetail={modelOpen}
         />
       )}
+      <Pagination />
     </div>
   );
 };

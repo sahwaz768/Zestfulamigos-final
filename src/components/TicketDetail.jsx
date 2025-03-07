@@ -1,6 +1,7 @@
-'use client'
+'use client';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
+import { Threeline } from '@/app/user/swipepage/page';
 
 const Masterheader = dynamic(() => import('./Masterheader'), { ssr: false });
 
@@ -32,10 +33,27 @@ const TicketDetail = ({ userIssue }) => {
   return (
     <>
       <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" />
-      <div className="ticket-head">
-        <h1 className="text-lg font-bold">{userIssue.subject}</h1>
-        <div className="support-row text-sm font-bold pending">
-          {userIssue.status}
+      <Threeline />
+      <div className="">
+        <div className="ticket-head">
+          <hr />
+          <div className="flex justify-between p-3">
+            <div>
+              <h1 className="font-bold text-2xl">Ticket#12345678asd</h1>
+              <h1>{userIssue.subject}</h1>
+            </div>
+            <div className="pending">{userIssue.status}</div>
+          </div>
+          <hr />
+          <div className="flex mt-3">
+            <span className="font-bold">Subject:</span>
+            <h1 className="">{userIssue.subject}</h1>
+          </div>
+        </div>
+
+        <div className=" ml-5 flex ">
+          <span className="font-bold">Description:</span>
+          paisa wapas de do bhai account mai
         </div>
       </div>
       <div className="ticket-body">
@@ -52,6 +70,19 @@ const TicketDetail = ({ userIssue }) => {
                 Sir/madam, we need to install Visual C++, that we can find from
                 . Please find the attachment.
               </p>
+              {/* Image Download Option */}
+              <a
+                href="/path/to/admin/image.jpg"
+                download
+                className="attachment-link"
+              >
+                <img
+                  src="/sdh"
+                  alt=" Download"
+                  className="attachment-preview"
+                />
+            
+              </a>
             </div>
             {!comment && !hasReplied && (
               <button className="reply-button" onClick={handleReplyClick}>

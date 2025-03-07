@@ -1,10 +1,9 @@
-'use client'
+'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FcGoogle } from 'react-icons/fc';
 import { useGoogleLogin } from '@react-oauth/google';
-
 
 export const StartSessionModel = ({ closeModal, bookingid }) => {
   const [otp, setOtp] = useState(['', '', '', '']);
@@ -598,6 +597,7 @@ export const SetNewPasswordModel = ({ handleModel }) => {
 };
 
 export const LoginModel = ({ handleModel }) => {
+  const [isLoading, setisLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -640,6 +640,7 @@ export const LoginModel = ({ handleModel }) => {
     );
     const { setCookie } = await import('nookies');
     e.preventDefault();
+    setisLoading(() => true);
     if (validateForm()) {
       const { data, error } = await loginUserService(formData);
       if (data) {
@@ -650,8 +651,10 @@ export const LoginModel = ({ handleModel }) => {
         console.log(decodedToken);
         if (decodedToken.isCompanion) {
           router.push('/companion/dashboard');
+          setisLoading(() => false);
         } else {
-          router.push('/user/chat'); // Navigate to your desired route
+          router.push('/user/chat');
+          setisLoading(() => false);
         }
       } else {
         const response = error;
@@ -725,10 +728,11 @@ export const LoginModel = ({ handleModel }) => {
             type="submit"
             className="w-full loginbtn text-center"
             onClick={handleSubmit}
+            disabled={isLoading}
           >
-            login
+            {isLoading ? 'Please Wait..' : 'Login'}
           </button>
-          {/* login form end here */}
+
           <div className="flex mt-3 mb-1 justify-center ">
             <p className="text-xs text-black">Dont have an account ? </p>{' '}
             <Link href={'./signup'}>
@@ -805,8 +809,6 @@ export const CancelBookingModel = ({ closeModal, bookingDetail }) => {
   );
 };
 
-
-
 export const Locationaccess = () => {
   const inputRef = useRef(null); // Ref for input field
   const [showModal, setShowModal] = useState(true); // State to show/hide modal
@@ -814,7 +816,6 @@ export const Locationaccess = () => {
   const [coords, setCoords] = useState({ latitude: null, longitude: null });
   const [errorMessage, setErrorMessage] = useState('');
 
-  
   const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_KEY;
 
   const getAddressFromLatLng = async (lat, lng) => {
@@ -823,7 +824,7 @@ export const Locationaccess = () => {
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_API_KEY}`
       );
       const data = await response.json();
-     // console.log('Geocode Response:', data); // Debug response
+      // console.log('Geocode Response:', data); // Debug response
       if (data.results && data.results.length > 0) {
         return data.results[0].formatted_address;
       }
@@ -836,12 +837,14 @@ export const Locationaccess = () => {
   };
 
   const handleLocationSuccess = async (position) => {
-  //  console.log('Geolocation Success:', position); // Debug position
+    //  console.log('Geolocation Success:', position); // Debug position
     const { latitude, longitude } = position.coords;
     const address = await getAddressFromLatLng(latitude, longitude);
     setCoords({ latitude, longitude });
     setLocation(address);
-    console.log(`Latitude: ${latitude}, Longitude: ${longitude}, Location: ${address}`); // Debug coordinates
+    console.log(
+      `Latitude: ${latitude}, Longitude: ${longitude}, Location: ${address}`
+    ); // Debug coordinates
     setShowModal(false);
   };
 
@@ -852,33 +855,38 @@ export const Locationaccess = () => {
 
   const handleManualLocationSubmit = async () => {
     const manualLocation = inputRef.current.value;
-   // console.log('Manual Location Input:', manualLocation); // Debug input
+    // console.log('Manual Location Input:', manualLocation); // Debug input
     try {
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(manualLocation)}&key=${GOOGLE_API_KEY}`
       );
       const data = await response.json();
-     // console.log('Manual Geocode Response:', data); // Debug response
+      // console.log('Manual Geocode Response:', data); // Debug response
       if (data.results && data.results.length > 0) {
         const { lat, lng } = data.results[0].geometry.location;
         const manualAddress = data.results[0].formatted_address;
         setCoords({ latitude: lat, longitude: lng });
         setLocation(manualAddress);
-        console.log(`Latitude: ${lat}, Longitude: ${lng}, Location: ${manualAddress}`); // Debug coordinates
+        console.log(
+          `Latitude: ${lat}, Longitude: ${lng}, Location: ${manualAddress}`
+        ); // Debug coordinates
         setShowModal(false);
       } else {
         setErrorMessage('Failed to fetch coordinates for the location.');
       }
     } catch (error) {
-     // console.error('Manual Geocoding Error:', error); // Debug error
+      // console.error('Manual Geocoding Error:', error); // Debug error
       setErrorMessage('Error fetching the location.');
     }
   };
 
   const requestLocation = () => {
-   // console.log('Requesting Geolocation...'); // Debug request
+    // console.log('Requesting Geolocation...'); // Debug request
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(handleLocationSuccess, handleLocationError);
+      navigator.geolocation.getCurrentPosition(
+        handleLocationSuccess,
+        handleLocationError
+      );
     } else {
       console.error('Geolocation Not Supported'); // Debug unsupported
       setErrorMessage('Geolocation is not supported by this browser.');
@@ -886,11 +894,11 @@ export const Locationaccess = () => {
   };
 
   useEffect(() => {
-   // console.log('Initializing Google Maps Script...'); // Debug initialization
+    // console.log('Initializing Google Maps Script...'); // Debug initialization
     const loadGoogleMapsScript = () => {
       return new Promise((resolve, reject) => {
         if (window.google && window.google.maps) {
-       //   console.log('Google Maps API Already Loaded'); // Debug script status
+          //   console.log('Google Maps API Already Loaded'); // Debug script status
           resolve();
         } else {
           const script = document.createElement('script');
@@ -909,19 +917,22 @@ export const Locationaccess = () => {
 
     loadGoogleMapsScript()
       .then(() => {
-      //  console.log('Google Maps API Loaded Successfully'); // Debug success
+        //  console.log('Google Maps API Loaded Successfully'); // Debug success
         if (window.google && inputRef.current) {
-          const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
-            types: ['(cities)'],
-          });
-        //  console.log('Autocomplete Initialized:', autocomplete); // Debug autocomplete instance
+          const autocomplete = new window.google.maps.places.Autocomplete(
+            inputRef.current,
+            {
+              types: ['(cities)']
+            }
+          );
+          //  console.log('Autocomplete Initialized:', autocomplete); // Debug autocomplete instance
 
           autocomplete.addListener('place_changed', () => {
             const place = autocomplete.getPlace();
-           // console.log('Place Changed Event:', place); // Debug place details
+            // console.log('Place Changed Event:', place); // Debug place details
             if (place && place.formatted_address) {
               setLocation(place.formatted_address);
-             // console.log(`Selected Location: ${place.formatted_address}`); // Debug selected location
+              // console.log(`Selected Location: ${place.formatted_address}`); // Debug selected location
             } else {
               setErrorMessage('No address found.');
             }
@@ -942,7 +953,8 @@ export const Locationaccess = () => {
           <div className="modal-swipepage">
             <h2 className="text-center">Choose your location</h2>
             <p className="text-xs text-center text-gray-600 mt-2 mb-3">
-              Zestful amigos would like to access your location, to get better results.
+              Zestful amigos would like to access your location, to get better
+              results.
             </p>
             <div className="locationacessbtn">
               <button onClick={requestLocation}>Allow Location Access</button>
@@ -952,7 +964,10 @@ export const Locationaccess = () => {
             <div className="enterlocationbtn mt-2">
               <input ref={inputRef} type="text" placeholder="Enter location" />
             </div>
-            <button onClick={handleManualLocationSubmit} className="manual-location-btn">
+            <button
+              onClick={handleManualLocationSubmit}
+              className="manual-location-btn"
+            >
               Submit
             </button>
             {errorMessage && <p className="error">{errorMessage}</p>}
@@ -962,4 +977,3 @@ export const Locationaccess = () => {
     </>
   );
 };
-

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { RaiseaIssueModel } from './Models';
 import { FiPlus } from 'react-icons/fi';
+import Pagination from './Pagination';
+import { Threeline } from '@/app/user/swipepage/page';
 
 const Masterheader = dynamic(() => import('./Masterheader'), { ssr: false });
 
@@ -16,6 +18,7 @@ const ConcernComponent = ({ issuedata, userDetails }) => {
   return (
     <div>
       <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" />
+      <Threeline />
       <div className="support-head">
         <div className="support-txt">
           <h1 className="md:text-xl ml-3 md:font-bold mt-2">
@@ -28,7 +31,7 @@ const ConcernComponent = ({ issuedata, userDetails }) => {
         </div>
       </div>
       <div className="support-box-head">
-        <div className="support-row-head md:text-xl ">Ticket no</div>
+        <div className="support-row-head md:text-xl  mr-7">Ticket no</div>
         <div className="support-row-head md:text-xl ">Topic</div>
         <div className="support-row-head md:text-xl  ">status</div>
         <div className="support-row-2-head md:text-xl ">check</div>
@@ -38,7 +41,7 @@ const ConcernComponent = ({ issuedata, userDetails }) => {
         issuedata?.length ? (
           issuedata.map((l) => (
             <div className="support-box" key={l.issueId}>
-              <div className="support-row text-sm font-bold">{l.issueId}</div>
+              <div className="support-row text-xs font-bold mr-7">{l.issueId}</div>
               <div className="support-row text-sm font-bold">{l.subject}</div>
               <div className="support-row text-sm font-bold pending">
                 {capitalizedWord(l.status)}
@@ -61,6 +64,7 @@ const ConcernComponent = ({ issuedata, userDetails }) => {
       {isOpen && (
         <RaiseaIssueModel closeModal={closeModal} userDetails={userDetails} />
       )}
+       <Pagination/>
     </div>
   );
 };

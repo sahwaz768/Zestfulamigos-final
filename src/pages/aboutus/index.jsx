@@ -6,6 +6,7 @@ import { FaHandshake } from 'react-icons/fa6';
 import Footer from '@/components/Footer';
 import Masterheader from '@/components/Masterheader';
 
+
 const AboutUsPage = () => {
   console.log('About us Page');
   return (

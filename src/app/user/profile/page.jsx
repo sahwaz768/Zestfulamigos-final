@@ -5,6 +5,7 @@ import Chatheader from '@/components/Masterheader';
 import { Mastersidebar } from '@/components/MasterSidebar';
 import Notify from '@/components/Notify';
 import { BASEURL } from '@/Constants/services.constants';
+import Loadingbar from '@/components/Loadingbar';
 
 const Page = () => {
   const [formData, setFormData] = useState(null);
@@ -97,7 +98,7 @@ const Page = () => {
     { name: 'Privacy Policy', href: './privacypolicy' },
     { name: 'Contact', href: './contactus' }
   ];
-  if (!formData) return <div>Loading...</div>;
+  if (!formData) return <div><Loadingbar/></div>;
   return (
     <>
       <Chatheader

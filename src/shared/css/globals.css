@@ -2187,9 +2187,10 @@ th {
 
 .chatpage {
   width: 100vw;
-  height: 88vh;
+  height: 75vh;
   display: flex;
   margin-top: 3px;
+  
 }
 
 .chat-side-icon {
@@ -2211,19 +2212,20 @@ th {
 /* chat-list  */
 .chatsection {
   width: 100%;
-  margin-top: 10px;
-  height: 80vh;
+  margin-top: 3px;
+  height: 65vh;
 
   display: flex;
   margin-left: 72px;
 }
 .chatlist {
   min-width: 25%;
-  height: 88vh;
+  height: 80vh;
+  
+  
 }
 .chatlistbox {
   width: 100%;
-
   display: flex;
   padding: 10px 5px 10px 5px;
 }
@@ -2290,7 +2292,7 @@ th {
 .chat-window {
   display: flex;
   flex-direction: column;
-  height: 88vh;
+  height: 60vh;
 }
 .chat-header {
   color: white;
@@ -2303,7 +2305,7 @@ th {
   padding: 10px;
   overflow-y: auto;
   background-color: rgb(245, 243, 243);
-  height: 80vh;
+  height: 55vh;
 }
 .chatheader {
   background-color: white;
@@ -2363,6 +2365,8 @@ th {
   font-size: 15px;
   font-weight: 300;
   height: auto;
+  word-break: break-word;
+  white-space: pre-wrap;
 }
 
 .msgtime {
@@ -2577,6 +2581,9 @@ th {
   }
 }
 @media (max-width: 810px) {
+  .chatpage{
+    margin-top: 30px;
+  }
   .chatsection {
     margin-top: -10px;
     margin-left: 1px;
@@ -2584,6 +2591,9 @@ th {
   .dropdown-menu-extension {
     top: 170px;
     right: 10px;
+  }
+  .chat-body{
+    height: 80vh;
   }
 }
 
@@ -2751,6 +2761,14 @@ th {
 }
 .upcoming-booking-box {
   display: none;
+  height: 65vh;
+  width: 90vw;
+  overflow-y: auto;
+}
+.closed-booking-box {
+  height: 65vh;
+  width: 90vw;
+  overflow-y: auto;
 }
 .upcoming-slot button {
   margin-top: 20px;
@@ -2771,6 +2789,17 @@ th {
   }
   .bookingbox {
     margin-top: 60px;
+  }
+  .upcoming-booking-box {
+    
+    height: 92vh;
+    width: 100vw;
+  
+  }
+  .closed-booking-box {
+    height: 92vh;
+    width: 100vw;
+    
   }
 }
 @media (max-width: 510px) {
@@ -3202,7 +3231,7 @@ th {
 /* ticket */
 
 .ticket-head {
-  display: flex;
+  
   gap: 20px;
   padding: 10px 20px;
   align-items: center;
@@ -3211,7 +3240,7 @@ th {
 
 .message-container {
   padding: 20px;
-  max-width: 92%;
+  max-width: 98%;
   margin: 0 auto;
   font-family: Arial, sans-serif;
   color: #333;
@@ -3231,7 +3260,7 @@ th {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #555;
+  color: black;
   margin-bottom: 8px;
 }
 
@@ -3280,6 +3309,16 @@ th {
 
 .replies {
   margin-top: 16px;
+}
+.attachment-preview {
+  max-width: 100px;
+  padding: 5px;
+  color: white;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  margin-top: 5px;
+  background-color: red;
 }
 
 @media (max-width: 810px) {
@@ -3382,16 +3421,17 @@ th {
   position: absolute;
   top: 25;
   left: 10px;
-  height: 100%;
+  height: 80%;
   width: 60px;
   background-color: white;
   z-index: 1000;
   overflow-x: hidden;
   transition: width 0.3s ease-in-out;
+  
 }
 
 .sidebar.open {
-  width: 350px;
+  width: 385px;
 }
 .user-profile-sidebar {
   display: flex;
@@ -3497,6 +3537,7 @@ th {
 
   .sidebar.open {
     width: 100vw;
+    height: 100%;
   }
   .menu-item-second {
     margin-left: 50px;
@@ -3822,4 +3863,16 @@ th {
   .chat-emptyspace {
     display: none;
   }
+}
+
+
+
+.pag-ination{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+ background-color: white;
+  
 }

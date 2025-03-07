@@ -6,6 +6,7 @@ import Payment from '@/shared/Assets/payment1.png';
 import { redirect } from 'next/navigation';
 import { getBookingDetails } from '@/services/user/bookings.service';
 import { Threeline } from '../swipepage/page';
+import Loadingbar from '@/components/Loadingbar';
 
 const page = () => {
   const [checkboxes, setCheckboxes] = useState({
@@ -118,7 +119,7 @@ const page = () => {
     { name: 'Privacy Policy', href: './privacypolicy' },
     { name: 'Contact', href: './contactus' }
   ];
-  if (!bookingDetails) return <div>Loading....</div>;
+  if (!bookingDetails) return <div><Loadingbar/></div>;
   return (
     <div>
       <Threeline/>
