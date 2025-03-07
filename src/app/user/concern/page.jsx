@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ConcernComponent from '@/components/ConcernComponents';
+import Loadingbar from '@/components/Loadingbar';
+
 
 const page = () => {
   const [issuedata, setissuedata] = useState(null);
@@ -18,7 +20,7 @@ const page = () => {
   }, []);
 
   if(!userDetails || !issuedata){
-    return <div>Loading....</div>
+    return <div><Loadingbar/></div>
   }
 
   const navLinks = [

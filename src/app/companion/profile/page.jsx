@@ -428,7 +428,7 @@ const ImageUploader = ({ images, onUpload }) => {
             </span>
           )} */}
           <button
-            className="remove-button"
+            className="remove-button-4"
             onClick={() => handleRemoveImage(index)}
           >
             &times;

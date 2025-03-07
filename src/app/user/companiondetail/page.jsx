@@ -8,6 +8,7 @@ import { companionDetailsService } from 'src/services/user/companionDetails.serv
 import { BASEURL } from '@/Constants/services.constants';
 import { capitalizedWord } from '@/utils/common.utils';
 import { Threeline } from '../swipepage/page';
+import Loadingbar from '@/components/Loadingbar';
 
 const page = () => {
   const [companionDetails, setCompanionDetails] = useState({});
@@ -25,7 +26,7 @@ const page = () => {
     }
   }, []);
 
-  if (!Object.keys(companionDetails).length) return <p>Loading...</p>;
+  if (!Object.keys(companionDetails).length) return <Loadingbar/>;
 
   const navLinks = [
     { name: 'Home', href: '/' },

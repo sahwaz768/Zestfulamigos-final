@@ -10,6 +10,7 @@ import { formatBookingTime } from '@/utils/bookings.utils';
 import Mailbox from '@/shared/Assets/mailbox.png';
 import Logo from '@/shared/Assets/nobglogo.png';
 import Link from 'next/link';
+import Locationaccess from './Locationaccess';
 
 const ChatComponent = ({ chatrooms, isCompanion }) => {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -34,6 +35,7 @@ const ChatComponent = ({ chatrooms, isCompanion }) => {
   ];
   return (
     <>
+    <Locationaccess/>
       <Masterheader
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}

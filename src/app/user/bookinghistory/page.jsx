@@ -10,6 +10,7 @@ import Notify from '@/components/Notify';
 import { capitalizedWord } from '@/utils/common.utils';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
+import Pagination from '@/components/Pagination';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState(null);
@@ -88,6 +89,7 @@ const page = () => {
   ];
 
   return (
+    <>
     <div>
       <Chatheader
         backgroundColor="rgba(250, 236, 236, 0.8)"
@@ -141,7 +143,7 @@ const page = () => {
               {historydata?.upcoming.length ? (
                 historydata.upcoming?.map((l, i) => (
                   <div className="upcoming-slot" key={i * 500}>
-                    <h1 className="text-sm font-bold text-gray-500">
+                    <h1 className="text-sm font-bold text-gray-500 mt-2">
                       Upcoming meting with {l.companion?.firstname}
                     </h1>
                     <div className="flex flex-wrap mt-1 gap-4 md:gap-8">
@@ -149,18 +151,18 @@ const page = () => {
                         <IoCalendarOutline />
                         <h1>{l.bookingdate}</h1>
                       </div>
-                     
-                    <div className="flex  text-sm gap-2 items-center">
-                      <RiServiceLine /> <h1>Service booked</h1>
-                    </div>
-                    <div className="flex  text-sm gap-2 items-center">
-                      <MdPendingActions />
-                      <h1>Status: {capitalizedWord(l.status)}</h1>
-                    </div>
-                    <div className="flex  text-sm gap-2 items-center">
-                      <MdOutlinePaid />
-                      <h1>Paid amount: {l.amount}</h1>
-                    </div>
+
+                      <div className="flex  text-sm gap-2 items-center">
+                        <RiServiceLine /> <h1>Service booked</h1>
+                      </div>
+                      <div className="flex  text-sm gap-2 items-center">
+                        <MdPendingActions />
+                        <h1>Status: {capitalizedWord(l.status)}</h1>
+                      </div>
+                      <div className="flex  text-sm gap-2 items-center">
+                        <MdOutlinePaid />
+                        <h1>Paid amount: {l.amount}</h1>
+                      </div>
                     </div>
                     {l.status === 'ACCEPTED' && (
                       <div>
@@ -183,7 +185,9 @@ const page = () => {
               ) : (
                 <div>No Upcoming Bookings found</div>
               )}
+              
             </div>
+           
             <div className="closed-booking-box " id="closed-booking-box">
               {historydata?.pastBooking.length ? (
                 historydata.pastBooking?.map((l, i) => (
@@ -196,19 +200,18 @@ const page = () => {
                         <IoCalendarOutline />
                         <h1>{l.bookingdate}</h1>
                       </div>
-                    
-                    <div className="flex  text-sm gap-2 items-center">
-                      <RiServiceLine /> <h1>Service booked</h1>
-                    </div>
-                    <div className="flex  text-sm gap-2 items-center">
-                      <MdPendingActions />
-                      <h1>Status: {capitalizedWord(l.status)}</h1>
-                    </div>
-                    <div className="flex  text-sm gap-2 items-center">
-                      <MdOutlinePaid />
-                      <h1>Paid amount: {l.amount}</h1>
-                    </div>
-                    
+
+                      <div className="flex  text-sm gap-2 items-center">
+                        <RiServiceLine /> <h1>Service booked</h1>
+                      </div>
+                      <div className="flex  text-sm gap-2 items-center">
+                        <MdPendingActions />
+                        <h1>Status: {capitalizedWord(l.status)}</h1>
+                      </div>
+                      <div className="flex  text-sm gap-2 items-center">
+                        <MdOutlinePaid />
+                        <h1>Paid amount: {l.amount}</h1>
+                      </div>
                     </div>
                     <div>
                       <button
@@ -218,16 +221,22 @@ const page = () => {
                       </button>
                       <button className="ml-4">Book again</button>
                     </div>
+                    
                   </div>
+                   
                 ))
               ) : (
                 <div>No Booking History Found</div>
               )}
+              
             </div>
+            
           </div>
         </div>
       </div>
     </div>
+    <Pagination/>
+    </>
   );
 };
 

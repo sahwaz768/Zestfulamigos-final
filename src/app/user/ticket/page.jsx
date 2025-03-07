@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import TicketDetail from '@/components/TicketDetail';
+import Loadingbar from '@/components/Loadingbar';
 
 const Page = () => {
   const [userIssue, setUserIssue] = useState(null);
@@ -18,7 +19,7 @@ const Page = () => {
       });
   }, []);
 
-  if (!userIssue) return <div>Loading...</div>;
+  if (!userIssue) return <div><Loadingbar/></div>;
 
   return <TicketDetail userIssue={userIssue} />;
 };

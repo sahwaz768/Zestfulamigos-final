@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { BASEURL } from '@/Constants/services.constants';
 import { capitalizedWord } from '@/utils/common.utils';
 import { CancelBookingModel } from '@/components/Models';
+import Loadingbar from '@/components/Loadingbar';
 
 const page = () => {
   const [openModel, setOpenModel] = useState({ data: null, open: false });
@@ -138,7 +139,7 @@ const page = () => {
   //     setText('');
   //   }
   // };
-  if (!userDetails) return <div>Loading....</div>;
+  if (!userDetails) return <div><Loadingbar/></div>;
 
   return (
     <>

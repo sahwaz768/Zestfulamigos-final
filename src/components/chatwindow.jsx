@@ -12,6 +12,7 @@ import { parseCookies, setCookie } from 'nookies';
 import { getAccessTokenFromRefreshTokenService } from '../services/auth/login.service';
 import { deletecookie } from '@/utils/removeUserData';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 
 const CountdownTimer = dynamic(() => import('@/components/CountdownTimer'), {
   ssr: false
@@ -56,7 +57,7 @@ const Chatwindow = ({
   const [messagedata, setMessageData] = useState(null);
   const [inputValue, setInputValue] = useState('');
 
-  const filteredWords = ['badword1', 'badword2'];
+  const filteredWords = ['fuck', 'shit','pussy','dick','penis','asshole','sucker','lick','arse','arsehole','bastard','bery','bloody','bollocks','cack','cock-up','codgur','cunt','dickhead','duffer','feck','knob','knobend','knobhead','knobber','munter','nutter','pillock','pish','pissed off','plonker','poxy','prat','scrubber','shit','taking the piss','tosser','tuss','twat','wally','wanker'];
 
   useEffect(() => {
     const initializeSocket = async () => {
@@ -342,9 +343,10 @@ const Chatwindow = ({
               placeholder="type of massage"
             />
             <div className="send-button-chat flex">
-              <div className="flex justify-center items-center mx-4">
+          <Link href={'/'}>   <div className="flex justify-center items-center mx-4">
                 <CiLocationOn color="white" size={20} />
               </div>
+              </Link> 
               <div
                 className="msgsendbtn"
                 onClick={() => sendNewMessage(inputValue)}

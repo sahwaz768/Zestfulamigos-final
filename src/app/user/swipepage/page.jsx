@@ -8,6 +8,7 @@ import { BASEURL } from '@/Constants/services.constants';
 import Notify from '@/components/Notify';
 import { Mastersidebar } from '@/components/MasterSidebar';
 import { capitalizedWord } from '@/utils/common.utils';
+import Loadingbar from '@/components/Loadingbar';
 
 const Page = () => {
   const [companiondata, setcompaniondata] = useState(null);
@@ -46,7 +47,7 @@ const Page = () => {
     { name: 'Contact', href: './contactus' }
   ];
   if (!companiondata) {
-    return <div>Loading...</div>;
+    return <div><Loadingbar/></div>;
   }
   return (
     <>

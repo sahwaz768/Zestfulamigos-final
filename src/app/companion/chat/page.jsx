@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import ChatComponent from '@/components/ChatComponent';
+import Loadingbar from '@/components/Loadingbar';
 
 const page = () => {
    const [chatrooms, setChatRooms] = useState(null);
@@ -24,7 +25,7 @@ const page = () => {
     }, []);
   
   
-    if (!chatrooms) return <div>Loading...</div>;
+    if (!chatrooms) return <div><Loadingbar/></div>;
   return <ChatComponent chatrooms={chatrooms} isCompanion={true} />;
 };
 
