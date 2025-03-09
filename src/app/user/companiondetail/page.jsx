@@ -7,7 +7,7 @@ import Chatheader from '@/components/Masterheader';
 import { companionDetailsService } from 'src/services/user/companionDetails.service';
 import { BASEURL } from '@/Constants/services.constants';
 import { capitalizedWord } from '@/utils/common.utils';
-import { Threeline } from '../swipepage/page';
+import Threeline  from '@/components/ThreeLine';
 import Loadingbar from '@/components/Loadingbar';
 
 const page = () => {

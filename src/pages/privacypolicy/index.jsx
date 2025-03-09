@@ -12,7 +12,7 @@ import Masterheader from '@/components/Masterheader';
 const PrivacyPolicyPage = () => {
   return (
     <>
-      <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" isLogin />
+      <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" fillBlank />
       <div className="md:mx-14 mx-4">
         <h1 className="text-2xl text-center font-bold">Privacy Policy</h1>
         <p className="text-center font-bold">Our terms and conditions</p>

@@ -5,10 +5,9 @@ import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { redirect } from 'next/navigation';
 import { BASEURL } from '@/Constants/services.constants';
-import Notify from '@/components/Notify';
-import { Mastersidebar } from '@/components/MasterSidebar';
 import { capitalizedWord } from '@/utils/common.utils';
 import Loadingbar from '@/components/Loadingbar';
+import Threeline from '@/components/ThreeLine';
 
 const Page = () => {
   const [companiondata, setcompaniondata] = useState(null);
@@ -131,20 +130,6 @@ const Page = () => {
   );
 };
 
-export const Threeline = () => {
-  return (
-    <div className="threeline  ">
-      <div className="flex justify-between    px-4">
-        <div className="threelinembview ">
-          <Mastersidebar />
-        </div>
-        <div className="notifymb mt-2">
-          <Notify backgroundColor="transparent" color="black" />
-        </div>
-      </div>
-    </div>
-  );
-};
 
 
 

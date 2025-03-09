@@ -5,7 +5,7 @@ import Chatheader from '@/components/Masterheader';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { generateStimeSlots, parseTimeSlot } from '@/utils/bookings.utils';
-import { Threeline } from '../swipepage/page';
+import Threeline from '@/components/ThreeLine';
 
 const Page = () => {
   const [bookedSlots, setBookedSlots] = useState({});

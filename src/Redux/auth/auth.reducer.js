@@ -19,6 +19,6 @@ export const Auth = createSlice({
 export const { fetchingData, datafetched } = Auth.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectCompanionsData = (state) => state.Auth.data
+export const selectAuthData = (state) => state.AuthReducer.data
 
 export default Auth.reducer

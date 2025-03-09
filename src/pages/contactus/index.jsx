@@ -4,7 +4,7 @@ import React from 'react';
 const ContactUsPage = () => {
   return (
     <div>
-      <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" isLogin />
+      <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" fillBlank />
       <div>contact us page</div>
     </div>
   );

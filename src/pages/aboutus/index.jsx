@@ -11,7 +11,7 @@ const AboutUsPage = () => {
   console.log('About us Page');
   return (
     <>
-      <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" isLogin />
+      <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" fillBlank />
       <div className="md:mx-14 mx-4 ">
         <h1 className="text-2xl text-center font-bold">About us </h1>
         <div className="mt-7">
