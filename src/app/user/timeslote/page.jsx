@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { generateStimeSlots, parseTimeSlot } from '@/utils/bookings.utils';
 import Threeline from '@/components/ThreeLine';
+import LocationAccess from '@/components/Locationaccess';
 
 const Page = () => {
   const [bookedSlots, setBookedSlots] = useState({});
@@ -48,12 +49,7 @@ const Page = () => {
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
   const [purpose, setPurpose] = useState('');
-  const [location, setLocation] = useState({
-    lat: 19.05444444,
-    lng: 72.84055556,
-    state: 'Maharashtra',
-    city: 'Mumbai'
-  });
+  const [location, setLocation] = useState(null);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -87,6 +83,7 @@ const Page = () => {
       selectedDateIndex === null ||
       selectedSlots.length === 0 ||
       !purpose ||
+      !location ||
       Object.values(location).length < 2 ||
       !isConfirmed
     ) {
@@ -148,7 +145,7 @@ const Page = () => {
 
   return (
     <>
-    <Threeline/>
+      <Threeline />
       <Chatheader
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
@@ -177,14 +174,17 @@ const Page = () => {
                 const slotStartTime = parseTimeSlot(time);
                 const isPast = new Date() > slotStartTime;
                 const selected = dates[selectedDateIndex]?.day;
-                const selectedBookedSlot = bookedSlots[selectedDateIndex]
-                let disabledSlot =false;
-                if(selectedBookedSlot){
-                  disabledSlot = selectedBookedSlot.includes(time)
+                const selectedBookedSlot = bookedSlots[selectedDateIndex];
+                let disabledSlot = false;
+                if (selectedBookedSlot) {
+                  disabledSlot = selectedBookedSlot.includes(time);
                 }
                 return (
                   <button
-                    disabled={(isPast && new Date().getDate() == selected ) || disabledSlot}
+                    disabled={
+                      (isPast && new Date().getDate() == selected) ||
+                      disabledSlot
+                    }
                     key={index}
                     onClick={(e) => handleTimeSlotClick(e, index)}
                     className={`time-slot ${selectedSlots.includes(index) ? 'selected' : ''}`}
@@ -210,12 +210,12 @@ const Page = () => {
             <h1 className="my-3 text-sm">
               Specify the Location for Companion Meet-Up
             </h1>
-         <LocationInput location={location} setLocation={setLocation} />
-
+            <LocationAccess setLocation={setLocation} />
             <div className="mt-2 ">
               <input
                 type="checkbox"
                 checked={isConfirmed}
+                disabled={!location}
                 onChange={() => setIsConfirmed(!isConfirmed)}
               />
               <span className="ml-2 text-sm">Confirm the meet-up location</span>
@@ -233,103 +233,97 @@ const Page = () => {
   );
 };
 
+// const LocationInput = ({ location, setLocation }) => {
+//   const inputRef = useRef(null);
+//   const [errorMessage, setErrorMessage] = useState("");
 
+//   const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_KEY;
 
+//   const handleManualLocationSubmit = async () => {
+//     const manualLocation = inputRef.current.value;
+//     if (!manualLocation) {
+//       setErrorMessage("Please enter a location.");
+//       return;
+//     }
 
-const LocationInput = ({ location, setLocation }) => {
-  const inputRef = useRef(null);
-  const [errorMessage, setErrorMessage] = useState("");
+//     try {
+//       const response = await fetch(
+//         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(manualLocation)}&key=${GOOGLE_API_KEY}`
+//       );
+//       const data = await response.json();
 
-  const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_KEY;
+//       if (data.results && data.results.length > 0) {
+//         const address = data.results[0].formatted_address;
+//         setLocation(address); // ✅ Store only the string
+//         setErrorMessage("");
+//       } else {
+//         setErrorMessage("Failed to fetch coordinates for the location.");
+//       }
+//     } catch {
+//       setErrorMessage("Error fetching the location.");
+//     }
+//   };
 
-  const handleManualLocationSubmit = async () => {
-    const manualLocation = inputRef.current.value;
-    if (!manualLocation) {
-      setErrorMessage("Please enter a location.");
-      return;
-    }
+//   useEffect(() => {
+//     if (inputRef.current) {
+//       const loadGoogleMapsScript = () => {
+//         return new Promise((resolve, reject) => {
+//           if (typeof window.google !== "undefined" && window.google.maps) {
+//             resolve();
+//           } else {
+//             const script = document.createElement("script");
+//             script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`;
+//             script.async = true;
+//             script.onload = resolve;
+//             script.onerror = () => reject("Google Maps API failed to load.");
+//             document.body.appendChild(script);
+//           }
+//         });
+//       };
 
-    try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(manualLocation)}&key=${GOOGLE_API_KEY}`
-      );
-      const data = await response.json();
+//       loadGoogleMapsScript()
+//         .then(() => {
+//           if (window.google && inputRef.current) {
+//             const autocomplete = new window.google.maps.places.Autocomplete(
+//               inputRef.current,
+//               { types: ["(cities)"] }
+//             );
 
-      if (data.results && data.results.length > 0) {
-        const address = data.results[0].formatted_address;
-        setLocation(address); // ✅ Store only the string
-        setErrorMessage("");
-      } else {
-        setErrorMessage("Failed to fetch coordinates for the location.");
-      }
-    } catch {
-      setErrorMessage("Error fetching the location.");
-    }
-  };
+//             autocomplete.addListener("place_changed", () => {
+//               const place = autocomplete.getPlace();
+//               if (place && place.formatted_address) {
+//                 setLocation(place.formatted_address); // ✅ Store only the address
+//                 setErrorMessage("");
+//               } else {
+//                 setErrorMessage("Invalid location. Please select a valid place.");
+//               }
+//             });
+//           }
+//         })
+//         .catch((error) => setErrorMessage(error));
 
-  useEffect(() => {
-    if (inputRef.current) {
-      const loadGoogleMapsScript = () => {
-        return new Promise((resolve, reject) => {
-          if (typeof window.google !== "undefined" && window.google.maps) {
-            resolve();
-          } else {
-            const script = document.createElement("script");
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`;
-            script.async = true;
-            script.onload = resolve;
-            script.onerror = () => reject("Google Maps API failed to load.");
-            document.body.appendChild(script);
-          }
-        });
-      };
+//       // Clear error when user types
+//       const handleInput = () => setErrorMessage("");
+//       inputRef.current.addEventListener("input", handleInput);
 
-      loadGoogleMapsScript()
-        .then(() => {
-          if (window.google && inputRef.current) {
-            const autocomplete = new window.google.maps.places.Autocomplete(
-              inputRef.current,
-              { types: ["(cities)"] }
-            );
+//       return () => {
+//         if (inputRef.current) {
+//           inputRef.current.removeEventListener("input", handleInput);
+//         }
+//       };
+//     }
+//   }, [setLocation]);
 
-            autocomplete.addListener("place_changed", () => {
-              const place = autocomplete.getPlace();
-              if (place && place.formatted_address) {
-                setLocation(place.formatted_address); // ✅ Store only the address
-                setErrorMessage("");
-              } else {
-                setErrorMessage("Invalid location. Please select a valid place.");
-              }
-            });
-          }
-        })
-        .catch((error) => setErrorMessage(error));
-
-      // Clear error when user types
-      const handleInput = () => setErrorMessage("");
-      inputRef.current.addEventListener("input", handleInput);
-
-      return () => {
-        if (inputRef.current) {
-          inputRef.current.removeEventListener("input", handleInput);
-        }
-      };
-    }
-  }, [setLocation]);
-
-  return (
-    <>
-      <input ref={inputRef} type="text" placeholder="Enter location" className="meetupinputfield" />
-      <button type="button" onClick={handleManualLocationSubmit} className="meet-up-btn">
-        Check
-      </button>
-      {location && typeof location === "string" && <p className="text-xs">{location}</p>}
-      {errorMessage && <p className="error text-xs">{errorMessage}</p>}
-    </>
-  );
-};
-
-
-
+//   return (
+//     <>
+//       <input ref={inputRef} type="text" placeholder="Enter location" className="meetupinputfield" />
+//       <button type="button" onClick={handleManualLocationSubmit} className="meet-up-btn">
+//         Check
+//       </button>
+//       {location && typeof location === "string" && <p className="text-xs">{location}</p>}
+//       {errorMessage && <p className="error text-xs">{errorMessage}</p>}
+//     </>
+//   );
+// };
 
 export default Page;
