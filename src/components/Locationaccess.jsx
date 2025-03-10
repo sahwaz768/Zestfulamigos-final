@@ -4,6 +4,7 @@ const LocationAccess = ({ setLocation }) => {
   const inputRef = useRef();
   const [locationInput, setLocationInput] = useState('');
   const [error, setError] = useState('');
+  const [isLocationSet, setisLocationset] = useState(false);
 
   const handleManualLocationSubmit = async () => {
     if (!locationInput || locationInput.trim().length < 4) {
@@ -15,7 +16,15 @@ const LocationAccess = ({ setLocation }) => {
       );
       await loadGoogleMapsScript();
       const results = await getLocationDetails(locationInput);
-      setLocation(results);
+      if (!isLocationSet && results) {
+        setisLocationset(() => true);
+      }
+      if (results) {
+        console.log(results);
+        setLocation(results);
+      } else {
+        setError('Please provide a valid place');
+      }
     } catch (error) {
       console.log(error);
       setError('Some error occured please try again!');
@@ -46,7 +55,10 @@ const LocationAccess = ({ setLocation }) => {
       </button>
       {error && <p className="text-xs text-pink-600">{error}</p>}
 
-      <div id="map" style={{ width: '400px', height: '400px' }}></div>
+      <div
+        id="map"
+        className={isLocationSet ? 'w-[25rem] h-[25rem]' : ''}
+      ></div>
     </>
   );
 };

@@ -223,7 +223,16 @@ const page = () => {
                             >
                               Rate
                             </button>
-                            <button className="ml-4">Book again</button>
+                            <button
+                              className="ml-4"
+                              onClick={() => {
+                                router.push(
+                                  `./timeslote?companionId=${l.companion.id}`
+                                );
+                              }}
+                            >
+                              Book again
+                            </button>
                           </>
                         ) : null}
                       </div>

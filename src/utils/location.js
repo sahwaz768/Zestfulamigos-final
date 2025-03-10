@@ -83,7 +83,7 @@ export const getLocationDetails = (query, mapId) => {
     });
     const request = {
       query,
-      fields: ['name', 'formatted_address', 'place_id', 'geometry']
+      fields: ['name', 'formatted_address', 'place_id', 'geometry', 'types']
     };
     let finalresult = null;
     const service = new google.maps.places.PlacesService(map);
@@ -97,28 +97,38 @@ export const getLocationDetails = (query, mapId) => {
               'formatted_address',
               'place_id',
               'geometry',
-              'address_components'
+              'address_components',
+              'photo'
             ]
           },
           (place, status) => {
+            const photo = place.photos[0].getUrl();
             finalresult = {
               ...extractAddressComponent(place),
-              name: place.name
+              name: place.name,
+              photo,
+              place_id: place.place_id,
+              placetype: results[0].types
             };
             const marker = new google.maps.Marker({
               map,
               position: place.geometry.location
             });
-            window.google.maps.event.addListener(marker, 'click', () => {
-              infowindow.setContent(place.name || '');
-              infowindow.open(map);
+            const infowindow = new google.maps.InfoWindow({
+              content: `<div>
+              <img src=${photo} style="width:11.25rem; height:6.25rem"></img>
+              <h1 style="font-weight: 700; font-size: 1.2rem;">${place.name || ''}</h1>
+              <p>This place is type of ${results[0].types[0]}</p></div>`
+            });
+            marker.addListener('click', function () {
+              infowindow.open(map, marker);
             });
             map.setCenter(place.geometry.location);
             res(finalresult);
           }
         );
       } else {
-        res([]);
+        res(null);
       }
     });
   });

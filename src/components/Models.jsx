@@ -671,7 +671,7 @@ export const LoginModel = ({ handleModel }) => {
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
       console.log(tokenResponse);
-      router.push('/user/genderchoose');
+      // router.push('/user/genderchoose');
     }
   });
 
