@@ -4,6 +4,11 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FcGoogle } from 'react-icons/fc';
 import { useGoogleLogin } from '@react-oauth/google';
+import {
+  getAddressFromLatLng,
+  getLocationfrominput,
+  loadGoogleMapsScript
+} from '@/utils/location';
 
 export const StartSessionModel = ({ closeModal, bookingid }) => {
   const [otp, setOtp] = useState(['', '', '', '']);
@@ -124,6 +129,7 @@ export const EndSessionModel = ({ closeModal, session }) => {
     </div>
   );
 };
+
 export const ExtensionModel = ({ closeModal, bookingid }) => {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const router = useRouter();
@@ -408,14 +414,22 @@ export const ForgotPasswordModel = ({ handleModel }) => {
 };
 
 export const FillOtpModel = ({ handleModel, data: modeldata }) => {
-  console.log('Model data', modeldata);
   const [resendPassword, setResendPassword] = useState(false);
+  const [password, setpassword] = useState({
+    password: '',
+    confirmpassword: ''
+  });
   const inputs = useRef([]);
+  const [error, setError] = useState('');
+
   const handleKeyUp = (e, index) => {
     if (e.key >= '0' && e.key <= '9') {
       if (index < 3) {
         // Move focus to the next input, only up to the fourth input
         inputs.current[index + 1].focus();
+      }
+      if (error) {
+        setError('');
       }
     }
   };
@@ -423,6 +437,9 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
   const handleKeyDown = (e, index) => {
     if (e.key === 'Backspace' && index > 0 && !inputs.current[index].value) {
       inputs.current[index - 1].focus();
+    }
+    if (error) {
+      setError('');
     }
   };
   const handleForgorPassword = async () => {
@@ -434,6 +451,56 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
       handleModel({ type: 'fillotp', open: true });
     } else {
       console.log('Error Occured');
+    }
+  };
+
+  const handleResetPassword = async () => {
+    const otp = inputs.current?.map((l) => l.value).join('');
+    if (!otp || otp.length < 4) {
+      setError('Please fill OTP');
+    } else if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/.test(
+        password.password
+      )
+    ) {
+      setError('Please Enter Valid Password');
+    } else if (password.password !== password.confirmpassword) {
+      setError('Password Mismatch!');
+    } else {
+      try {
+        const { resetPassword } = await import(
+          '@/services/auth/forgotpassword.service'
+        );
+        const { toast } = await import('@/utils/reduxtrigger.utils');
+        const values = {
+          OTP: otp,
+          email: modeldata.email,
+          password: password.password
+        };
+        const { data } = await resetPassword(values);
+        if (data) {
+          handleModel({ open: false })
+          toast.success('Successfully Password changed');
+        } else {
+          toast.error('Invalid Credentials');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const handleInputChange = (ref) => {
+    const value = ref.value;
+    const numericValue = value.replace(/[^0-9]/g, '');
+    ref.value = numericValue;
+  };
+
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setpassword((l) => ({ ...l, [name]: value }));
+    if (error) {
+      setError('');
     }
   };
   return (
@@ -452,6 +519,7 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
             className="pin-input"
             maxLength="1"
             ref={(el) => (inputs.current[0] = el)}
+            onInput={() => handleInputChange(inputs.current[0])}
             onKeyUp={(e) => handleKeyUp(e, 0)}
             onKeyDown={(e) => handleKeyDown(e, 0)}
           />
@@ -460,6 +528,7 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
             className="pin-input"
             maxLength="1"
             ref={(el) => (inputs.current[1] = el)}
+            onInput={() => handleInputChange(inputs.current[1])}
             onKeyUp={(e) => handleKeyUp(e, 1)}
             onKeyDown={(e) => handleKeyDown(e, 1)}
           />
@@ -467,6 +536,7 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
             type="text"
             className="pin-input"
             maxLength="1"
+            onInput={() => handleInputChange(inputs.current[2])}
             ref={(el) => (inputs.current[2] = el)}
             onKeyUp={(e) => handleKeyUp(e, 2)}
             onKeyDown={(e) => handleKeyDown(e, 2)}
@@ -475,6 +545,7 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
             type="text"
             className="pin-input"
             maxLength="1"
+            onInput={() => handleInputChange(inputs.current[3])}
             ref={(el) => (inputs.current[3] = el)}
             onKeyUp={(e) => handleKeyUp(e, 3)}
             onKeyDown={(e) => handleKeyDown(e, 3)}
@@ -491,12 +562,31 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
             </span>
           </div>
         )}
+        <p className="text-black mt-3 text-sm">Enter new password</p>
+        <input
+          type={'password'}
+          value={password.password}
+          name="password"
+          onChange={handlePasswordChange}
+          placeholder="*********"
+          className="inputfield"
+        />
+        <p className="text-black mt-3 text-sm">Confirm password</p>
+        <input
+          type={'password'}
+          value={password.confirmpassword}
+          name="confirmpassword"
+          onChange={handlePasswordChange}
+          placeholder="*********"
+          className="inputfield"
+        />
         <button
           className="w-full loginbtn text-center"
-          onClick={() => console.log('Verify')}
+          onClick={handleResetPassword}
         >
           Proceed
         </button>
+        {error && <p className="text-pink-600">{error}</p>}
       </div>
     </div>
   );
@@ -521,7 +611,6 @@ export const SetNewPasswordModel = ({ handleModel }) => {
     if (newPassword !== confirmPassword) {
       errors.confirmPassword = 'Passwords do not match.';
     }
-
     setError(errors);
     return !errors.newPassword && !errors.confirmPassword;
   };
@@ -538,7 +627,6 @@ export const SetNewPasswordModel = ({ handleModel }) => {
       setNewPassword('');
       setConfirmPassword('');
       setError({ newPassword: '', confirmPassword: '' });
-      alert('Password reset successful!');
     }
   };
 
@@ -665,7 +753,7 @@ export const LoginModel = ({ handleModel }) => {
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
       console.log(tokenResponse);
-      router.push('/user/genderchoose');
+      // router.push('/user/genderchoose');
     }
   });
 
@@ -809,115 +897,62 @@ export const CancelBookingModel = ({ closeModal, bookingDetail }) => {
   );
 };
 
-export const Locationaccess = () => {
-  const inputRef = useRef(null); // Ref for input field
-  const [showModal, setShowModal] = useState(true); // State to show/hide modal
-  const [location, setLocation] = useState(null);
-  const [coords, setCoords] = useState({ latitude: null, longitude: null });
+export const LocationaccessModel = ({ setLocation, closeModal }) => {
+  const inputRef = useRef(null);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_KEY;
-
-  const getAddressFromLatLng = async (lat, lng) => {
+  const handleLocationSuccess = async (position) => {
     try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_API_KEY}`
+      const { latitude, longitude } = position.coords;
+      const { lat, lng, formataddress, city, state } =
+        await getAddressFromLatLng(latitude, longitude);
+      setLocation && setLocation({ lat, lng, formataddress, city, state });
+      window.localStorage.setItem(
+        'userlocation',
+        JSON.stringify({ lat, lng, formataddress, city, state })
       );
-      const data = await response.json();
-      // console.log('Geocode Response:', data); // Debug response
-      if (data.results && data.results.length > 0) {
-        return data.results[0].formatted_address;
-      }
-      return 'Unknown Location';
+      closeModal();
     } catch (error) {
-      console.error('Geocoding Error:', error); // Debug error
-      setErrorMessage('Failed to fetch location details.');
-      return 'Unknown Location';
+      console.log('error in location');
     }
   };
 
-  const handleLocationSuccess = async (position) => {
-    //  console.log('Geolocation Success:', position); // Debug position
-    const { latitude, longitude } = position.coords;
-    const address = await getAddressFromLatLng(latitude, longitude);
-    setCoords({ latitude, longitude });
-    setLocation(address);
-    console.log(
-      `Latitude: ${latitude}, Longitude: ${longitude}, Location: ${address}`
-    ); // Debug coordinates
-    setShowModal(false);
-  };
-
   const handleLocationError = (error) => {
-    console.error('Geolocation Error:', error); // Debug error
+    console.log('Geolocation Error:', error);
     setErrorMessage('Geolocation failed. Please enter your location manually.');
   };
 
   const handleManualLocationSubmit = async () => {
     const manualLocation = inputRef.current.value;
-    // console.log('Manual Location Input:', manualLocation); // Debug input
     try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(manualLocation)}&key=${GOOGLE_API_KEY}`
+      const { lat, lng, formataddress, city, state } =
+        await getLocationfrominput(manualLocation);
+      setLocation && setLocation({ lat, lng, formataddress, city, state });
+      window.localStorage.setItem(
+        'userlocation',
+        JSON.stringify({ lat, lng, formataddress, city, state })
       );
-      const data = await response.json();
-      // console.log('Manual Geocode Response:', data); // Debug response
-      if (data.results && data.results.length > 0) {
-        const { lat, lng } = data.results[0].geometry.location;
-        const manualAddress = data.results[0].formatted_address;
-        setCoords({ latitude: lat, longitude: lng });
-        setLocation(manualAddress);
-        console.log(
-          `Latitude: ${lat}, Longitude: ${lng}, Location: ${manualAddress}`
-        ); // Debug coordinates
-        setShowModal(false);
-      } else {
-        setErrorMessage('Failed to fetch coordinates for the location.');
-      }
+      closeModal();
     } catch (error) {
-      // console.error('Manual Geocoding Error:', error); // Debug error
       setErrorMessage('Error fetching the location.');
     }
   };
 
   const requestLocation = () => {
-    // console.log('Requesting Geolocation...'); // Debug request
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         handleLocationSuccess,
         handleLocationError
       );
     } else {
-      console.error('Geolocation Not Supported'); // Debug unsupported
+      console.log('Geolocation Not Supported'); // Debug unsupported
       setErrorMessage('Geolocation is not supported by this browser.');
     }
   };
 
   useEffect(() => {
-    // console.log('Initializing Google Maps Script...'); // Debug initialization
-    const loadGoogleMapsScript = () => {
-      return new Promise((resolve, reject) => {
-        if (window.google && window.google.maps) {
-          //   console.log('Google Maps API Already Loaded'); // Debug script status
-          resolve();
-        } else {
-          const script = document.createElement('script');
-          script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`;
-          script.async = true;
-          script.defer = true;
-          script.onload = resolve;
-          script.onerror = () => {
-            console.error('Google Maps API Failed to Load'); // Debug error
-            reject('Google Maps API failed to load.');
-          };
-          document.body.appendChild(script);
-        }
-      });
-    };
-
     loadGoogleMapsScript()
       .then(() => {
-        //  console.log('Google Maps API Loaded Successfully'); // Debug success
         if (window.google && inputRef.current) {
           const autocomplete = new window.google.maps.places.Autocomplete(
             inputRef.current,
@@ -925,14 +960,20 @@ export const Locationaccess = () => {
               types: ['(cities)']
             }
           );
-          //  console.log('Autocomplete Initialized:', autocomplete); // Debug autocomplete instance
-
-          autocomplete.addListener('place_changed', () => {
+          autocomplete.addListener('place_changed', async () => {
             const place = autocomplete.getPlace();
-            // console.log('Place Changed Event:', place); // Debug place details
             if (place && place.formatted_address) {
-              setLocation(place.formatted_address);
-              // console.log(`Selected Location: ${place.formatted_address}`); // Debug selected location
+              const { extractAddressComponent } = await import(
+                '@/utils/location'
+              );
+              const { lat, lng, formataddress, city, state } =
+                extractAddressComponent(place);
+              setLocation &&
+                setLocation({ lat, lng, formataddress, city, state });
+              window.localStorage.setItem(
+                'userlocation',
+                JSON.stringify({ lat, lng, formataddress, city, state })
+              );
             } else {
               setErrorMessage('No address found.');
             }
@@ -947,33 +988,31 @@ export const Locationaccess = () => {
 
   return (
     <>
-      {showModal && (
-        <>
-          <div className="modal-overlay-swipepage"></div>
-          <div className="modal-swipepage">
-            <h2 className="text-center">Choose your location</h2>
-            <p className="text-xs text-center text-gray-600 mt-2 mb-3">
-              Zestful amigos would like to access your location, to get better
-              results.
-            </p>
-            <div className="locationacessbtn">
-              <button onClick={requestLocation}>Allow Location Access</button>
-            </div>
-            <h4 className="hrline mx-3 my-3 text-gray-600 "> or </h4>
-            <p>Enter Manually</p>
-            <div className="enterlocationbtn mt-2">
-              <input ref={inputRef} type="text" placeholder="Enter location" />
-            </div>
-            <button
-              onClick={handleManualLocationSubmit}
-              className="manual-location-btn"
-            >
-              Submit
-            </button>
-            {errorMessage && <p className="error">{errorMessage}</p>}
+      <>
+        <div className="modal-overlay-swipepage"></div>
+        <div className="modal-swipepage">
+          <h2 className="text-center">Choose your location</h2>
+          <p className="text-xs text-center text-gray-600 mt-2 mb-3">
+            Zestful amigos would like to access your location, to get better
+            results.
+          </p>
+          <div className="locationacessbtn">
+            <button onClick={requestLocation}>Allow Location Access</button>
           </div>
-        </>
-      )}
+          <h4 className="hrline mx-3 my-3 text-gray-600"> or </h4>
+          <p>Enter Manually</p>
+          <div className="enterlocationbtn mt-2">
+            <input ref={inputRef} type="text" placeholder="Enter location" />
+          </div>
+          <button
+            onClick={handleManualLocationSubmit}
+            className="manual-location-btn"
+          >
+            Submit
+          </button>
+          {errorMessage && <p className="error">{errorMessage}</p>}
+        </div>
+      </>
     </>
   );
 };

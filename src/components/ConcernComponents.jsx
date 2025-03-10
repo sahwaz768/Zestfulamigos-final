@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { RaiseaIssueModel } from './Models';
 import { FiPlus } from 'react-icons/fi';
 import Pagination from './Pagination';
-import { Threeline } from '@/app/user/swipepage/page';
+import Threeline from './ThreeLine';
 
 const Masterheader = dynamic(() => import('./Masterheader'), { ssr: false });
 

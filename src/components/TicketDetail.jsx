@@ -1,9 +1,10 @@
 'use client';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Threeline } from '@/app/user/swipepage/page';
+import { formatBookingTime } from '@/utils/bookings.utils';
 
 const Masterheader = dynamic(() => import('./Masterheader'), { ssr: false });
+const Threeline = dynamic(() => import('./ThreeLine'), { ssr: false });
 
 const TicketDetail = ({ userIssue }) => {
   const [hasReplied, setHasReplied] = useState(false);
@@ -53,43 +54,39 @@ const TicketDetail = ({ userIssue }) => {
 
         <div className=" ml-5 flex ">
           <span className="font-bold">Description:</span>
-          paisa wapas de do bhai account mai
+          {userIssue.explanation}
         </div>
       </div>
       <div className="ticket-body">
         <div className="message-container">
-          <div className="admin-message">
-            <div className="message-header">
-              <span>Created On: Aug 27, 2024, 01:11 PM</span>
-              <span>
-                <strong>Admin</strong>
-              </span>
-            </div>
-            <div className="message-body">
-              <p>
-                Sir/madam, we need to install Visual C++, that we can find from
-                . Please find the attachment.
-              </p>
-              {/* Image Download Option */}
-              <a
-                href="/path/to/admin/image.jpg"
-                download
-                className="attachment-link"
-              >
-                <img
-                  src="/sdh"
-                  alt=" Download"
-                  className="attachment-preview"
-                />
-            
-              </a>
-            </div>
-            {!comment && !hasReplied && (
-              <button className="reply-button" onClick={handleReplyClick}>
-                Reply
-              </button>
-            )}
-          </div>
+          {userIssue.comments.length
+            ? userIssue.comments.map((l, i) => (
+                <div className="admin-message" key={i * 400}>
+                  <div className="message-header">
+                    <span>Created On: {formatBookingTime(l.created)}</span>
+                    <span>
+                      <strong>{l.User.isAdmin ? 'Admin' : 'You'}</strong>
+                    </span>
+                  </div>
+                  <div className="message-body">
+                    <p>{l.comment}</p>
+                    {l.screenshots.length ? (
+                      <a
+                        href="/path/to/admin/image.jpg"
+                        download
+                        className="attachment-link"
+                      >
+                        <img
+                          src="/sdh"
+                          alt=" Download"
+                          className="attachment-preview"
+                        />
+                      </a>
+                    ) : null}
+                  </div>
+                </div>
+              ))
+            : null}
 
           {hasReplied && !comment && (
             <div className="reply-box">
@@ -119,7 +116,7 @@ const TicketDetail = ({ userIssue }) => {
             </div>
           )}
 
-          {comment && (
+          {/* {comment && (
             <div className="reply-message">
               <div className="reply-header">
                 <span>Replied On: {new Date().toLocaleString()}</span>
@@ -136,7 +133,7 @@ const TicketDetail = ({ userIssue }) => {
                 )}
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </>

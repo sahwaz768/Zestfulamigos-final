@@ -1,21 +1,25 @@
 'use client';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import Notify from './Notify';
 import { BsArrowReturnRight } from 'react-icons/bs';
-import { FillOtpModel, ForgotPasswordModel, LoginModel } from './Models';
+import { FillOtpModel, ForgotPasswordModel, LoginModel, SetNewPasswordModel } from './Models';
 import Headerprofilebutton from './headerprofilebutton';
+import { CgProfile } from 'react-icons/cg';
 
 const Masterheader = ({
   isLogin,
   backgroundColor = 'white',
+  fillBlank = false,
   navLinks = []
 }) => {
+  const dropdownRef = useRef(null);
   const [modelDetails, setModelDetails] = useState({
     type: null,
     open: false,
     data: null
   });
+  const [profileDetails, setProfileDetails] = useState(false);
   const newnavLinks = [
     { name: 'Home', href: '/' },
     { name: 'About Us', href: '/aboutus' },
@@ -67,26 +71,39 @@ const Masterheader = ({
               ))}
             </ul>
           </nav>
-          <div className="nav-right">
-            {isLogin ? (
-              <div
-                className="lgbtn flex"
-                onClick={() => handleModel({ type: 'login', open: true })}
-              >
-                <h3 className="mt-1 mx-3"> Get started</h3>
-                <div className="lgicon">
-                  <BsArrowReturnRight color="white" size={20} />
+          {fillBlank ? null : (
+            <div className="nav-right">
+              {isLogin ? (
+                <div
+                  className="lgbtn flex"
+                  onClick={() => handleModel({ type: 'login', open: true })}
+                >
+                  <h3 className="mt-1 mx-3"> Get started</h3>
+                  <div className="lgicon">
+                    <BsArrowReturnRight color="white" size={20} />
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div className="flex gap-2 mr-4">
-                <Notify backgroundColor="black" color="white" />
-                <div>
-                  <Headerprofilebutton />
+              ) : (
+                <div className="flex gap-2 mr-4">
+                  <Notify backgroundColor="black" color="white" />
+                  <div className="relative" ref={dropdownRef}>
+                    <div
+                      onClick={() => setProfileDetails(!profileDetails)}
+                      className="bellicon"
+                    >
+                      <CgProfile size={20} color="white" />
+                    </div>
+                    {profileDetails ? (
+                      <Headerprofilebutton
+                        handleClose={() => setProfileDetails(false)}
+                        dropdownRef={dropdownRef}
+                      />
+                    ) : null}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
           {modelDetails.open && getModel(modelDetails.type)}
         </header>
       </div>

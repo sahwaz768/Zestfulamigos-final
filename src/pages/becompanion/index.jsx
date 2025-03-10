@@ -102,7 +102,7 @@ const BeCompanionPage = () => {
   };
   return (
     <div>
-      <Header backgroundColor="rgba(250, 236, 236, 0.8)" isLogin />
+      <Header backgroundColor="rgba(250, 236, 236, 0.8)" fillBlank />
       <h1 className=" font-bold my-5 text-2xl ml-10">Be a companion</h1>
       <div className="flex md:justify-center ml-4">
         <form onSubmit={handleSubmit} className="">

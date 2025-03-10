@@ -1,21 +1,13 @@
 'use client';
 import React, { useState } from 'react';
-// import Swipepagemodal from '@/components/swipepagemodal';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { Locationaccess } from '@/components/Models';
+import { LocationaccessModel } from '@/components/Models';
 
 const Page = () => {
   const [gender, setGender] = useState('');
+  const [locationModel, setLocationModel] = useState(true);
   const [error, setError] = useState('');
-  const [location, setLocation] = useState({
-    lat: 19.05444444,
-    lng: 72.84055556,
-    state: 'Maharashtra',
-    city: 'Mumbai',
-    address:
-      'Kamal Building, B/1, New, Linking Rd, next to Burger King, Bandra West'
-  });
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -26,15 +18,17 @@ const Page = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!gender) {
+    const localstoragelocation = window.localStorage.getItem('userlocation');
+    if (!gender || !localstoragelocation) {
       setError('Please select a gender.');
     } else {
+      const location = JSON.parse(localstoragelocation);
       const values = {
         lng: location?.lng,
         lat: location?.lat,
         city: location?.city,
         state: location?.state,
-        address: location?.address,
+        address: location?.formataddress,
         gender: gender.toLocaleUpperCase()
       };
       const { companionFindService } = await import(
@@ -56,8 +50,9 @@ const Page = () => {
 
   return (
     <>
-    <Locationaccess/>
-      {/* <Swipepagemodal setLocation={setLocation} /> */}
+      {locationModel ? (
+        <LocationaccessModel closeModal={() => setLocationModel(false)} />
+      ) : null}
       <div className="genderbox">
         <h1 className=" text-xl font-extrabold sm:ml-3">
           Choose your companion gender
@@ -66,8 +61,6 @@ const Page = () => {
           By tapping and selecting the gender that you want, you will get
           results from our Cast lists.
         </p>
-
-        {/* <form onSubmit={handleSubmit} className="gender-form"> */}
         <div className="imgbox gap-5 flex">
           <div className="leftimg">
             <button
@@ -90,7 +83,6 @@ const Page = () => {
         </div>
 
         <div className="gendercntbtn flex justify-center mt-4">
-          
           <button
             type="submit"
             className="submit-button"
@@ -98,11 +90,10 @@ const Page = () => {
           >
             Continue
           </button>
-
-          
         </div>
-        {error && <p className="text-xs text-pink-700 mb-2 text-center mt-3">{error}</p>}
-        {/* </form> */}
+        {error && (
+          <p className="text-xs text-pink-700 mb-2 text-center mt-3">{error}</p>
+        )}
 
         <div className="genderbottomdesign  ">
           <div className="gender-quarter-circle1"></div>
@@ -113,4 +104,4 @@ const Page = () => {
   );
 };
 
-export default Page
+export default Page;

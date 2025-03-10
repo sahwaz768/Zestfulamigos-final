@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Payment from '@/shared/Assets/payment1.png';
 import { redirect } from 'next/navigation';
 import { getBookingDetails } from '@/services/user/bookings.service';
-import { Threeline } from '../swipepage/page';
+import Threeline from '@/components/ThreeLine';
 import Loadingbar from '@/components/Loadingbar';
 
 const page = () => {

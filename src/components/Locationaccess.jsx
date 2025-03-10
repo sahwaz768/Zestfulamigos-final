@@ -1,54 +1,66 @@
-import { useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 
-const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_KEY;
+const LocationAccess = ({ setLocation }) => {
+  const inputRef = useRef();
+  const [locationInput, setLocationInput] = useState('');
+  const [error, setError] = useState('');
+  const [isLocationSet, setisLocationset] = useState(false);
 
-
-const LocationAccess = () => {
-    const [userLocation, setUserLocation] = useState(null);
-    const [userAddress, setUserAddress] = useState('');
-  
-    useEffect(() => {
-      fetchUserLocation(); 
-    }, []);
-  
-    const fetchUserLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          async ({ coords: { latitude, longitude } }) => {
-            setUserLocation({ lat: latitude, lng: longitude });
-            console.log("User Latitude:", latitude);
-            console.log("User Longitude:", longitude);
-            fetchUserAddress(latitude, longitude);
-          },
-          (error) => console.error("Error fetching user location:", error)
-        );
+  const handleManualLocationSubmit = async () => {
+    if (!locationInput || locationInput.trim().length < 4) {
+      setError('Input must be minimum 4 char');
+    }
+    try {
+      const { loadGoogleMapsScript, getLocationDetails } = await import(
+        '@/utils/location'
+      );
+      await loadGoogleMapsScript();
+      const results = await getLocationDetails(locationInput);
+      if (!isLocationSet && results) {
+        setisLocationset(() => true);
+      }
+      if (results) {
+        console.log(results);
+        setLocation(results);
       } else {
-        console.error("Geolocation is not supported by this browser.");
+        setError('Please provide a valid place');
       }
-    };
-  
-    const fetchUserAddress = async (lat, lng) => {
-      try {
-        const response = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_MAPS_API_KEY}`
-        );
-        const data = await response.json();
-        const address =
-          data.results.length > 0
-            ? data.results[0].formatted_address
-            : "Address not found";
-        setUserAddress(address);
-        console.log("User Address:", address);
-      } catch (error) {
-        console.error("Error fetching user address:", error);
-      }
-    };
-  
+    } catch (error) {
+      console.log(error);
+      setError('Some error occured please try again!');
+    }
+  };
 
   return (
-  <></>
+    <>
+      <input
+        ref={inputRef}
+        type="text"
+        value={locationInput}
+        placeholder="Enter location"
+        onChange={(e) => {
+          if (error) {
+            setError('');
+          }
+          setLocationInput(e.target.value);
+        }}
+        className="meetupinputfield"
+      />
+      <button
+        type="button"
+        onClick={handleManualLocationSubmit}
+        className="meet-up-btn"
+      >
+        Check
+      </button>
+      {error && <p className="text-xs text-pink-600">{error}</p>}
+
+      <div
+        id="map"
+        className={isLocationSet ? 'w-[25rem] h-[25rem]' : ''}
+      ></div>
+    </>
   );
 };
 
 export default LocationAccess;
-

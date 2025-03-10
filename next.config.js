@@ -14,6 +14,12 @@ module.exports = {
     optimizePackageImports: ['lucide-react', 'react-icons/*']
   },
   images: {
-    domains: ['localhost']
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'localhost',
+        port: '5000',
+      },
+    ],
   }
 };

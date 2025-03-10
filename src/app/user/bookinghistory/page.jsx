@@ -90,152 +90,163 @@ const page = () => {
 
   return (
     <>
-    <div>
-      <Chatheader
-        backgroundColor="rgba(250, 236, 236, 0.8)"
-        navLinks={navLinks}
-      />
-      <div className="notifymbsecond">
-        <Notify backgroundColor="transparent" color="black" />
-      </div>
-      <div className="bookingbox">
-        <Mastersidebar />
+      <div>
+        <Chatheader
+          backgroundColor="rgba(250, 236, 236, 0.8)"
+          navLinks={navLinks}
+        />
+        <div className="notifymbsecond">
+          <Notify backgroundColor="transparent" color="black" />
+        </div>
+        <div className="bookingbox">
+          <Mastersidebar />
 
-        {isOpen && (
-          <div className="modal-overlay-cancel">
-            <div
-              className="modal-container-cancel"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="">
-                <h1 className="text-center text-2xl font-bold">Are you sure</h1>
-                <div className="flex justify-center gap-2 mr-3 my-3">
-                  <button className="yes" onClick={handleCancelClick}>
-                    Yes
-                  </button>
-                  <button className="no" onClick={() => setIsOpen(null)}>
-                    No
-                  </button>
+          {isOpen && (
+            <div className="modal-overlay-cancel">
+              <div
+                className="modal-container-cancel"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="">
+                  <h1 className="text-center text-2xl font-bold">
+                    Are you sure
+                  </h1>
+                  <div className="flex justify-center gap-2 mr-3 my-3">
+                    <button className="yes" onClick={handleCancelClick}>
+                      Yes
+                    </button>
+                    <button className="no" onClick={() => setIsOpen(null)}>
+                      No
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
-        <div className="booking-side">
-          <div className="booking-type">
-            <div
-              className="text-sm font-bold flex  items-center pb-2 cursor-pointer"
-              id="upcomingbtn"
-              onClick={showupcomingbooking}
-            >
-              Upcoming{' '}
+          )}
+          <div className="booking-side">
+            <div className="booking-type">
+              <div
+                className="text-sm font-bold flex  items-center pb-2 cursor-pointer"
+                id="upcomingbtn"
+                onClick={showupcomingbooking}
+              >
+                Upcoming{' '}
+              </div>
+              <div
+                className="text-sm font-bold flex items-center bottomline2 cursor-pointer"
+                id="historybtn"
+                onClick={showcompletedbooking}
+              >
+                History{' '}
+              </div>
             </div>
-            <div
-              className="text-sm font-bold flex items-center bottomline2 cursor-pointer"
-              id="historybtn"
-              onClick={showcompletedbooking}
-            >
-              History{' '}
-            </div>
-          </div>
-          <div className="booking-box">
-            <div className="upcoming-booking-box" id="upcoming-booking-box">
-              {historydata?.upcoming.length ? (
-                historydata.upcoming?.map((l, i) => (
-                  <div className="upcoming-slot" key={i * 500}>
-                    <h1 className="text-sm font-bold text-gray-500 mt-2">
-                      Upcoming meting with {l.companion?.firstname}
-                    </h1>
-                    <div className="flex flex-wrap mt-1 gap-4 md:gap-8">
-                      <div className="flex items-center text-sm gap-2">
-                        <IoCalendarOutline />
-                        <h1>{l.bookingdate}</h1>
-                      </div>
+            <div className="booking-box">
+              <div className="upcoming-booking-box" id="upcoming-booking-box">
+                {historydata?.upcoming.length ? (
+                  historydata.upcoming?.map((l, i) => (
+                    <div className="upcoming-slot" key={i * 500}>
+                      <h1 className="text-sm font-bold text-gray-500 mt-2">
+                        Upcoming meting with {l.companion?.firstname}
+                      </h1>
+                      <div className="flex flex-wrap mt-1 gap-4 md:gap-8">
+                        <div className="flex items-center text-sm gap-2">
+                          <IoCalendarOutline />
+                          <h1>{l.bookingdate}</h1>
+                        </div>
 
-                      <div className="flex  text-sm gap-2 items-center">
-                        <RiServiceLine /> <h1>Service booked</h1>
+                        <div className="flex  text-sm gap-2 items-center">
+                          <RiServiceLine /> <h1>Service booked</h1>
+                        </div>
+                        <div className="flex  text-sm gap-2 items-center">
+                          <MdPendingActions />
+                          <h1>Status: {capitalizedWord(l.status)}</h1>
+                        </div>
+                        <div className="flex  text-sm gap-2 items-center">
+                          <MdOutlinePaid />
+                          <h1>Paid amount: {l.amount}</h1>
+                        </div>
                       </div>
-                      <div className="flex  text-sm gap-2 items-center">
-                        <MdPendingActions />
-                        <h1>Status: {capitalizedWord(l.status)}</h1>
-                      </div>
-                      <div className="flex  text-sm gap-2 items-center">
-                        <MdOutlinePaid />
-                        <h1>Paid amount: {l.amount}</h1>
-                      </div>
+                      {l.status === 'ACCEPTED' && (
+                        <div>
+                          <button onClick={() => setIsOpen(l)}>cancel</button>
+                        </div>
+                      )}
+                      {l.status == 'TRANSACTIONPENDING' && (
+                        <div>
+                          <button
+                            onClick={() =>
+                              router.push(`/user/payment?bookingId=${l.id}`)
+                            }
+                          >
+                            Complete your Payment
+                          </button>
+                        </div>
+                      )}
                     </div>
-                    {l.status === 'ACCEPTED' && (
-                      <div>
-                        <button onClick={() => setIsOpen(l)}>cancel</button>
-                      </div>
-                    )}
-                    {l.status == 'TRANSACTIONPENDING' && (
-                      <div>
-                        <button
-                          onClick={() =>
-                            router.push(`/user/payment?bookingId=${l.id}`)
-                          }
-                        >
-                          Complete your Payment
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                ))
-              ) : (
-                <div>No Upcoming Bookings found</div>
-              )}
-              
-            </div>
-           
-            <div className="closed-booking-box " id="closed-booking-box">
-              {historydata?.pastBooking.length ? (
-                historydata.pastBooking?.map((l, i) => (
-                  <div className="upcoming-slot" key={i * 300}>
-                    <h1 className="text-sm font-bold text-gray-500 mt-6">
-                      Last meting with {l.companion?.firstname}
-                    </h1>
-                    <div className="flex flex-wrap mt-1 md:gap-8 gap-4">
-                      <div className="flex items-center text-sm gap-2">
-                        <IoCalendarOutline />
-                        <h1>{l.bookingdate}</h1>
-                      </div>
+                  ))
+                ) : (
+                  <div>No Upcoming Bookings found</div>
+                )}
+              </div>
 
-                      <div className="flex  text-sm gap-2 items-center">
-                        <RiServiceLine /> <h1>Service booked</h1>
+              <div className="closed-booking-box " id="closed-booking-box">
+                {historydata?.pastBooking.length ? (
+                  historydata.pastBooking?.map((l, i) => (
+                    <div className="upcoming-slot" key={i * 300}>
+                      <h1 className="text-sm font-bold text-gray-500 mt-6">
+                        Last meting with {l.companion?.firstname}
+                      </h1>
+                      <div className="flex flex-wrap mt-1 md:gap-8 gap-4">
+                        <div className="flex items-center text-sm gap-2">
+                          <IoCalendarOutline />
+                          <h1>{l.bookingdate}</h1>
+                        </div>
+                        <div className="flex  text-sm gap-2 items-center">
+                          <RiServiceLine /> <h1>Service booked</h1>
+                        </div>
+                        <div className="flex  text-sm gap-2 items-center">
+                          <MdPendingActions />
+                          <h1>Status: {capitalizedWord(l.status)}</h1>
+                        </div>
+                        <div className="flex  text-sm gap-2 items-center">
+                          <MdOutlinePaid />
+                          <h1>Paid amount: {l.amount}</h1>
+                        </div>
                       </div>
-                      <div className="flex  text-sm gap-2 items-center">
-                        <MdPendingActions />
-                        <h1>Status: {capitalizedWord(l.status)}</h1>
-                      </div>
-                      <div className="flex  text-sm gap-2 items-center">
-                        <MdOutlinePaid />
-                        <h1>Paid amount: {l.amount}</h1>
+                      <div>
+                        {l.status === 'COMPLETED' ? (
+                          <>
+                            <button
+                              onClick={() =>
+                                router.push(`./rate?bookingId=${l.id}`)
+                              }
+                            >
+                              Rate
+                            </button>
+                            <button
+                              className="ml-4"
+                              onClick={() => {
+                                router.push(
+                                  `./timeslote?companionId=${l.companion.id}`
+                                );
+                              }}
+                            >
+                              Book again
+                            </button>
+                          </>
+                        ) : null}
                       </div>
                     </div>
-                    <div>
-                      <button
-                        onClick={() => router.push(`./rate?bookingId=${l.id}`)}
-                      >
-                        Rate
-                      </button>
-                      <button className="ml-4">Book again</button>
-                    </div>
-                    
-                  </div>
-                   
-                ))
-              ) : (
-                <div>No Booking History Found</div>
-              )}
-              
+                  ))
+                ) : (
+                  <div>No Booking History Found</div>
+                )}
+              </div>
             </div>
-            
           </div>
         </div>
       </div>
-    </div>
-    <Pagination/>
+      <Pagination />
     </>
   );
 };

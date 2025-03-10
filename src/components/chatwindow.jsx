@@ -46,18 +46,54 @@ const GetSessionModel = (model, selected, closeModal) => {
   }
 };
 
-const Chatwindow = ({
-  selected,
-  isCompanion,
-  setblankspace,
-  setchatlist,
-  setSelectedChat
-}) => {
+const Chatwindow = ({ selected, isCompanion }) => {
   const socket = socketinit.socket();
   const [messagedata, setMessageData] = useState(null);
   const [inputValue, setInputValue] = useState('');
 
-  const filteredWords = ['fuck', 'shit','pussy','dick','penis','asshole','sucker','lick','arse','arsehole','bastard','bery','bloody','bollocks','cack','cock-up','codgur','cunt','dickhead','duffer','feck','knob','knobend','knobhead','knobber','munter','nutter','pillock','pish','pissed off','plonker','poxy','prat','scrubber','shit','taking the piss','tosser','tuss','twat','wally','wanker'];
+  const filteredWords = [
+    'fuck',
+    'shit',
+    'pussy',
+    'dick',
+    'penis',
+    'asshole',
+    'sucker',
+    'lick',
+    'arse',
+    'arsehole',
+    'bastard',
+    'bery',
+    'bloody',
+    'bollocks',
+    'cack',
+    'cock-up',
+    'codgur',
+    'cunt',
+    'dickhead',
+    'duffer',
+    'feck',
+    'knob',
+    'knobend',
+    'knobhead',
+    'knobber',
+    'munter',
+    'nutter',
+    'pillock',
+    'pish',
+    'pissed off',
+    'plonker',
+    'poxy',
+    'prat',
+    'scrubber',
+    'shit',
+    'taking the piss',
+    'tosser',
+    'tuss',
+    'twat',
+    'wally',
+    'wanker'
+  ];
 
   useEffect(() => {
     const initializeSocket = async () => {
@@ -215,13 +251,13 @@ const Chatwindow = ({
   };
 
   const handlebackbutton = (id) => {
-    if (window.matchMedia('(min-width: 768px)').matches) {
-      setblankspace(true);
-      setSelectedChat(null);
-    } else {
-      setSelectedChat(null);
-      setchatlist(true);
-    }
+    // if (window.matchMedia('(min-width: 768px)').matches) {
+    //   setblankspace(true);
+    //   setSelectedChat(null);
+    // } else {
+    //   setSelectedChat(null);
+    //   setchatlist(true);
+    // }
   };
 
   return (
@@ -343,10 +379,12 @@ const Chatwindow = ({
               placeholder="type of massage"
             />
             <div className="send-button-chat flex">
-          <Link href={'/'}>   <div className="flex justify-center items-center mx-4">
-                <CiLocationOn color="white" size={20} />
-              </div>
-              </Link> 
+              <Link href={'/'}>
+                {' '}
+                <div className="flex justify-center items-center mx-4">
+                  <CiLocationOn color="white" size={20} />
+                </div>
+              </Link>
               <div
                 className="msgsendbtn"
                 onClick={() => sendNewMessage(inputValue)}
