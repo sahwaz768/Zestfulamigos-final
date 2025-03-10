@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import Link from 'next/link';
 import Notify from './Notify';
 import { BsArrowReturnRight } from 'react-icons/bs';
-import { FillOtpModel, ForgotPasswordModel, LoginModel } from './Models';
+import { FillOtpModel, ForgotPasswordModel, LoginModel, SetNewPasswordModel } from './Models';
 import Headerprofilebutton from './headerprofilebutton';
 import { CgProfile } from 'react-icons/cg';
 

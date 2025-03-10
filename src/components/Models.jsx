@@ -414,14 +414,22 @@ export const ForgotPasswordModel = ({ handleModel }) => {
 };
 
 export const FillOtpModel = ({ handleModel, data: modeldata }) => {
-  console.log('Model data', modeldata);
   const [resendPassword, setResendPassword] = useState(false);
+  const [password, setpassword] = useState({
+    password: '',
+    confirmpassword: ''
+  });
   const inputs = useRef([]);
+  const [error, setError] = useState('');
+
   const handleKeyUp = (e, index) => {
     if (e.key >= '0' && e.key <= '9') {
       if (index < 3) {
         // Move focus to the next input, only up to the fourth input
         inputs.current[index + 1].focus();
+      }
+      if (error) {
+        setError('');
       }
     }
   };
@@ -429,6 +437,9 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
   const handleKeyDown = (e, index) => {
     if (e.key === 'Backspace' && index > 0 && !inputs.current[index].value) {
       inputs.current[index - 1].focus();
+    }
+    if (error) {
+      setError('');
     }
   };
   const handleForgorPassword = async () => {
@@ -440,6 +451,56 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
       handleModel({ type: 'fillotp', open: true });
     } else {
       console.log('Error Occured');
+    }
+  };
+
+  const handleResetPassword = async () => {
+    const otp = inputs.current?.map((l) => l.value).join('');
+    if (!otp || otp.length < 4) {
+      setError('Please fill OTP');
+    } else if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/.test(
+        password.password
+      )
+    ) {
+      setError('Please Enter Valid Password');
+    } else if (password.password !== password.confirmpassword) {
+      setError('Password Mismatch!');
+    } else {
+      try {
+        const { resetPassword } = await import(
+          '@/services/auth/forgotpassword.service'
+        );
+        const { toast } = await import('@/utils/reduxtrigger.utils');
+        const values = {
+          OTP: otp,
+          email: modeldata.email,
+          password: password.password
+        };
+        const { data } = await resetPassword(values);
+        if (data) {
+          handleModel({ open: false })
+          toast.success('Successfully Password changed');
+        } else {
+          toast.error('Invalid Credentials');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const handleInputChange = (ref) => {
+    const value = ref.value;
+    const numericValue = value.replace(/[^0-9]/g, '');
+    ref.value = numericValue;
+  };
+
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setpassword((l) => ({ ...l, [name]: value }));
+    if (error) {
+      setError('');
     }
   };
   return (
@@ -458,6 +519,7 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
             className="pin-input"
             maxLength="1"
             ref={(el) => (inputs.current[0] = el)}
+            onInput={() => handleInputChange(inputs.current[0])}
             onKeyUp={(e) => handleKeyUp(e, 0)}
             onKeyDown={(e) => handleKeyDown(e, 0)}
           />
@@ -466,6 +528,7 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
             className="pin-input"
             maxLength="1"
             ref={(el) => (inputs.current[1] = el)}
+            onInput={() => handleInputChange(inputs.current[1])}
             onKeyUp={(e) => handleKeyUp(e, 1)}
             onKeyDown={(e) => handleKeyDown(e, 1)}
           />
@@ -473,6 +536,7 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
             type="text"
             className="pin-input"
             maxLength="1"
+            onInput={() => handleInputChange(inputs.current[2])}
             ref={(el) => (inputs.current[2] = el)}
             onKeyUp={(e) => handleKeyUp(e, 2)}
             onKeyDown={(e) => handleKeyDown(e, 2)}
@@ -481,6 +545,7 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
             type="text"
             className="pin-input"
             maxLength="1"
+            onInput={() => handleInputChange(inputs.current[3])}
             ref={(el) => (inputs.current[3] = el)}
             onKeyUp={(e) => handleKeyUp(e, 3)}
             onKeyDown={(e) => handleKeyDown(e, 3)}
@@ -497,12 +562,31 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
             </span>
           </div>
         )}
+        <p className="text-black mt-3 text-sm">Enter new password</p>
+        <input
+          type={'password'}
+          value={password.password}
+          name="password"
+          onChange={handlePasswordChange}
+          placeholder="*********"
+          className="inputfield"
+        />
+        <p className="text-black mt-3 text-sm">Confirm password</p>
+        <input
+          type={'password'}
+          value={password.confirmpassword}
+          name="confirmpassword"
+          onChange={handlePasswordChange}
+          placeholder="*********"
+          className="inputfield"
+        />
         <button
           className="w-full loginbtn text-center"
-          onClick={() => console.log('Verify')}
+          onClick={handleResetPassword}
         >
           Proceed
         </button>
+        {error && <p className="text-pink-600">{error}</p>}
       </div>
     </div>
   );
@@ -527,7 +611,6 @@ export const SetNewPasswordModel = ({ handleModel }) => {
     if (newPassword !== confirmPassword) {
       errors.confirmPassword = 'Passwords do not match.';
     }
-
     setError(errors);
     return !errors.newPassword && !errors.confirmPassword;
   };
@@ -544,7 +627,6 @@ export const SetNewPasswordModel = ({ handleModel }) => {
       setNewPassword('');
       setConfirmPassword('');
       setError({ newPassword: '', confirmPassword: '' });
-      alert('Password reset successful!');
     }
   };
 
@@ -822,16 +904,14 @@ export const LocationaccessModel = ({ setLocation, closeModal }) => {
   const handleLocationSuccess = async (position) => {
     try {
       const { latitude, longitude } = position.coords;
-      const { lat, lng, formataddress, city, state } = await getAddressFromLatLng(
-        latitude,
-        longitude
-      );
+      const { lat, lng, formataddress, city, state } =
+        await getAddressFromLatLng(latitude, longitude);
       setLocation && setLocation({ lat, lng, formataddress, city, state });
       window.localStorage.setItem(
         'userlocation',
         JSON.stringify({ lat, lng, formataddress, city, state })
       );
-      closeModal()
+      closeModal();
     } catch (error) {
       console.log('error in location');
     }
@@ -852,7 +932,7 @@ export const LocationaccessModel = ({ setLocation, closeModal }) => {
         'userlocation',
         JSON.stringify({ lat, lng, formataddress, city, state })
       );
-      closeModal()
+      closeModal();
     } catch (error) {
       setErrorMessage('Error fetching the location.');
     }
@@ -883,9 +963,13 @@ export const LocationaccessModel = ({ setLocation, closeModal }) => {
           autocomplete.addListener('place_changed', async () => {
             const place = autocomplete.getPlace();
             if (place && place.formatted_address) {
-              const { extractAddressComponent } = await import('@/utils/location')
-              const { lat, lng, formataddress, city, state } = extractAddressComponent(place);
-              setLocation && setLocation({ lat, lng, formataddress, city, state });
+              const { extractAddressComponent } = await import(
+                '@/utils/location'
+              );
+              const { lat, lng, formataddress, city, state } =
+                extractAddressComponent(place);
+              setLocation &&
+                setLocation({ lat, lng, formataddress, city, state });
               window.localStorage.setItem(
                 'userlocation',
                 JSON.stringify({ lat, lng, formataddress, city, state })
