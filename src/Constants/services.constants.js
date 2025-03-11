@@ -3,6 +3,8 @@ export const PAYU_KEY = process.env.NEXT_PUBLIC_PAYU_KEY || '';
 
 export const ignoretokenpaths = [
     `${BASEURL}/auth/login`,
+    `${BASEURL}/auth/google-login`,
+    `${BASEURL}/auth/google-register`,
     `${BASEURL}/auth/register`,
     `${BASEURL}/auth/forgot-password`,
     `${BASEURL}/auth/reset-password`,

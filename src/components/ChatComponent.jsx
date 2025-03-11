@@ -96,8 +96,6 @@ const ChatComponent = ({ chatrooms, isCompanion }) => {
               <Chatwindow
                 selected={selectedChat}
                 isCompanion={isCompanion}
-                setblankspace={setblankspace}
-                setchatlist={setchatlist}
                 setSelectedChat={setSelectedChat}
               />
             ) : (

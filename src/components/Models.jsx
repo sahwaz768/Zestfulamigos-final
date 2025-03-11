@@ -9,6 +9,7 @@ import {
   getLocationfrominput,
   loadGoogleMapsScript
 } from '@/utils/location';
+import { decodeLoginCredentials } from '@/utils/auth.utils';
 
 export const StartSessionModel = ({ closeModal, bookingid }) => {
   const [otp, setOtp] = useState(['', '', '', '']);
@@ -479,7 +480,7 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
         };
         const { data } = await resetPassword(values);
         if (data) {
-          handleModel({ open: false })
+          handleModel({ open: false });
           toast.success('Successfully Password changed');
         } else {
           toast.error('Invalid Credentials');
@@ -720,23 +721,34 @@ export const LoginModel = ({ handleModel }) => {
 
   const handleSubmit = async (e) => {
     const { loginUserService } = await import('../services/auth/login.service');
-    const { datafetched } = await import('../Redux/auth/auth.reducer');
-    const { decodeAccessToken } = await import('../utils/common.utils');
-    const { appDispatch } = await import('@/Redux/store/store');
-    const { ACCESS_TOKEN_LOC, REFRESH_TOKEN_LOC } = await import(
-      '../Constants/common.constants'
-    );
-    const { setCookie } = await import('nookies');
     e.preventDefault();
     setisLoading(() => true);
     if (validateForm()) {
-      const { data, error } = await loginUserService(formData);
+      const { data } = await loginUserService(formData);
       if (data) {
-        const decodedToken = decodeAccessToken(data.access_token).decodedToken;
-        appDispatch(datafetched(decodedToken));
-        setCookie(null, ACCESS_TOKEN_LOC, data.access_token, { path: '/' });
-        setCookie(null, REFRESH_TOKEN_LOC, data.refresh_token, { path: '/' });
-        console.log(decodedToken);
+        const decodedToken = await decodeLoginCredentials(data);
+        if (decodedToken.isCompanion) {
+          router.push('/companion/dashboard');
+          setisLoading(() => false);
+        } else {
+          router.push('/user/chat');
+          setisLoading(() => false);
+        }
+      }
+    }
+  };
+  const login = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      const { googleloginUserService } = await import(
+        '@/services/auth/login.service'
+      );
+      const { toast } = await import('@/utils/reduxtrigger.utils');
+      const values = {
+        token: tokenResponse.code
+      };
+      const { data, error } = await googleloginUserService(values);
+      if (data) {
+        const decodedToken = await decodeLoginCredentials(data);
         if (decodedToken.isCompanion) {
           router.push('/companion/dashboard');
           setisLoading(() => false);
@@ -745,16 +757,10 @@ export const LoginModel = ({ handleModel }) => {
           setisLoading(() => false);
         }
       } else {
-        const response = error;
-        document.getElementById('response').innerText = response;
+        toast.error(error);
       }
-    }
-  };
-  const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
-      console.log(tokenResponse);
-      // router.push('/user/genderchoose');
-    }
+    },
+    flow: 'auth-code'
   });
 
   return (
@@ -767,7 +773,7 @@ export const LoginModel = ({ handleModel }) => {
           Log in
         </h1>
         <div
-          className="flex glgbtn justify-center gap-2 items-center"
+          className="flex glgbtn justify-center gap-2 items-center cursor-pointer"
           onClick={() => login()}
         >
           <FcGoogle size={20} />
@@ -1016,3 +1022,219 @@ export const LocationaccessModel = ({ setLocation, closeModal }) => {
     </>
   );
 };
+
+export function GoogleSignUp({ handleClose, userId }) {
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [data, setData] = useState({
+    images: null,
+    phoneno: '',
+    age: 18,
+    gender: ''
+  })
+  const [isDragging, setIsDragging] = useState(false);
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [errors, setErrors] = useState({});
+  const [phoneNumber, setPhoneNumber] = useState('');
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      setProfilePicture(URL.createObjectURL(file));
+      setErrors((prev) => ({ ...prev, profilePicture: '' }));
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        profilePicture: 'Please upload a valid image file.'
+      }));
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      setProfilePicture(URL.createObjectURL(file));
+      setErrors((prev) => ({ ...prev, profilePicture: '' }));
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        profilePicture: 'Please upload a valid image file.'
+      }));
+    }
+  };
+  const validate = () => {
+    const newErrors = {};
+    if (!data.images)
+      newErrors.profilePicture = 'Profile picture is required.';
+    if (!data.age) newErrors.age = 'Age is required.';
+    else if (data.age < 18 || data.age > 100) newErrors.age = 'Age must be above 18.';
+    if (!data.phoneno) newErrors.phoneNumber = 'Phone number is required.';
+    else if (!/^\d{10}$/.test(data.phoneno))
+      newErrors.phoneNumber = 'Enter a valid 10-digit phone number.';
+    if (!data.gender) newErrors.gender = 'Gender is required.';
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return false
+    }
+    return true;
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if(validate()){
+      try {
+        const { updateuserProfileDetailsService } = await import(
+          '@/services/user/userprofile.service'
+        );
+        const { toast } = await import('@/utils/reduxtrigger.utils');
+        const userData = new FormData();
+        userData.append('age', data.age);
+        userData.append('gender', data.gender);
+        userData.append('phoneno', data.phoneno);
+        if (typeof data.images === 'object') {
+          userData.append('images', data.images);
+        }
+        const { data: updatedata, error } = await updateuserProfileDetailsService(
+          userData,
+          userId
+        );
+        if (updatedata) {
+          toast.success('Successfully created User Now you can login!');
+          handleClose();
+        } else {
+          toast.error(error);
+        }
+      } catch (error) {}
+    }
+  };
+  const handleChange = (e) => {
+    const { name, target } = e.target;
+    setData((l) => ({...l, [name]: value}));
+    if(Object.values(errors).length){
+      setErrors({})
+    }
+  } 
+  return (
+    <div>
+      <div className="google-modal-overlay">
+        <div className="google-modal-content">
+          {/* <button className="close" onClick={() => handleClose()}>
+            &times;
+          </button> */}
+          <h2 className="font-bold  my-3">Complete Your Profile</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="google-uploader-container">
+              {!data.images ? (
+                <div
+                  className={`google-dropzone ${isDragging ? 'active' : ''}`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="google-file-input"
+                  />
+                  <div className="google-placeholder">
+                    <i className="google-upload-icon flex justify-center">
+                      {' '}
+                      <IoCloudUploadOutline size={30} color="black" />
+                    </i>
+                    <p className="text-black">
+                      <strong>Click to upload</strong>
+                    </p>
+                    <span className="text-black text-xs">
+                      Use portrait image for better display
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="google-preview-container">
+                  <div className="google-image-wrapper">
+                    <img
+                      src={URL.createObjectURL(data.images)}
+                      alt="Uploaded Preview"
+                      className="google-preview-box"
+                    />
+                    <button
+                      className="google-remove-button"
+                      onClick={() => setProfilePicture(null)}
+                    >
+                      ✖
+                    </button>
+                  </div>
+                </div>
+              )}
+              {errors.profilePicture && (
+                <p className="text-xs">{errors.profilePicture}</p>
+              )}
+            </div>
+            <p className="text-sm mt-2 mb-1">Age</p>
+            <input
+              type="text"
+              value={data.age}
+              name='age'
+              onChange={handleChange}
+              min="18"
+              max="120"
+              required
+              placeholder="Age"
+              className="inputfield-glg"
+            />
+            {errors.age && <p className="text-xs">{errors.age}</p>}
+            <br />
+            <p className="text-sm mt-2 mb-1">Phone Number</p>
+            <input
+              type="tel"
+              value={data.phoneno}
+              name='phoneno'
+              onChange={handleChange}
+              pattern="[0-9]{10}"
+              maxLength="10"
+              required
+              placeholder="Enter 10-digit phone number"
+              className="inputfield-glg"
+            />
+            {errors.phoneNumber && (
+              <p className="text-xs">{errors.phoneNumber}</p>
+            )}
+
+            <select
+              className="select-gender"
+              value={data.gender}
+              name='gender'
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+
+            {errors.gender && <p className="text-xs">{errors.gender}</p>}
+            <br />
+            <div className="my-3">
+              <button type="submit" className="sbtbtm ">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
