@@ -46,7 +46,7 @@ const GetSessionModel = (model, selected, closeModal) => {
   }
 };
 
-const Chatwindow = ({ selected, isCompanion }) => {
+const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
   const socket = socketinit.socket();
   const [messagedata, setMessageData] = useState(null);
   const [inputValue, setInputValue] = useState('');
@@ -213,18 +213,6 @@ const Chatwindow = ({ selected, isCompanion }) => {
           }
         });
         setInputValue('');
-        // socket.on('tokenexpired', () => {
-        //   getRefreshToken().then((token) => {
-        //     socket.auth = { token: 'Bearer ' + token };
-        //     socket.disconnect().connect();
-        //     socketinit.addtoken((token as string) || '');
-        //     socket.emit('sendMessage', {
-        //       roomid: selected.chatroomid,
-        //       username,
-        //       message
-        //     });
-        //   });
-        // });
       }
     },
     [inputValue]
@@ -249,17 +237,6 @@ const Chatwindow = ({ selected, isCompanion }) => {
       setIsOpen(false);
     }
   };
-
-  const handlebackbutton = (id) => {
-    // if (window.matchMedia('(min-width: 768px)').matches) {
-    //   setblankspace(true);
-    //   setSelectedChat(null);
-    // } else {
-    //   setSelectedChat(null);
-    //   setchatlist(true);
-    // }
-  };
-
   return (
     <>
       {isOpenexmodel && GetSessionModel(isOpenexmodel, selected, closeModal)}
@@ -270,7 +247,7 @@ const Chatwindow = ({ selected, isCompanion }) => {
               <div className="flex">
                 <div
                   className="mt-2 mx-2 chatbackbtn"
-                  onClick={handlebackbutton}
+                  onClick={() => setSelectedChat(null)}
                 >
                   <IoIosArrowBack color="black" size={25} />
                 </div>
