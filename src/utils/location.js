@@ -17,8 +17,8 @@ export const extractAddressComponent = (googleadress) => {
     typeof googleadress.geometry.location.lng === 'function'
       ? googleadress.geometry.location.lng()
       : googleadress.geometry.location.lng;
-  const formataddress = googleadress.formatted_address;
-  return { lat, lng, formataddress, city, state };
+  const formattedaddress = googleadress.formatted_address;
+  return { lat, lng, formattedaddress, city, state };
 };
 export const getAddressFromLatLng = async (lat, lng) => {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_KEY;
@@ -106,9 +106,12 @@ export const getLocationDetails = (query, mapId) => {
             finalresult = {
               ...extractAddressComponent(place),
               name: place.name,
-              photo,
-              place_id: place.place_id,
-              placetype: results[0].types
+              userInput: query,
+              googleextra: {
+                photo,
+                place_id: place.place_id,
+                placetype: results[0].types
+              }
             };
             const marker = new google.maps.Marker({
               map,

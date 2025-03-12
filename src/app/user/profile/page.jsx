@@ -69,6 +69,8 @@ const Page = () => {
         const { updateuserProfileDetailsService } = await import(
           '@/services/user/userprofile.service'
         );
+        const { datafetched } = await import('@/Redux/auth/auth.reducer');
+        const { appDispatch } = await import('@/Redux/store/store');
         const { toast } = await import('@/utils/reduxtrigger.utils');
         const userData = new FormData();
         const firstname = formData.fullName.split(' ')[0];
@@ -84,6 +86,7 @@ const Page = () => {
           formData.id
         );
         if (data) {
+          appDispatch(datafetched(data));
           toast.success('Successfully updated your profile');
         } else {
           toast.error(error);

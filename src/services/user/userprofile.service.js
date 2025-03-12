@@ -25,7 +25,7 @@ export const updateuserProfileDetailsService = async (values, id) => {
   } = await import('../interface/interceptor');
   try {
     const url = BASEURL + `/user/profile/updateprofile/${id}`;
-    const { data } = await post(url, values);
+    const { data:{ data } } = await post(url, values);
     return { data };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error) {
