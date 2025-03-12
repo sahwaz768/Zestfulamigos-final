@@ -2,6 +2,8 @@ import { failureTransaction } from '@/services/transactions/makepayement.service
 import { useRouter } from 'next/router';
 import querystring from 'querystring';
 import { useEffect } from 'react';
+import Image from "next/image";
+import Card from "@/shared/Assets/paymentfailure.png";
 
 export async function getServerSideProps({ req, res }) {
   if (req.method === 'POST') {
@@ -64,8 +66,12 @@ export default function Page(props) {
 
   return (
     <div>
-      <h1>Payment Failure</h1>
-      <p>Transaction failed!! Sorry to inform you please make payment</p>
+      <div className="flex justify-center mt-20">
+              <Image src={Card} alt="Picture of the author" />
+            </div>
+            <h1 className="text-3xl font-bold text-red-600 text-center">Sorry!</h1>
+            <h1 className="font-bold text-center mt-3">Payment failed</h1>
+            <p className="text-center mt-3 text-sm">Sorry to inform you please complete the payment process.</p>
     </div>
   );
 }

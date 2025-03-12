@@ -150,7 +150,7 @@ const page = () => {
       </div>
       <div className="flex">
         <div>
-          <Mastersidebar isCompanion={true} />
+          <Mastersidebar isCompanion={true}  className='sbar-height' />
         </div>
         <div className="dashboard">
           <div className="dashboard-header ">

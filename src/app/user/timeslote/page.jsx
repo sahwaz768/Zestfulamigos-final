@@ -45,6 +45,7 @@ const Page = () => {
     }
   }, []);
   const tokenredux = useSelector((state) => state.AuthReducer.data);
+  const [isLoading, setisLoading] = useState(false);
 
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
@@ -79,6 +80,8 @@ const Page = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setisLoading(() => true);
+
     if (
       selectedDateIndex === null ||
       selectedSlots.length === 0 ||
@@ -121,7 +124,9 @@ const Page = () => {
       const { data, error } = await bookaCompanionService(values);
       if (data) {
         console.log(data);
+
         router.push(`./payment?bookingId=${data.bookingid}`);
+        setisLoading(() => false);
       } else {
         toast.error(error);
       }
@@ -217,12 +222,15 @@ const Page = () => {
                 checked={isConfirmed}
                 disabled={!location}
                 onChange={() => setIsConfirmed(!isConfirmed)}
+                id="check"
               />
-              <span className="ml-2 text-sm">Confirm the meet-up location</span>
+              <span className="ml-2 text-sm " htmlFor='check'>
+                Confirm the meet-up location
+              </span>
             </div>
 
-            <button type="submit" className="cntbtn3 mt-6">
-              Continue
+            <button type="submit" className="cntbtn3 mt-6" disabled={isLoading}>
+              {isLoading ? 'Please wait....' : 'Countinue'}
             </button>
 
             {errorMessage && <p className="error text-xs">{errorMessage}</p>}

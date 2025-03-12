@@ -21,6 +21,7 @@ const page = () => {
 
   const [bookingDetails, setBookingDetails] = useState(null);
   const [bookingError, setBookingError] = useState(null);
+  const [isLoading, setisLoading] = useState(false);
 
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
@@ -62,7 +63,7 @@ const page = () => {
   const handlePayment = async (paymentValues) => {
     const paymentData = {
       ...paymentValues,
-      productinfo: 'Web',
+      productinfo: 'Web'
     };
 
     try {
@@ -71,8 +72,8 @@ const page = () => {
       );
       const values = {
         ...paymentData,
-        surl: 'http://localhost:3000/transaction/success',
-        furl: `http://localhost:3000/transaction/failure?bookingId=${paymentData.bookingId}`
+        surl: 'https://localhost:3000/transaction/success',
+        furl: `https://localhost:3000/transaction/failure?bookingId=${paymentData.bookingId}`
       };
       const response = await initiateTransaction(values);
       const formContainer = document.createElement('div');
@@ -101,6 +102,8 @@ const page = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setisLoading(() => true);
+
     if (validate()) {
       const values = {
         amount: String(bookingDetails.amount),
@@ -109,7 +112,10 @@ const page = () => {
         bookingId: bookingDetails.id,
         phone: bookingDetails.user.phoneno
       };
+     
+
       await handlePayment(values);
+      setisLoading(() => false);
     }
   };
 
@@ -119,10 +125,15 @@ const page = () => {
     { name: 'Privacy Policy', href: './privacypolicy' },
     { name: 'Contact', href: './contactus' }
   ];
-  if (!bookingDetails) return <div><Loadingbar/></div>;
+  if (!bookingDetails)
+    return (
+      <div>
+        <Loadingbar />
+      </div>
+    );
   return (
     <div>
-      <Threeline/>
+      <Threeline />
       <Chatheader
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
@@ -185,8 +196,13 @@ const page = () => {
             {errors.checkbox2 && (
               <p className="text-xs text-red-800">{errors.checkbox2}</p>
             )}
-            <button className="paymentbtn" type="submit" onClick={handleSubmit}>
-              proceed to payment
+            <button
+              className="paymentbtn"
+              type="submit"
+              onClick={handleSubmit}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Please wait....' : 'Proceed to payment'}
             </button>
           </div>
         </div>

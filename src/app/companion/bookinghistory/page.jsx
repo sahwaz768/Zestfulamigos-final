@@ -115,7 +115,7 @@ const Page = () => {
         <Notify backgroundColor="transparent" color="black" />
       </div>
       <div className="bookingbox">
-        <Mastersidebar isCompanion={true} />
+        <Mastersidebar isCompanion={true} className='sbar-height-chat' />
         <div className="booking-side">
           <div className="booking-type">
             <div
@@ -138,7 +138,7 @@ const Page = () => {
               {historydata?.upcoming.length ? (
                 historydata.upcoming?.map((l, i) => (
                   <div className="upcoming-slot" key={i * 500}>
-                    <h1 className="text-sm font-bold text-gray-500 mt-2">
+                    <h1 className="text-sm font-bold text-gray-500 mt-6">
                       Upcoming meting with {l.companion?.firstname}
                     </h1>
                     <div className="flex flex-wrap mt-1  md:gap-8 gap-4">

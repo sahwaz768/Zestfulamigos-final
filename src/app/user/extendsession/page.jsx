@@ -5,6 +5,8 @@ import Payment from '@/shared/Assets/payment1.png';
 import Masterheader from '@/components/Masterheader';
 import { useRouter } from 'next/navigation';
 import { cancelExtensionRecord } from '@/services/sessions/extension.service';
+import Loadingbar from '@/components/Loadingbar';
+import LocationAccess from '@/components/Locationaccess';
 
 const ExtensionBookingPage = () => {
   const [bookingdata, setBookingData] = useState(null);
@@ -26,7 +28,8 @@ const ExtensionBookingPage = () => {
               extendedhours: data.extendedhours,
               user: data.userdetails?.filter((l) => !l.isCompanion)[0],
               companion: data.userdetails?.filter((l) => l.isCompanion)[0],
-              id: data.id
+              id: data.id,
+             // location: data.location
             };
             setBookingData(() => values);
           }
@@ -56,8 +59,8 @@ const ExtensionBookingPage = () => {
       );
       const values = {
         ...paymentData,
-        surl: 'http://localhost:3000/transaction/extensionsucess',
-        furl: `http://localhost:3000/transaction/extensionfailure?bookingId=${paymentData.bookingId}`
+        surl: 'https://localhost:3000/transaction/extensionsucess',
+        furl: `https://localhost:3000/transaction/extensionfailure?bookingId=${paymentData.bookingId}`
       };
       const response = await initiateTransaction(values);
       const formContainer = document.createElement('div');
@@ -108,10 +111,12 @@ const ExtensionBookingPage = () => {
     }
   };
 
-  if (!bookingdata) return <div>Loading...</div>;
+  if (!bookingdata) return <div><Loadingbar/></div>;
   return (
     <>
       <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" />
+      <div className='flex flex-col md:flex-row extention-container'>
+      <div className='extention-textarea '>
       <div className="timeslotebox timeslote-textarea">
         <h1 className="text-black md:text-2xl font-semibold my-4">
           Purpose of Engagement
@@ -128,6 +133,8 @@ const ExtensionBookingPage = () => {
         <h1 className="my-3 text-sm">
           Specify the Location for Companion Meet-Up
         </h1>
+        <LocationAccess  />
+
         {/* <LocationInput location={location} setLocation={setLocation} /> */}
 
         <div className="mt-2 ">
@@ -141,9 +148,10 @@ const ExtensionBookingPage = () => {
 
         {/* {errorMessage && <p className="error text-xs">{errorMessage}</p>} */}
       </div>
-      <div className="paymentsummarybox">
-        <div className="paymentsummary">
-          <div className="paymentbox">
+      </div>
+      <div className="extention-payment mx-4 mt-5">
+        <div className="">
+          <div className="">
             <h1 className="md:text-2xl font-semibold">Summary of payment</h1>
             <h3 className="text-base my-4">Description amount(INR)</h3>
             <table className="mt-2">
@@ -207,9 +215,8 @@ const ExtensionBookingPage = () => {
             </button>
           </div>
         </div>
-        <div className="paymentimage">
-          <Image src={Payment} alt="payment image" />
-        </div>
+       
+      </div>
       </div>
     </>
   );

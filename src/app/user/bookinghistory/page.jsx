@@ -99,7 +99,7 @@ const page = () => {
           <Notify backgroundColor="transparent" color="black" />
         </div>
         <div className="bookingbox">
-          <Mastersidebar />
+          <Mastersidebar className='sbar-height-chat' />
 
           {isOpen && (
             <div className="modal-overlay-cancel">
@@ -193,7 +193,7 @@ const page = () => {
                 {historydata?.pastBooking.length ? (
                   historydata.pastBooking?.map((l, i) => (
                     <div className="upcoming-slot" key={i * 300}>
-                      <h1 className="text-sm font-bold text-gray-500 mt-6">
+                      <h1 className="text-sm font-bold text-gray-500 mt-2">
                         Last meting with {l.companion?.firstname}
                       </h1>
                       <div className="flex flex-wrap mt-1 md:gap-8 gap-4">

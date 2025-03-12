@@ -125,7 +125,7 @@ const Page = () => {
       </div>
 
       <div className="profilebox">
-        <Mastersidebar isCompanion={true} />
+        <Mastersidebar isCompanion={true} className='sbar-height-companionprofile'/>
         <div className='margin-box'>
         <form onSubmit={handleSubmit}>
           {/* Image Uploader */}

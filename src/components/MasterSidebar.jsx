@@ -6,8 +6,9 @@ import { CiSettings } from 'react-icons/ci';
 import { useSelector } from 'react-redux';
 import { redirect } from 'next/navigation';
 import { MdOutlineSwipe } from "react-icons/md";
+import Loadingbar from './Loadingbar';
 
-export const Mastersidebar = ({ isCompanion }) => {
+export const Mastersidebar = ({ isCompanion,className }) => {
   const userDetails = useSelector((state) => state.AuthReducer.data);
 
   const handleLogout = async () => {
@@ -55,10 +56,10 @@ export const Mastersidebar = ({ isCompanion }) => {
     });
   }
 
-  if (!userDetails) return <div>Loading...</div>;
+  if (!userDetails) return <div><Loadingbar/></div>;
   return (
     <>
-      <Sidebar menuItems={menuItems} userDetails={userDetails} />
+      <Sidebar menuItems={menuItems} userDetails={userDetails} className={className} />
     </>
   );
 };
