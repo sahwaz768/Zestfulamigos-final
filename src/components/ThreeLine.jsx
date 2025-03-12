@@ -6,7 +6,7 @@ const Threeline = () => {
     <div className="threeline  ">
       <div className="flex justify-between    px-4">
         <div className="threelinembview ">
-          <Mastersidebar />
+          <Mastersidebar className='sbar-height' />
         </div>
         <div className="notifymb mt-2">
           <Notify backgroundColor="transparent" color="black" />

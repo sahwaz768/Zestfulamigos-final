@@ -2,6 +2,8 @@ import { successTransaction } from '@/services/transactions/makepayement.service
 import { useRouter } from 'next/router';
 import querystring from 'querystring';
 import { useEffect } from 'react';
+import Image from "next/image";
+import Card from "@/shared/Assets/paymentsuccessful.png";
 
 export async function getServerSideProps({ req, res }) {
   if (req.method === 'POST') {
@@ -62,8 +64,12 @@ export default function Page(props) {
 
   return (
     <div>
-      <h1>Payment Successful</h1>
-      <p>Hoorey!</p>
+     <div className="flex justify-center mt-20">
+        <Image src={Card} alt="Picture of the author" />
+      </div>
+      <h1 className="text-3xl font-bold text-red-600 text-center">Thank You!</h1>
+      <h1 className="font-bold text-center mt-3">Payment done successfully</h1>
+      <p className="text-center mt-3 text-sm">Kindly await administrative approval.</p>
     </div>
   );
 }

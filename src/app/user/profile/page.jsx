@@ -112,7 +112,7 @@ const Page = () => {
         <Notify backgroundColor="transparent" color="black" />
       </div>
       <div className="profilebox">
-        <Mastersidebar />
+        <Mastersidebar className='sbar-height-chat' />
         <div className="profiledetail">
           <form onSubmit={handleSubmit}>
             <div className="">

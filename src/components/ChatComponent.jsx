@@ -36,7 +36,7 @@ const ChatComponent = ({ chatrooms, isCompanion }) => {
       </div>
       <div className="chatpage">
         <div>
-          <Mastersidebar isCompanion={isCompanion} />
+          <Mastersidebar isCompanion={isCompanion} className='sbar-height-chat' />
         </div>
         <div className="chatsection">
           {isMobile && selectedChat ? null : (

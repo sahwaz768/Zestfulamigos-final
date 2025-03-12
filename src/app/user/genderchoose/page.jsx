@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { LocationaccessModel } from '@/components/Models';
 
 const Page = () => {
+  const [isLoading, setisLoading] = useState(false);
   const [gender, setGender] = useState('');
   const [locationModel, setLocationModel] = useState(true);
   const [error, setError] = useState('');
@@ -18,6 +19,8 @@ const Page = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setisLoading(() => true);
+
     const localstoragelocation = window.localStorage.getItem('userlocation');
     if (!gender || !localstoragelocation) {
       setError('Please select a gender.');
@@ -41,6 +44,8 @@ const Page = () => {
       if (data) {
         dispatch(datafetched(data));
         console.log(data);
+        setisLoading(() => false);
+
         router.push('/user/swipepage');
       } else {
         console.log(error);
@@ -87,8 +92,10 @@ const Page = () => {
             type="submit"
             className="submit-button"
             onClick={handleSubmit}
+            disabled={isLoading}
+
           >
-            Continue
+            {isLoading ? 'Please wait....' : 'Countinue'}
           </button>
         </div>
         {error && (

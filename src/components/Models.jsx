@@ -174,8 +174,8 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
         <span className="close" onClick={closeModal}>
           &times;
         </span>
-        <h1 className="text-2xl">slot extension</h1>
-        <h1 className="text-xl text-center my-4">Extent your duration</h1>
+        
+        <h1 className="text-lg text-center my-2">Extent your duration</h1>
         <div className="slot-extension-btn">
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             {Slots.map((l) => (
@@ -192,11 +192,9 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
 
           {error && <p className="text-sm text-gray-600">{error}</p>}
           <button className="extention-submit-button" onClick={handleSubmit}>
-            Requested access
+            Request access
           </button>
-          <h1 className="text-center text-sm text-gray-600">
-            Your Request is under process
-          </h1>
+          
         </div>
       </div>
     </div>

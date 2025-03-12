@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { BASEURL } from '@/Constants/services.constants';
 
-const Sidebar = ({ menuItems, userDetails,height  = "100%" }) => {
+const Sidebar = ({ menuItems, userDetails, className }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   
@@ -41,9 +41,11 @@ const Sidebar = ({ menuItems, userDetails,height  = "100%" }) => {
 
       {/* Sidebar container */}
       <div
-        className={`sidebar ${isSidebarOpen ? 'open' : ''}`}
+        className={`sidebar ${isSidebarOpen ? 'open' : ''} ${className || ''}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        
+      
         
       >
         {/* User profile section */}
