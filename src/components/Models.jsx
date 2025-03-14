@@ -174,7 +174,7 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
         <span className="close" onClick={closeModal}>
           &times;
         </span>
-        
+
         <h1 className="text-lg text-center my-2">Extent your duration</h1>
         <div className="slot-extension-btn">
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -194,7 +194,6 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
           <button className="extention-submit-button" onClick={handleSubmit}>
             Request access
           </button>
-          
         </div>
       </div>
     </div>
@@ -720,18 +719,24 @@ export const LoginModel = ({ handleModel }) => {
   const handleSubmit = async (e) => {
     const { loginUserService } = await import('../services/auth/login.service');
     e.preventDefault();
-    setisLoading(() => true);
     if (validateForm()) {
-      const { data } = await loginUserService(formData);
-      if (data) {
-        const decodedToken = await decodeLoginCredentials(data);
-        if (decodedToken.isCompanion) {
-          router.push('/companion/dashboard');
-          setisLoading(() => false);
-        } else {
-          router.push('/user/chat');
-          setisLoading(() => false);
+      setisLoading(() => true);
+      try {
+        const { data, error} = await loginUserService(formData);
+        if (data) {
+          const decodedToken = await decodeLoginCredentials(data);
+          if (decodedToken.isCompanion) {
+            router.push('/companion/dashboard');
+          } else {
+            router.push('/user/chat');
+          }
+        }else {
+          setisLoading(() => false);Ī
         }
+      } catch (error) {
+        console.log('Error occured');
+      } finally {
+        setisLoading(() => false);
       }
     }
   };
@@ -1028,7 +1033,7 @@ export function GoogleSignUp({ handleClose, userId }) {
     phoneno: '',
     age: 18,
     gender: ''
-  })
+  });
   const [isDragging, setIsDragging] = useState(false);
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
@@ -1073,24 +1078,24 @@ export function GoogleSignUp({ handleClose, userId }) {
   };
   const validate = () => {
     const newErrors = {};
-    if (!data.images)
-      newErrors.profilePicture = 'Profile picture is required.';
+    if (!data.images) newErrors.profilePicture = 'Profile picture is required.';
     if (!data.age) newErrors.age = 'Age is required.';
-    else if (data.age < 18 || data.age > 100) newErrors.age = 'Age must be above 18.';
+    else if (data.age < 18 || data.age > 100)
+      newErrors.age = 'Age must be above 18.';
     if (!data.phoneno) newErrors.phoneNumber = 'Phone number is required.';
     else if (!/^\d{10}$/.test(data.phoneno))
       newErrors.phoneNumber = 'Enter a valid 10-digit phone number.';
     if (!data.gender) newErrors.gender = 'Gender is required.';
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      return false
+      return false;
     }
     return true;
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(validate()){
+    if (validate()) {
       try {
         const { updateuserProfileDetailsService } = await import(
           '@/services/user/userprofile.service'
@@ -1103,10 +1108,8 @@ export function GoogleSignUp({ handleClose, userId }) {
         if (typeof data.images === 'object') {
           userData.append('images', data.images);
         }
-        const { data: updatedata, error } = await updateuserProfileDetailsService(
-          userData,
-          userId
-        );
+        const { data: updatedata, error } =
+          await updateuserProfileDetailsService(userData, userId);
         if (updatedata) {
           toast.success('Successfully created User Now you can login!');
           handleClose();
@@ -1118,11 +1121,11 @@ export function GoogleSignUp({ handleClose, userId }) {
   };
   const handleChange = (e) => {
     const { name, target } = e.target;
-    setData((l) => ({...l, [name]: value}));
-    if(Object.values(errors).length){
-      setErrors({})
+    setData((l) => ({ ...l, [name]: value }));
+    if (Object.values(errors).length) {
+      setErrors({});
     }
-  } 
+  };
   return (
     <div>
       <div className="google-modal-overlay">
@@ -1184,7 +1187,7 @@ export function GoogleSignUp({ handleClose, userId }) {
             <input
               type="text"
               value={data.age}
-              name='age'
+              name="age"
               onChange={handleChange}
               min="18"
               max="120"
@@ -1198,7 +1201,7 @@ export function GoogleSignUp({ handleClose, userId }) {
             <input
               type="tel"
               value={data.phoneno}
-              name='phoneno'
+              name="phoneno"
               onChange={handleChange}
               pattern="[0-9]{10}"
               maxLength="10"
@@ -1213,7 +1216,7 @@ export function GoogleSignUp({ handleClose, userId }) {
             <select
               className="select-gender"
               value={data.gender}
-              name='gender'
+              name="gender"
               onChange={handleChange}
               required
             >

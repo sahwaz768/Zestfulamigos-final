@@ -37,7 +37,10 @@ const Page = () => {
               const start = Number(l.start);
               const end = Number(l.end);
               const getCurrentIndex = new Date(start).getDate() - todaydate;
-              bookSlots[getCurrentIndex] = generateStimeSlots(start, end);
+              const generatedTimeslots = generateStimeSlots(start, end);
+              bookSlots[getCurrentIndex] = bookSlots[getCurrentIndex]
+                ? [...bookSlots[getCurrentIndex], ...generatedTimeslots]
+                : generatedTimeslots;
             });
             setBookedSlots(bookSlots);
           }
@@ -46,7 +49,6 @@ const Page = () => {
   }, []);
   const tokenredux = useSelector((state) => state.AuthReducer.data);
   const [isLoading, setisLoading] = useState(false);
-
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [selectedDateIndex, setSelectedDateIndex] = useState(0);
   const [purpose, setPurpose] = useState('');
@@ -126,7 +128,6 @@ const Page = () => {
         console.log(data);
 
         router.push(`./payment?bookingId=${data.bookingid}`);
-        setisLoading(() => false);
       } else {
         toast.error(error);
       }
@@ -137,6 +138,8 @@ const Page = () => {
       setPurpose('');
       setIsConfirmed(false);
       setErrorMessage('');
+    } finally {
+      setisLoading(() => false);
     }
     // Clear all fields
   };
@@ -224,7 +227,7 @@ const Page = () => {
                 onChange={() => setIsConfirmed(!isConfirmed)}
                 id="check"
               />
-              <span className="ml-2 text-sm " htmlFor='check'>
+              <span className="ml-2 text-sm " htmlFor="check">
                 Confirm the meet-up location
               </span>
             </div>
@@ -240,98 +243,5 @@ const Page = () => {
     </>
   );
 };
-
-// const LocationInput = ({ location, setLocation }) => {
-//   const inputRef = useRef(null);
-//   const [errorMessage, setErrorMessage] = useState("");
-
-//   const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_KEY;
-
-//   const handleManualLocationSubmit = async () => {
-//     const manualLocation = inputRef.current.value;
-//     if (!manualLocation) {
-//       setErrorMessage("Please enter a location.");
-//       return;
-//     }
-
-//     try {
-//       const response = await fetch(
-//         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(manualLocation)}&key=${GOOGLE_API_KEY}`
-//       );
-//       const data = await response.json();
-
-//       if (data.results && data.results.length > 0) {
-//         const address = data.results[0].formatted_address;
-//         setLocation(address); // ✅ Store only the string
-//         setErrorMessage("");
-//       } else {
-//         setErrorMessage("Failed to fetch coordinates for the location.");
-//       }
-//     } catch {
-//       setErrorMessage("Error fetching the location.");
-//     }
-//   };
-
-//   useEffect(() => {
-//     if (inputRef.current) {
-//       const loadGoogleMapsScript = () => {
-//         return new Promise((resolve, reject) => {
-//           if (typeof window.google !== "undefined" && window.google.maps) {
-//             resolve();
-//           } else {
-//             const script = document.createElement("script");
-//             script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`;
-//             script.async = true;
-//             script.onload = resolve;
-//             script.onerror = () => reject("Google Maps API failed to load.");
-//             document.body.appendChild(script);
-//           }
-//         });
-//       };
-
-//       loadGoogleMapsScript()
-//         .then(() => {
-//           if (window.google && inputRef.current) {
-//             const autocomplete = new window.google.maps.places.Autocomplete(
-//               inputRef.current,
-//               { types: ["(cities)"] }
-//             );
-
-//             autocomplete.addListener("place_changed", () => {
-//               const place = autocomplete.getPlace();
-//               if (place && place.formatted_address) {
-//                 setLocation(place.formatted_address); // ✅ Store only the address
-//                 setErrorMessage("");
-//               } else {
-//                 setErrorMessage("Invalid location. Please select a valid place.");
-//               }
-//             });
-//           }
-//         })
-//         .catch((error) => setErrorMessage(error));
-
-//       // Clear error when user types
-//       const handleInput = () => setErrorMessage("");
-//       inputRef.current.addEventListener("input", handleInput);
-
-//       return () => {
-//         if (inputRef.current) {
-//           inputRef.current.removeEventListener("input", handleInput);
-//         }
-//       };
-//     }
-//   }, [setLocation]);
-
-//   return (
-//     <>
-//       <input ref={inputRef} type="text" placeholder="Enter location" className="meetupinputfield" />
-//       <button type="button" onClick={handleManualLocationSubmit} className="meet-up-btn">
-//         Check
-//       </button>
-//       {location && typeof location === "string" && <p className="text-xs">{location}</p>}
-//       {errorMessage && <p className="error text-xs">{errorMessage}</p>}
-//     </>
-//   );
-// };
 
 export default Page;
