@@ -53,7 +53,7 @@ const TicketDetail = ({ userIssue, getLatestDetails }) => {
           <hr />
           <div className="flex justify-between p-3">
             <div>
-              <h1 className="font-bold text-2xl">Ticket#12345678asd</h1>
+              <h1 className="font-bold text-2xl">Ticket#{userIssue.issueId}</h1>
               <h1>{userIssue.subject}</h1>
             </div>
             <div className="pending">{userIssue.status}</div>
