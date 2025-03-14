@@ -157,7 +157,7 @@ const ExtensionBookingPage = () => {
             <table className="mt-2">
               <tbody>
                 <tr>
-                  <th className="text-sm font-normal">Base price</th>
+                  <th className="text-sm font-normal">Base price(Exclusive GST) </th>
                   <td className="text-sm font-normal ">
                     : ₹{bookingdata.amount}
                   </td>
@@ -165,11 +165,16 @@ const ExtensionBookingPage = () => {
 
                 <tr>
                   <th className="text-sm font-normal">
-                    Gst(18%) fee(Included)
+                  GST (18%) 
                   </th>
                   <td className="text-sm font-normal">: ₹0.00</td>
                 </tr>
-
+                <tr>
+                  <th className="text-sm font-normal">
+                  Service Charge
+                  </th>
+                  <td className="text-sm font-normal">: ₹0.00</td>
+                </tr>
                 <tr>
                   <th className="text-sm font-normal">Total Amount</th>
                   <td className="text-sm font-normal">
@@ -183,7 +188,7 @@ const ExtensionBookingPage = () => {
                 type="checkbox"
                 name="checkbox1"
                 checked={true}
-                onChange={() => console.log('i agree')}
+              //  onChange={() => console.log('i agree')}
               />
               <p className="text-xs font-normal ml-2">
                 I agree to the <a>Term and Condition</a> and Privacy policy
@@ -197,7 +202,7 @@ const ExtensionBookingPage = () => {
                 type="checkbox"
                 name="checkbox2"
                 checked={true}
-                onChange={() => console.log('')}
+               // onChange={() => console.log('')}
               />
               <p className="text-xs font-normal ml-2">
                 I authorize the merchant to debit the above amount for selected
