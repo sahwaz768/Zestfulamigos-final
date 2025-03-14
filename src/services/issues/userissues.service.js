@@ -61,7 +61,7 @@ export const getAllActiveIssues = async () => {
     try {
       const url = BASEURL + '/user/issues/addcommentonissue';
       const {
-        data: { data }
+        data
       } = await post(url, values);
       return { data };
     } catch (error) {

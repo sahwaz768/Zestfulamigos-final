@@ -2,32 +2,45 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { formatBookingTime } from '@/utils/bookings.utils';
+import { toast } from '@/utils/reduxtrigger.utils';
 
 const Masterheader = dynamic(() => import('./Masterheader'), { ssr: false });
 const Threeline = dynamic(() => import('./ThreeLine'), { ssr: false });
 
-const TicketDetail = ({ userIssue }) => {
-  const [hasReplied, setHasReplied] = useState(false);
-  const [userComment, setUserComment] = useState('');
-  const [comment, setComment] = useState('');
-  const [image, setImage] = useState(null);
-
-  const handleReplyClick = () => {
-    setHasReplied(true);
-  };
-
-  const handleSendClick = () => {
-    if (userComment.trim() || image) {
-      setComment(userComment);
-      setUserComment('');
-      setHasReplied(false);
+const TicketDetail = ({ userIssue, getLatestDetails }) => {
+  const [isUserWanttoaddComment, setisUserWanttoaddComment] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [userCommentData, setUserCommentData] = useState({
+    images: null,
+    comment: ''
+  });
+  const handleSendClick = async () => {
+    setLoading(() => true);
+    const { addCommentonIssue } = await import(
+      '@/services/issues/userissues.service'
+    );
+    const values = {
+      issueId: userIssue.id,
+      comment: userCommentData.comment
+    };
+    const { data } = await addCommentonIssue(values);
+    if (data) {
+      getLatestDetails(userIssue.issueId);
+    } else {
+      toast.error('Error in comment');
+      setUserCommentData({ images: null, comment: '' });
     }
+    setLoading(() => false);
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setImage(URL.createObjectURL(file));
+    const validTypes = ['image/jpeg', 'image/png'];
+    if (!validTypes.includes(file.type) || file.size > 2 * 1024 * 1024) {
+      toast.error('Invalid Image');
+      return;
+    } else {
+      setUserCommentData((l) => ({ ...l, images: file }));
     }
   };
 
@@ -88,32 +101,42 @@ const TicketDetail = ({ userIssue }) => {
               ))
             : null}
 
-          {hasReplied && !comment && (
+          {isUserWanttoaddComment ? (
             <div className="reply-box">
               <textarea
-                value={userComment}
-                onChange={(e) => setUserComment(e.target.value)}
+                value={userCommentData.comment}
+                onChange={(e) =>
+                  setUserCommentData((l) => ({ ...l, comment: e.target.value }))
+                }
                 rows="4"
                 placeholder="Write your reply here..."
                 className="reply-textarea"
               />
               <input
                 type="file"
-                accept="image/*"
+                accept=".jpg, .jpeg, .png"
                 onChange={handleImageChange}
                 className="image-uploader"
               />
-              {image && (
+              {userCommentData.images && (
                 <img
-                  src={image}
+                  src={URL.createObjectURL(userCommentData.images)}
                   alt="Preview"
                   className="image-preview-ticket"
                 />
               )}
-              <button className="send-button" onClick={handleSendClick}>
-                Send
+              <button
+                className="send-button"
+                onClick={handleSendClick}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Sending..' : 'Send'}
               </button>
             </div>
+          ) : (
+            <button onClick={() => setisUserWanttoaddComment(true)}>
+              Comment
+            </button>
           )}
 
           {/* {comment && (

@@ -32,7 +32,8 @@ const page = () => {
       getBookingDetails(bookingId).then(({ data }) => {
         if (data) {
           const values = {
-            amount: data.bookingduration * data.bookingrate,
+            bookingrate: data.bookingrate,
+            finalamount: data.finalRate,
             user: data.User?.filter((l) => !l.isCompanion)[0],
             companion: data.User?.filter((l) => l.isCompanion)[0],
             id: data.id
@@ -106,13 +107,12 @@ const page = () => {
 
     if (validate()) {
       const values = {
-        amount: String(bookingDetails.amount),
+        amount: String(bookingDetails.finalamount),
         email: bookingDetails.user.email,
         firstname: bookingDetails.user.firstname,
         bookingId: bookingDetails.id,
         phone: bookingDetails.user.phoneno
       };
-     
 
       await handlePayment(values);
       setisLoading(() => false);
@@ -148,7 +148,7 @@ const page = () => {
                 <tr>
                   <th className="text-sm font-normal">Base price</th>
                   <td className="text-sm font-normal ">
-                    : ₹{bookingDetails.amount.toFixed(2)}{' '}
+                    : ₹{bookingDetails.bookingrate.toFixed(2)}{' '}
                   </td>
                 </tr>
 
@@ -156,13 +156,15 @@ const page = () => {
                   <th className="text-sm font-normal">
                     Gst(18%) fee(Included)
                   </th>
-                  <td className="text-sm font-normal">: ₹0.00</td>
+                  <td className="text-sm font-normal">
+                    : ₹{Number(bookingDetails.bookingrate * 0.18).toFixed(2)}
+                  </td>
                 </tr>
 
                 <tr>
                   <th className="text-sm font-normal">Total Amount</th>
                   <td className="text-sm font-normal">
-                    :₹{bookingDetails.amount.toFixed(2)}
+                    :₹{bookingDetails.finalamount.toFixed(2)}
                   </td>
                 </tr>
               </tbody>
