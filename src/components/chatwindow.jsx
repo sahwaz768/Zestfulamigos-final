@@ -353,7 +353,7 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               className="chat-input-text"
-              placeholder="type of massage"
+              placeholder="Let's Chat"
             />
             <div className="send-button-chat flex">
               <Link href={'/'}>
