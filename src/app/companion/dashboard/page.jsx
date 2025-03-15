@@ -139,18 +139,23 @@ const page = () => {
   //     setText('');
   //   }
   // };
-  if (!userDetails) return <div><Loadingbar/></div>;
+  if (!userDetails)
+    return (
+      <div>
+        <Loadingbar />
+      </div>
+    );
 
   return (
     <>
       <div className="dashboard-threeline">
         <div className="notifymbsecond">
           <Notify backgroundColor="transparent" color="black" />
-        </div> 
+        </div>
       </div>
       <div className="flex">
         <div>
-          <Mastersidebar isCompanion={true}  className='sbar-height' />
+          <Mastersidebar isCompanion={true} className="sbar-height" />
         </div>
         <div className="dashboard">
           <div className="dashboard-header ">
@@ -259,10 +264,12 @@ const page = () => {
                       Time and date:
                       <span className="md:font-bold ">{l?.bookingdate} </span>
                     </h1>
-                    {/* <h1 className="text-sm md:text-base">
+                    <h1 className="text-sm md:text-base">
                       Location of meet- up:
-                      <span className="md:font-bold ">Bkc Mumbai</span>
-                    </h1> */}
+                      <span className="md:font-bold ">
+                        {l.meetinglocation.address}
+                      </span>
+                    </h1>
                     <h1 className="text-sm md:text-base">
                       Purpose of meet:
                       <span className="md:font-bold ">{l?.purpose}</span>

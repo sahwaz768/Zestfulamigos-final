@@ -13,6 +13,9 @@ import { getAccessTokenFromRefreshTokenService } from '../services/auth/login.se
 import { deletecookie } from '@/utils/removeUserData';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { containsWord } from '@/utils/chat.utils';
+import { cuzzwords } from '@/shared/data/chatdata.data';
+import { toast } from '@/utils/reduxtrigger.utils';
 
 const CountdownTimer = dynamic(() => import('@/components/CountdownTimer'), {
   ssr: false
@@ -50,50 +53,6 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
   const socket = socketinit.socket();
   const [messagedata, setMessageData] = useState(null);
   const [inputValue, setInputValue] = useState('');
-
-  const filteredWords = [
-    'fuck',
-    'shit',
-    'pussy',
-    'dick',
-    'penis',
-    'asshole',
-    'sucker',
-    'lick',
-    'arse',
-    'arsehole',
-    'bastard',
-    'bery',
-    'bloody',
-    'bollocks',
-    'cack',
-    'cock-up',
-    'codgur',
-    'cunt',
-    'dickhead',
-    'duffer',
-    'feck',
-    'knob',
-    'knobend',
-    'knobhead',
-    'knobber',
-    'munter',
-    'nutter',
-    'pillock',
-    'pish',
-    'pissed off',
-    'plonker',
-    'poxy',
-    'prat',
-    'scrubber',
-    'shit',
-    'taking the piss',
-    'tosser',
-    'tuss',
-    'twat',
-    'wally',
-    'wanker'
-  ];
 
   useEffect(() => {
     const initializeSocket = async () => {
@@ -181,14 +140,12 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
     };
   }, [selected]);
 
-  const censorMessage = (message) => {
-    const regex = new RegExp(`\\b(${filteredWords.join('|')})\\b`, 'gi');
-    return message.replace(regex, '****');
-  };
-
   const sendNewMessage = useCallback(
     async (content) => {
       if (inputValue && content) {
+        if(containsWord(cuzzwords, inputValue)){
+          toast.error("You are violating the rules! please mind the words!")
+        }
         setCookie(
           null,
           'lastEmit',
