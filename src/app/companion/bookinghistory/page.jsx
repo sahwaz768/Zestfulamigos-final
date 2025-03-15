@@ -6,104 +6,112 @@ import { Mastersidebar } from '@/components/MasterSidebar';
 import BookingHistory from '@/components/BookingHistory';
 import UpcomingBooking from '@/components/UpcomingBooking';
 import Loadingbar from '@/components/Loadingbar';
+import Pagination from '@/components/Pagination';
 
 const Page = () => {
   const [historydata, setHistoryData] = useState(null);
   const [activeTab, setActiveTab] = useState('history');
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    import('../../../services/user/bookings.service')
-      .then(({ getPreviousBookings }) => getPreviousBookings())
-      .then(async ({ data, error }) => {
-        if (data) {
-          const { formatBookingTimingsforUi } = await import(
-            '../../../utils/bookings.utils'
+    import('@/services/user/bookings.service')
+      .then(
+        ({ getPreviousBookingsforCompanion, getUpcomingBookingforCompanion }) =>
+          Promise.all([
+            getPreviousBookingsforCompanion(),
+            getUpcomingBookingforCompanion()
+          ])
+      )
+      .then(
+        async ([
+          { data: previousbookingdata, error },
+          { data: upcomingbookingdata }
+        ]) => {
+          const { getBookingDataforUserUi } = await import(
+            '@/utils/bookings.utils'
           );
           const values = { pastBooking: [], upcoming: [] };
-          for (let i = 0; i < data.length; i += 1) {
-            const value = {
-              id: data[i].id,
-              companion: data[i].users.filter((l) => l.isCompanion)[0],
-              user: data[i].users.filter((l) => !l.isCompanion)[0],
-              bookingdate: formatBookingTimingsforUi(
-                data[i].bookingstart,
-                data[i].bookingend
-              ),
-              isPast:
-                new Date(Number(data[i].bookingstart)).getTime() < Date.now(),
-              status: data[i].status,
-              amount: data[i].amount
-            };
-            if (value.isPast) values.pastBooking.push(value);
-            else values.upcoming.push(value);
-          }
-          console.log(values);
+          const { bookings, ...otherdetails } = previousbookingdata;
+          values.pastBooking = getBookingDataforUserUi(bookings);
+          values.pastBookingDetails = otherdetails;
+          values.upcoming = getBookingDataforUserUi(upcomingbookingdata);
           setHistoryData(values);
+          setLoading(() => false);
         }
-      });
+      );
   }, []);
 
-  if (!historydata) {
+  const onPageChange = async (pageNo) => {
+    setLoading(() => true);
+    const values = {
+      pageNo
+    };
+    const { getPreviousBookingsforCompanion } = await import(
+      '@/services/user/bookings.service'
+    );
+    const { getBookingDataforUserUi } = await import('@/utils/bookings.utils');
+    const { data } = await getPreviousBookingsforCompanion(values);
+    if (data) {
+      const values = historydata;
+      const { bookings, ...otherdetails } = data;
+      values.pastBooking = getBookingDataforUserUi(bookings);
+      values.pastBookingDetails = otherdetails;
+      setHistoryData(values);
+    }
+    setLoading(() => false);
+  };
+
+  if (isLoading) {
     return <Loadingbar />;
   }
-
   return (
-    <div>
-      <Chatheader backgroundColor="rgba(250, 236, 236, 0.8)" />
-      <div className="notifymbsecond">
-        <Notify backgroundColor="transparent" color="black" />
-      </div>
-      <div className="bookingbox">
-        <Mastersidebar isCompanion={true} className="sbar-height-chat" />
-        <div className="booking-side">
-          <div className="booking-type">
-            <div
-              className={
-                activeTab === 'upcoming'
-                  ? 'text-sm font-bold flex items-center bottomline2 cursor-pointer'
-                  : 'text-sm font-bold flex items-center cursor-pointer'
-              }
-              onClick={() => setActiveTab('upcoming')}
-            >
-              Upcoming{' '}
+    <>
+      <div>
+        <Chatheader backgroundColor="rgba(250, 236, 236, 0.8)" />
+        <div className="notifymbsecond">
+          <Notify backgroundColor="transparent" color="black" />
+        </div>
+        <div className="bookingbox">
+          <Mastersidebar isCompanion={true} className="sbar-height-chat" />
+          <div className="booking-side">
+            <div className="booking-type">
+              <div
+                className={`text-sm font-bold flex items-center cursor-pointer ${activeTab === 'upcoming' ? 'bottomline2' : ''}`}
+                onClick={() => setActiveTab('upcoming')}
+              >
+                Upcoming{' '}
+              </div>
+              <div
+                className={`text-sm font-bold flex items-center cursor-pointer ${activeTab === 'history' ? 'bottomline2' : ''}`}
+                onClick={() => setActiveTab('history')}
+              >
+                History{' '}
+              </div>
             </div>
-            <div
-              className={
-                activeTab === 'history'
-                  ? 'text-sm font-bold flex items-center bottomline2 cursor-pointer'
-                  : 'text-sm font-bold flex items-center cursor-pointer'
-              }
-              onClick={() => setActiveTab('history')}
-            >
-              History{' '}
+            <div className="booking-box">
+              {activeTab === 'history' ? (
+                <>
+                  <BookingHistory
+                    isCompanion={true}
+                    bookingdata={historydata.pastBooking}
+                  />
+                  <Pagination
+                    currentPage={historydata.pastBookingDetails.currentPage}
+                    totalPage={historydata.pastBookingDetails.totalPages}
+                    onPageChange={onPageChange}
+                  />
+                </>
+              ) : (
+                <UpcomingBooking
+                  isCompanion={true}
+                  bookingdata={historydata.upcoming}
+                />
+              )}
             </div>
           </div>
         </div>
-        <div className="booking-box">
-          {(() => {
-            switch (activeTab) {
-              case 'history':
-                return (
-                  <BookingHistory
-                    bookingdata={historydata.pastBooking}
-                    isCompanion={true}
-                  />
-                );
-
-              case 'upcoming':
-                return (
-                  <UpcomingBooking
-                    bookingdata={historydata.upcoming}
-                    isCompanion={true}
-                  />
-                );
-              default:
-                return null;
-            }
-          })()}
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 

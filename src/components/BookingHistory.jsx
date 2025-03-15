@@ -1,3 +1,4 @@
+'use client'
 import { capitalizedWord } from '@/utils/common.utils';
 import { useRouter } from 'next/navigation';
 import { IoCalendarOutline } from 'react-icons/io5';
@@ -10,7 +11,8 @@ const BookingHistory = ({ bookingdata, isCompanion }) => {
     bookingdata.map((l, i) => (
       <div className="upcoming-slot" key={i * 300}>
         <h1 className="text-sm font-bold text-gray-500 mt-2">
-          Last meting with {l.companion?.firstname}
+          Last meting with{' '}
+          {isCompanion ? l?.user?.firstname : l.companion?.firstname}
         </h1>
         <div className="flex flex-wrap mt-1 md:gap-8 gap-4">
           <div className="flex items-center text-sm gap-2">

@@ -148,3 +148,22 @@ export function formatBookingTime(startTime) {
   // return `${startdate.toLocaleString('en-US', options)} - ${enddate.toLocaleString('en-US', endtimeoptions)}`;
   return `${startdate.toLocaleString('en-US', options)}`;
 }
+
+export const getBookingDataforUserUi = (bookingdata) => {
+  const results = []
+  for (let i = 0; i < bookingdata.length; i += 1) {
+    const value = {
+      id: bookingdata[i].id,
+      companion: bookingdata[i].users.filter((l) => l.isCompanion)[0],
+      user: bookingdata[i].users.filter((l) => !l.isCompanion)[0],
+      bookingdate: formatBookingTimingsforUi(
+        bookingdata[i].bookingstart,
+        bookingdata[i].bookingend
+      ),
+      status: bookingdata[i].status,
+      amount: bookingdata[i].amount
+    };
+    results.push(value)
+  }
+  return results;
+}

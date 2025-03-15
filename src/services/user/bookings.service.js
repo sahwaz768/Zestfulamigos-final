@@ -12,7 +12,7 @@ export const bookaCompanionService = async (values) => {
     if (error.response?.status >= 400)
       return { error: error.response.data.message };
   }
-  return { error: 'Server error' }
+  return { error: 'Server error' };
 };
 
 export const getBookingDetails = async (bookingid) => {
@@ -31,21 +31,23 @@ export const getBookingDetails = async (bookingid) => {
     if (error.response?.status >= 400)
       return { error: error.response.data.message };
   }
-  return { error: 'Server Error' }
+  return { error: 'Server Error' };
 };
 
-
-
-export const getPreviousBookings = async () => {
+export const getPreviousBookings = async (values) => {
   const { BASEURL } = await import('../../Constants/services.constants');
   const {
     default: { get }
   } = await import('../interface/interceptor');
   try {
+    let params = {};
+    if (values) {
+      params = values;
+    }
     const url = BASEURL + '/user/booking/previousbookings';
     const {
       data: { data }
-    } = await get(url);
+    } = await get(url, { params });
     return { data };
   } catch (error) {
     console.log(error?.response);
@@ -80,9 +82,7 @@ export const rateaBookingService = async (values) => {
   } = await import('../interface/interceptor');
   try {
     const url = BASEURL + '/user/booking/rateabookingRoute';
-    const {
-      data
-    } = await post(url, values);
+    const { data } = await post(url, values);
     return { data };
   } catch (error) {
     console.log(error?.response);
@@ -108,9 +108,8 @@ export const getBookingDetailsforAll = async (bookingid) => {
     if (error.response?.status >= 400)
       return { error: error.response.data.message };
   }
-  return { error: 'Server Error' }
+  return { error: 'Server Error' };
 };
-
 
 export const getRatingforUser = async () => {
   const { BASEURL } = await import('../../Constants/services.constants');
@@ -128,7 +127,7 @@ export const getRatingforUser = async () => {
     if (error.response?.status >= 400)
       return { error: error.response.data.message };
   }
-  return { error: 'Server Error' }
+  return { error: 'Server Error' };
 };
 
 export const getUpcomingBookingforCompanion = async () => {
@@ -147,5 +146,46 @@ export const getUpcomingBookingforCompanion = async () => {
     if (error.response?.status >= 400)
       return { error: error.response.data.message };
     return { error: 'Server Error' };
+  }
+};
+
+export const getUpcomingBookingforUser = async () => {
+  const { BASEURL } = await import('../../Constants/services.constants');
+  const {
+    default: { get }
+  } = await import('../interface/interceptor');
+  try {
+    const url = BASEURL + '/user/booking/getupcomingbookingforuser';
+    const {
+      data: { data }
+    } = await get(url);
+    return { data };
+  } catch (error) {
+    console.log(error?.response);
+    if (error.response?.status >= 400)
+      return { error: error.response.data.message };
+    return { error: 'Server Error' };
+  }
+};
+
+export const getPreviousBookingsforCompanion = async (values) => {
+  const { BASEURL } = await import('../../Constants/services.constants');
+  const {
+    default: { get }
+  } = await import('../interface/interceptor');
+  try {
+    let params = {};
+    if (values) {
+      params = values;
+    }
+    const url = BASEURL + '/user/booking/getpreviousbookingforcompanion';
+    const {
+      data: { data }
+    } = await get(url, { params });
+    return { data };
+  } catch (error) {
+    console.log(error?.response);
+    if (error.response?.status >= 400)
+      return { error: error.response.data.message };
   }
 };

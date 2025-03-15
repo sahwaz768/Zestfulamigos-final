@@ -65,7 +65,8 @@ const UpcomingBooking = ({ bookingdata, isCompanion }) => {
     bookingdata.map((l, i) => (
       <div className="upcoming-slot" key={i * 500}>
         <h1 className="text-sm font-bold text-gray-500 mt-2">
-          Upcoming meting with {l.companion?.firstname}
+          Upcoming meting with{' '}
+          {isCompanion ? l.user?.firstname : l.companion?.firstname}
         </h1>
         <div className="flex flex-wrap mt-1 gap-4 md:gap-8">
           <div className="flex items-center text-sm gap-2">
