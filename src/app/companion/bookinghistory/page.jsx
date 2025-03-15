@@ -61,6 +61,24 @@ const Page = () => {
     setLoading(() => false);
   };
 
+  const getUpcomingBooking = async () => {
+    setLoading(() => true);
+    const values = {
+      pageNo
+    };
+    const { getUpcomingBookingforCompanion } = await import(
+      '@/services/user/bookings.service'
+    );
+    const { getBookingDataforUserUi } = await import('@/utils/bookings.utils');
+    const { data } = await getUpcomingBookingforCompanion(values);
+    if (data) {
+      const values = historydata;
+      values.upcoming = getBookingDataforUserUi(data);
+      setHistoryData(values);
+    }
+    setLoading(() => false);
+  }
+
   if (isLoading) {
     return <Loadingbar />;
   }
