@@ -1,43 +1,37 @@
 import React, { useState } from 'react';
 
-const Pagination = () => {
-  const [selectedPage, setSelectedPage] = useState(null);
-
+const Pagination = ({ currentPage, totalPage, onPageChange}) => {
+  const TotalPages = Array.from({ length: totalPage }, (_, i) => i + 1);
   return (
     <>
       <div className="flex items-center justify-center space-x-2 pag-ination py-2">
-        <button className="px-3 py-2 rounded-md bg-gray-200 text-gray-600">&lt;</button>
-
         <button
-          onClick={() => setSelectedPage(1)}
-          className={`px-3 py-2 rounded-md ${selectedPage === 1 ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+          className="px-3 py-2 rounded-md bg-gray-200 text-gray-600"
+          disabled={currentPage === 1}
+          onClick={() => onPageChange(currentPage - 1)}
         >
-          1
+          &lt;
         </button>
+        {TotalPages.map((l) => (
+          <button
+            key={l}
+            onClick={() => onPageChange(l)}
+            className={`px-3 py-2 rounded-md ${currentPage === l ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+            disabled={currentPage === l}
+          >
+            {l}
+          </button>
+        ))}
         <button
-          onClick={() => setSelectedPage(2)}
-          className={`px-3 py-2 rounded-md ${selectedPage === 2 ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+          className="px-3 py-2 rounded-md bg-gray-200 text-gray-600"
+          disabled={currentPage === totalPage}
+          onClick={() => onPageChange(currentPage + 1)}
         >
-          2
+          &gt;
         </button>
-        <button
-          onClick={() => setSelectedPage(3)}
-          className={`px-3 py-2 rounded-md ${selectedPage === 3 ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-800'}`}
-        >
-          3
-        </button>
-        <button
-          onClick={() => setSelectedPage(4)}
-          className={`px-3 py-2 rounded-md ${selectedPage === 4 ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-800'}`}
-        >
-          4
-        </button>
-
-        <button className="px-3 py-2 rounded-md bg-gray-200 text-gray-600">&gt;</button>
       </div>
     </>
   );
 };
 
 export default Pagination;
-
