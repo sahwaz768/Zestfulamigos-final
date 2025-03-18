@@ -714,6 +714,9 @@ export const LoginModel = ({ handleModel }) => {
       ...formData,
       [name]: value
     });
+    if (Object.keys(errors).length) {
+      setErrors({});
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -722,7 +725,7 @@ export const LoginModel = ({ handleModel }) => {
     if (validateForm()) {
       setisLoading(() => true);
       try {
-        const { data, error} = await loginUserService(formData);
+        const { data, error } = await loginUserService(formData);
         if (data) {
           const decodedToken = await decodeLoginCredentials(data);
           if (decodedToken.isCompanion) {
@@ -730,8 +733,8 @@ export const LoginModel = ({ handleModel }) => {
           } else {
             router.push('/user/chat');
           }
-        }else {
-          setisLoading(() => false);Ī
+        } else {
+          setErrors({ password: error });
         }
       } catch (error) {
         console.log('Error occured');

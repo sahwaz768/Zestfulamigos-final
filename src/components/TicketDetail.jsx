@@ -3,6 +3,7 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { formatBookingTime } from '@/utils/bookings.utils';
 import { toast } from '@/utils/reduxtrigger.utils';
+import { BASEURL } from '@/Constants/services.constants';
 
 const Masterheader = dynamic(() => import('./Masterheader'), { ssr: false });
 const Threeline = dynamic(() => import('./ThreeLine'), { ssr: false });
@@ -19,11 +20,13 @@ const TicketDetail = ({ userIssue, getLatestDetails }) => {
     const { addCommentonIssue } = await import(
       '@/services/issues/userissues.service'
     );
-    const values = {
-      issueId: userIssue.id,
-      comment: userCommentData.comment
-    };
-    const { data } = await addCommentonIssue(values);
+    const formData = new FormData();
+    formData.append('issueId', userIssue.id);
+    formData.append('comment', userCommentData.comment);
+    if (userCommentData.images) {
+      formData.append('images', userCommentData.images);
+    }
+    const { data } = await addCommentonIssue(formData);
     if (data) {
       getLatestDetails(userIssue.issueId);
     } else {
@@ -83,19 +86,22 @@ const TicketDetail = ({ userIssue, getLatestDetails }) => {
                   </div>
                   <div className="message-body">
                     <p>{l.comment}</p>
-                    {l.screenshots.length ? (
-                      <a
-                        href="/path/to/admin/image.jpg"
-                        download
-                        className="attachment-link"
-                      >
-                        <img
-                          src="/sdh"
-                          alt=" Download"
-                          className="attachment-preview"
-                        />
-                      </a>
-                    ) : null}
+                    {l.screenshots.length
+                      ? l.screenshots.map((p, i) => (
+                          <a
+                            key={i}
+                            href={BASEURL + '/' + p}
+                            download
+                            className="attachment-link"
+                          >
+                            <img
+                              src={BASEURL + '/' + p}
+                              alt="Download"
+                              className="attachment-preview"
+                            />
+                          </a>
+                        ))
+                      : null}
                   </div>
                 </div>
               ))

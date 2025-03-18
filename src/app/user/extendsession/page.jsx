@@ -1,7 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import Payment from '@/shared/Assets/payment1.png';
 import Masterheader from '@/components/Masterheader';
 import { useRouter } from 'next/navigation';
 import { cancelExtensionRecord } from '@/services/sessions/extension.service';
@@ -10,6 +8,15 @@ import LocationAccess from '@/components/Locationaccess';
 
 const ExtensionBookingPage = () => {
   const [bookingdata, setBookingData] = useState(null);
+  const [confirmationdata, setconfirmationdata] = useState({
+    confirmlocation: false,
+    confirmdebitamout: false,
+    termsncondition: false
+  });
+  const [isAnyUpdatedData, setIsAnyUpdatedData] = useState({
+    updatedLocation: null,
+    updatePurpose: ''
+  });
   const router = useRouter();
 
   useEffect(() => {
@@ -24,12 +31,13 @@ const ExtensionBookingPage = () => {
           if (data) {
             const values = {
               purpose: data.bookingpurpose,
+              bookingrate: data.bookingrate,
               amount: data.updatedrate,
               extendedhours: data.extendedhours,
               user: data.userdetails?.filter((l) => !l.isCompanion)[0],
               companion: data.userdetails?.filter((l) => l.isCompanion)[0],
               id: data.id,
-             // location: data.location
+              meetinglocation: data.meetinglocation
             };
             setBookingData(() => values);
           }
@@ -77,6 +85,11 @@ const ExtensionBookingPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const { toast } = await import('@/utils/reduxtrigger.utils');
+    if (!Object.values(confirmationdata).every((l) => l)) {
+      toast.error('Please confirm all the checkbox!');
+      return;
+    }
     const values = {
       amount: String(bookingdata.amount),
       email: bookingdata.user.email,
@@ -111,117 +124,133 @@ const ExtensionBookingPage = () => {
     }
   };
 
-  if (!bookingdata) return <div><Loadingbar/></div>;
+  if (!bookingdata)
+    return (
+      <div>
+        <Loadingbar />
+      </div>
+    );
   return (
     <>
       <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" />
-      <div className='flex flex-col md:flex-row extention-container'>
-      <div className='extention-textarea '>
-      <div className="timeslotebox timeslote-textarea">
-        <h1 className="text-black md:text-2xl font-semibold my-4">
-          Purpose of Engagement
-        </h1>
-        <textarea
-          value={bookingdata.purpose}
-          onChange={(e) =>
-            setBookingData((l) => ({ ...l, purpose: e.target.value }))
-          }
-          placeholder="Purpose..."
-          className="purposeinput"
-          required
-        ></textarea>
-        <h1 className="my-3 text-sm">
-          Specify the Location for Companion Meet-Up
-        </h1>
-        <LocationAccess  />
+      <h1>Please Do not refresh the page!</h1>
+      <div className="flex flex-col md:flex-row extention-container">
+        <div className="extention-textarea ">
+          <div className="timeslotebox timeslote-textarea">
+            <h1 className="text-black md:text-2xl font-semibold my-4">
+              Purpose of Engagement
+            </h1>
+            <textarea
+              value={bookingdata.purpose}
+              onChange={(e) =>
+                setBookingData((l) => ({ ...l, purpose: e.target.value }))
+              }
+              placeholder="Purpose..."
+              className="purposeinput"
+              required
+            ></textarea>
+            <h1 className="my-3 text-sm">
+              Specify the Location for Companion Meet-Up
+            </h1>
+            <LocationAccess />
 
-        {/* <LocationInput location={location} setLocation={setLocation} /> */}
+            {/* <LocationInput location={location} setLocation={setLocation} /> */}
 
-        <div className="mt-2 ">
-          <input
-            type="checkbox"
-            checked={true}
-            onChange={() => console.log('confirm')}
-          />
-          <span className="ml-2 text-sm">Confirm the meet-up location</span>
-        </div>
-
-        {/* {errorMessage && <p className="error text-xs">{errorMessage}</p>} */}
-      </div>
-      </div>
-      <div className="extention-payment mx-4 mt-5">
-        <div className="">
-          <div className="">
-            <h1 className="md:text-2xl font-semibold">Summary of payment</h1>
-            <h3 className="text-base my-4">Description amount(INR)</h3>
-            <table className="mt-2">
-              <tbody>
-                <tr>
-                  <th className="text-sm font-normal">Base price(Exclusive GST) </th>
-                  <td className="text-sm font-normal ">
-                    : ₹{bookingdata.amount}
-                  </td>
-                </tr>
-
-                <tr>
-                  <th className="text-sm font-normal">
-                  GST (18%) 
-                  </th>
-                  <td className="text-sm font-normal">: ₹0.00</td>
-                </tr>
-                <tr>
-                  <th className="text-sm font-normal">
-                  Service Charge
-                  </th>
-                  <td className="text-sm font-normal">: ₹0.00</td>
-                </tr>
-                <tr>
-                  <th className="text-sm font-normal">Total Amount</th>
-                  <td className="text-sm font-normal">
-                    :₹{bookingdata.amount}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <div className="flex mt-3">
+            <div className="mt-2 ">
               <input
                 type="checkbox"
-                name="checkbox1"
-                checked={true}
-              //  onChange={() => console.log('i agree')}
+                checked={confirmationdata.confirmlocation}
+                onChange={() =>
+                  setconfirmationdata((l) => ({
+                    ...l,
+                    confirmlocation: !confirmationdata.confirmlocation
+                  }))
+                }
               />
-              <p className="text-xs font-normal ml-2">
-                I agree to the <a>Term and Condition</a> and Privacy policy
-              </p>
+              <span className="ml-2 text-sm">Confirm the meet-up location</span>
             </div>
-            {/* {errors.checkbox1 && (
-              <p className="text-xs text-red-800">{errors.checkbox1}</p>
-            )} */}
-            <div className="flex my-2">
-              <input
-                type="checkbox"
-                name="checkbox2"
-                checked={true}
-               // onChange={() => console.log('')}
-              />
-              <p className="text-xs font-normal ml-2">
-                I authorize the merchant to debit the above amount for selected
-                service
-              </p>
-            </div>
-            {/* {errors.checkbox2 && (
-              <p className="text-xs text-red-800">{errors.checkbox2}</p>
-            )} */}
-            <button className="paymentbtn" type="submit" onClick={handleSubmit}>
-              proceed to payment
-            </button>
-            <button className="paymentbtn" onClick={handleCancelExtension}>
-              Cancel Extension
-            </button>
           </div>
         </div>
-       
-      </div>
+        <div className="extention-payment mx-4 mt-5">
+          <div className="">
+            <div className="">
+              <h1 className="md:text-2xl font-semibold">Summary of payment</h1>
+              <h3 className="text-base my-4">Description amount(INR)</h3>
+              <table className="mt-2">
+                <tbody>
+                  <tr>
+                    <th className="text-sm font-normal">
+                      Base price(Exclusive GST){' '}
+                    </th>
+                    <td className="text-sm font-normal ">
+                      : ₹{bookingdata.bookingrate}
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th className="text-sm font-normal">GST (18%)</th>
+                    <td className="text-sm font-normal">
+                      : ₹{Number(bookingdata.bookingrate * 0.18).toFixed(2)}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="text-sm font-normal">Service Charge</th>
+                    <td className="text-sm font-normal">: ₹0.00</td>
+                  </tr>
+                  <tr>
+                    <th className="text-sm font-normal">Total Amount</th>
+                    <td className="text-sm font-normal">
+                      :₹{bookingdata.amount}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div className="flex mt-3">
+                <input
+                  type="checkbox"
+                  name="checkbox1"
+                  checked={confirmationdata.termsncondition}
+                  onChange={() =>
+                    setconfirmationdata((l) => ({
+                      ...l,
+                      termsncondition: !confirmationdata.termsncondition
+                    }))
+                  }
+                />
+                <p className="text-xs font-normal ml-2">
+                  I agree to the <a>Term and Condition</a> and Privacy policy
+                </p>
+              </div>
+              <div className="flex my-2">
+                <input
+                  type="checkbox"
+                  name="checkbox2"
+                  checked={confirmationdata.confirmdebitamout}
+                  onChange={() =>
+                    setconfirmationdata((l) => ({
+                      ...l,
+                      confirmdebitamout: !confirmationdata.confirmdebitamout
+                    }))
+                  }
+                />
+                <p className="text-xs font-normal ml-2">
+                  I authorize the merchant to debit the above amount for
+                  selected service
+                </p>
+              </div>
+              <button
+                className="paymentbtn"
+                type="submit"
+                onClick={handleSubmit}
+              >
+                proceed to payment
+              </button>
+              <button className="paymentbtn" onClick={handleCancelExtension}>
+                Cancel Extension
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

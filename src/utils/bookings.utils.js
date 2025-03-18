@@ -161,7 +161,8 @@ export const getBookingDataforUserUi = (bookingdata) => {
         bookingdata[i].bookingend
       ),
       status: bookingdata[i].status,
-      amount: bookingdata[i].amount
+      amount: bookingdata[i].amount,
+      sessions: bookingdata[i].sessions
     };
     results.push(value)
   }

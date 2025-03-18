@@ -50,7 +50,8 @@ const page = () => {
                 status: data[i].status,
                 amount: data[i].amount,
                 purpose: data[i].purpose,
-                meetinglocation: data[i].meetinglocation
+                meetinglocation: data[i].meetinglocation,
+                sessions: data[i].sessions
               };
               if (value.isPast) values.pastBooking.push(value);
               else values.upcoming.push(value);
@@ -92,12 +93,11 @@ const page = () => {
                 data[i].bookingstart,
                 data[i].bookingend
               ),
-              isPast:
-                new Date(Number(data[i].bookingstart)).getTime() < Date.now(),
               status: data[i].status,
               amount: data[i].amount,
               purpose: data[i].purpose,
-              meetinglocation: data[i].meetinglocation
+              meetinglocation: data[i].meetinglocation,
+              sessions: data[i].sessions
             };
             if (value.isPast) values.pastBooking.push(value);
             else values.upcoming.push(value);
@@ -282,11 +282,11 @@ const page = () => {
                     </h1>
                   </div>
                 </div>
-                {l.status === 'ACCEPTED' && (
+                {l.status === 'ACCEPTED' && !l.sessions?.length ? (
                   <div className="dashboard-cancel">
                     <button onClick={() => openModal(l.id)}>Cancel</button>
                   </div>
-                )}
+                ) : null}
               </div>
             ))
           ) : (
