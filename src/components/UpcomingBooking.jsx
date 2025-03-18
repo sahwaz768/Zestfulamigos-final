@@ -4,9 +4,11 @@ import { IoCalendarOutline } from 'react-icons/io5';
 import { MdOutlinePaid, MdPendingActions } from 'react-icons/md';
 import { RiServiceLine } from 'react-icons/ri';
 import { CancelBookingModel } from './Models';
+import { useRouter } from 'next/navigation';
 
 const UpcomingBooking = ({ bookingdata, isCompanion, getUpcomingBooking }) => {
   const [isOpen, setIsOpen] = useState(null);
+  const router = useRouter();
   const handleCancelClick = async () => {
     const bookingDetails = {
       bookingid: isOpen.id
@@ -58,15 +60,22 @@ const UpcomingBooking = ({ bookingdata, isCompanion, getUpcomingBooking }) => {
             </div>
           )}
         </div>
-        {l.status === 'ACCEPTED' && (
+        {l.status === 'ACCEPTED' && !l.sessions.length ? (
           <div>
             <button onClick={() => setIsOpen(l)}>Cancel</button>
           </div>
-        )}
-        {!isCompanion && l.status == 'TRANSACTIONPENDING' ? (
+        ) : null}
+        {!isCompanion &&
+        (l.status == 'TRANSACTIONPENDING' || l.status == 'UNDEREXTENSION') ? (
           <div>
             <button
-              onClick={() => router.push(`/user/payment?bookingId=${l.id}`)}
+              onClick={() => {
+                if (l.status === 'TRANSACTIONPENDING') {
+                  router.push(`/user/payment?bookingId=${l.id}`);
+                } else {
+                  router.push(`/user/extendsession?bookingId=${l.id}`);
+                }
+              }}
             >
               Complete your Payment
             </button>
