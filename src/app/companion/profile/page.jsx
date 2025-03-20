@@ -15,6 +15,7 @@ import {
 import { convertCompanionData } from '@/utils/location';
 import { BASEURL } from '@/Constants/services.constants';
 import { validateCompanion } from '@/shared/validations/companion.validation';
+import LocationAccess from '@/components/Locationaccess';
 
 const initialFormData = {
   images: [],
@@ -32,7 +33,8 @@ const initialFormData = {
   city: '',
   description: [],
   bookingrate: 0,
-  height: 160
+  height: 160,
+  baselocation: ''
 };
 
 const Page = () => {
@@ -63,8 +65,8 @@ const Page = () => {
   };
 
   const validateForm = () => {
-    const errors = validateCompanion(formData)
-    if(Object.keys(errors).length > 0) {
+    const errors = validateCompanion(formData);
+    if (Object.keys(errors).length > 0) {
       setErrors(errors);
       return false;
     }
@@ -125,244 +127,276 @@ const Page = () => {
       </div>
 
       <div className="profilebox">
-        <Mastersidebar isCompanion={true} className='sbar-height-companionprofile'/>
-        <div className='margin-box'>
-        <form onSubmit={handleSubmit}>
-          {/* Image Uploader */}
-          <div className="form-group mt-2 mb-3">
-            <label className="text-sm mb-3">Profile Pictures</label>
-            <ImageUploader
-              images={formData.images}
-              onUpload={handleImageUpload}
-            />
-            {errors.images && <span className="text-xs">{errors.images}</span>}
-          </div>
-          {/* First Name */}
-          <div className="userprofile-detail mt-3">
-            <div className="form-group">
-              <label className="text-sm">First Name</label>
-              <br />
-              <input
-                type="text"
-                name="firstname"
-                value={formData.firstname}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
+        <Mastersidebar
+          isCompanion={true}
+          className="sbar-height-companionprofile"
+        />
+        <div className="margin-box">
+          <form onSubmit={handleSubmit}>
+            {/* Image Uploader */}
+            <div className="form-group mt-2 mb-3">
+              <label className="text-sm mb-3">Profile Pictures</label>
+              <ImageUploader
+                images={formData.images}
+                onUpload={handleImageUpload}
               />
-              {errors.firstname && (
-                <span className="text-xs">{errors.firstname}</span>
+              {errors.images && (
+                <span className="text-xs">{errors.images}</span>
               )}
             </div>
-            {/* Last Name */}
-            <div className="form-group">
-              <label className="text-sm">Last Name</label>
-              <br />
-              <input
-                type="text"
-                name="lastname"
-                value={formData.lastname}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              />
-              {errors.lastname && (
-                <span className="text-xs">{errors.lastname}</span>
-              )}
+            {/* First Name */}
+            <div className="userprofile-detail mt-3">
+              <div className="form-group">
+                <label className="text-sm">First Name</label>
+                <br />
+                <input
+                  type="text"
+                  name="firstname"
+                  value={formData.firstname}
+                  onChange={handleInputChange}
+                  className="userprofile-input-text"
+                />
+                {errors.firstname && (
+                  <span className="text-xs">{errors.firstname}</span>
+                )}
+              </div>
+              {/* Last Name */}
+              <div className="form-group">
+                <label className="text-sm">Last Name</label>
+                <br />
+                <input
+                  type="text"
+                  name="lastname"
+                  value={formData.lastname}
+                  onChange={handleInputChange}
+                  className="userprofile-input-text"
+                />
+                {errors.lastname && (
+                  <span className="text-xs">{errors.lastname}</span>
+                )}
+              </div>
             </div>
-          </div>
-          {/* Gender */}
-          <div className="userprofile-detail">
-            {/* Skin Tone */}
+            {/* Gender */}
+            <div className="userprofile-detail">
+              {/* Skin Tone */}
+              <div className="form-group">
+                <label className="text-sm">Skin Tone</label>
+                <br />
+                <select
+                  name="skintone"
+                  value={formData.skintone}
+                  onChange={handleInputChange}
+                  className="userprofile-input-text"
+                >
+                  {SkinToneData.map((l, i) => (
+                    <option key={i * 20} value={l}>
+                      {l}
+                    </option>
+                  ))}
+                </select>
+                {errors.skintone && (
+                  <span className="text-xs">{errors.skintone}</span>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label className="text-sm">Height</label>
+                <br />
+                <input
+                  type="number"
+                  name="height"
+                  value={formData.height}
+                  onChange={handleInputChange}
+                  className="userprofile-input-text"
+                />
+                {errors.height && (
+                  <span className="error">{errors.height}</span>
+                )}
+              </div>
+            </div>
+            {/* Body Type */}
+            <div className="userprofile-detail">
+              <div className="form-group">
+                <label className="text-sm">Body Type</label>
+                <br />
+                <select
+                  name="bodytype"
+                  value={formData.bodytype}
+                  onChange={handleInputChange}
+                  className="userprofile-input-text"
+                >
+                  <option value="">Select Body Type</option>
+                  {getBodyTypes(formData.gender).map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+                {errors.bodytype && (
+                  <span className="text-xs">{errors.bodytype}</span>
+                )}
+              </div>
+
+              {/* Eating Habit */}
+              <div className="form-group">
+                <label className="text-sm">Eating Habit</label>
+                <br />
+                <select
+                  name="eatinghabits"
+                  value={formData.eatinghabits}
+                  onChange={handleInputChange}
+                  className="userprofile-input-text"
+                >
+                  <option value="">Select Eating Habit</option>
+                  {eatingHabitsData.map((l, i) => (
+                    <option key={i * 20} value={l}>
+                      {l}
+                    </option>
+                  ))}
+                </select>
+                {errors.eatinghabits && (
+                  <span className="text-xs">{errors.eatinghabits}</span>
+                )}
+              </div>
+            </div>
+            {/* Smoking Habit */}
+            <div className="userprofile-detail">
+              <div className="form-group">
+                <label className="text-sm">Smoking Habit</label>
+                <br />
+                <select
+                  name="smokinghabits"
+                  value={formData.smokinghabits}
+                  onChange={handleInputChange}
+                  className="userprofile-input-text"
+                >
+                  <option value="">Select Smoking Habit</option>
+                  {smokingHabitsData.map((l, i) => (
+                    <option key={i * 20} value={l}>
+                      {l}
+                    </option>
+                  ))}
+                </select>
+                {errors.smokinghabits && (
+                  <span className="text-xs">{errors.smokinghabits}</span>
+                )}
+              </div>
+
+              {/* Drinking Habit */}
+              <div className="form-group">
+                <label className="text-sm">Drinking Habit</label>
+                <br />
+                <select
+                  name="drinkinghabits"
+                  value={formData.drinkinghabits}
+                  onChange={handleInputChange}
+                  className="userprofile-input-text"
+                >
+                  <option value="">Select Drinking Habit</option>
+                  {drinkingHabitsData.map((l, i) => (
+                    <option key={i * 20} value={l}>
+                      {l}
+                    </option>
+                  ))}
+                </select>
+                {errors.drinkinghabits && (
+                  <span className="text-xs">{errors.drinkinghabits}</span>
+                )}
+              </div>
+            </div>
+
+            {/* Location */}
+            <div className="userprofile-detail">
+              <div className="form-group">
+                <label className="text-sm">City</label>
+                <br />
+                <input
+                  type="text"
+                  name="city"
+                  disabled
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  className="userprofile-input-text"
+                />
+                {errors.city && <span className="error">{errors.city}</span>}
+              </div>
+              <div className="form-group">
+                <label className="text-sm">State</label>
+                <br />
+                <input
+                  type="text"
+                  name="state"
+                  disabled
+                  value={formData.state}
+                  onChange={handleInputChange}
+                  className="userprofile-input-text"
+                />
+                {errors.state && <span className="error">{errors.state}</span>}
+              </div>
+            </div>
+            <div>
             <div className="form-group">
-              <label className="text-sm">Skin Tone</label>
-              <br />
-              <select
-                name="skintone"
-                value={formData.skintone}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              >
-                {SkinToneData.map((l, i) => (
-                  <option key={i * 20} value={l}>
-                    {l}
-                  </option>
+                <label className="text-sm">Base location</label>
+                <br />
+                <input
+                  type="text"
+                  name="baselocation"
+                  
+                  
+                  className="userprofile-input-text"
+                />
+                {/*errors.city && <span className="error">{errors.city}</span>*/}
+              </div>
+            </div>
+
+            <div className="my-4 w-[22rem] md:w-[30rem] ">
+              <h1 className='mb-2 text-sm'>if you want to update  your base location(Pickup location) check here</h1>
+              <LocationAccess />
+              <div className='flex items-center mt-2'>
+                <input type="checkbox" />
+                <h1 className='text-sm ml-2'>Confirm the pickup location</h1>
+              </div>
+            </div>
+
+            {/* Description Checkboxes */}
+            <div className="form-group mt-2">
+              <label className="text-sm ">
+                Description (Select at least 2)
+              </label>
+              <div className="grid md:grid-cols-4 md:gap-3  gap-2  grid-cols-2">
+                {descriptionData.map((desc) => (
+                  <div key={desc} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id={desc}
+                      name="description"
+                      value={desc}
+                      checked={formData.description.includes(desc)}
+                      onChange={(e) => {
+                        const { value, checked } = e.target;
+                        setFormData((prev) => ({
+                          ...prev,
+                          description: checked
+                            ? [...prev.description, value]
+                            : prev.description.filter((d) => d !== value)
+                        }));
+                      }}
+                      className="mr-2"
+                    />
+                    <span className="md:text-sm text-xs">{desc}</span>
+                  </div>
                 ))}
-              </select>
-              {errors.skintone && (
-                <span className="text-xs">{errors.skintone}</span>
+              </div>
+              {errors.description && (
+                <span className="text-xs">{errors.description}</span>
               )}
             </div>
 
-            <div className="form-group">
-              <label className="text-sm">Height</label>
-              <br />
-              <input
-                type="number"
-                name="height"
-                value={formData.height}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              />
-              {errors.height && <span className="error">{errors.height}</span>}
-            </div>
-          </div>
-          {/* Body Type */}
-          <div className="userprofile-detail">
-            <div className="form-group">
-              <label className="text-sm">Body Type</label>
-              <br />
-              <select
-                name="bodytype"
-                value={formData.bodytype}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              >
-                <option value="">Select Body Type</option>
-                {getBodyTypes(formData.gender).map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
-              {errors.bodytype && (
-                <span className="text-xs">{errors.bodytype}</span>
-              )}
-            </div>
-
-            {/* Eating Habit */}
-            <div className="form-group">
-              <label className="text-sm">Eating Habit</label>
-              <br />
-              <select
-                name="eatinghabits"
-                value={formData.eatinghabits}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              >
-                <option value="">Select Eating Habit</option>
-                {eatingHabitsData.map((l, i) => (
-                  <option key={i * 20} value={l}>
-                    {l}
-                  </option>
-                ))}
-              </select>
-              {errors.eatinghabits && (
-                <span className="text-xs">{errors.eatinghabits}</span>
-              )}
-            </div>
-          </div>
-          {/* Smoking Habit */}
-          <div className="userprofile-detail">
-            <div className="form-group">
-              <label className="text-sm">Smoking Habit</label>
-              <br />
-              <select
-                name="smokinghabits"
-                value={formData.smokinghabits}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              >
-                <option value="">Select Smoking Habit</option>
-                {smokingHabitsData.map((l, i) => (
-                  <option key={i * 20} value={l}>
-                    {l}
-                  </option>
-                ))}
-              </select>
-              {errors.smokinghabits && (
-                <span className="text-xs">{errors.smokinghabits}</span>
-              )}
-            </div>
-
-            {/* Drinking Habit */}
-            <div className="form-group">
-              <label className="text-sm">Drinking Habit</label>
-              <br />
-              <select
-                name="drinkinghabits"
-                value={formData.drinkinghabits}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              >
-                <option value="">Select Drinking Habit</option>
-                {drinkingHabitsData.map((l, i) => (
-                  <option key={i * 20} value={l}>
-                    {l}
-                  </option>
-                ))}
-              </select>
-              {errors.drinkinghabits && (
-                <span className="text-xs">{errors.drinkinghabits}</span>
-              )}
-            </div>
-          </div>
-
-          {/* Location */}
-          <div className="userprofile-detail">
-            <div className="form-group">
-              <label className="text-sm">City</label>
-              <br />
-              <input
-                type="text"
-                name="city"
-                disabled
-                value={formData.city}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              />
-              {errors.city && <span className="error">{errors.city}</span>}
-            </div>
-            <div className="form-group">
-              <label className="text-sm">State</label>
-              <br />
-              <input
-                type="text"
-                name="state"
-                disabled
-                value={formData.state}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              />
-              {errors.state && <span className="error">{errors.state}</span>}
-            </div>
-          </div>
-
-          {/* Description Checkboxes */}
-          <div className="form-group mt-2">
-            <label className="text-sm ">Description (Select at least 2)</label>
-            <div className="grid md:grid-cols-4 md:gap-3  gap-2  grid-cols-2">
-              {descriptionData.map((desc) => (
-                <div key={desc} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id={desc}
-                    name="description"
-                    value={desc}
-                    checked={formData.description.includes(desc)}
-                    onChange={(e) => {
-                      const { value, checked } = e.target;
-                      setFormData((prev) => ({
-                        ...prev,
-                        description: checked
-                          ? [...prev.description, value]
-                          : prev.description.filter((d) => d !== value)
-                      }));
-                    }}
-                    className="mr-2"
-                  />
-                  <span className='md:text-sm text-xs'>{desc}</span>
-                </div>
-              ))}
-            </div>
-            {errors.description && (
-              <span className="text-xs">{errors.description}</span>
-            )}
-          </div>
-
-          {/* Submit Button */}
-          <button type="submit" className="savechgbtn">
-            Update Profile
-          </button>
-        </form>
+            {/* Submit Button */}
+            <button type="submit" className="savechgbtn">
+              Update Profile
+            </button>
+          </form>
         </div>
       </div>
     </>

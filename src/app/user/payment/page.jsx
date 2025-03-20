@@ -146,7 +146,7 @@ const page = () => {
             <table className="mt-2">
               <tbody>
                 <tr>
-                  <th className="text-sm font-normal">Base price</th>
+                  <th className="text-sm font-normal">Base price(Inclusive)</th>
                   <td className="text-sm font-normal ">
                     : ₹{bookingDetails.bookingrate.toFixed(2)}{' '}
                   </td>
@@ -154,10 +154,18 @@ const page = () => {
 
                 <tr>
                   <th className="text-sm font-normal">
-                    Gst(18%) fee(Included)
+                 GST(18% Exclusive)
                   </th>
                   <td className="text-sm font-normal">
                     : ₹{Number(bookingDetails.bookingrate * 0.18).toFixed(2)}
+                  </td>
+                </tr>
+                <tr>
+                  <th className="text-sm font-normal">
+                    Service Charge
+                  </th>
+                  <td className="text-sm font-normal">
+                    : 0.00
                   </td>
                 </tr>
 
@@ -177,7 +185,7 @@ const page = () => {
                 onChange={handleCheckboxChange}
               />
               <p className="text-xs font-normal ml-2">
-                I agree to the <a>Term and Condition</a> and Privacy policy
+              I acknowledge that this service is for companionship and entertainment purposes only.
               </p>
             </div>
             {errors.checkbox1 && (
@@ -191,8 +199,7 @@ const page = () => {
                 onChange={handleCheckboxChange}
               />
               <p className="text-xs font-normal ml-2">
-                I authorize the merchant to debit the above amount for selected
-                service
+                I understand and agree to the platform’s terms and conditions, including cancellation and refund policies.
               </p>
             </div>
             {errors.checkbox2 && (
