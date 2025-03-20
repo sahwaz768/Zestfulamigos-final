@@ -1,5 +1,7 @@
 import { Sacramento, Manrope } from 'next/font/google';
 import '@/shared/css/globals.css';
+import StoreProvider from '@/app/StoreProvider';
+import NotificationManager from '@/components/NotificationManager';
 
 const manrope = Manrope({
   weight: ['400', '600'],
@@ -15,9 +17,12 @@ const sacramento = Sacramento({
 
 function PagesApp({ Component, pageProps }) {
   return (
-    <main className={`${sacramento.variable} ${manrope.variable}`}>
-      <Component {...pageProps} />
-    </main>
+    <StoreProvider>
+      <main className={`${sacramento.variable} ${manrope.variable}`}>
+        <NotificationManager />
+        <Component {...pageProps} />
+      </main>
+    </StoreProvider>
   );
 }
 

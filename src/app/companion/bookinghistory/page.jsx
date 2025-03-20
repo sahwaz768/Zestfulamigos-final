@@ -63,14 +63,11 @@ const Page = () => {
 
   const getUpcomingBooking = async () => {
     setLoading(() => true);
-    const values = {
-      pageNo
-    };
     const { getUpcomingBookingforCompanion } = await import(
       '@/services/user/bookings.service'
     );
     const { getBookingDataforUserUi } = await import('@/utils/bookings.utils');
-    const { data } = await getUpcomingBookingforCompanion(values);
+    const { data } = await getUpcomingBookingforCompanion();
     if (data) {
       const values = historydata;
       values.upcoming = getBookingDataforUserUi(data);
@@ -123,6 +120,7 @@ const Page = () => {
                 <UpcomingBooking
                   isCompanion={true}
                   bookingdata={historydata.upcoming}
+                  getUpcomingBooking={getUpcomingBooking}
                 />
               )}
             </div>

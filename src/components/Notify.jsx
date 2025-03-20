@@ -10,8 +10,10 @@ const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const notificationRedux = useSelector((state) => state.userNotifications.data);
-  
+  const notificationRedux = useSelector(
+    (state) => state.userNotifications.data
+  );
+
   // Initialize state with notifications from Redux
   const [notifications, setNotifications] = useState([]);
 
@@ -41,6 +43,10 @@ const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
     setNotifications((prevNotifications) =>
       prevNotifications.filter((notif) => notif.id !== id)
     );
+    import('@/services/user/notifications.service')
+      .then(({ clearNotifications }) => clearNotifications(id))
+      .then(() => {})
+      .catch(() => {});
   };
 
   return (
@@ -119,4 +125,3 @@ const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
 };
 
 export default Notify;
-

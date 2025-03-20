@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { cancelExtensionRecord } from '@/services/sessions/extension.service';
 import Loadingbar from '@/components/Loadingbar';
 import LocationAccess from '@/components/Locationaccess';
-import { CgDanger } from "react-icons/cg";
+import { CgDanger } from 'react-icons/cg';
 
 const ExtensionBookingPage = () => {
   const [bookingdata, setBookingData] = useState(null);
@@ -106,6 +106,12 @@ const ExtensionBookingPage = () => {
       extendedhours: bookingdata.extendedhours,
       extentedfinalrate: bookingdata.amount
     };
+    if (isAnyUpdatedData.updatedLocation) {
+      updatevalues['updatedLocation'] = isAnyUpdatedData.updatedLocation;
+    }
+    if (isAnyUpdatedData.updatePurpose) {
+      updatevalues['updatedPurpose'] = isAnyUpdatedData.updatePurpose;
+    }
     const { data } = await updateExtensionRecord(updatevalues);
     if (data) await handlePayment(values);
   };
@@ -134,11 +140,11 @@ const ExtensionBookingPage = () => {
   return (
     <>
       <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" />
-      <div className='flex justify-center'>
-      <div className='flex items-center justify-center gap-3 bg-red-400 rounded-lg py-3 text-white w-3/4 md:w-1/4'>
-      <CgDanger  color='white' size={25}/>
-      <h1>Please Do not refresh the page!</h1>
-      </div>
+      <div className="flex justify-center">
+        <div className="flex items-center justify-center gap-3 bg-red-400 rounded-lg py-3 text-white w-3/4 md:w-1/4">
+          <CgDanger color="white" size={25} />
+          <h1>Please Do not refresh the page!</h1>
+        </div>
       </div>
       <div className="flex flex-col md:flex-row extention-container">
         <div className="extention-textarea ">
@@ -155,17 +161,24 @@ const ExtensionBookingPage = () => {
               className="purposeinput"
               required
             ></textarea>
-            <div className='mt-4'>
-              <h1 className='text-lg font-extrabold'>Current Location</h1>
-              <h1 className='mt-2 font-bold'>Location: <span className='text-sm font-normal'>106 Doyers St, New York, NY 10013</span></h1>
+            <div className="mt-4">
+              <h1 className="text-lg font-extrabold">Current Location</h1>
+              <h1 className="mt-2 font-bold">
+                Location:{' '}
+                <span className="text-sm font-normal">
+                  {isAnyUpdatedData.updatedLocation?.formattedaddress ||
+                    bookingdata.meetinglocation.googleformattedadress}
+                </span>
+              </h1>
             </div>
             <h1 className="my-3 text-sm">
               If you want to update location please mention it here
             </h1>
-            <LocationAccess />
-
-            {/* <LocationInput location={location} setLocation={setLocation} /> */}
-
+            <LocationAccess
+              setLocation={(p) =>
+                setIsAnyUpdatedData((l) => ({ ...l, updatedLocation: p }))
+              }
+            />
             <div className="mt-2 ">
               <input
                 type="checkbox"
@@ -228,7 +241,8 @@ const ExtensionBookingPage = () => {
                   }
                 />
                 <p className="text-xs font-normal ml-2">
-                I acknowledge that this service is for companionship and entertainment purposes only.
+                  I acknowledge that this service is for companionship and
+                  entertainment purposes only.
                 </p>
               </div>
               <div className="flex my-2">
@@ -244,7 +258,8 @@ const ExtensionBookingPage = () => {
                   }
                 />
                 <p className="text-xs font-normal ml-2">
-                I understand and agree to the platform’s terms and conditions, including cancellation and refund policies
+                  I understand and agree to the platform’s terms and conditions,
+                  including cancellation and refund policies
                 </p>
               </div>
               <button

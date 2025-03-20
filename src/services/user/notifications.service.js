@@ -16,3 +16,23 @@ export const getNotifications = async () => {
   }
   return { error: 'Server Error' };
 };
+
+
+export const clearNotifications = async (id) => {
+  const { BASEURL } = await import('../../Constants/services.constants');
+  const {
+    default: { get }
+  } = await import('../interface/interceptor');
+  try {
+    const url = BASEURL + '/user/notifications/clearnotifications';
+    const {
+      data
+    } = await get(url, { params:{ id } });
+    return { data };
+  } catch (error) {
+    console.log(error?.response);
+    if (error.response?.status >= 400)
+      return { error: error.response.data.message };
+  }
+  return { error: 'Server Error' };
+};
