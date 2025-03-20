@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { cancelExtensionRecord } from '@/services/sessions/extension.service';
 import Loadingbar from '@/components/Loadingbar';
 import LocationAccess from '@/components/Locationaccess';
+import { CgDanger } from "react-icons/cg";
 
 const ExtensionBookingPage = () => {
   const [bookingdata, setBookingData] = useState(null);
@@ -133,7 +134,12 @@ const ExtensionBookingPage = () => {
   return (
     <>
       <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" />
+      <div className='flex justify-center'>
+      <div className='flex items-center justify-center gap-3 bg-red-400 rounded-lg py-3 text-white w-3/4 md:w-1/4'>
+      <CgDanger  color='white' size={25}/>
       <h1>Please Do not refresh the page!</h1>
+      </div>
+      </div>
       <div className="flex flex-col md:flex-row extention-container">
         <div className="extention-textarea ">
           <div className="timeslotebox timeslote-textarea">
@@ -149,8 +155,12 @@ const ExtensionBookingPage = () => {
               className="purposeinput"
               required
             ></textarea>
+            <div className='mt-4'>
+              <h1 className='text-lg font-extrabold'>Current Location</h1>
+              <h1 className='mt-2 font-bold'>Location: <span className='text-sm font-normal'>106 Doyers St, New York, NY 10013</span></h1>
+            </div>
             <h1 className="my-3 text-sm">
-              Specify the Location for Companion Meet-Up
+              If you want to update location please mention it here
             </h1>
             <LocationAccess />
 
@@ -167,7 +177,7 @@ const ExtensionBookingPage = () => {
                   }))
                 }
               />
-              <span className="ml-2 text-sm">Confirm the meet-up location</span>
+              <span className="ml-2 text-sm">Confirm the updated location</span>
             </div>
           </div>
         </div>
@@ -218,7 +228,7 @@ const ExtensionBookingPage = () => {
                   }
                 />
                 <p className="text-xs font-normal ml-2">
-                  I agree to the <a>Term and Condition</a> and Privacy policy
+                I acknowledge that this service is for companionship and entertainment purposes only.
                 </p>
               </div>
               <div className="flex my-2">
@@ -234,8 +244,7 @@ const ExtensionBookingPage = () => {
                   }
                 />
                 <p className="text-xs font-normal ml-2">
-                  I authorize the merchant to debit the above amount for
-                  selected service
+                I understand and agree to the platform’s terms and conditions, including cancellation and refund policies
                 </p>
               </div>
               <button
