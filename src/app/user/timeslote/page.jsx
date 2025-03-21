@@ -82,7 +82,6 @@ const Page = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setisLoading(() => true);
 
     if (
       selectedDateIndex === null ||
@@ -96,6 +95,7 @@ const Page = () => {
       return;
     }
 
+    setisLoading(() => true);
     try {
       const params = new URL(document.location.toString()).searchParams;
       const companionId = params.get('companionId');

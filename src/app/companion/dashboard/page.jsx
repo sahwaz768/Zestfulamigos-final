@@ -20,7 +20,7 @@ const page = () => {
 
   const openModal = (id) => {
     setOpenModel({
-      data: { userId: userDetails?.userId, bookingid: id },
+      data: { userId: userDetails?.userId, id: id },
       open: true
     });
   };

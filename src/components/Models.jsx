@@ -52,11 +52,9 @@ export const StartSessionModel = ({ closeModal, bookingid }) => {
           closeModal();
           window.location.reload();
         } else {
-          console.log('Error Occured');
-          closeModal();
+          setError('Sorry Wrong OTP! Please try Again');
         }
       } catch (error) {}
-      setError(''); // Clear error on successful submission
     }
   };
 
