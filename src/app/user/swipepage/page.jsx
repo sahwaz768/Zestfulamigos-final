@@ -62,7 +62,7 @@ const Page = () => {
             Check out our Companion list. Swipe left or right to explore.
           </p>
         </div>
-
+        {companiondata && companiondata.length ? (
         <div className="wrapper">
           <div className="bg-card bg-card-left-2">
             <img
@@ -76,7 +76,7 @@ const Page = () => {
               alt="Background card"
             />
           </div>
-          {companiondata && companiondata.length ? (
+          
             <div className="container">
               <div className="card-container">
                 <div className="card">
@@ -121,10 +121,11 @@ const Page = () => {
                 </div>
               </div>
             </div>
-          ) : (
-            <div>No Companions find in your Area right now..</div>
-          )}
+         
         </div>
+         ) : (
+          <div className='text-center font-extrabold '>No Companions find in your Area right now..</div>
+        )}
       </div>
     </>
   );

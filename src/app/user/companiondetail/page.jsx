@@ -7,7 +7,7 @@ import Chatheader from '@/components/Masterheader';
 import { companionDetailsService } from 'src/services/user/companionDetails.service';
 import { BASEURL } from '@/Constants/services.constants';
 import { capitalizedWord } from '@/utils/common.utils';
-import Threeline  from '@/components/ThreeLine';
+import Threeline from '@/components/ThreeLine';
 import Loadingbar from '@/components/Loadingbar';
 
 const page = () => {
@@ -26,7 +26,7 @@ const page = () => {
     }
   }, []);
 
-  if (!Object.keys(companionDetails).length) return <Loadingbar/>;
+  if (!Object.keys(companionDetails).length) return <Loadingbar />;
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -47,45 +47,41 @@ const page = () => {
       </h1>
       <div className="detailbox ">
         <div className="detail">
-          <div className=" flex flex-wrap gap-3">
-            <div className="horizontalimg flex gap-2">
+          <div className="photo-container">
+            <Image
+              src={BASEURL + `/` + companionDetails?.images[0]}
+              width={500}
+              height={300}
+              alt="profile"
+            />
+
+            {companionDetails.images[1] && (
               <Image
-                src={BASEURL + `/` + companionDetails?.images[0]}
+                src={BASEURL + `/` + companionDetails?.images[1]}
                 width={500}
                 height={300}
                 alt="profile"
               />
-            </div>
-            <div className="horizontalimg-2 flex gap-2 ">
-              {companionDetails.images[1] && (
-                <Image
-                  src={BASEURL + `/` + companionDetails?.images[1]}
-                  width={500}
-                  height={300}
-                  alt="profile"
-                />
-              )}
-            </div>
-            <div className="vertical-img ">
-              {companionDetails.images[2] && (
-                <Image
-                  src={BASEURL + `/` + companionDetails?.images[2]}
-                  width={500}
-                  height={300}
-                  alt="profile"
-                  className="mt-3"
-                />
-              )}
-              {companionDetails.images[3] && (
-                <Image
-                  src={BASEURL + `/` + companionDetails?.images[3]}
-                  className="md:mt-3"
-                  width={500}
-                  height={300}
-                  alt="profile"
-                />
-              )}
-            </div>
+            )}
+
+            {companionDetails.images[2] && (
+              <Image
+                src={BASEURL + `/` + companionDetails?.images[2]}
+                width={500}
+                height={300}
+                alt="profile"
+                className=""
+              />
+            )}
+            {companionDetails.images[3] && (
+              <Image
+                src={BASEURL + `/` + companionDetails?.images[3]}
+                className=""
+                width={500}
+                height={300}
+                alt="profile"
+              />
+            )}
           </div>
           <div style={{ fontSize: '2rem' }}>
             <b>{companionDetails.firstname}</b>
