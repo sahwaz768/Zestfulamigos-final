@@ -41,7 +41,11 @@ export const getAccessTokenFromRefreshTokenService = async (refreshToken) => {
     const data = await response.json();
     deletecookie(ACCESS_TOKEN_LOC);
     const access_token = data.access_token;
-    setCookie(null, ACCESS_TOKEN_LOC, access_token, { path: '/' });
+    setCookie(null, ACCESS_TOKEN_LOC, access_token, {
+      path: '/',
+      secure: true,
+      sameSite: 'Lax'
+    });
     return access_token;
   } catch (error) {
     console.log('Error refreshing token:', error);
@@ -49,7 +53,6 @@ export const getAccessTokenFromRefreshTokenService = async (refreshToken) => {
     throw error;
   }
 };
-
 
 export const googleloginUserService = async (values) => {
   const { BASEURL } = await import('../../Constants/services.constants');

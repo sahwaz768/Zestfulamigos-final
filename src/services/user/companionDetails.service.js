@@ -9,6 +9,7 @@ export const companionDetailsService = async (values) => {
         console.log(error.response);
         if(error.response?.status >= 400)
         return { error: error.response.data.message }
+        return { error: 'Server Error' };
     }
 }
 
@@ -23,5 +24,6 @@ export const checkCompanionSlots = async (companionId) => {
         console.log(error.response);
         if(error.response?.status >= 400)
         return { error: error.response.data.message }
+        return { error: 'Server Error' };
     }
 }

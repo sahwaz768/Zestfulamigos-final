@@ -76,9 +76,6 @@ const Page = () => {
     setLoading(() => false);
   }
 
-  if (isLoading) {
-    return <Loadingbar />;
-  }
   return (
     <>
       <div>
@@ -88,43 +85,45 @@ const Page = () => {
         </div>
         <div className="bookingbox">
           <Mastersidebar isCompanion={true} className="sbar-height-chat" />
-          <div className="booking-side">
-            <div className="booking-type">
-              <div
-                className={`text-sm font-bold flex items-center cursor-pointer ${activeTab === 'upcoming' ? 'bottomline2' : ''}`}
-                onClick={() => setActiveTab('upcoming')}
-              >
-                Upcoming{' '}
+          {isLoading ? (
+              <Loadingbar />
+            ) : (
+              <div className="booking-box">
+                {(() => {
+                  switch (activeTab) {
+                    case 'history':
+                      return (
+                        <>
+                          <BookingHistory
+                            isCompanion={true}
+                            bookingdata={historydata.pastBooking}
+                          />
+                          <Pagination
+                            currentPage={
+                              historydata.pastBookingDetails.currentPage
+                            }
+                            totalPage={
+                              historydata.pastBookingDetails.totalPages
+                            }
+                            onPageChange={onPageChange}
+                          />
+                        </>
+                      );
+
+                    case 'upcoming':
+                      return (
+                        <UpcomingBooking
+                          isCompanion={true}
+                          bookingdata={historydata.upcoming}
+                          getUpcomingBooking={getUpcomingBooking}
+                        />
+                      );
+                    default:
+                      return null;
+                  }
+                })()}
               </div>
-              <div
-                className={`text-sm font-bold flex items-center cursor-pointer ${activeTab === 'history' ? 'bottomline2' : ''}`}
-                onClick={() => setActiveTab('history')}
-              >
-                History{' '}
-              </div>
-            </div>
-            <div className="booking-box">
-              {activeTab === 'history' ? (
-                <>
-                  <BookingHistory
-                    isCompanion={true}
-                    bookingdata={historydata.pastBooking}
-                  />
-                  <Pagination
-                    currentPage={historydata.pastBookingDetails.currentPage}
-                    totalPage={historydata.pastBookingDetails.totalPages}
-                    onPageChange={onPageChange}
-                  />
-                </>
-              ) : (
-                <UpcomingBooking
-                  isCompanion={true}
-                  bookingdata={historydata.upcoming}
-                  getUpcomingBooking={getUpcomingBooking}
-                />
-              )}
-            </div>
-          </div>
+            )}
         </div>
       </div>
     </>
