@@ -36,6 +36,7 @@ const page = () => {
         }
       );
   }, []);
+
   const onPageChange = async (pageNo) => {
     setLoading(() => true);
     const values = {
@@ -56,9 +57,20 @@ const page = () => {
     setLoading(() => false);
   };
 
-  if (isLoading) {
-    return <Loadingbar />;
-  }
+  const getUpcomingBooking = async () => {
+    setLoading(() => true);
+    const { getUpcomingBookingforUser } = await import(
+      '@/services/user/bookings.service'
+    );
+    const { getBookingDataforUserUi } = await import('@/utils/bookings.utils');
+    const { data } = await getUpcomingBookingforUser();
+    if (data) {
+      const values = historydata;
+      values.upcoming = getBookingDataforUserUi(data);
+      setHistoryData(values);
+    }
+    setLoading(() => false);
+  };
   return (
     <>
       <div>
@@ -83,32 +95,43 @@ const page = () => {
                 History{' '}
               </div>
             </div>
-            <div className="booking-box">
-              {(() => {
-                switch (activeTab) {
-                  case 'history':
-                    return (
-                      <>
-                        <BookingHistory bookingdata={historydata.pastBooking} />
-                        <Pagination
-                          currentPage={
-                            historydata.pastBookingDetails.currentPage
-                          }
-                          totalPage={historydata.pastBookingDetails.totalPages}
-                          onPageChange={onPageChange}
-                        />
-                      </>
-                    );
+            {isLoading ? (
+              <Loadingbar />
+            ) : (
+              <div className="booking-box">
+                {(() => {
+                  switch (activeTab) {
+                    case 'history':
+                      return (
+                        <>
+                          <BookingHistory
+                            bookingdata={historydata.pastBooking}
+                          />
+                          <Pagination
+                            currentPage={
+                              historydata.pastBookingDetails.currentPage
+                            }
+                            totalPage={
+                              historydata.pastBookingDetails.totalPages
+                            }
+                            onPageChange={onPageChange}
+                          />
+                        </>
+                      );
 
-                  case 'upcoming':
-                    return (
-                      <UpcomingBooking bookingdata={historydata.upcoming} />
-                    );
-                  default:
-                    return null;
-                }
-              })()}
-            </div>
+                    case 'upcoming':
+                      return (
+                        <UpcomingBooking
+                          bookingdata={historydata.upcoming}
+                          getUpcomingBooking={getUpcomingBooking}
+                        />
+                      );
+                    default:
+                      return null;
+                  }
+                })()}
+              </div>
+            )}
           </div>
         </div>
       </div>

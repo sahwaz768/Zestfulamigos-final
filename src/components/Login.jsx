@@ -70,8 +70,16 @@ const Login = () => {
       if (data) {
         const decodedToken = decodeAccessToken(data.access_token).decodedToken;
         dispatch(datafetched(decodedToken));
-        setCookie(null, ACCESS_TOKEN_LOC, data.access_token, { path: '/' });
-        setCookie(null, REFRESH_TOKEN_LOC, data.refresh_token, { path: '/' });
+        setCookie(null, ACCESS_TOKEN_LOC, data.access_token, {
+          path: '/',
+          secure: true,
+          sameSite: 'Lax'
+        });
+        setCookie(null, REFRESH_TOKEN_LOC, data.refresh_token, {
+          path: '/',
+          secure: true,
+          sameSite: 'Lax'
+        });
         console.log(decodedToken);
         if (decodedToken.isCompanion) {
           router.push('/companion/dashboard');

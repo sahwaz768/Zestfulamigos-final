@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { containsWord } from '@/utils/chat.utils';
 import { cuzzwords } from '@/shared/data/chatdata.data';
 import { toast } from '@/utils/reduxtrigger.utils';
+import { timeAgo } from '@/utils/bookings.utils';
 
 const CountdownTimer = dynamic(() => import('@/components/CountdownTimer'), {
   ssr: false
@@ -67,10 +68,7 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
           text: l.body,
           id: l.id,
           sender: l.senderid === userId ? 'sender' : 'receiver',
-          time: new Date(l.createdAt).toLocaleString('en-US', {
-            hour: 'numeric',
-            hour12: true
-          })
+          time: timeAgo(l.createdAt)
         }));
         setMessageData(() => values);
       });
@@ -81,10 +79,7 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
           text: l.body,
           id: l.id,
           sender: l.senderid === userId ? 'sender' : 'receiver',
-          time: new Date(l.createdAt).toLocaleString('en-US', {
-            hour: 'numeric',
-            hour12: true
-          })
+          time: timeAgo(l.createdAt)
         }));
         setMessageData(() => values);
       });
@@ -126,7 +121,7 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
         JSON.stringify({
           joinchatroom: sendData
         }),
-        { path: '/', maxAge: 8 * 60 * 60 }
+        { path: '/', maxAge: 8 * 60 * 60, secure: true, sameSite: 'Lax' }
       );
       socket.emit('joinchatroom', sendData);
     };
@@ -143,8 +138,8 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
   const sendNewMessage = useCallback(
     async (content) => {
       if (inputValue && content) {
-        if(containsWord(cuzzwords, inputValue)){
-          toast.error("You are violating the rules! please mind the words!")
+        if (containsWord(cuzzwords, inputValue)) {
+          toast.error('You are violating the rules! please mind the words!');
         }
         setCookie(
           null,
@@ -159,7 +154,7 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
               }
             }
           }),
-          { path: '/', maxAge: 8 * 60 * 60 }
+          { path: '/', maxAge: 8 * 60 * 60, secure: true, sameSite: 'Lax' }
         );
         socket.emit('sendMessage', {
           roomid: selected.id,
