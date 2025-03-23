@@ -74,7 +74,7 @@ const Page = () => {
       setHistoryData(values);
     }
     setLoading(() => false);
-  }
+  };
 
   return (
     <>
@@ -84,8 +84,23 @@ const Page = () => {
           <Notify backgroundColor="transparent" color="black" />
         </div>
         <div className="bookingbox">
-          <Mastersidebar isCompanion={true} className="sbar-height-chat" />
-          {isLoading ? (
+          <Mastersidebar className="sbar-height-chat" />
+          <div className="booking-side">
+            <div className="booking-type">
+              <div
+                className={`text-sm font-bold flex items-center cursor-pointer ${activeTab === 'upcoming' ? 'bottomline2' : ''}`}
+                onClick={() => setActiveTab('upcoming')}
+              >
+                Upcoming{' '}
+              </div>
+              <div
+                className={`text-sm font-bold flex items-center cursor-pointer ${activeTab === 'history' ? 'bottomline2' : ''}`}
+                onClick={() => setActiveTab('history')}
+              >
+                History{' '}
+              </div>
+            </div>
+            {isLoading ? (
               <Loadingbar />
             ) : (
               <div className="booking-box">
@@ -124,6 +139,7 @@ const Page = () => {
                 })()}
               </div>
             )}
+          </div>
         </div>
       </div>
     </>
