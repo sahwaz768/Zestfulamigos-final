@@ -5,6 +5,18 @@ import Loadingbar from '@/components/Loadingbar';
 
 const Page = () => {
   const [userIssue, setUserIssue] = useState(null);
+  const getTicketDetails = async (ticketId) => {
+    if (!ticketId) {
+      return;
+    }
+    const { getIssueDetails } = await import(
+      '@/services/issues/userissues.service'
+    );
+    const { data } = await getIssueDetails(ticketId);
+    if (data) {
+      setUserIssue({ ...data, issueId: ticketId });
+    }
+  };
 
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
@@ -19,10 +31,16 @@ const Page = () => {
       });
   }, []);
 
-  if (!userIssue) return <div><Loadingbar/></div>;
+  if (!userIssue)
+    return (
+      <div>
+        <Loadingbar />
+      </div>
+    );
 
-  return <TicketDetail userIssue={userIssue} />;
+  return (
+    <TicketDetail userIssue={userIssue} getLatestDetails={getTicketDetails} />
+  );
 };
 
 export default Page;
-
