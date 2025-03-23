@@ -882,10 +882,10 @@ export const CancelBookingModel = ({ closeModal, bookingDetail }) => {
         className="companion-modal-content"
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={() => closeModal()} className="close">
+        <p onClick={() => closeModal()} className="close">
           &times;
-        </button>
-        <h1 className="text-center font-bold">Please specify the reason</h1>
+        </p>
+        <h1 className="text-center font-bold">Please specify the  reason</h1>
 
         <form onSubmit={handleSubmit}>
           <div>

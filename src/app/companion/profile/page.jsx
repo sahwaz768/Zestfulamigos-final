@@ -9,7 +9,7 @@ import {
   eatingHabitsData,
   // GenderData,
   getBodyTypes,
-  SkinToneData,
+  skinToneData,
   smokingHabitsData
 } from '@/shared/data/companion.data';
 import { convertCompanionData } from '@/utils/location';
@@ -188,7 +188,7 @@ const Page = () => {
                   onChange={handleInputChange}
                   className="userprofile-input-text"
                 >
-                  {SkinToneData.map((l, i) => (
+                  {skinToneData.map((l, i) => (
                     <option key={i * 20} value={l}>
                       {l}
                     </option>
@@ -335,14 +335,12 @@ const Page = () => {
               </div>
             </div>
             <div>
-            <div className="form-group">
+              <div className="form-group">
                 <label className="text-sm">Base location</label>
                 <br />
                 <input
                   type="text"
                   name="baselocation"
-                  
-                  
                   className="userprofile-input-text"
                 />
                 {/*errors.city && <span className="error">{errors.city}</span>*/}
@@ -350,11 +348,14 @@ const Page = () => {
             </div>
 
             <div className="my-4 w-[22rem] md:w-[30rem] ">
-              <h1 className='mb-2 text-sm'>if you want to update  your base location(Pickup location) check here</h1>
+              <h1 className="mb-2 text-sm">
+                if you want to update your base location(Pickup location) check
+                here
+              </h1>
               <LocationAccess />
-              <div className='flex items-center mt-2'>
+              <div className="flex items-center mt-2">
                 <input type="checkbox" />
-                <h1 className='text-sm ml-2'>Confirm the pickup location</h1>
+                <h1 className="text-sm ml-2">Confirm the pickup location</h1>
               </div>
             </div>
 
