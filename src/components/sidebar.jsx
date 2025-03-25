@@ -51,7 +51,7 @@ const Sidebar = ({ menuItems, userDetails, className }) => {
         {/* User profile section */}
         <div className="menu-item-second user-profile-sidebar">
           <Image
-            src={BASEURL + '/' + userDetails?.Images[0]}
+            src={ userDetails?.Images[0]}
             alt="User Profile"
             className="profile-photo-sidebar"
             width={20}

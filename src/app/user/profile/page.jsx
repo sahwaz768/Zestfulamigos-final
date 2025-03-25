@@ -17,7 +17,7 @@ const Page = () => {
       .then(({ data, error }) => {
         if (data) {
           const values = {
-            imageUrl: BASEURL + '/' + data.data?.Images[0],
+            imageUrl:  data.data?.Images[0],
             fullName: data.data?.firstname + ' ' + data.data?.lastname,
             email: data.data?.email,
             phoneNumber: data.data.phoneno,

@@ -50,7 +50,7 @@ const HeaderProfileButton = ({ handleClose, dropdownRef }) => {
       <div className="dropdown-profilebtnbox p-4">
         <div className="flex justify-center">
           <Image
-            src={BASEURL + '/' + userDetails.Images[0]}
+            src={ userDetails.Images[0]}
             alt="this is profile"
             height={120}
             width={120}

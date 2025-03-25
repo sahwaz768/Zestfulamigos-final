@@ -478,7 +478,7 @@ const ImageUploader = ({ images, onUpload }) => {
       {localImages.map((img, index) => (
         <div key={index} className="image-container">
           <img
-            src={typeof img === 'object' ? img.url : BASEURL + '/' + img}
+            src={typeof img === 'object' ? img.url :  img}
             alt={`Uploaded ${index + 1}`}
             className="uploaded-image"
           />

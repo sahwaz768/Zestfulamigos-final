@@ -56,8 +56,8 @@ const ChatComponent = ({ chatrooms, isCompanion }) => {
                       <Image
                         src={
                           isCompanion
-                            ? BASEURL + '/' + l.user?.Images[0]
-                            : BASEURL + '/' + l.companion?.Images[0]
+                            ?  l.user?.Images[0]
+                            :  l.companion?.Images[0]
                         }
                         alt="profile"
                         width={20}
