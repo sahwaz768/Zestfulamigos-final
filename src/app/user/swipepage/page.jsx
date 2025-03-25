@@ -91,10 +91,10 @@ const Page = () => {
                       <div className="text-sm font-extrabold text-center">
                         {companions[currentIndex].firstname}
                       </div>
-                      <div className="flex justify-between">
+                      <div className="flex justify-center">
                         <div className="text-sm">
-                          {companions[currentIndex].bookingrate} /{' '}
-                          {capitalizedWord(companions[currentIndex].bookingrateunit)}
+                          {/*companions[currentIndex].bookingrate*/} {' '}
+                          {/*capitalizedWord(companions[currentIndex].bookingrateunit)*/}
                         </div>
                         <div className="text-sm">
                           {companions[currentIndex].distance.toFixed(2)} Km
@@ -124,7 +124,7 @@ const Page = () => {
          
         </div>
          ) : (
-          <div className='text-center font-extrabold '>No Companions find in your Area right now..</div>
+          <div className='text-center  font-extrabold '>No Companions find in your Area right now..</div>
         )}
       </div>
     </>

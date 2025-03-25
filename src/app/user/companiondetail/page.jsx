@@ -43,7 +43,7 @@ const page = () => {
         navLinks={navLinks}
       />
       <h1 className="text-2xl font-semibold mx-6 my-4 profile-text">
-        Full Profile detail
+        Full Profile Detail
       </h1>
       <div className="detailbox ">
         <div className="detail">
@@ -94,7 +94,7 @@ const page = () => {
             </div>
             <div className="tag">
               <p>
-                charge: <span>{companionDetails?.bookingrate} per hour</span>
+                Charge: <span>{companionDetails?.bookingrate} per hour</span>
               </p>
             </div>
             <div className="tag">

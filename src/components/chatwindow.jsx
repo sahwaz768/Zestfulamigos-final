@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState,useRef } from 'react';
 import { IoCallOutline } from 'react-icons/io5';
 import { VscSend } from 'react-icons/vsc';
 import { CiLocationOn } from 'react-icons/ci';
@@ -17,6 +17,10 @@ import { containsWord } from '@/utils/chat.utils';
 import { cuzzwords } from '@/shared/data/chatdata.data';
 import { toast } from '@/utils/reduxtrigger.utils';
 import { timeAgo } from '@/utils/bookings.utils';
+import { IoMdAdd } from 'react-icons/io';
+import { IoShareSocial } from "react-icons/io5";
+import { FiMapPin } from "react-icons/fi";
+import { Baselocationmodel } from './Models';
 
 const CountdownTimer = dynamic(() => import('@/components/CountdownTimer'), {
   ssr: false
@@ -54,6 +58,22 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
   const socket = socketinit.socket();
   const [messagedata, setMessageData] = useState(null);
   const [inputValue, setInputValue] = useState('');
+  const [isOpenup, setIsOpenup] = useState(false);
+  const dropupRef = useRef(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropupRef.current && !dropupRef.current.contains(event.target)) {
+        setIsOpenup(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const initializeSocket = async () => {
@@ -307,13 +327,23 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
               className="chat-input-text"
               placeholder="Let's Chat"
             />
-            <div className="send-button-chat flex">
-              <Link href={'/'}>
-                {' '}
-                <div className="flex justify-center items-center mx-4">
-                  <CiLocationOn color="white" size={20} />
+            <div className="send-button-chat flex" >
+              <div className="flex justify-center items-center mx-4" onClick={() => setIsOpenup(!isOpenup)}  >
+                <IoMdAdd color="white" size={25} />
+              </div>
+              {isOpenup && (
+                <div className="absolute bottom-full mb-2 w-48 bg-white shadow-lg rounded-md p-1 border border-gray-200" ref={dropupRef}>
+                  <ul>
+                    <li className="p-2 rounded-md hover:bg-red-500 cursor-pointer text-xs flex items-center gap-2 " onClick={() => setIsModalOpen(true)}>
+                    <IoShareSocial color="red" size={20} />   Share Your baselocation
+                    </li>
+                    <li className="p-2 rounded-md hover:bg-red-500 cursor-pointer text-xs flex items-center gap-2">
+                    <FiMapPin color='red' size={20} /> Track Companion/user
+                    </li>
+                  
+                  </ul>
                 </div>
-              </Link>
+              )}
               <div
                 className="msgsendbtn"
                 onClick={() => sendNewMessage(inputValue)}
@@ -327,6 +357,8 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
           </div>
         </div>
       </div>
+
+      {isModalOpen && <Baselocationmodel closeModal={() => setIsModalOpen(false)} />}
     </>
   );
 };

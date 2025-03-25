@@ -267,7 +267,7 @@ const ExtensionBookingPage = () => {
                 type="submit"
                 onClick={handleSubmit}
               >
-                proceed to payment
+                Proceed to payment
               </button>
               <button className="paymentbtn" onClick={handleCancelExtension}>
                 Cancel Extension

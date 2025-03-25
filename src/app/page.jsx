@@ -40,9 +40,7 @@ const page = () => {
             <span className="companionwith"> with</span>
             <span className="ml-6 zestful ">zestful amigos</span>
           </h2>
-          <p className="text-gray-800 mt-4  font-bold text-lg companionawait">
-            Your ZestfulCompanion Awaits......
-          </p>
+         
         </div>
         <div className="lgbtn2 ">
           <Login />

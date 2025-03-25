@@ -335,27 +335,54 @@ const Page = () => {
               </div>
             </div>
             <div>
-              <div className="form-group">
-                <label className="text-sm">Base location</label>
-                <br />
-                <input
-                  type="text"
-                  name="baselocation"
-                  className="userprofile-input-text"
-                />
-                {/*errors.city && <span className="error">{errors.city}</span>*/}
+              
+            </div>
+
+            <div className="my-4 w-[22rem] md:w-[30rem] ">
+              <h1 className="mb-2 text-sm">
+                Base location 1:
+                
+              </h1>
+              <LocationAccess />
+              <div className="flex items-center mt-2">
+                <input type="checkbox" />
+                <h1 className="text-sm ml-2">Confirm the base location 1</h1>
               </div>
             </div>
 
             <div className="my-4 w-[22rem] md:w-[30rem] ">
               <h1 className="mb-2 text-sm">
-                if you want to update your base location(Pickup location) check
-                here
+                Base location 2:
+                
               </h1>
               <LocationAccess />
               <div className="flex items-center mt-2">
                 <input type="checkbox" />
-                <h1 className="text-sm ml-2">Confirm the pickup location</h1>
+                <h1 className="text-sm ml-2">Confirm the base location 2</h1>
+              </div>
+            </div>
+
+            <div className="my-4 w-[22rem] md:w-[30rem] ">
+              <h1 className="mb-2 text-sm">
+                Base location 3:
+                
+              </h1>
+              <LocationAccess />
+              <div className="flex items-center mt-2">
+                <input type="checkbox" />
+                <h1 className="text-sm ml-2">Confirm the base location 3</h1>
+              </div>
+            </div>
+
+            <div className="my-4 w-[22rem] md:w-[30rem] ">
+              <h1 className="mb-2 text-sm">
+                Base location 4:
+                
+              </h1>
+              <LocationAccess />
+              <div className="flex items-center mt-2">
+                <input type="checkbox" />
+                <h1 className="text-sm ml-2">Confirm the base location 4</h1>
               </div>
             </div>
 

@@ -885,7 +885,7 @@ export const CancelBookingModel = ({ closeModal, bookingDetail }) => {
         <p onClick={() => closeModal()} className="close">
           &times;
         </p>
-        <h1 className="text-center font-bold">Please specify the  reason</h1>
+        <h1 className="text-center font-bold">Please specify the reason</h1>
 
         <form onSubmit={handleSubmit}>
           <div>
@@ -1240,3 +1240,160 @@ export function GoogleSignUp({ handleClose, userId }) {
     </div>
   );
 }
+
+export const Emailverification = ({ closeModal }) => {
+  const [otp, setOtp] = useState(['', '', '', '']);
+  const [error, setError] = useState('');
+
+  const handleChange = (value, index) => {
+    if (/^[0-9]?$/.test(value)) {
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+      setError('');
+
+      if (value && index < otp.length - 1) {
+        document.getElementById(`otp-${index + 1}`).focus();
+      }
+    }
+  };
+
+  const handleBackspace = (e, index) => {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+      document.getElementById(`otp-${index - 1}`).focus();
+    }
+  };
+
+  const handleSubmit = () => {
+    if (otp.includes('')) {
+      setError('Please fill in all the fields');
+    } else {
+      console.log('Entered OTP:', otp.join(''));
+      closeModal();
+    }
+  };
+
+  return (
+    <div className="extension-modal-overlay">
+      <div className="extension-modal-content">
+        <span className="close" onClick={closeModal}>
+          &times;
+        </span>
+        <h1 className="text-2xl text-center mt-2 font-bold">
+          Email Verification
+        </h1>
+        <h1 className="text-center text-xs">
+          Drop Your Companion Email Varification Code
+        </h1>
+        <div className="pin-inputs mt-4">
+          {otp.map((value, index) => (
+            <input
+              key={index}
+              id={`otp-${index}`}
+              type="text"
+              className="pin-input"
+              maxLength="1"
+              value={value}
+              onChange={(e) => handleChange(e.target.value, index)}
+              onKeyDown={(e) => handleBackspace(e, index)}
+            />
+          ))}
+        </div>
+        <button className="companion-cancel-btn mt-2" onClick={handleSubmit}>
+          Submit
+        </button>
+        {error && <p className="text-xs">{error}</p>}
+      </div>
+    </div>
+  );
+};
+
+export const Baselocationmodel = ({ closeModal }) => {
+  const [selected, setSelected] = useState(null);
+  const [error, setError] = useState('');
+
+  const handleChange = (event) => {
+    setSelected(event.target.value);
+    setError('');
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!selected) {
+      setError('Please select any option.');
+    } else {
+     // alert('Form submitted successfully!');
+    }
+  };
+
+  return (
+    <div className="extension-modal-overlay">
+      <div className="extension-modal-content">
+        <span className="close" onClick={closeModal}>
+          &times;
+        </span>
+        <h1 className="text-xl text-center my-2 font-bold">
+          Choose a baselocation to share
+        </h1>
+        <form onSubmit={handleSubmit}>
+          <div className='mb-2'>
+            <input
+              type="checkbox"
+              name="option"
+              value="option1"
+              checked={selected === 'option1'}
+              onChange={handleChange}
+            />
+            <label className="text-sm ml-2">
+              Taj Mahal, Dharmapuri Forest Colony, Tajganj Agra, Uttar Pradesh
+              282001 India
+            </label>
+          </div>
+
+          <div className='mb-2'>
+            <input
+              type="checkbox"
+              name="option"
+              value="option2"
+              checked={selected === 'option2'}
+              onChange={handleChange}
+            />
+            <label className="text-sm ml-2">
+              Apollo Bandar Colaba, Mumbai Maharashtra 400001 India
+            </label>
+          </div>
+
+          <div className='mb-2'>
+            <input
+              type="checkbox"
+              name="option"
+              value="option3"
+              checked={selected === 'option3'}
+              onChange={handleChange}
+            />
+            <label className="text-sm ml-2">
+              Rajpath, India Gate New Delhi, Delhi 110001 India
+            </label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              name="option"
+              value="option4"
+              checked={selected === 'option4'}
+              onChange={handleChange}
+            />
+            <label className="text-sm ml-2 ">
+              Vasanth Nagar Bengaluru, Karnataka 560052 India
+            </label>
+          </div>
+
+          {error && <p className="text-sm text-red-500">{error}</p>}
+          <button type="submit" className="companion-cancel-btn mt-2">
+            Share
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};

@@ -80,10 +80,10 @@ const ChatComponent = ({ chatrooms, isCompanion }) => {
                       No messages yet
                     </h1>
                     <h1 className="text-center text-xs mt-2">
-                      Looks like you haven't initiated a conversation
+                      Looks like you haven't initiated 
                     </h1>
                     <h1 className="text-center text-xs mt-1">
-                      with any of our professionals
+                      any conversation
                     </h1>
                   </div>
                 )}
@@ -113,7 +113,7 @@ const ChatComponent = ({ chatrooms, isCompanion }) => {
                 <div className="flex justify-center">
                   <Link href={'/user/genderchoose'}>
                     <button className="chat-emptyspace-btn">
-                      start a conversation
+                      Start a conversation
                     </button>
                   </Link>
                 </div>

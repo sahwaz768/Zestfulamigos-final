@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { getBookingDetailsforAll } from '@/services/user/bookings.service';
 import { redirect } from 'next/navigation';
 import RatingComponent from '@/components/RatingComponent';
+import Loadingbar from '@/components/Loadingbar';
 
 const page = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
@@ -27,7 +28,7 @@ const page = () => {
     }
   }, []);
 
-  if (!bookingDetails) return <div>Loading...</div>;
+  if (!bookingDetails) return <div><Loadingbar/></div>;
   return <RatingComponent bookingDetails={bookingDetails.companion} />;
 };
 
