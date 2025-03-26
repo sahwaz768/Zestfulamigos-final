@@ -726,10 +726,23 @@ export const LoginModel = ({ handleModel }) => {
         const { data, error } = await loginUserService(formData);
         if (data) {
           const decodedToken = await decodeLoginCredentials(data);
-          if (decodedToken.isCompanion) {
-            router.push('/companion/dashboard');
+          if (decodedToken.isEmailVerified) {
+            if (decodedToken.isCompanion) {
+              router.push('/companion/dashboard');
+            } else {
+              router.push('/user/chat');
+            }
           } else {
-            router.push('/user/chat');
+            handleModel({
+              open: true,
+              type: 'emailverify',
+              data: {
+                email: formData.email,
+                redirecturl: decodedToken.isCompanion
+                  ? '/companion/dashboard'
+                  : '/user/gnderchoose'
+              }
+            });
           }
         } else {
           setErrors({ password: error });
@@ -1241,17 +1254,28 @@ export function GoogleSignUp({ handleClose, userId }) {
   );
 }
 
-export const Emailverification = ({ closeModal }) => {
+export const Emailverification = ({ handleModel, ...props }) => {
   const [otp, setOtp] = useState(['', '', '', '']);
+  const [resendPassword, setResendPassword] = useState(false);
   const [error, setError] = useState('');
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!resendPassword) {
+      setTimeout(() => {
+        setResendPassword(() => true);
+      }, 1000);
+    }
+  }, [resendPassword]);
 
   const handleChange = (value, index) => {
     if (/^[0-9]?$/.test(value)) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
-      setError('');
-
+      if (error) {
+        setError('');
+      }
       if (value && index < otp.length - 1) {
         document.getElementById(`otp-${index + 1}`).focus();
       }
@@ -1264,21 +1288,53 @@ export const Emailverification = ({ closeModal }) => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (otp.includes('')) {
       setError('Please fill in all the fields');
     } else {
-      console.log('Entered OTP:', otp.join(''));
-      closeModal();
+      const { validateEmail } = await import(
+        '@/services/auth/forgotpassword.service'
+      );
+      const { toast } = await import('@/utils/reduxtrigger.utils');
+      const { data, error } = await validateEmail({
+        OTP: otp.join(''),
+        email: props.data.email
+      });
+      if (data) {
+        toast.success('Successfully Validated your Email');
+        if (props.data?.redirecturl) {
+          router.push(props.data?.redirecturl);
+        } else {
+          handleModel({ open: false });
+        }
+      } else {
+        setError('OTP is invalid');
+      }
+    }
+  };
+
+  const handleForgorPassword = async () => {
+    const { forgotEmail } = await import(
+      '../services/auth/forgotpassword.service'
+    );
+    const { toast } = await import('@/utils/reduxtrigger.utils');
+    if (props.data?.email) {
+      const { data } = await forgotEmail({
+        email: props.data.email,
+        emailverification: true
+      });
+      if (data) {
+        toast.success('Successfully Send the OTP to your email');
+        setResendPassword(() => false);
+      } else {
+        toast.error('Error Ocuured Please try again!');
+      }
     }
   };
 
   return (
     <div className="extension-modal-overlay">
       <div className="extension-modal-content">
-        <span className="close" onClick={closeModal}>
-          &times;
-        </span>
         <h1 className="text-2xl text-center mt-2 font-bold">
           Email Verification
         </h1>
@@ -1299,6 +1355,17 @@ export const Emailverification = ({ closeModal }) => {
             />
           ))}
         </div>
+        {resendPassword && (
+          <div className="text-sm text-gray-700 flex justify-center my-2">
+            <span>If you dont' receive code </span>
+            <span
+              className="text-pink-600 cursor-pointer"
+              onClick={handleForgorPassword}
+            >
+              Resend Code
+            </span>
+          </div>
+        )}
         <button className="companion-cancel-btn mt-2" onClick={handleSubmit}>
           Submit
         </button>
@@ -1322,7 +1389,7 @@ export const Baselocationmodel = ({ closeModal }) => {
     if (!selected) {
       setError('Please select any option.');
     } else {
-     // alert('Form submitted successfully!');
+      // alert('Form submitted successfully!');
     }
   };
 
@@ -1336,7 +1403,7 @@ export const Baselocationmodel = ({ closeModal }) => {
           Choose a baselocation to share
         </h1>
         <form onSubmit={handleSubmit}>
-          <div className='mb-2'>
+          <div className="mb-2">
             <input
               type="checkbox"
               name="option"
@@ -1350,7 +1417,7 @@ export const Baselocationmodel = ({ closeModal }) => {
             </label>
           </div>
 
-          <div className='mb-2'>
+          <div className="mb-2">
             <input
               type="checkbox"
               name="option"
@@ -1363,7 +1430,7 @@ export const Baselocationmodel = ({ closeModal }) => {
             </label>
           </div>
 
-          <div className='mb-2'>
+          <div className="mb-2">
             <input
               type="checkbox"
               name="option"

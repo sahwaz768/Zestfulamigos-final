@@ -3,7 +3,13 @@ import { useRef, useState } from 'react';
 import Link from 'next/link';
 import Notify from './Notify';
 import { BsArrowReturnRight } from 'react-icons/bs';
-import { FillOtpModel, ForgotPasswordModel, LoginModel, SetNewPasswordModel } from './Models';
+import {
+  Emailverification,
+  FillOtpModel,
+  ForgotPasswordModel,
+  LoginModel,
+  SetNewPasswordModel
+} from './Models';
 import Headerprofilebutton from './headerprofilebutton';
 import { CgProfile } from 'react-icons/cg';
 
@@ -42,6 +48,14 @@ const Masterheader = ({
     switch (type) {
       case 'login':
         return <LoginModel handleModel={handleModel} />;
+
+      case 'emailverify':
+        return (
+          <Emailverification
+            data={modelDetails.data}
+            handleModel={handleModel}
+          />
+        );
 
       case 'forgotpassword':
         return <ForgotPasswordModel handleModel={handleModel} />;
