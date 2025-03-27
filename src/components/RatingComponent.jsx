@@ -58,7 +58,7 @@ export default function RatingComponent({ bookingDetails }) {
           </h1>
           <div className="rate-photo flex justify-center md:my-2 my-6">
             <Image
-              src={BASEURL + '/' + bookingDetails?.Images[0]}
+              src={ bookingDetails?.Images[0]}
               alt="Picture of the author"
               width={200}
               height={200}

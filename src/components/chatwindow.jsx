@@ -226,8 +226,8 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
                 <img
                   src={
                     isCompanion
-                      ? BASEURL + '/' + selected.user?.Images[0]
-                      : BASEURL + '/' + selected.companion?.Images[0]
+                      ?  selected.user?.Images[0]
+                      :  selected.companion?.Images[0]
                   }
                   alt="profile"
                   width={20}

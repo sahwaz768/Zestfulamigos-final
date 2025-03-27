@@ -90,12 +90,12 @@ const TicketDetail = ({ userIssue, getLatestDetails }) => {
                       ? l.screenshots.map((p, i) => (
                           <a
                             key={i}
-                            href={BASEURL + '/' + p}
+                            href={ p}
                             download
                             className="attachment-link"
                           >
                             <img
-                              src={BASEURL + '/' + p}
+                              src={ p}
                               alt="Download"
                               className="attachment-preview"
                             />

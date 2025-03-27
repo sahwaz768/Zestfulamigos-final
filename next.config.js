@@ -20,6 +20,13 @@ module.exports = {
         hostname: 'localhost',
         port: '5000',
       },
+      {
+        protocol: 'https',
+        hostname: 'zestfulimages.s3.us-east-1.amazonaws.com',
+        port: '',
+        pathname: '/userphotos/**',
+        search: '',
+      }
     ],
   }
 };

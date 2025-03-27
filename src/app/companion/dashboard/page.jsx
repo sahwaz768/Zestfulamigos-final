@@ -179,7 +179,7 @@ const page = () => {
             </div>
             <div className="comp-admin flex justify-center items-center">
               <Image
-                src={BASEURL + '/' + userDetails?.Images[0]}
+                src={ userDetails?.Images[0]}
                 alt="Picture of the author"
                 width={117}
                 height={111}
@@ -239,7 +239,7 @@ const page = () => {
               <div className="dashboard-userdetail" key={l.id}>
                 <div className="dashboard-userprofile">
                   <Image
-                    src={BASEURL + '/' + l?.user?.Images[0]}
+                    src={ l?.user?.Images[0]}
                     alt="Picture of the author"
                     width={117}
                     height={111}

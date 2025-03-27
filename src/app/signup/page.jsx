@@ -7,7 +7,7 @@ import Pikasho from '@/shared/Assets/Pikasobg.png';
 import { useGoogleLogin } from '@react-oauth/google';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { GoogleSignUp } from '@/components/Models';
+import { Emailverification, GoogleSignUp } from '@/components/Models';
 import { decodeLoginCredentials } from '@/utils/auth.utils';
 
 const Page = () => {
@@ -24,6 +24,10 @@ const Page = () => {
   const [errors, setErrors] = useState({});
   const [photoError, setPhotoError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [emailVerificationModel, setEmailVerificationModel] = useState({
+    open: false,
+    data: null
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [googleLoginModel, setgoogleModel] = useState({
@@ -139,7 +143,10 @@ const Page = () => {
           })
         );
         setTimeout(() => {
-          redirect('/');
+          setEmailVerificationModel({
+            open: true,
+            data: { email: formData.email }
+          });
         }, 3000);
       } else {
         const response = error;
@@ -209,8 +216,8 @@ const Page = () => {
         token: tokenResponse.code
       });
       if (data) {
-         const decodedToken = await decodeLoginCredentials(data);
-        setgoogleModel(() => ({ data: decodedToken.userId , open: true }));
+        const decodedToken = await decodeLoginCredentials(data);
+        setgoogleModel(() => ({ data: decodedToken.userId, open: true }));
       } else {
         toast.error(error);
       }
@@ -458,6 +465,12 @@ const Page = () => {
           userId={googleLoginModel.data}
         />
       ) : null}
+      {emailVerificationModel.open && (
+        <Emailverification
+          handleModel={setEmailVerificationModel}
+          data={emailVerificationModel.data}
+        />
+      )}
     </>
   );
 };
