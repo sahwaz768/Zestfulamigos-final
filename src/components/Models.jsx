@@ -1335,11 +1335,11 @@ export const Emailverification = ({ handleModel, ...props }) => {
   return (
     <div className="extension-modal-overlay">
       <div className="extension-modal-content">
-        <h1 className="text-2xl text-center mt-2 font-bold">
+        <h1 className="text-2xl text-center mt-2 font-bold text-black">
           Email Verification
         </h1>
-        <h1 className="text-center text-xs">
-          Drop Your Companion Email Varification Code
+        <h1 className="text-center text-xs text-black">
+          Drop Your  Email Verification Code
         </h1>
         <div className="pin-inputs mt-4">
           {otp.map((value, index) => (

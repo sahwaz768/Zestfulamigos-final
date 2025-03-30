@@ -39,7 +39,7 @@ const initialFormData = {
 
 const Page = () => {
   const [formData, setFormData] = useState(initialFormData);
-
+  const [selectedButton, setSelectedButton] = useState(null);
   const [errors, setErrors] = useState({});
 
   // Initialize formData with existing data when the component mounts
@@ -117,6 +117,10 @@ const Page = () => {
     } else {
       console.log('Form has errors');
     }
+  };
+
+  const handleClick = (index) => {
+    setSelectedButton((prev) => (prev === index ? null : index));
   };
 
   return (
@@ -335,54 +339,65 @@ const Page = () => {
               </div>
             </div>
             <div>
-              
-            </div>
+              <div className="flex flex-col gap-2 mt-3">
+                <label className="text-sm">Base location 1</label>
+                <button
+                  onClick={() => handleClick(0)}
+                  className={`border-2   cursor-pointer text-start p-3 text-sm rounded-lg  
+                     ${selectedButton === 0 ? 'border-pink-600' : 'border-gray-500'}`}
+                >
+                  1600 Pennsylvania Avenue NW Washington, DC 20500 United States
+                </button>
+                {selectedButton === 0 && <div className="">
+                  <p className='text-sm mb-2'>If you want to update your base location 1 check here</p>
+                  <div>
+                    <LocationAccess/>
+                  </div>
+                  </div>}
 
-            <div className="my-4 w-[22rem] md:w-[30rem] ">
-              <h1 className="mb-2 text-sm">
-                Base location 1:
-                
-              </h1>
-              <LocationAccess />
-              <div className="flex items-center mt-2">
-                <input type="checkbox" />
-                <h1 className="text-sm ml-2">Confirm the base location 1</h1>
-              </div>
-            </div>
+                <label className="text-sm">Base location 2</label>
+                <button
+                  onClick={() => handleClick(1)}
+                  className={`border-2 p-3 cursor-pointer text-start  text-sm rounded-lg   ${selectedButton === 1 ? 'border-pink-600' : 'border-gray-500'}`}
+                >
+                  350 5th Ave New York, NY 10118 United States
+                </button>
 
-            <div className="my-4 w-[22rem] md:w-[30rem] ">
-              <h1 className="mb-2 text-sm">
-                Base location 2:
-                
-              </h1>
-              <LocationAccess />
-              <div className="flex items-center mt-2">
-                <input type="checkbox" />
-                <h1 className="text-sm ml-2">Confirm the base location 2</h1>
-              </div>
-            </div>
+                {selectedButton === 1 && <div className="">
+                  <p className='text-sm mb-2'>If you want to update your base location 2 check here</p>
+                  <div>
+                    <LocationAccess/>
+                  </div>
+                  </div>}
 
-            <div className="my-4 w-[22rem] md:w-[30rem] ">
-              <h1 className="mb-2 text-sm">
-                Base location 3:
-                
-              </h1>
-              <LocationAccess />
-              <div className="flex items-center mt-2">
-                <input type="checkbox" />
-                <h1 className="text-sm ml-2">Confirm the base location 3</h1>
-              </div>
-            </div>
+                <label className="text-sm">Base location 3</label>
+                <button
+                  onClick={() => handleClick(2)}
+                  className={`border-2 p-3 cursor-pointer text-start  text-sm rounded-lg   ${selectedButton === 2 ? 'border-pink-600' : 'border-gray-500'}`}
+                >
+                  Massachusetts Hall Cambridge, MA 02138 United States
+                </button>
 
-            <div className="my-4 w-[22rem] md:w-[30rem] ">
-              <h1 className="mb-2 text-sm">
-                Base location 4:
-                
-              </h1>
-              <LocationAccess />
-              <div className="flex items-center mt-2">
-                <input type="checkbox" />
-                <h1 className="text-sm ml-2">Confirm the base location 4</h1>
+
+                {selectedButton === 2 && <div className="">
+                  <p className='text-sm mb-2'>If you want to update your base location 3 check here</p>
+                  <div>
+                    <LocationAccess/>
+                  </div>
+                  </div>}
+                <label className="text-sm">Base location 4</label>
+                <button
+                  onClick={() => handleClick(3)}
+                  className={`border-2 p-3 cursor-pointer text-start  text-sm rounded-lg   ${selectedButton === 3 ? 'border-pink-500' : 'border-gray-500'}`}
+                >
+                  Manhattan New York, NY 10036 United States
+                </button>
+                {selectedButton === 3 && <div className="">
+                  <p className='text-sm mb-2'>If you want to update your base location 4 check here</p>
+                  <div>
+                    <LocationAccess/>
+                  </div>
+                  </div>}
               </div>
             </div>
 
@@ -478,7 +493,7 @@ const ImageUploader = ({ images, onUpload }) => {
       {localImages.map((img, index) => (
         <div key={index} className="image-container">
           <img
-            src={typeof img === 'object' ? img.url :  img}
+            src={typeof img === 'object' ? img.url : img}
             alt={`Uploaded ${index + 1}`}
             className="uploaded-image"
           />

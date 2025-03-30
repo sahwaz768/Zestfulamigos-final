@@ -10,6 +10,7 @@ import { formatBookingTime } from '@/utils/bookings.utils';
 import Mailbox from '@/shared/Assets/mailbox.png';
 import Logo from '@/shared/Assets/nobglogo.png';
 import Link from 'next/link';
+import Verifyemail from '@/shared/Assets/verifyemail.png';
 
 const ChatComponent = ({ chatrooms, isCompanion }) => {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -73,6 +74,7 @@ const ChatComponent = ({ chatrooms, isCompanion }) => {
                   ))
                 ) : (
                   <div>
+                    {/* no message wala hai
                     <div className="no-chatbox">
                       <Image src={Mailbox} alt="mailbox image" />
                     </div>
@@ -85,7 +87,19 @@ const ChatComponent = ({ chatrooms, isCompanion }) => {
                     <h1 className="text-center text-xs mt-1">
                       any conversation
                     </h1>
-                  </div>
+                    */}
+                    <div>
+                      <div className='email-verificationbox'>
+                      <Image src={Verifyemail} alt="mailbox image" />
+                      </div>
+                      <h1 className="text-center font-extrabold mt-3 text-normal text-red-700">
+                      Please verify your email to see your chats.
+                    </h1>
+                    <h1 className="text-center text-xs mt-2 px-3">
+                    Stay connected seamlessly and enjoy uninterrupted chats.
+                    </h1>
+                    </div>
+                  </div> 
                 )}
               </div>
             </div>
