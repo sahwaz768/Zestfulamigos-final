@@ -3918,4 +3918,16 @@ input[type='checkbox']:disabled + span {
   cursor: not-allowed;
 }
 
+/* email verification */
+
+.email-verificationbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.email-verificationbox img {
+  margin-top: 50px;
+  width: 70px;
+  height: 70px;
+}
 
