@@ -13,7 +13,6 @@ import {
   smokingHabitsData
 } from '@/shared/data/companion.data';
 import { convertCompanionData } from '@/utils/location';
-import { BASEURL } from '@/Constants/services.constants';
 import { validateCompanion } from '@/shared/validations/companion.validation';
 import LocationAccess from '@/components/Locationaccess';
 
@@ -34,12 +33,15 @@ const initialFormData = {
   description: [],
   bookingrate: 0,
   height: 160,
-  baselocation: ''
+  baselocations: []
 };
 
 const Page = () => {
   const [formData, setFormData] = useState(initialFormData);
-  const [selectedButton, setSelectedButton] = useState(null);
+  const [isLoading, setisLoading] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(
+    Array.from({ length: 4 }, () => null)
+  );
   const [errors, setErrors] = useState({});
 
   // Initialize formData with existing data when the component mounts
@@ -67,6 +69,7 @@ const Page = () => {
   const validateForm = () => {
     const errors = validateCompanion(formData);
     if (Object.keys(errors).length > 0) {
+      console.log('Errors', errors);
       setErrors(errors);
       return false;
     }
@@ -76,6 +79,7 @@ const Page = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
+      setisLoading(() => true);
       console.log('Form submitted:', formData);
       const companionetails = new FormData();
       const previousImages = [];
@@ -88,7 +92,7 @@ const Page = () => {
               companionetails.append('images', img.file);
             }
           });
-        } else if (key === 'description') {
+        } else if (key === 'description' || key === 'baselocations') {
           companionetails.append(key, JSON.stringify(formData[key]));
         } else if (key !== 'id') {
           companionetails.append(key, formData[key]);
@@ -113,14 +117,18 @@ const Page = () => {
       } else {
         toast.error(error);
       }
+      setisLoading(() => false);
       // Submit form data to backend or perform further actions
     } else {
       console.log('Form has errors');
     }
   };
 
-  const handleClick = (index) => {
-    setSelectedButton((prev) => (prev === index ? null : index));
+  const handleChangeLocation = (e, index) => {
+    e.preventDefault();
+    const buttons = [...selectedButton];
+    buttons[index] = true;
+    setSelectedButton(buttons);
   };
 
   return (
@@ -310,7 +318,7 @@ const Page = () => {
             </div>
 
             {/* Location */}
-            <div className="userprofile-detail">
+            {/* <div className="userprofile-detail">
               <div className="form-group">
                 <label className="text-sm">City</label>
                 <br />
@@ -337,68 +345,47 @@ const Page = () => {
                 />
                 {errors.state && <span className="error">{errors.state}</span>}
               </div>
-            </div>
+            </div> */}
             <div>
               <div className="flex flex-col gap-2 mt-3">
-                <label className="text-sm">Base location 1</label>
-                <button
-                  onClick={() => handleClick(0)}
-                  className={`border-2   cursor-pointer text-start p-3 text-sm rounded-lg  
-                     ${selectedButton === 0 ? 'border-pink-600' : 'border-gray-500'}`}
-                >
-                  1600 Pennsylvania Avenue NW Washington, DC 20500 United States
-                </button>
-                {selectedButton === 0 && <div className="">
-                  <p className='text-sm mb-2'>If you want to update your base location 1 check here</p>
-                  <div>
-                    <LocationAccess/>
+                {formData.baselocations.map((l, i) => (
+                  <div key={i + 200}>
+                    <label className="text-sm">Base location {i + 1}</label>
+                    <button
+                      onClick={(e) => handleChangeLocation(e, i)}
+                      className={`border-2   cursor-pointer text-start p-3 text-sm rounded-lg  
+                     ${selectedButton[i] ? 'border-pink-600' : 'border-gray-500'}`}
+                    >
+                      {(l && l.formattedaddress) ||
+                        '1600 Pennsylvania Avenue NW Washington, DC 20500 United States'}
+                    </button>
+                    {selectedButton[i] && (
+                      <div className="">
+                        <p className="text-sm mb-2">
+                          If you want to update your base location {i + 1} check
+                          here
+                        </p>
+                        <div>
+                          <LocationAccess
+                            mapkey={i}
+                            setLocation={(l) => {
+                              const baseloc = [...formData.baselocations];
+                              baseloc[i] = l;
+                              setFormData((p) => ({
+                                ...p,
+                                baselocations: baseloc
+                              }));
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  </div>}
-
-                <label className="text-sm">Base location 2</label>
-                <button
-                  onClick={() => handleClick(1)}
-                  className={`border-2 p-3 cursor-pointer text-start  text-sm rounded-lg   ${selectedButton === 1 ? 'border-pink-600' : 'border-gray-500'}`}
-                >
-                  350 5th Ave New York, NY 10118 United States
-                </button>
-
-                {selectedButton === 1 && <div className="">
-                  <p className='text-sm mb-2'>If you want to update your base location 2 check here</p>
-                  <div>
-                    <LocationAccess/>
-                  </div>
-                  </div>}
-
-                <label className="text-sm">Base location 3</label>
-                <button
-                  onClick={() => handleClick(2)}
-                  className={`border-2 p-3 cursor-pointer text-start  text-sm rounded-lg   ${selectedButton === 2 ? 'border-pink-600' : 'border-gray-500'}`}
-                >
-                  Massachusetts Hall Cambridge, MA 02138 United States
-                </button>
-
-
-                {selectedButton === 2 && <div className="">
-                  <p className='text-sm mb-2'>If you want to update your base location 3 check here</p>
-                  <div>
-                    <LocationAccess/>
-                  </div>
-                  </div>}
-                <label className="text-sm">Base location 4</label>
-                <button
-                  onClick={() => handleClick(3)}
-                  className={`border-2 p-3 cursor-pointer text-start  text-sm rounded-lg   ${selectedButton === 3 ? 'border-pink-500' : 'border-gray-500'}`}
-                >
-                  Manhattan New York, NY 10036 United States
-                </button>
-                {selectedButton === 3 && <div className="">
-                  <p className='text-sm mb-2'>If you want to update your base location 4 check here</p>
-                  <div>
-                    <LocationAccess/>
-                  </div>
-                  </div>}
+                ))}
               </div>
+              {errors.baselocations && (
+                <span className="text-xs">{errors.baselocations}</span>
+              )}
             </div>
 
             {/* Description Checkboxes */}
@@ -436,8 +423,8 @@ const Page = () => {
             </div>
 
             {/* Submit Button */}
-            <button type="submit" className="savechgbtn">
-              Update Profile
+            <button type="submit" className="savechgbtn" disabled={isLoading}>
+              {isLoading ? 'Requesting' : 'Update Profile'}
             </button>
           </form>
         </div>

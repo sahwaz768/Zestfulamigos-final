@@ -41,30 +41,10 @@ export const validateCompanion = (
     if (!register.skintone) {
       errors.skintone = "Skin tone is required";
     }
-  
-    if (!register.city.trim().length) {
-      errors.city = "City is required";
+
+    if(register.baselocations.filter((l) => l).length < 4){
+      errors.baselocations = "You must select atleast 4 base location";
     }
-  
-    if (!register?.state || (register.state && !register.state.trim().length)) {
-      errors.state = "State is required";
-    }
-  
-    // if (register.zipcode && !register.zipcode.trim()) {
-    //   errors.zipcode = 'Zipcode is required';
-    // }
-  
-    // if (!register.lat.trim() || isNaN(Number(register.lat))) {
-    //   errors.lat = 'Latitude must be a valid number';
-    // }
-  
-    // if (!register.lng.trim() || isNaN(Number(register.lng))) {
-    //   errors.lng = 'Longitude must be a valid number';
-    // }
-  
-    // if (!register.bookingrate) {
-    //   errors.bookingrate = "Booking rate must be a valid number";
-    // }
   
     if (!register.height) {
       errors.height = "Height must be a valid number";
