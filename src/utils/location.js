@@ -77,7 +77,7 @@ export const getLocationDetails = (query, mapId) => {
       return res([]);
     }
     const mumbai = new window.google.maps.LatLng(19.076, 72.8777);
-    const map = new google.maps.Map(document.getElementById('map'), {
+    const map = new google.maps.Map(document.getElementById(mapId), {
       center: mumbai,
       zoom: 16
     });
@@ -144,10 +144,8 @@ export function convertCompanionData(input) {
     firstname: input.firstname || '',
     lastname: input.lastname || '',
     age: input.age || 18,
-    state:
-      input.Companion && input.Companion[0].baselocation
-        ? input.Companion[0].baselocation[0].state
-        : '',
+    baselocations: input.Companion[0].baselocation,
+    // baselocations: Array.from({ length: 4 }, () => null),
     phoneno: input.phoneno || '',
     gender: input.gender || 'FEMALE',
     skintone: (input.Companion && input.Companion[0].Skintone) || '',
@@ -156,19 +154,7 @@ export function convertCompanionData(input) {
     smokinghabits: (input.Companion && input.Companion[0].smokinghabits) || '',
     drinkinghabits:
       (input.Companion && input.Companion[0].drinkinghabits) || '',
-    city:
-      input.Companion && input.Companion[0].baselocation
-        ? input.Companion[0].baselocation[0].city
-        : '',
     description: (input.Companion && input.Companion[0].description) || [],
-    height: (input.Companion && input.Companion[0].height) || '',
-    lat:
-      input.Companion && input.Companion[0].baselocation
-        ? input.Companion[0].baselocation[0].lat
-        : '',
-    lng:
-      input.Companion && input.Companion[0].baselocation
-        ? input.Companion[0].baselocation[0].lng
-        : ''
+    height: (input.Companion && input.Companion[0].height) || ''
   };
 }

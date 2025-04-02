@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-const LocationAccess = ({ setLocation }) => {
+const LocationAccess = ({ setLocation, mapkey }) => {
   const inputRef = useRef();
   const [locationInput, setLocationInput] = useState('');
   const [error, setError] = useState('');
@@ -15,7 +15,10 @@ const LocationAccess = ({ setLocation }) => {
         '@/utils/location'
       );
       await loadGoogleMapsScript();
-      const results = await getLocationDetails(locationInput);
+      const results = await getLocationDetails(
+        locationInput,
+        mapkey ? `map${mapkey}` : 'map'
+      );
       if (!isLocationSet && results) {
         setisLocationset(() => true);
       }
@@ -56,8 +59,8 @@ const LocationAccess = ({ setLocation }) => {
       {error && <p className="text-xs text-pink-600">{error}</p>}
 
       <div
-        id="map"
-        className={isLocationSet ? 'w-[20rem] md:w-[40rem] h-[25rem] my-5'  : ''}
+        id={mapkey ? `map${mapkey}` : 'map'}
+        className={isLocationSet ? 'w-[20rem] md:w-[40rem] h-[25rem] my-5' : ''}
       ></div>
     </>
   );
