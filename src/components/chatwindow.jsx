@@ -26,7 +26,7 @@ const CountdownTimer = dynamic(() => import('@/components/CountdownTimer'), {
   ssr: false
 });
 
-const GetSessionModel = (model, selected, closeModal) => {
+const GetSessionModel = (model, selected, closeModal, sendMessage) => {
   switch (model) {
     case 'Extended':
       return (
@@ -54,6 +54,7 @@ const GetSessionModel = (model, selected, closeModal) => {
         <Baselocationmodel
           closeModal={closeModal}
           baselocations={selected.companion.Companion[0].baselocation}
+          sendlocation={(l) => sendMessage(l)}
         />
       );
 
@@ -162,9 +163,12 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
 
   const sendNewMessage = useCallback(
     async (content) => {
-      if (inputValue && content) {
-        if (containsWord(cuzzwords, inputValue)) {
+      if (content) {
+        if (inputValue && containsWord(cuzzwords, inputValue)) {
           toast.error('You are violating the rules! please mind the words!');
+        } else if (/\bhttps?:\/\/[^\s/$.?#].[^\s]*\b/gi.test(inputValue)) {
+          toast.error('You are violating the rules!');
+          return;
         }
         setCookie(
           null,
@@ -216,7 +220,8 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
   };
   return (
     <>
-      {isOpenexmodel && GetSessionModel(isOpenexmodel, selected, closeModal)}
+      {isOpenexmodel &&
+        GetSessionModel(isOpenexmodel, selected, closeModal, sendNewMessage)}
       <div className="chat-window">
         <div className="chat-header">
           <div className="chatheader">
@@ -312,7 +317,13 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
             {messagedata &&
               messagedata.map((msg) => (
                 <div key={msg.id} className={`message ${msg.sender}`}>
-                  {msg.text}
+                  {msg.text.includes('https://www.google.com/maps') ? (
+                    <a href={msg.text} target="_blank">
+                      {msg.text}
+                    </a>
+                  ) : (
+                    msg.text
+                  )}
                   <br />
                   <p className="msgtime">{msg.time}</p>
                 </div>

@@ -1375,7 +1375,7 @@ export const Emailverification = ({ handleModel, ...props }) => {
   );
 };
 
-export const Baselocationmodel = ({ closeModal, baselocations }) => {
+export const Baselocationmodel = ({ closeModal, baselocations , sendlocation }) => {
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState('');
 
@@ -1389,7 +1389,10 @@ export const Baselocationmodel = ({ closeModal, baselocations }) => {
     if (!selected) {
       setError('Please select any option.');
     } else {
-      // alert('Form submitted successfully!');
+      const { lat, lng } = baselocations[Number(selected)]
+      console.log(baselocations[Number(selected)])
+      sendlocation(`https://www.google.com/maps?q=${lat},${lng}`)
+      closeModal();
     }
   };
 

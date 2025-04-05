@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-
 const Pagination = ({ currentPage, totalPage, onPageChange}) => {
   const TotalPages = Array.from({ length: totalPage }, (_, i) => i + 1);
-  return (
+  return totalPage ? (
     <>
       <div className="flex items-center justify-center space-x-2 pag-ination py-2">
         <button
@@ -31,7 +29,7 @@ const Pagination = ({ currentPage, totalPage, onPageChange}) => {
         </button>
       </div>
     </>
-  );
+  ) : null;
 };
 
 export default Pagination;
