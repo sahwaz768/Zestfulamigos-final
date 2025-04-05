@@ -1375,7 +1375,7 @@ export const Emailverification = ({ handleModel, ...props }) => {
   );
 };
 
-export const Baselocationmodel = ({ closeModal }) => {
+export const Baselocationmodel = ({ closeModal, baselocations }) => {
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState('');
 
@@ -1403,58 +1403,20 @@ export const Baselocationmodel = ({ closeModal }) => {
           Choose a baselocation to share
         </h1>
         <form onSubmit={handleSubmit}>
-          <div className="mb-2">
+          {baselocations.map((l, i) => 
+          <div className="mb-2" key={i*200}>
             <input
               type="checkbox"
               name="option"
-              value="option1"
-              checked={selected === 'option1'}
+              value={i}
+              checked={i == selected}
               onChange={handleChange}
             />
             <label className="text-sm ml-2">
-              Taj Mahal, Dharmapuri Forest Colony, Tajganj Agra, Uttar Pradesh
-              282001 India
+              {l.googleformattedadress}
             </label>
           </div>
-
-          <div className="mb-2">
-            <input
-              type="checkbox"
-              name="option"
-              value="option2"
-              checked={selected === 'option2'}
-              onChange={handleChange}
-            />
-            <label className="text-sm ml-2">
-              Apollo Bandar Colaba, Mumbai Maharashtra 400001 India
-            </label>
-          </div>
-
-          <div className="mb-2">
-            <input
-              type="checkbox"
-              name="option"
-              value="option3"
-              checked={selected === 'option3'}
-              onChange={handleChange}
-            />
-            <label className="text-sm ml-2">
-              Rajpath, India Gate New Delhi, Delhi 110001 India
-            </label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="option"
-              value="option4"
-              checked={selected === 'option4'}
-              onChange={handleChange}
-            />
-            <label className="text-sm ml-2 ">
-              Vasanth Nagar Bengaluru, Karnataka 560052 India
-            </label>
-          </div>
-
+          )}
           {error && <p className="text-sm text-red-500">{error}</p>}
           <button type="submit" className="companion-cancel-btn mt-2">
             Share

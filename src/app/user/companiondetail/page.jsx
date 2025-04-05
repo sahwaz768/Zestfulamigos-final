@@ -49,7 +49,7 @@ const page = () => {
         <div className="detail">
           <div className="photo-container">
             <Image
-              src={BASEURL + `/` + companionDetails?.images[0]}
+              src={companionDetails?.images[0]}
               width={500}
               height={300}
               alt="profile"
@@ -57,7 +57,7 @@ const page = () => {
 
             {companionDetails.images[1] && (
               <Image
-                src={BASEURL + `/` + companionDetails?.images[1]}
+                src={companionDetails?.images[1]}
                 width={500}
                 height={300}
                 alt="profile"
@@ -66,7 +66,7 @@ const page = () => {
 
             {companionDetails.images[2] && (
               <Image
-                src={BASEURL + `/` + companionDetails?.images[2]}
+                src={companionDetails?.images[2]}
                 width={500}
                 height={300}
                 alt="profile"
@@ -75,7 +75,7 @@ const page = () => {
             )}
             {companionDetails.images[3] && (
               <Image
-                src={BASEURL + `/` + companionDetails?.images[3]}
+                src={companionDetails?.images[3]}
                 className=""
                 width={500}
                 height={300}

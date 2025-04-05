@@ -81,7 +81,7 @@ const Page = () => {
               <div className="card-container">
                 <div className="card">
                   <img
-                    src={BASEURL + `/` + companions[currentIndex].images[0]}
+                    src={companions[currentIndex].images[0]}
                     alt={'profile image'}
                     className="slide-image"
                   />
