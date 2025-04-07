@@ -73,8 +73,10 @@ const page = () => {
       );
       const values = {
         ...paymentData,
-        surl: 'https://localhost:3000/transaction/success',
-        furl: `https://localhost:3000/transaction/failure?bookingId=${paymentData.bookingId}`
+        surl: process.env.NEXT_PUBLIC_UI_BASE_URL + '/transaction/success',
+        furl:
+          process.env.NEXT_PUBLIC_UI_BASE_URL +
+          `/transaction/failure?bookingId=${paymentData.bookingId}`
       };
       const response = await initiateTransaction(values);
       const formContainer = document.createElement('div');
@@ -153,20 +155,14 @@ const page = () => {
                 </tr>
 
                 <tr>
-                  <th className="text-sm font-normal">
-                 GST(18% Exclusive)
-                  </th>
+                  <th className="text-sm font-normal">GST(18% Exclusive)</th>
                   <td className="text-sm font-normal">
                     : ₹{Number(bookingDetails.bookingrate * 0.18).toFixed(2)}
                   </td>
                 </tr>
                 <tr>
-                  <th className="text-sm font-normal">
-                    Service Charge
-                  </th>
-                  <td className="text-sm font-normal">
-                    : 0.00
-                  </td>
+                  <th className="text-sm font-normal">Service Charge</th>
+                  <td className="text-sm font-normal">: 0.00</td>
                 </tr>
 
                 <tr>
@@ -185,7 +181,8 @@ const page = () => {
                 onChange={handleCheckboxChange}
               />
               <p className="text-xs font-normal ml-2">
-              I acknowledge that this service is for companionship and entertainment purposes only.
+                I acknowledge that this service is for companionship and
+                entertainment purposes only.
               </p>
             </div>
             {errors.checkbox1 && (
@@ -199,7 +196,8 @@ const page = () => {
                 onChange={handleCheckboxChange}
               />
               <p className="text-xs font-normal ml-2">
-                I understand and agree to the platform’s terms and conditions, including cancellation and refund policies.
+                I understand and agree to the platform’s terms and conditions,
+                including cancellation and refund policies.
               </p>
             </div>
             {errors.checkbox2 && (

@@ -11,11 +11,10 @@ import Loadingbar from '@/components/Loadingbar';
 const Page = React.memo((props) => {
   const [chatrooms, setChatRooms] = useState(null);
 
-
   useEffect(() => {
     import('../../../services/user/chats.service')
       .then(({ getActiveChatsService }) => getActiveChatsService())
-      .then(({ data }) => {
+      .then(({ data, error }) => {
         if (data) {
           const values = data.map((l) => ({
             user: l.User.filter((p) => !p.isCompanion)[0],
@@ -24,15 +23,26 @@ const Page = React.memo((props) => {
             booking: l.Bookings,
             session: l.Bookings?.Sessions
           }));
-          setChatRooms(values);
+          setChatRooms({ chats: values, isEmailVerified: true });
+        } else if (error === 'Email not verified') {
+          setChatRooms({ chats: [], isEmailVerified: false });
         }
       });
   }, []);
 
+  if (!chatrooms)
+    return (
+      <div>
+        <Loadingbar />
+      </div>
+    );
 
-  if (!chatrooms) return <div><Loadingbar/></div>;
-
-  return <ChatComponent chatrooms={chatrooms} />
+  return (
+    <ChatComponent
+      chatrooms={chatrooms.chats}
+      isEmailVerified={chatrooms.isEmailVerified}
+    />
+  );
 });
 
 export const Guidmodel = () => {

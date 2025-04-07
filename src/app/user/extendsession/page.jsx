@@ -68,8 +68,8 @@ const ExtensionBookingPage = () => {
       );
       const values = {
         ...paymentData,
-        surl: 'https://localhost:3000/transaction/extensionsucess',
-        furl: `https://localhost:3000/transaction/extensionfailure?bookingId=${paymentData.bookingId}`
+        surl: process.env.NEXT_PUBLIC_UI_BASE_URL + '/transaction/extensionsucess',
+        furl: process.env.NEXT_PUBLIC_UI_BASE_URL + `/transaction/extensionfailure?bookingId=${paymentData.bookingId}`
       };
       const response = await initiateTransaction(values);
       const formContainer = document.createElement('div');

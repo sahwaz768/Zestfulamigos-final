@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useEffect, useState,useRef } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { IoCallOutline } from 'react-icons/io5';
 import { VscSend } from 'react-icons/vsc';
 import { CiLocationOn } from 'react-icons/ci';
@@ -18,15 +18,15 @@ import { cuzzwords } from '@/shared/data/chatdata.data';
 import { toast } from '@/utils/reduxtrigger.utils';
 import { timeAgo } from '@/utils/bookings.utils';
 import { IoMdAdd } from 'react-icons/io';
-import { IoShareSocial } from "react-icons/io5";
-import { FiMapPin } from "react-icons/fi";
+import { IoShareSocial } from 'react-icons/io5';
+import { FiMapPin } from 'react-icons/fi';
 import { Baselocationmodel } from './Models';
 
 const CountdownTimer = dynamic(() => import('@/components/CountdownTimer'), {
   ssr: false
 });
 
-const GetSessionModel = (model, selected, closeModal) => {
+const GetSessionModel = (model, selected, closeModal, sendMessage) => {
   switch (model) {
     case 'Extended':
       return (
@@ -49,6 +49,15 @@ const GetSessionModel = (model, selected, closeModal) => {
         />
       );
 
+    case 'ShareBaseLocation':
+      return (
+        <Baselocationmodel
+          closeModal={closeModal}
+          baselocations={selected.companion.Companion[0].baselocation}
+          sendlocation={(l) => sendMessage(l)}
+        />
+      );
+
     default:
       return null;
   }
@@ -58,20 +67,17 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
   const socket = socketinit.socket();
   const [messagedata, setMessageData] = useState(null);
   const [inputValue, setInputValue] = useState('');
-  const [isOpenup, setIsOpenup] = useState(false);
   const dropupRef = useRef(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
 
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropupRef.current && !dropupRef.current.contains(event.target)) {
-        setIsOpenup(false);
+        closeModal();
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -157,9 +163,12 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
 
   const sendNewMessage = useCallback(
     async (content) => {
-      if (inputValue && content) {
-        if (containsWord(cuzzwords, inputValue)) {
+      if (content) {
+        if (inputValue && containsWord(cuzzwords, inputValue)) {
           toast.error('You are violating the rules! please mind the words!');
+        } else if (/\bhttps?:\/\/[^\s/$.?#].[^\s]*\b/gi.test(inputValue)) {
+          toast.error('You are violating the rules!');
+          return;
         }
         setCookie(
           null,
@@ -211,7 +220,8 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
   };
   return (
     <>
-      {isOpenexmodel && GetSessionModel(isOpenexmodel, selected, closeModal)}
+      {isOpenexmodel &&
+        GetSessionModel(isOpenexmodel, selected, closeModal, sendNewMessage)}
       <div className="chat-window">
         <div className="chat-header">
           <div className="chatheader">
@@ -226,8 +236,8 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
                 <img
                   src={
                     isCompanion
-                      ?  selected.user?.Images[0]
-                      :  selected.companion?.Images[0]
+                      ? selected.user?.Images[0]
+                      : selected.companion?.Images[0]
                   }
                   alt="profile"
                   width={20}
@@ -307,7 +317,13 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
             {messagedata &&
               messagedata.map((msg) => (
                 <div key={msg.id} className={`message ${msg.sender}`}>
-                  {msg.text}
+                  {msg.text.includes('https://www.google.com/maps') ? (
+                    <a href={msg.text} target="_blank">
+                      {msg.text}
+                    </a>
+                  ) : (
+                    msg.text
+                  )}
                   <br />
                   <p className="msgtime">{msg.time}</p>
                 </div>
@@ -327,23 +343,35 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
               className="chat-input-text"
               placeholder="Let's Chat"
             />
-            <div className="send-button-chat flex" >
-              <div className="flex justify-center items-center mx-4" onClick={() => setIsOpenup(!isOpenup)}  >
+            <div className="send-button-chat flex">
+              <div
+                className="flex justify-center items-center mx-4"
+                onClick={() => openModal('OpenLocationOption')}
+              >
                 <IoMdAdd color="white" size={25} />
               </div>
-              {isOpenup && (
-                <div className="absolute bottom-full mb-2 w-48 bg-white shadow-lg rounded-md p-1 border border-gray-200" ref={dropupRef}>
+              {isOpenexmodel && isOpenexmodel === 'OpenLocationOption' ? (
+                <div
+                  className="absolute bottom-full mb-2 w-48 bg-white shadow-lg rounded-md p-1 border border-gray-200"
+                  ref={dropupRef}
+                >
                   <ul>
-                    <li className="p-2 rounded-md hover:bg-red-500 cursor-pointer text-xs flex items-center gap-2 " onClick={() => setIsModalOpen(true)}>
-                    <IoShareSocial color="red" size={20} />   Share Your baselocation
-                    </li>
+                    {isCompanion ? (
+                      <li
+                        className="p-2 rounded-md hover:bg-red-500 cursor-pointer text-xs flex items-center gap-2 "
+                        onClick={() => openModal('ShareBaseLocation')}
+                      >
+                        <IoShareSocial color="red" size={20} /> Share Your
+                        baselocation
+                      </li>
+                    ) : null}
                     <li className="p-2 rounded-md hover:bg-red-500 cursor-pointer text-xs flex items-center gap-2">
-                    <FiMapPin color='red' size={20} /> Track Companion/user
+                      <FiMapPin color="red" size={20} /> Track{' '}
+                      {isCompanion ? 'User' : 'Companion'}
                     </li>
-                  
                   </ul>
                 </div>
-              )}
+              ) : null}
               <div
                 className="msgsendbtn"
                 onClick={() => sendNewMessage(inputValue)}
@@ -357,8 +385,6 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
           </div>
         </div>
       </div>
-
-      {isModalOpen && <Baselocationmodel closeModal={() => setIsModalOpen(false)} />}
     </>
   );
 };

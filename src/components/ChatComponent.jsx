@@ -5,14 +5,13 @@ import Masterheader from './Masterheader';
 import { Mastersidebar } from './MasterSidebar';
 import Notify from './Notify';
 import Chatwindow from './chatwindow';
-import { BASEURL } from '@/Constants/services.constants';
 import { formatBookingTime } from '@/utils/bookings.utils';
 import Mailbox from '@/shared/Assets/mailbox.png';
 import Logo from '@/shared/Assets/nobglogo.png';
 import Link from 'next/link';
 import Verifyemail from '@/shared/Assets/verifyemail.png';
 
-const ChatComponent = ({ chatrooms, isCompanion }) => {
+const ChatComponent = ({ chatrooms, isCompanion, isEmailVerified }) => {
   const [selectedChat, setSelectedChat] = useState(null);
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
@@ -37,7 +36,10 @@ const ChatComponent = ({ chatrooms, isCompanion }) => {
       </div>
       <div className="chatpage">
         <div>
-          <Mastersidebar isCompanion={isCompanion} className='sbar-height-chat' />
+          <Mastersidebar
+            isCompanion={isCompanion}
+            className="sbar-height-chat"
+          />
         </div>
         <div className="chatsection">
           {isMobile && selectedChat ? null : (
@@ -46,7 +48,19 @@ const ChatComponent = ({ chatrooms, isCompanion }) => {
                 <h1 className="">Chats</h1>
               </div>
               <div className="userlistbox">
-                {chatrooms?.length ? (
+                {!isEmailVerified ? (
+                  <div>
+                    <div className="email-verificationbox">
+                      <Image src={Verifyemail} alt="mailbox image" />
+                    </div>
+                    <h1 className="text-center font-extrabold mt-3 text-normal text-red-700">
+                      Please verify your email to see your chats.
+                    </h1>
+                    <h1 className="text-center text-xs mt-2 px-3">
+                      Stay connected seamlessly and enjoy uninterrupted chats.
+                    </h1>
+                  </div>
+                ) : chatrooms?.length ? (
                   chatrooms.map((l) => (
                     <div
                       className="userdetail"
@@ -57,8 +71,8 @@ const ChatComponent = ({ chatrooms, isCompanion }) => {
                       <Image
                         src={
                           isCompanion
-                            ?  l.user?.Images[0]
-                            :  l.companion?.Images[0]
+                            ? l.user?.Images[0]
+                            : l.companion?.Images[0]
                         }
                         alt="profile"
                         width={20}
@@ -74,7 +88,6 @@ const ChatComponent = ({ chatrooms, isCompanion }) => {
                   ))
                 ) : (
                   <div>
-                    {/* no message wala hai
                     <div className="no-chatbox">
                       <Image src={Mailbox} alt="mailbox image" />
                     </div>
@@ -82,24 +95,12 @@ const ChatComponent = ({ chatrooms, isCompanion }) => {
                       No messages yet
                     </h1>
                     <h1 className="text-center text-xs mt-2">
-                      Looks like you haven't initiated 
+                      Looks like you haven't initiated
                     </h1>
                     <h1 className="text-center text-xs mt-1">
                       any conversation
                     </h1>
-                    */}
-                    <div>
-                      <div className='email-verificationbox'>
-                      <Image src={Verifyemail} alt="mailbox image" />
-                      </div>
-                      <h1 className="text-center font-extrabold mt-3 text-normal text-red-700">
-                      Please verify your email to see your chats.
-                    </h1>
-                    <h1 className="text-center text-xs mt-2 px-3">
-                    Stay connected seamlessly and enjoy uninterrupted chats.
-                    </h1>
-                    </div>
-                  </div> 
+                  </div>
                 )}
               </div>
             </div>
