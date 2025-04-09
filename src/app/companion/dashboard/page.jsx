@@ -69,9 +69,6 @@ const page = () => {
     }
   };
 
-  // validation for text area
-  const [text, setText] = useState('');
-  const [error, setError] = useState('');
 
   useEffect(() => {
     import('../../../services/user/bookings.service')
@@ -111,34 +108,6 @@ const page = () => {
       .catch((err) => console.log('Error', err));
   }, []);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   // Validation check
-  //   if (text.trim() === '') {
-  //     setError('please specify the reason');
-  //     return;
-  //   }
-  //   const bookingDetails = {
-  //     userId: userDetails?.userId,
-  //     bookingid: isOpen.id
-  //   };
-  //   try {
-  //     const { cancelBooking } = await import(
-  //       '../../../services/user/bookings.service'
-  //     );
-  //     const { data } = await cancelBooking(bookingDetails);
-  //     if (data) {
-  //       setIsOpen(null);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setError('');
-  //     console.log('Submitted text:', text);
-  //     setText('');
-  //   }
-  // };
   if (!userDetails)
     return (
       <div>

@@ -4,8 +4,6 @@ import Chatheader from '@/components/Masterheader';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { redirect } from 'next/navigation';
-import { BASEURL } from '@/Constants/services.constants';
-import { capitalizedWord } from '@/utils/common.utils';
 import Loadingbar from '@/components/Loadingbar';
 import Threeline from '@/components/ThreeLine';
 

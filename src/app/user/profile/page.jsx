@@ -4,12 +4,12 @@ import { CgProfile } from 'react-icons/cg';
 import Chatheader from '@/components/Masterheader';
 import { Mastersidebar } from '@/components/MasterSidebar';
 import Notify from '@/components/Notify';
-import { BASEURL } from '@/Constants/services.constants';
 import Loadingbar from '@/components/Loadingbar';
 
 const Page = () => {
   const [formData, setFormData] = useState(null);
   const [errors, setErrors] = useState({});
+    const [isLoading, setisLoading] = useState(false);
 
   useEffect(() => {
     import('../../../services/user/userprofile.service')
@@ -66,6 +66,7 @@ const Page = () => {
     e.preventDefault();
     if (validate()) {
       try {
+        setisLoading(() => true)
         const { updateuserProfileDetailsService } = await import(
           '@/services/user/userprofile.service'
         );
@@ -91,7 +92,9 @@ const Page = () => {
         } else {
           toast.error(error);
         }
-      } catch (error) {}
+      } catch (error) {} finally{
+        setisLoading(() => false)
+      }
     }
   };
 
@@ -224,8 +227,8 @@ const Page = () => {
                 <span className="text-sm">{errors.gender}</span>
               )}
             </div>
-            <button type="submit" className="savechgbtn">
-              Save Changes
+            <button type="submit" className="savechgbtn" disabled={isLoading}>
+              {isLoading ? 'Saving..' : 'Save Changes'}
             </button>
           </form>
         </div>

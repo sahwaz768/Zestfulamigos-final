@@ -8,6 +8,7 @@ import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { redirect } from 'next/navigation';
 
 export default function RatingComponent({ bookingDetails }) {
+    const [isLoading, setisLoading] = useState(false);
   const [data, setData] = useState({ rating: 0, comment: '' });
   const [errors, setErrors] = useState([]);
 
@@ -24,6 +25,7 @@ export default function RatingComponent({ bookingDetails }) {
     if (newErrors.length > 0) {
       return;
     }
+    setisLoading(() => true)
     const { rateaBookingService } = await import(
       '@/services/user/bookings.service'
     );
@@ -41,6 +43,7 @@ export default function RatingComponent({ bookingDetails }) {
     }
     setData({ rating: 0, comment: '' });
     setErrors([]);
+    setisLoading(() => false);
     redirect('./chat');
   };
   return (
@@ -95,8 +98,8 @@ export default function RatingComponent({ bookingDetails }) {
                 }
               />
               <div className="flex justify-center">
-                <button type="submit" className="rate-btn">
-                  Submit
+                <button type="submit" className="rate-btn" disabled={isLoading}>
+                  {isLoading ? 'Submitting...' : 'Submit'}
                 </button>
               </div>
               {errors.length > 0 && (

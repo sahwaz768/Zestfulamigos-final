@@ -43,13 +43,11 @@ const Page = () => {
       );
       if (data) {
         dispatch(datafetched(data));
-        console.log(data);
-        setisLoading(() => false);
-
         router.push('/user/swipepage');
       } else {
         console.log(error);
       }
+      setisLoading(() => false);
     }
   };
 

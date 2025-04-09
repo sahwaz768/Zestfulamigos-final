@@ -8,7 +8,6 @@ import {
   FillOtpModel,
   ForgotPasswordModel,
   LoginModel,
-  SetNewPasswordModel
 } from './Models';
 import Headerprofilebutton from './headerprofilebutton';
 import { CgProfile } from 'react-icons/cg';
