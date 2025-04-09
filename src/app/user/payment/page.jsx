@@ -88,6 +88,8 @@ const page = () => {
       }
     } catch (error) {
       console.log('Payment Request Failed', error);
+    } finally{
+      setisLoading(() => false);
     }
   };
 

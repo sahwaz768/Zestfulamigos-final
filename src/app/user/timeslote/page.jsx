@@ -1,6 +1,6 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
-import { Guidmodel } from '../chat/page';
+import React, { useState, useEffect } from 'react';
+import { Guidmodel } from '@/components/Models';
 import Chatheader from '@/components/Masterheader';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
@@ -55,6 +55,7 @@ const Page = () => {
   const [location, setLocation] = useState(null);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [modelopen, setModelopen] = useState(true);
 
   const dates = Array.from({ length: 4 }, (_, i) => {
     const today = new Date();
@@ -158,7 +159,7 @@ const Page = () => {
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />
-      <Guidmodel />
+      {modelopen && <Guidmodel closeModal={() => setModelopen(false)}/>}
       <form onSubmit={handleFormSubmit} className="flex flex-col space-y-4">
         <div className="timeslote-box ">
           <div className="timeslotebox ">

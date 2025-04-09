@@ -69,7 +69,7 @@ axios.interceptors.response.use(
     // Ignore token handling if there's no token and it's not a path that needs the token
     if (ignoretokenpaths.includes(err.response?.config?.url)) {
       return Promise.reject(err);
-    }else if(!ignoretokenpaths.includes(err.response?.config?.url) && !token){
+    }else if(err.response?.config?.url && !ignoretokenpaths.includes(err.response?.config?.url) && !token){
       window.location = "/";
       return Promise.reject(err);
     }

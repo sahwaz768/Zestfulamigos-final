@@ -8,6 +8,7 @@ import LocationAccess from '@/components/Locationaccess';
 import { CgDanger } from 'react-icons/cg';
 
 const ExtensionBookingPage = () => {
+  const [isLoading, setisLoading] = useState(false);
   const [bookingdata, setBookingData] = useState(null);
   const [confirmationdata, setconfirmationdata] = useState({
     confirmlocation: false,
@@ -81,6 +82,8 @@ const ExtensionBookingPage = () => {
       }
     } catch (error) {
       console.log('Payment Request Failed', error);
+    }finally{
+      setisLoading(() => false)
     }
   };
 
@@ -91,6 +94,7 @@ const ExtensionBookingPage = () => {
       toast.error('Please confirm all the checkbox!');
       return;
     }
+    setisLoading(() => true)
     const values = {
       amount: String(bookingdata.amount),
       email: bookingdata.user.email,
@@ -114,6 +118,7 @@ const ExtensionBookingPage = () => {
     }
     const { data } = await updateExtensionRecord(updatevalues);
     if (data) await handlePayment(values);
+    setisLoading(() => false);
   };
 
   const handleCancelExtension = async () => {
@@ -266,10 +271,11 @@ const ExtensionBookingPage = () => {
                 className="paymentbtn"
                 type="submit"
                 onClick={handleSubmit}
+                disabled={isLoading}
               >
-                Proceed to payment
+                {isLoading ? 'Processing' : 'Proceed to payment'}
               </button>
-              <button className="paymentbtn" onClick={handleCancelExtension}>
+              <button className="paymentbtn" onClick={handleCancelExtension} disabled={isLoading}>
                 Cancel Extension
               </button>
             </div>

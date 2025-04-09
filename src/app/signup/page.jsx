@@ -5,7 +5,6 @@ import { IoCloudUploadOutline } from 'react-icons/io5';
 import Image from 'next/image';
 import Pikasho from '@/shared/Assets/Pikasobg.png';
 import { useGoogleLogin } from '@react-oauth/google';
-import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Emailverification, GoogleSignUp } from '@/components/Models';
 import { decodeLoginCredentials } from '@/utils/auth.utils';
@@ -20,7 +19,7 @@ const Page = () => {
     gender: '',
     photo: null
   });
-
+    const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [photoError, setPhotoError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -102,6 +101,7 @@ const Page = () => {
       return;
     }
     if (validateForm()) {
+      setIsLoading(() => true)
       const firstname = formData.name.split(' ')[0];
       const lastname = formData.name.split(' ')[1];
       if (!firstname || !lastname) {
@@ -152,6 +152,7 @@ const Page = () => {
         const response = error;
         document.getElementById('response').innerText = response;
       }
+      setIsLoading(() => false)
     }
   };
 
@@ -451,7 +452,7 @@ const Page = () => {
                   <span className="text-xs text-pink-700">{photoError}</span>
                 )}
                 <p className="text-sm text-pink-700" id="response"></p>
-                <button onClick={handleSubmit} className="sbtbtm">
+                <button onClick={handleSubmit} className="sbtbtm" disabled={isLoading}>
                   Submit
                 </button>
               </div>

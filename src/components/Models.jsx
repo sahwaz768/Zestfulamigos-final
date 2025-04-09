@@ -10,10 +10,16 @@ import {
   loadGoogleMapsScript
 } from '@/utils/location';
 import { decodeLoginCredentials } from '@/utils/auth.utils';
+import { GoLocation } from 'react-icons/go';
+import { AiOutlineSafety } from 'react-icons/ai';
+import { CiLocationOff } from 'react-icons/ci';
+import { BiLocationPlus } from 'react-icons/bi';
+import { IoIosTimer } from 'react-icons/io';
 
 export const StartSessionModel = ({ closeModal, bookingid }) => {
   const [otp, setOtp] = useState(['', '', '', '']);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (value, index) => {
     if (/^[0-9]?$/.test(value)) {
@@ -40,6 +46,7 @@ export const StartSessionModel = ({ closeModal, bookingid }) => {
     } else {
       const otpValue = otp.join('');
       try {
+        setIsLoading(() => true);
         const { startSession } = await import(
           '../services/sessions/usersessions.service'
         );
@@ -49,12 +56,34 @@ export const StartSessionModel = ({ closeModal, bookingid }) => {
         };
         const { data } = await startSession(values);
         if (data) {
+          const { getActiveChatsService } = await import(
+            '@/services/user/chats.service'
+          );
+          const { data: chatdata } = await getActiveChatsService();
+          const { appDispatch } = await import('@/Redux/store/store');
+          const { datafetched } = await import(
+            '@/Redux/chatroomReducer/chatroomReducer'
+          );
+          if (chatdata) {
+            const values = chatdata.map((l) => ({
+              user: l.User.filter((p) => !p.isCompanion)[0],
+              companion: l.User.filter((p) => p.isCompanion)[0],
+              id: l.id,
+              booking: l.Bookings,
+              session: l.Bookings?.Sessions
+            }));
+            appDispatch(datafetched({ chats: values, isEmailVerified: true }));
+          } else if (error === 'Email not verified') {
+            appDispatch(datafetched({ chats: [], isEmailVerified: false }));
+          }
           closeModal();
-          window.location.reload();
         } else {
           setError('Sorry Wrong OTP! Please try Again');
         }
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        setIsLoading(() => false);
+      }
     }
   };
 
@@ -82,8 +111,12 @@ export const StartSessionModel = ({ closeModal, bookingid }) => {
             />
           ))}
         </div>
-        <button className="companion-cancel-btn mt-2" onClick={handleSubmit}>
-          Submit OTP
+        <button
+          className="companion-cancel-btn mt-2"
+          onClick={handleSubmit}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Please wait..' : 'Sumit OTP'}
         </button>
         {error && <p className="text-xs">{error}</p>}
       </div>
@@ -92,8 +125,11 @@ export const StartSessionModel = ({ closeModal, bookingid }) => {
 };
 
 export const EndSessionModel = ({ closeModal, session }) => {
+  const [isLoading, setisLoading] = useState(false);
+  const [error, setError] = useState(null);
   const handleEndSession = async () => {
     try {
+      setisLoading(() => true);
       const { endSession } = await import(
         '../services/sessions/usersessions.service'
       );
@@ -102,13 +138,34 @@ export const EndSessionModel = ({ closeModal, session }) => {
       };
       const { data } = await endSession(values);
       if (data) {
-        window.location.reload();
+        const { getActiveChatsService } = await import(
+          '@/services/user/chats.service'
+        );
+        const { data: chatdata } = await getActiveChatsService();
+        const { appDispatch } = await import('@/Redux/store/store');
+        const { datafetched } = await import(
+          '@/Redux/chatroomReducer/chatroomReducer'
+        );
+        if (chatdata) {
+          const values = chatdata.map((l) => ({
+            user: l.User.filter((p) => !p.isCompanion)[0],
+            companion: l.User.filter((p) => p.isCompanion)[0],
+            id: l.id,
+            booking: l.Bookings,
+            session: l.Bookings?.Sessions
+          }));
+          appDispatch(datafetched({ chats: values, isEmailVerified: true }));
+        } else if (error === 'Email not verified') {
+          appDispatch(datafetched({ chats: [], isEmailVerified: false }));
+        }
         closeModal();
       } else {
-        console.log('Error Occured');
-        closeModal();
+        setError('Some Error Occured Please try Again');
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setisLoading(() => false);
+    }
   };
   return (
     <div className="extension-modal-overlay">
@@ -116,12 +173,17 @@ export const EndSessionModel = ({ closeModal, session }) => {
         <div className="">
           <h1 className="text-center text-2xl font-bold">Are you sure</h1>
           <div className="flex justify-center gap-2 mr-3 my-3">
-            <button className="yes" onClick={handleEndSession}>
-              Yes
+            <button
+              className="yes"
+              onClick={handleEndSession}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Ending Session..' : 'Yes'}
             </button>
-            <button className="no" onClick={closeModal}>
+            <button className="no" onClick={closeModal} disabled={isLoading}>
               No
             </button>
+            {error && <p className="text-sm text-gray-600">{error}</p>}
           </div>
         </div>
       </div>
@@ -131,6 +193,7 @@ export const EndSessionModel = ({ closeModal, session }) => {
 
 export const ExtensionModel = ({ closeModal, bookingid }) => {
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const [isLoading, setisLoading] = useState(false);
   const router = useRouter();
   const [error, setError] = useState('');
 
@@ -145,6 +208,7 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
       return;
     }
     try {
+      setisLoading(() => true);
       const { startextendCurrentSession } = await import(
         '../services/sessions/usersessions.service'
       );
@@ -160,9 +224,10 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
         console.log('Error Occured');
         closeModal();
       }
-    } catch (error) {}
-    console.log(`Selected slot: ${selectedSlot}`);
-    setError('');
+    } catch (error) {
+    } finally {
+      setisLoading(() => false);
+    }
   };
   const Slots = Array.from({ length: 3 }, (_, i) => i + 1);
 
@@ -189,8 +254,12 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
           <br />
 
           {error && <p className="text-sm text-gray-600">{error}</p>}
-          <button className="extention-submit-button" onClick={handleSubmit}>
-            Request access
+          <button
+            className="extention-submit-button"
+            onClick={handleSubmit}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Requesting...' : 'Request access'}
           </button>
         </div>
       </div>
@@ -199,6 +268,7 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
 };
 
 export const RaiseaIssueModel = ({ closeModal, userDetails }) => {
+  const [isLoading, setisLoading] = useState(false);
   const [formData, setFormData] = useState({
     // email: '',
     subject: '',
@@ -210,14 +280,6 @@ export const RaiseaIssueModel = ({ closeModal, userDetails }) => {
 
   const validateForm = () => {
     let formErrors = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    // if (!formData.email) {
-    //   formErrors.email = 'Email is required.';
-    // } else if (!emailRegex.test(formData.email)) {
-    //   formErrors.email = 'Please enter a valid email.';
-    // }
-
     if (!formData.subject) {
       formErrors.subject = 'Problem description is required.';
     }
@@ -241,12 +303,11 @@ export const RaiseaIssueModel = ({ closeModal, userDetails }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formErrors = validateForm();
-
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
     } else {
       setErrors({});
-      console.log('Form submitted successfully:', formData);
+      setisLoading(() => true);
       const userData = new FormData();
       userData.append('subject', formData.subject);
       userData.append('explanation', formData.explanation);
@@ -259,6 +320,7 @@ export const RaiseaIssueModel = ({ closeModal, userDetails }) => {
       if (data) {
         closeModal();
       }
+      setisLoading(() => false);
       // Perform further actions like sending data to the server here
     }
   };
@@ -275,23 +337,6 @@ export const RaiseaIssueModel = ({ closeModal, userDetails }) => {
           &times;
         </button>
         <form onSubmit={handleSubmit} className="form-container">
-          {/* <div className="form-group">
-          <label htmlFor="email" className="text-sm">
-            Email
-          </label>
-
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="inputfield-glg"
-            placeholder="Email"
-          />
-          {errors.email && <p className="text-sm">{errors.email}</p>}
-        </div> */}
-
           <div className="form-group">
             <label htmlFor="problem" className="text-sm">
               Problem related
@@ -338,8 +383,8 @@ export const RaiseaIssueModel = ({ closeModal, userDetails }) => {
             />
           </div>
           <div className="mt-2">
-            <button type="submit" className="sbtbtm">
-              Submit
+            <button type="submit" className="sbtbtm" disabled={isLoading}>
+              {isLoading ? 'Submitting' : 'Submit'}
             </button>
           </div>
         </form>
@@ -351,11 +396,13 @@ export const RaiseaIssueModel = ({ closeModal, userDetails }) => {
 export const ForgotPasswordModel = ({ handleModel }) => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setisLoading] = useState(false);
   const handleForgorPassword = async () => {
     if (!email || !email.includes('@')) {
       setError('Please enter a valid email address.');
       return;
     }
+    setisLoading(() => true);
     const { forgotEmail } = await import(
       '../services/auth/forgotpassword.service'
     );
@@ -365,6 +412,7 @@ export const ForgotPasswordModel = ({ handleModel }) => {
     } else {
       console.log('Error Occured');
     }
+    setisLoading(() => false);
   };
   return (
     <div className="modal">
@@ -400,8 +448,9 @@ export const ForgotPasswordModel = ({ handleModel }) => {
           <button
             className="w-full loginbtn text-center"
             onClick={handleForgorPassword}
+            disabled={isLoading}
           >
-            Proceed
+            {isLoading ? 'Sending Email' : 'Proceed'}
           </button>
         </div>
       </div>
@@ -411,12 +460,20 @@ export const ForgotPasswordModel = ({ handleModel }) => {
 
 export const FillOtpModel = ({ handleModel, data: modeldata }) => {
   const [resendPassword, setResendPassword] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
   const [password, setpassword] = useState({
     password: '',
     confirmpassword: ''
   });
   const inputs = useRef([]);
   const [error, setError] = useState('');
+  useEffect(() => {
+    if (!resendPassword) {
+      setTimeout(() => {
+        setResendPassword(() => true);
+      }, 1000);
+    }
+  }, [resendPassword]);
 
   const handleKeyUp = (e, index) => {
     if (e.key >= '0' && e.key <= '9') {
@@ -464,6 +521,7 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
       setError('Password Mismatch!');
     } else {
       try {
+        setisLoading(() => true);
         const { resetPassword } = await import(
           '@/services/auth/forgotpassword.service'
         );
@@ -482,6 +540,8 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        setisLoading(() => false);
       }
     }
   };
@@ -579,102 +639,11 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
         <button
           className="w-full loginbtn text-center"
           onClick={handleResetPassword}
+          disabled={isLoading}
         >
-          Proceed
+          {isLoading ? 'Requesting...' : 'Proceed'}
         </button>
         {error && <p className="text-pink-600">{error}</p>}
-      </div>
-    </div>
-  );
-};
-
-export const SetNewPasswordModel = ({ handleModel }) => {
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState({ newPassword: '', confirmPassword: '' });
-  const [editingField, setEditingField] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
-
-  const validatePasswords = () => {
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
-    let errors = { newPassword: '', confirmPassword: '' };
-
-    if (!passwordRegex.test(newPassword)) {
-      errors.newPassword =
-        'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter and one number.';
-    }
-    if (newPassword !== confirmPassword) {
-      errors.confirmPassword = 'Passwords do not match.';
-    }
-    setError(errors);
-    return !errors.newPassword && !errors.confirmPassword;
-  };
-
-  const handleInputFocus = (field) => {
-    setEditingField(field);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validatePasswords()) {
-      console.log('New Password:', newPassword);
-      // Clear the input fields
-      setNewPassword('');
-      setConfirmPassword('');
-      setError({ newPassword: '', confirmPassword: '' });
-    }
-  };
-
-  return (
-    <div className="resetpassword" id="resetpassword">
-      <div>
-        <h2 className="text-center text-xl my-3 font-bold text-black">
-          Create New password
-        </h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <p className="text-black mt-3 text-sm">Enter new password</p>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              onFocus={() => handleInputFocus('newPassword')}
-              onBlur={() => setEditingField(null)}
-              placeholder="*********"
-              className="inputfield "
-            />
-            {error.newPassword && editingField !== 'newPassword' && (
-              <p className="text-xs text-pink-600">{error.newPassword}</p>
-            )}
-          </div>
-          <div>
-            <p className="text-black mt-3 text-sm">confirm password</p>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              onFocus={() => handleInputFocus('confirmPassword')}
-              onBlur={() => setEditingField(null)}
-              className="inputfield "
-              placeholder="**********"
-            />
-            {error.confirmPassword && editingField !== 'confirmPassword' && (
-              <p className="text-xs text-pink-700">{error.confirmPassword}</p>
-            )}
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              checked={showPassword}
-              onChange={() => setShowPassword(!showPassword)}
-            />
-            <label className="text-xs ml-2">Show Password</label>
-          </div>
-          <button type="submit" className="w-full loginbtn text-center">
-            Reset
-          </button>
-        </form>
       </div>
     </div>
   );
@@ -748,7 +717,7 @@ export const LoginModel = ({ handleModel }) => {
           setErrors({ password: error });
         }
       } catch (error) {
-        console.log('Error occured');
+        setErrors({ password: 'Server Error!' });
       } finally {
         setisLoading(() => false);
       }
@@ -859,6 +828,7 @@ export const LoginModel = ({ handleModel }) => {
 export const CancelBookingModel = ({ closeModal, bookingDetail }) => {
   const [text, setText] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setisLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (text.trim() === '') {
@@ -870,6 +840,7 @@ export const CancelBookingModel = ({ closeModal, bookingDetail }) => {
       reason: text
     };
     try {
+      setisLoading(() => true);
       const { cancelBooking } = await import(
         '../services/user/bookings.service'
       );
@@ -887,6 +858,7 @@ export const CancelBookingModel = ({ closeModal, bookingDetail }) => {
       setError('');
       console.log('Submitted text:', text);
       setText('');
+      setisLoading(() => false);
     }
   };
   return (
@@ -911,8 +883,12 @@ export const CancelBookingModel = ({ closeModal, bookingDetail }) => {
             ></textarea>
           </div>
           {error && <div className="text-xs">{error}</div>}
-          <button type="submit" className="companion-cancel-btn">
-            Submit
+          <button
+            type="submit"
+            className="companion-cancel-btn"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Submitting...' : 'Submit'}
           </button>
         </form>
       </div>
@@ -934,6 +910,10 @@ export const LocationaccessModel = ({ setLocation, closeModal }) => {
         'userlocation',
         JSON.stringify({ lat, lng, formataddress, city, state })
       );
+      const { userAgentService } = await import(
+        '@/services/user/companionfind.service'
+      );
+      await userAgentService({ lat, lng, city, state });
       closeModal();
     } catch (error) {
       console.log('error in location');
@@ -955,6 +935,10 @@ export const LocationaccessModel = ({ setLocation, closeModal }) => {
         'userlocation',
         JSON.stringify({ lat, lng, formataddress, city, state })
       );
+      const { userAgentService } = await import(
+        '@/services/user/companionfind.service'
+      );
+      await userAgentService({ lat, lng, city, state });
       closeModal();
     } catch (error) {
       setErrorMessage('Error fetching the location.');
@@ -1041,7 +1025,7 @@ export const LocationaccessModel = ({ setLocation, closeModal }) => {
 };
 
 export function GoogleSignUp({ handleClose, userId }) {
-  const [profilePicture, setProfilePicture] = useState(null);
+  const [isLoading, setisLoading] = useState(false);
   const [data, setData] = useState({
     images: null,
     phoneno: '',
@@ -1049,10 +1033,7 @@ export function GoogleSignUp({ handleClose, userId }) {
     gender: ''
   });
   const [isDragging, setIsDragging] = useState(false);
-  const [age, setAge] = useState('');
-  const [gender, setGender] = useState('');
   const [errors, setErrors] = useState({});
-  const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -1067,8 +1048,9 @@ export function GoogleSignUp({ handleClose, userId }) {
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      setProfilePicture(URL.createObjectURL(file));
+    const validTypes = ['image/jpeg', 'image/png'];
+    if (file && validTypes.includes(file.type) && file.size < 2 * 1024 * 1024) {
+      setData((prev) => ({ ...prev, images: file }));
       setErrors((prev) => ({ ...prev, profilePicture: '' }));
     } else {
       setErrors((prev) => ({
@@ -1080,8 +1062,9 @@ export function GoogleSignUp({ handleClose, userId }) {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      setProfilePicture(URL.createObjectURL(file));
+    const validTypes = ['image/jpeg', 'image/png'];
+    if (file && validTypes.includes(file.type) && file.size < 2 * 1024 * 1024) {
+      setData((prev) => ({ ...prev, images: file }));
       setErrors((prev) => ({ ...prev, profilePicture: '' }));
     } else {
       setErrors((prev) => ({
@@ -1111,6 +1094,7 @@ export function GoogleSignUp({ handleClose, userId }) {
     e.preventDefault();
     if (validate()) {
       try {
+        setisLoading(() => true);
         const { updateuserProfileDetailsService } = await import(
           '@/services/user/userprofile.service'
         );
@@ -1130,7 +1114,10 @@ export function GoogleSignUp({ handleClose, userId }) {
         } else {
           toast.error(error);
         }
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        setisLoading(() => false);
+      }
     }
   };
   const handleChange = (e) => {
@@ -1186,7 +1173,9 @@ export function GoogleSignUp({ handleClose, userId }) {
                     />
                     <button
                       className="google-remove-button"
-                      onClick={() => setProfilePicture(null)}
+                      onClick={() =>
+                        setData((prev) => ({ ...prev, images: null }))
+                      }
                     >
                       ✖
                     </button>
@@ -1243,8 +1232,8 @@ export function GoogleSignUp({ handleClose, userId }) {
             {errors.gender && <p className="text-xs">{errors.gender}</p>}
             <br />
             <div className="my-3">
-              <button type="submit" className="sbtbtm ">
-                Submit
+              <button type="submit" className="sbtbtm" disabled={isLoading}>
+                {isLoading ? 'Submitting' : 'Submit'}
               </button>
             </div>
           </form>
@@ -1256,6 +1245,7 @@ export function GoogleSignUp({ handleClose, userId }) {
 
 export const Emailverification = ({ handleModel, ...props }) => {
   const [otp, setOtp] = useState(['', '', '', '']);
+  const [isLoading, setisLoading] = useState(false);
   const [resendPassword, setResendPassword] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
@@ -1292,6 +1282,7 @@ export const Emailverification = ({ handleModel, ...props }) => {
     if (otp.includes('')) {
       setError('Please fill in all the fields');
     } else {
+      setisLoading(() => true);
       const { validateEmail } = await import(
         '@/services/auth/forgotpassword.service'
       );
@@ -1310,10 +1301,12 @@ export const Emailverification = ({ handleModel, ...props }) => {
       } else {
         setError('OTP is invalid');
       }
+      setisLoading(() => false);
     }
   };
 
   const handleForgorPassword = async () => {
+    setisLoading(() => true);
     const { forgotEmail } = await import(
       '../services/auth/forgotpassword.service'
     );
@@ -1330,6 +1323,7 @@ export const Emailverification = ({ handleModel, ...props }) => {
         toast.error('Error Ocuured Please try again!');
       }
     }
+    setisLoading(() => false);
   };
 
   return (
@@ -1339,7 +1333,7 @@ export const Emailverification = ({ handleModel, ...props }) => {
           Email Verification
         </h1>
         <h1 className="text-center text-xs text-black">
-          Drop Your  Email Verification Code
+          Drop Your Email Verification Code
         </h1>
         <div className="pin-inputs mt-4">
           {otp.map((value, index) => (
@@ -1366,8 +1360,12 @@ export const Emailverification = ({ handleModel, ...props }) => {
             </span>
           </div>
         )}
-        <button className="companion-cancel-btn mt-2" onClick={handleSubmit}>
-          Submit
+        <button
+          className="companion-cancel-btn mt-2"
+          onClick={handleSubmit}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Plese wait' : 'Submit'}
         </button>
         {error && <p className="text-xs">{error}</p>}
       </div>
@@ -1375,7 +1373,11 @@ export const Emailverification = ({ handleModel, ...props }) => {
   );
 };
 
-export const Baselocationmodel = ({ closeModal, baselocations , sendlocation }) => {
+export const Baselocationmodel = ({
+  closeModal,
+  baselocations,
+  sendlocation
+}) => {
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState('');
 
@@ -1389,9 +1391,9 @@ export const Baselocationmodel = ({ closeModal, baselocations , sendlocation }) 
     if (!selected) {
       setError('Please select any option.');
     } else {
-      const { lat, lng } = baselocations[Number(selected)]
-      console.log(baselocations[Number(selected)])
-      sendlocation(`https://www.google.com/maps?q=${lat},${lng}`)
+      const { lat, lng } = baselocations[Number(selected)];
+      console.log(baselocations[Number(selected)]);
+      sendlocation(`https://www.google.com/maps?q=${lat},${lng}`);
       closeModal();
     }
   };
@@ -1406,20 +1408,18 @@ export const Baselocationmodel = ({ closeModal, baselocations , sendlocation }) 
           Choose a baselocation to share
         </h1>
         <form onSubmit={handleSubmit}>
-          {baselocations.map((l, i) => 
-          <div className="mb-2" key={i*200}>
-            <input
-              type="checkbox"
-              name="option"
-              value={i}
-              checked={i == selected}
-              onChange={handleChange}
-            />
-            <label className="text-sm ml-2">
-              {l.googleformattedadress}
-            </label>
-          </div>
-          )}
+          {baselocations.map((l, i) => (
+            <div className="mb-2" key={i * 200}>
+              <input
+                type="checkbox"
+                name="option"
+                value={i}
+                checked={i == selected}
+                onChange={handleChange}
+              />
+              <label className="text-sm ml-2">{l.googleformattedadress}</label>
+            </div>
+          ))}
           {error && <p className="text-sm text-red-500">{error}</p>}
           <button type="submit" className="companion-cancel-btn mt-2">
             Share
@@ -1427,5 +1427,111 @@ export const Baselocationmodel = ({ closeModal, baselocations , sendlocation }) 
         </form>
       </div>
     </div>
+  );
+};
+
+export const Guidmodel = ({ closeModal }) => {
+  return (
+    <>
+      <div className="Guild-modal-overlay">
+        <div
+          className="Guild-modal-content"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h2 className="font-bold text-2xl text-center">Guildelines</h2>
+          <div className="flex items-center gap-2 text-xl mt-3">
+            <h1>Safety Guildelines for Visits </h1>
+            <AiOutlineSafety color="pink" />
+          </div>
+          <h1 className="text-sm my-2">
+            To ensure your safety and maintain the highest standards of service,
+            please adhere to the following instructions when meeting clients:
+          </h1>
+          <div className="flex items-center gap-2 text-xl mt-3">
+            <h1>Approved Location</h1>
+            <GoLocation color="pink" />
+          </div>
+          <div className="ml-2 text-sm mt-2 gap-2">
+            <li>
+              Meet only in public, secure venues such as well-known cafes,
+              restaurants, hotels, or coworking spaces.
+            </li>
+            <li>
+              Commercial zones and high-traffic areas are preferred, ensuring
+              proper lighting and accessibility.{' '}
+            </li>
+            <li>
+              Corporate and private events that have undergone security
+              verification are permissible, provided the venue meets safety
+              standards.
+            </li>
+            <li>
+              {' '}
+              If unsure about a location, consult with your supervisor before
+              confirming the visit.
+            </li>
+          </div>
+          <div className="flex items-center gap-2 text-xl mt-3">
+            <h1>Prohibited Location</h1>
+            <CiLocationOff color="pink" />
+          </div>
+          <div className="ml-2 text-sm mt-2 gap-2">
+            <li>
+              Remote or isolated areas are strictly off-limits. This includes
+              any location with poor visibility, security, or lighting.
+            </li>
+            <li>
+              Avoid any private residences unless explicitly approved and
+              background-checked by our team.
+            </li>
+            <li>
+              {' '}
+              High-risk neighborhoods identified for crime or unsafe conditions
+              should never be considered for client meetings.
+            </li>
+            <li>
+              Any abandoned or under-construction sites are strictly prohibited.
+            </li>
+          </div>
+          <div className="flex items-center gap-2 text-xl mt-3">
+            <h1>Additional Safety Measure</h1>
+            <BiLocationPlus color="pink" />
+          </div>
+          <div className="ml-2 text-sm mt-2">
+            <li>
+              Always share your location in real-time with your supervisor
+              during visits.{' '}
+            </li>
+            <li>
+              Carry a mobile phone with emergency contacts readily accessible.
+            </li>
+            <li>
+              If you feel unsafe or uncomfortable at any time, immediately exit
+              the situation and report it to management.
+            </li>
+          </div>
+          <div className="flex items-center gap-2 text-xl mt-3">
+            <h1>Suggested Timings</h1>
+            <IoIosTimer color="pink" />
+          </div>
+          <div className="ml-2 text-sm mt-2">
+            <li>
+              Daytime Visits: Preferably between 10:00 AM and 7:00 PM, when
+              there is ample daylight and higher public activity.
+            </li>
+            <li>
+              Evening Visits: If necessary, schedule between 7:00 PM and 10:00
+              PM only in well-secured, high-traffic areas.
+            </li>
+            <li>
+              No Late-Night Visits: Avoid scheduling any visits after 10:00 PM
+              for safety reasons, unless it's a secure, verified venue (e.g.,
+              corporate events, hotels).
+            </li>
+          </div>
+          <button onClick={closeModal}>Continue</button>
+        </div>
+      </div>
+    </>
   );
 };
