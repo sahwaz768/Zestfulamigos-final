@@ -25,8 +25,7 @@ const Page = () => {
       .then(({ getIssueDetails }) => getIssueDetails(ticketId))
       .then(({ data }) => {
         if (data) {
-          console.log(data);
-          setUserIssue(data);
+          setUserIssue({ ...data, issueId: ticketId });
         }
       });
   }, []);
