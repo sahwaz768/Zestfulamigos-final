@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Masterheader from './Masterheader';
 import { Mastersidebar } from './MasterSidebar';
@@ -15,6 +15,12 @@ const ChatComponent = ({ chatrooms, isCompanion, isEmailVerified }) => {
   const [selectedChat, setSelectedChat] = useState(null);
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
+  useEffect(() => {
+    if(chatrooms && selectedChat){
+      setSelectedChat(null);
+    }
+  }, [chatrooms]);
+  
   const handleSelectChat = (id) => {
     setSelectedChat(id);
   };
