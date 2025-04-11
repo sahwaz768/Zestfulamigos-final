@@ -197,3 +197,12 @@ export const getBookingDataforUserUi = (bookingdata) => {
   }
   return results;
 }
+
+export const calculateRemainingTime = (endTime) => {
+  const currentTime = Date.now();
+  const remainingTime = Number(endTime) - currentTime;
+
+  if (remainingTime <= 0) return 0;
+
+  return remainingTime;
+};

@@ -2,10 +2,8 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { IoCallOutline } from 'react-icons/io5';
 import { VscSend } from 'react-icons/vsc';
-import { CiLocationOn } from 'react-icons/ci';
 import { IoIosArrowBack } from 'react-icons/io';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { BASEURL } from '@/Constants/services.constants';
 import { socketinit } from '@/Constants/socket.io.config';
 import { EndSessionModel, StartSessionModel, ExtensionModel } from './Models';
 import { parseCookies, setCookie } from 'nookies';
@@ -16,11 +14,12 @@ import Link from 'next/link';
 import { containsWord } from '@/utils/chat.utils';
 import { cuzzwords } from '@/shared/data/chatdata.data';
 import { toast } from '@/utils/reduxtrigger.utils';
-import { timeAgo } from '@/utils/bookings.utils';
+import { calculateRemainingTime, timeAgo } from '@/utils/bookings.utils';
 import { IoMdAdd } from 'react-icons/io';
 import { IoShareSocial } from 'react-icons/io5';
 import { FiMapPin } from 'react-icons/fi';
 import { Baselocationmodel } from './Models';
+import { getAddressFromLatLng } from '@/utils/location';
 
 const CountdownTimer = dynamic(() => import('@/components/CountdownTimer'), {
   ssr: false
@@ -67,7 +66,24 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
   const socket = socketinit.socket();
   const [messagedata, setMessageData] = useState(null);
   const [inputValue, setInputValue] = useState('');
+  const [isLocationOn, setisLocationOn] = useState(false);
   const dropupRef = useRef(null);
+
+  const getAddressforCompanion = () => {
+    navigator.geolocation.getCurrentPosition(
+      async () => {
+        const { updateLiveLocation } = await import(
+          '@/services/user/livelocation.service'
+        );
+        const values = await getAddressFromLatLng(latitude, longitude);
+        await updateLiveLocation(values, selected.booking.id);
+      },
+      async () => {
+        const { toast } = await import('@/utils/reduxtrigger.utils');
+        toast.error('Please switch on the location');
+      }
+    );
+  };
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -75,9 +91,27 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
         closeModal();
       }
     }
+    let interval = null;
+    navigator.geolocation.getCurrentPosition(
+      () => setisLocationOn(true),
+      () => setisLocationOn(false)
+    );
+    if (
+      isCompanion &&
+      Math.floor(
+        calculateRemainingTime(selected.booking.bookingstart) / (1000 * 60 * 60)
+      ) < 2
+    ) {
+      interval = setInterval(() => {
+        getAddressforCompanion();
+      }, 300000);
+    }
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      if (interval) {
+        clearInterval(interval);
+      }
     };
   }, []);
 
@@ -365,10 +399,22 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
                         baselocation
                       </li>
                     ) : null}
-                    <li className="p-2 rounded-md hover:bg-red-500 cursor-pointer text-xs flex items-center gap-2">
-                      <FiMapPin color="red" size={20} /> Track{' '}
-                      {isCompanion ? 'User' : 'Companion'}
-                    </li>
+                    {Math.floor(
+                      calculateRemainingTime(selected.booking.bookingstart) /
+                        (1000 * 60 * 60)
+                    ) < 1 && isLocationOn ? (
+                      <Link
+                        href={`${isCompanion ? '/companion' : '/user'}/livetracker/?bookingId=${selected.booking.id}`}
+                        legacyBehavior
+                      >
+                        <a target="_blank" rel="noopener noreferrer">
+                          <li className="p-2 rounded-md hover:bg-red-500 cursor-pointer text-xs flex items-center gap-2">
+                            <FiMapPin color="red" size={20} /> Track
+                            {isCompanion ? 'User' : 'Companion'}
+                          </li>
+                        </a>
+                      </Link>
+                    ) : null}
                   </ul>
                 </div>
               ) : null}
