@@ -90,8 +90,11 @@ const ExtensionBookingPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { toast } = await import('@/utils/reduxtrigger.utils');
-    if (!Object.values(confirmationdata).every((l) => l)) {
+    if (!confirmationdata.confirmdebitamout || !confirmationdata.termsncondition) {
       toast.error('Please confirm all the checkbox!');
+      return;
+    } else if(isAnyUpdatedData.updatedLocation && !confirmationdata.confirmlocation){
+      toast.error('Please confirm your location checkbox');
       return;
     }
     setisLoading(() => true)
