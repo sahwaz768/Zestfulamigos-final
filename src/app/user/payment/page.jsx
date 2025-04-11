@@ -88,7 +88,7 @@ const page = () => {
       }
     } catch (error) {
       console.log('Payment Request Failed', error);
-    } finally{
+    } finally {
       setisLoading(() => false);
     }
   };
@@ -107,7 +107,6 @@ const page = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setisLoading(() => true);
 
     if (validate()) {
       const values = {
@@ -117,6 +116,7 @@ const page = () => {
         bookingId: bookingDetails.id,
         phone: bookingDetails.user.phoneno
       };
+      setisLoading(() => true);
 
       await handlePayment(values);
       setisLoading(() => false);
