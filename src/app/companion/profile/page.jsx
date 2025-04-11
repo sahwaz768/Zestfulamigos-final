@@ -350,22 +350,23 @@ const Page = () => {
               <div className="flex flex-col gap-2 mt-3">
                 {formData.baselocations.map((l, i) => (
                   <div key={i + 200}>
-                    <label className="text-sm">Base location {i + 1}</label>
+                    <label className="text-sm mt-2">Base location {i + 1}</label>
+                    <br />
                     <button
                       onClick={(e) => handleChangeLocation(e, i)}
-                      className={`border-2   cursor-pointer text-start p-3 text-sm rounded-lg  
+                      className={`border-2 w-3/4  cursor-pointer text-start p-3 text-sm rounded-lg  
                      ${selectedButton[i] ? 'border-pink-600' : 'border-gray-500'}`}
                     >
                       {(l && l.formattedaddress) ||
                         '1600 Pennsylvania Avenue NW Washington, DC 20500 United States'}
                     </button>
                     {selectedButton[i] && (
-                      <div className="">
-                        <p className="text-sm mb-2">
+                      <div className=" mt-2">
+                        <p className="text-sm mb-2 ">
                           If you want to update your base location {i + 1} check
                           here
                         </p>
-                        <div>
+                        <div className='w-5/6'>
                           <LocationAccess
                             mapkey={i}
                             setLocation={(l) => {

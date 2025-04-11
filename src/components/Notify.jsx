@@ -75,9 +75,9 @@ const Notify = ({ backgroundColor = 'black', color = 'white' }) => {
             <div className="notificatioview text-sm text-gray-900">
               <div>
                 {notifications.length > 0 ? (
-                  notifications.map((notification,i) => (
+                  notifications.map((notification, i) => (
                     <div
-                      key={notification.id + i}
+                      key={notification.id * i + i}
                       className="notification-card flex items-start bg-white shadow-sm relative gap-3 py-3"
                     >
                       <Image

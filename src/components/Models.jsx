@@ -424,7 +424,7 @@ export const ForgotPasswordModel = ({ handleModel }) => {
           <h2 className="text-center text-xl my-3 font-bold text-black">
             Forgot password
           </h2>
-          <p>Email</p>
+          <p className='text-black'>Email</p>
           <p className="text-xs text-gray-700 mb-2">
             You will recieve code in your mail address
           </p>
@@ -709,7 +709,7 @@ export const LoginModel = ({ handleModel }) => {
                 email: formData.email,
                 redirecturl: decodedToken.isCompanion
                   ? '/companion/dashboard'
-                  : '/user/gnderchoose'
+                  : '/user/chat'
               }
             });
           }
