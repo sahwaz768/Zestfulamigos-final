@@ -117,8 +117,8 @@ const tracker = () => {
     await loadGoogleMapsScript();
     initializeMap({
       data: {
-        currentposition: originLocation,
-        destination: destinationLocation
+        currentposition: data.currentlocation,
+        destination: data.destination
       }
     });
   };

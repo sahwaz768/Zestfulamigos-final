@@ -71,10 +71,11 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
 
   const getAddressforCompanion = () => {
     navigator.geolocation.getCurrentPosition(
-      async () => {
+      async ({ coords }) => {
         const { updateLiveLocation } = await import(
           '@/services/user/livelocation.service'
         );
+        const { latitude, longitude } = coords;
         const values = await getAddressFromLatLng(latitude, longitude);
         await updateLiveLocation(values, selected.booking.id);
       },
