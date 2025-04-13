@@ -212,16 +212,17 @@ export const ExtensionModel = ({ closeModal, bookingid }) => {
       const { startextendCurrentSession } = await import(
         '../services/sessions/usersessions.service'
       );
+      const { toast } = await import('@/utils/reduxtrigger.utils')
       const values = {
         bookingid: bookingid?.id,
         extentedhours: selectedSlot
       };
-      const { data } = await startextendCurrentSession(values);
+      const { data, error } = await startextendCurrentSession(values);
       if (data) {
         router.push(`./extendsession?bookingId=${values.bookingid}`);
         closeModal();
       } else {
-        console.log('Error Occured');
+        toast.error(error)
         closeModal();
       }
     } catch (error) {

@@ -20,9 +20,12 @@ const ChatComponent = ({ chatrooms, isCompanion, isEmailVerified }) => {
       setSelectedChat(null);
     }
   }, [chatrooms]);
-  
+
   const handleSelectChat = (id) => {
-    setSelectedChat(id);
+    setSelectedChat(null);
+    setTimeout(() => {
+      setSelectedChat(id);
+    }, 500);
   };
 
   const navLinks = [
