@@ -144,7 +144,6 @@ const Page = () => {
           className="sbar-height-companionprofile"
         />
         <div className="margin-box">
-          <form onSubmit={handleSubmit}>
             {/* Image Uploader */}
             <div className="form-group mt-2 mb-3">
               <label className="text-sm mb-3">Profile Pictures</label>
@@ -424,10 +423,9 @@ const Page = () => {
             </div>
 
             {/* Submit Button */}
-            <button type="submit" className="savechgbtn" disabled={isLoading}>
+            <button type="submit" className="savechgbtn" disabled={isLoading} onClick={handleSubmit}>
               {isLoading ? 'Requesting' : 'Update Profile'}
             </button>
-          </form>
         </div>
       </div>
     </>
