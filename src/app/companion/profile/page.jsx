@@ -445,11 +445,24 @@ const ImageUploader = ({ images, onUpload }) => {
     }
   }, [images]);
 
-  const handleImageUpload = (event) => {
-    const files = Array.from(event.target.files);
-    if (localImages.length + files.length > maxImages) {
-      alert(`You can only upload up to ${maxImages} images.`);
+  const handleImageUpload = async (event) => {
+    event.preventDefault();
+    const files = Array.from(event.target.files || []);
+    const { toast } = await import("@/utils/reduxtrigger.utils")
+    const maxImages = 4;
+    if (files.length > maxImages) {
+      toast.error(`You can only upload up to ${maxImages} images.`);
       return;
+    }
+    const validTypes = ["image/jpeg", "image/png"];
+    for (let i = 0; i < files.length; i += 1) {
+      if (
+        !validTypes.includes(files[i].type) ||
+        files[i].size > 2 * 1024 * 1024
+      ) {
+        toast.error("Invalid Image");
+        return;
+      }
     }
     const newImages = files.map((file) => ({
       url: URL.createObjectURL(file),
