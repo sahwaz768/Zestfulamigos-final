@@ -5,15 +5,20 @@ import { BASEURL } from 'src/Constants/services.constants';
 
 export const socketinit = {
   token: '',
-  socket: function soket(tokenid) {
-    const cookie = parseCookies();
-    const token = tokenid || cookie[ACCESS_TOKEN_LOC] || this.token || '';
-    return ioclient(BASEURL, {
-      auth: {
-        token: 'Bearer ' + token
-      },
-      reconnectionAttempts: 10
-    });
+  socket: null,
+  getSocket: function soket(tokenid) {
+    if(!this.socket){
+      const cookie = parseCookies();
+      const token = tokenid || cookie[ACCESS_TOKEN_LOC] || this.token || '';
+      this.socket = ioclient(BASEURL, {
+        auth: {
+          token: 'Bearer ' + token
+        },
+        reconnectionAttempts: 10
+      });
+      return this.socket;
+    }
+    return this.socket;
   },
   addtoken: function addtoken(token) {
     this.token = token;
@@ -21,5 +26,11 @@ export const socketinit = {
 
   removetoken: function removetoken() {
     this.token = '';
+  },
+  disconnect: function disconnect(){
+    if(this.socket){
+      this.socket.disconnect();
+      this.socket = null;
+    }
   }
 };
