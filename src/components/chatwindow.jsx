@@ -63,7 +63,7 @@ const GetSessionModel = (model, selected, closeModal, sendMessage) => {
 };
 
 const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
-  const socket = socketinit.socket();
+  const socket = socketinit.getSocket();
   const [messagedata, setMessageData] = useState(null);
   const [inputValue, setInputValue] = useState('');
   const [isLocationOn, setisLocationOn] = useState(false);
@@ -109,6 +109,7 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
+      socketinit.disconnect();
       document.removeEventListener('mousedown', handleClickOutside);
       if (interval) {
         clearInterval(interval);
@@ -190,9 +191,7 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
       initializeSocket();
     }
     return () => {
-      if (selected) {
-        socket.disconnect();
-      }
+      socketinit.disconnect();
     };
   }, [selected]);
 
@@ -239,7 +238,7 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
     window.location.href = `tel:${phoneNumber}`;
   };
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -252,6 +251,48 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
     if (isOpen) {
       setIsOpen(false);
     }
+  };
+
+  const SessionDropDown = () => {
+    if (isCompanion && !selected.session?.length) {
+      return (
+        <ul className="dropdown-menu-extension" style={{ cursor: 'pointer' }}>
+          <div
+            className="extension-slote"
+            onClick={() => openModal('StartSession')}
+          >
+            start session
+          </div>
+        </ul>
+      );
+    } else if (isCompanion && selected.session && selected.session?.length) {
+      return (
+        <ul className="dropdown-menu-extension" style={{ cursor: 'pointer' }}>
+          <div
+            className="extension-slote mt-2"
+            onClick={() => openModal('EndSession')}
+          >
+            end session
+          </div>
+        </ul>
+      );
+    } else if (
+      selected.session &&
+      selected.session?.length &&
+      !selected?.session[0]?.isExtended
+    ) {
+      return (
+        <ul className="dropdown-menu-extension" style={{ cursor: 'pointer' }}>
+          <div
+            className="extension-slote"
+            onClick={() => openModal('Extended')}
+          >
+            slote extension
+          </div>
+        </ul>
+      );
+    }
+    return null;
   };
   return (
     <>
@@ -300,44 +341,7 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
               >
                 <BsThreeDotsVertical color="pink" size={30} />
               </div>
-              {/* Dropdown Menu */}
-              {isOpen && (
-                <div>
-                  <ul
-                    className="dropdown-menu-extension"
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {isCompanion ? (
-                      <>
-                        {selected.session && selected.session?.length ? (
-                          <div
-                            className="extension-slote mt-2"
-                            onClick={() => openModal('EndSession')}
-                          >
-                            end session
-                          </div>
-                        ) : (
-                          <div
-                            className="extension-slote"
-                            onClick={() => openModal('StartSession')}
-                          >
-                            start session
-                          </div>
-                        )}
-                      </>
-                    ) : selected.session &&
-                      selected.session?.length &&
-                      !selected?.session[0]?.isExtended ? (
-                      <div
-                        className="extension-slote"
-                        onClick={() => openModal('Extended')}
-                      >
-                        slote extension
-                      </div>
-                    ) : null}
-                  </ul>
-                </div>
-              )}
+              {isOpen && SessionDropDown()}
             </div>
           </div>
           <div className="timer">

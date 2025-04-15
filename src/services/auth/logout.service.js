@@ -1,5 +1,7 @@
 export const logoutUserService = async () => {
     const { BASEURL } = await import("../../Constants/services.constants");
+    const { socketinit } = await import('@/Constants/socket.io.config');
+    socketinit.disconnect();
     const {
       default: { post },
     } = await import("../interface/interceptor");

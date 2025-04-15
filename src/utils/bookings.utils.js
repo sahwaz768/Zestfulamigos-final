@@ -37,6 +37,7 @@ export function formatBookingTimingsforUi(startTime, endtime) {
   const enddate = new Date(Number(endtime));
 
   const options = {
+    timeZone: "UTC",
     month: 'short',
     day: 'numeric',
     hour: 'numeric',
@@ -44,11 +45,12 @@ export function formatBookingTimingsforUi(startTime, endtime) {
     hour12: true
   };
   const endtimeoptions = {
+    timeZone: "UTC",
     hour: 'numeric',
     minute: 'numeric',
     hour12: true
   };
-  return `${startdate.toLocaleString('en-US', options)} - ${enddate.toLocaleString('en-US', endtimeoptions)}`;
+  return `${startdate.toLocaleString('en-IN', options)} - ${enddate.toLocaleString('en-IN', endtimeoptions)}`;
 }
 
 export const parseTimeSlot = (timeString) => {
@@ -99,8 +101,9 @@ export function convertToTimeSlots(startMs, endMs, intervalMinutes = 60) {
 }
 
 export function generateStimeSlots(startMs, endMs) {
-  let startTime = new Date(startMs);
-  let endTime = new Date(endMs);
+  const offsetInMs = 5.5 * 60 * 60 * 1000;
+  let startTime = new Date(startMs - offsetInMs);
+  let endTime = new Date(endMs - offsetInMs);
   let times = [];
   while (startTime < endTime) {
 
@@ -134,6 +137,7 @@ export function formatBookingTime(startTime) {
   // const enddate = new Date(Number(endtime));
 
   const options = {
+   timeZone: "UTC",
     month: 'short',
     day: 'numeric',
     hour: 'numeric',
@@ -145,8 +149,9 @@ export function formatBookingTime(startTime) {
     minute: 'numeric',
     hour12: true
   };
+  console.log("Before formatting",new Date(Number(startTime)))
   // return `${startdate.toLocaleString('en-US', options)} - ${enddate.toLocaleString('en-US', endtimeoptions)}`;
-  return `${startdate.toLocaleString('en-US', options)}`;
+  return `${startdate.toLocaleString('en-In', options)}`;
 }
 
 export function timeAgo(timestamp) {
