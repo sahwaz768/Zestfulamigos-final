@@ -155,7 +155,9 @@ const Page = () => {
                 <span className="text-xs">{errors.images}</span>
               )}
             </div>
+
             {/* First Name */}
+            <div className='companion-leftgap'>
             <div className="userprofile-detail mt-3">
               <div className="form-group">
                 <label className="text-sm">First Name</label>
@@ -421,7 +423,7 @@ const Page = () => {
                 <span className="text-xs">{errors.description}</span>
               )}
             </div>
-
+            </div>
             {/* Submit Button */}
             <button type="submit" className="savechgbtn" disabled={isLoading} onClick={handleSubmit}>
               {isLoading ? 'Requesting' : 'Update Profile'}

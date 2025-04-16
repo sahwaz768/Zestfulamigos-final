@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -28,6 +28,19 @@ const Sidebar = ({ menuItems, userDetails, className }) => {
       }
     }
   };
+
+  
+useEffect(() => {
+  if (isSidebarOpen) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'auto';
+  }
+
+  return () => {
+    document.body.style.overflow = 'auto';
+  };
+}, [isSidebarOpen]);
 
   return (
     <div>

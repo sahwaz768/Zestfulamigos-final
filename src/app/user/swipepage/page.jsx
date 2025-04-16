@@ -62,6 +62,7 @@ const Page = () => {
         </div>
         {companiondata && companiondata.length ? (
         <div className="wrapper">
+          <div className='bg-wrapper'>
           <div className="bg-card bg-card-left-2">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
@@ -73,6 +74,7 @@ const Page = () => {
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISmJ3wr4IfIf6Y8r22sRa072YxjfXJdu1WQ&s"
               alt="Background card"
             />
+          </div>
           </div>
           
             <div className="container">

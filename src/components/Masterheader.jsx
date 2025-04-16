@@ -7,10 +7,12 @@ import {
   Emailverification,
   FillOtpModel,
   ForgotPasswordModel,
-  LoginModel,
+  LoginModel
 } from './Models';
 import Headerprofilebutton from './headerprofilebutton';
 import { CgProfile } from 'react-icons/cg';
+import Image from 'next/image';
+import Logo from '@/shared/Assets/ZAlogo.png';
 
 const Masterheader = ({
   isLogin,
@@ -73,7 +75,10 @@ const Masterheader = ({
       <div className="swipeheader">
         <header className="header" style={{ backgroundColor }}>
           <Link href={'/'}>
-            <div className="logo ">zestful amigos</div>
+            <div className="logo ">
+              {' '}
+              <Image src={Logo} alt="logo" />
+            </div>
           </Link>
           <nav className="nav">
             <ul className="nav-list text-black text-sm">

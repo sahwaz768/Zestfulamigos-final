@@ -19,13 +19,13 @@ const ConcernComponent = ({ issuedata, userDetails }) => {
     <div>
       <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" />
       <Threeline />
-      <div className="support-head">
+      <div className="support-head mt-2">
         <div className="support-txt">
           <h1 className="md:text-xl ml-3 md:font-bold mt-2">
             Your support requests
           </h1>
         </div>
-        <div className="support" onClick={openModal}>
+        <div className="support mt-3" onClick={openModal}>
           <FiPlus color="red" />
           <h1 className="text-sm font-bold">MAKE SUPPORT REQUEST</h1>
         </div>
