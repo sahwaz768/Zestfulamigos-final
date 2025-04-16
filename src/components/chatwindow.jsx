@@ -391,7 +391,7 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
               </div>
               {isOpenexmodel && isOpenexmodel === 'OpenLocationOption' ? (
                 <div
-                  className="absolute bottom-full mb-2 w-48 bg-white shadow-lg rounded-md p-1 border border-gray-200"
+                  className="absolute bottom-full mb-2 w-48 bg-white shadow-lg rounded-md  border border-gray-200"
                   ref={dropupRef}
                 >
                   <ul>

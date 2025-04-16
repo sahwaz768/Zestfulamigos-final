@@ -24,13 +24,13 @@ export const NotificationManager = ({ children }) => {
     <>
       {/* Error Window */}
       {notiData.open && (
-        <div className="flex justify-center fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
+        <div className="flex justify-center fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 w-full">
           <div
             className={
-              notiData.type === 'success' ? 'bg-green-500' : 'bg-red-500'
+              notiData.type === 'success' ? 'bg-green-500 rounded-lg' : 'bg-red-500 rounded-lg  ' 
             }
           >
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-3  p-2 ">
               {notiData.type === 'success' ? (
                 <FaCheck size={30} />
               ) : (

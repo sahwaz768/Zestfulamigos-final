@@ -124,7 +124,7 @@ const ChatComponent = ({ chatrooms, isCompanion, isEmailVerified }) => {
               />
             ) : (
               <div className="chat-emptyspace">
-                <div className="flex justify-center">
+                <div className="flex justify-center ">
                   <Image src={Logo} alt="logo" />
                 </div>
                 <h1 className="text-center font-extrabold text-red-700 text-2xl">

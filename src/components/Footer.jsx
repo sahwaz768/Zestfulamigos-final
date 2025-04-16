@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { CiLocationOn } from 'react-icons/ci';
 import { CiMail } from 'react-icons/ci';
@@ -8,6 +10,8 @@ import { FaInstagram } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { CiLinkedin } from 'react-icons/ci';
 import Link from 'next/link';
+import Image from 'next/image';
+import Logo from '@/shared/Assets/ZAlogo.png';
 
 
 const Footer = () => {
@@ -17,7 +21,7 @@ const Footer = () => {
         <div className="  py-12">
           <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4 sm:px-6 ">
             <div>
-              <h2 className="footerzest">zestful amigos</h2>
+              <h2 className="footerzest"><Image src={Logo} alt="logo" /></h2>
               <p className="text-white">Connect,Engage,Enjoy.</p>
             </div>
 
@@ -40,12 +44,13 @@ const Footer = () => {
            <Link href={'/'}>  <p className="mt-1">Home</p> </Link> 
             <Link href={'/aboutus'}>  <p className="mt-1">AboutUs</p> </Link>
            <Link href={'/privacypolicy'}>   <p className="mt-1">Privacy Policy</p> </Link>
+           <Link href={'/contactus'}>   <p className="mt-1">Contact Us</p> </Link>
             </div>
 
             <div className="mt-4">
               <Link href={'/becompanion'}>
                 {' '}
-                <h1>Be a companion</h1>
+                <h1>Be a Companion</h1>
               </Link>
               {/* <Link href={'/user/concern'}>
                 {' '}
@@ -63,7 +68,7 @@ const Footer = () => {
           <CiLinkedin color="white" size={26} />
         </div>
         <div className="pt-14 py-7 text-center">
-          Copyright 2024.All right reserve
+          Copyright 2025.All right reserve
         </div>
       </div>
     </div>

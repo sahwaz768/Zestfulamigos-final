@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { Emailverification, GoogleSignUp } from '@/components/Models';
 import { decodeLoginCredentials } from '@/utils/auth.utils';
 
+
+
 const Page = () => {
   const [formData, setFormData] = useState({
     name: '',

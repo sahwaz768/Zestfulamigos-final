@@ -38,7 +38,7 @@ const page = () => {
           <h1 className="companionconnect text-white ">Connect,Engage,Enjoy</h1>
           <h2 className="text-3xl text-white mt-4">
             <span className="companionwith"> with</span>
-            <span className="ml-6 zestful ">zestful amigos</span>
+            <span className="ml-8 zestful ">zestful amigos</span>
           </h2>
          
         </div>

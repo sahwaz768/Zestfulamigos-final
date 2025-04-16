@@ -68,7 +68,7 @@ export default function RatingComponent({ bookingDetails }) {
             />
           </div>
           <h1 className="text-center ">
-            How would you Rate your Experience with our “
+            How would you Rate your Experience with  “
             {bookingDetails?.firstname || 'Sarah'}”
           </h1>
 

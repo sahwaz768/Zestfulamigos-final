@@ -15,6 +15,8 @@ import { AiOutlineSafety } from 'react-icons/ai';
 import { CiLocationOff } from 'react-icons/ci';
 import { BiLocationPlus } from 'react-icons/bi';
 import { IoIosTimer } from 'react-icons/io';
+import { IoCloudUploadOutline } from "react-icons/io5";
+
 
 export const StartSessionModel = ({ closeModal, bookingid }) => {
   const [otp, setOtp] = useState(['', '', '', '']);
