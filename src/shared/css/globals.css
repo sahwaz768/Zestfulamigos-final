@@ -2480,7 +2480,7 @@ th {
   padding: 10px 8px 16px 8px;
   gap: 6px;
   border-radius: 8px 0px 0px 0px;
-  opacity: 0px;
+  /* opacity: 0px; */
 }
 .extension-slote {
   width: 270px;
@@ -2489,7 +2489,7 @@ th {
   gap: 10px;
   border-radius: 8px 0px 0px 0px;
   border: 1px 0px 0px 0px;
-  opacity: 0px;
+  /* opacity: 0px; */
   background: #ffffff;
   border: 1px solid #e1e1ed;
 }

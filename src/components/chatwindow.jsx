@@ -238,7 +238,7 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
     window.location.href = `tel:${phoneNumber}`;
   };
 
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
