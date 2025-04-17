@@ -9,8 +9,6 @@ import Link from 'next/link';
 import { Emailverification, GoogleSignUp } from '@/components/Models';
 import { decodeLoginCredentials } from '@/utils/auth.utils';
 
-
-
 const Page = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -21,7 +19,7 @@ const Page = () => {
     gender: '',
     photo: null
   });
-    const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [photoError, setPhotoError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,6 +64,13 @@ const Page = () => {
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 
     if (!formData.name) newErrors.name = 'Name is required.';
+    const firstname = formData.name.split(' ')[0];
+    const lastname = formData.name.split(' ')[1];
+    if (formData.name && !firstname) {
+      newErrors.name = 'First name is required';
+    } else if (formData.name && !lastname) {
+      formData.name = 'Lastname is required';
+    }
     if (!formData.email) {
       newErrors.email = 'Email is required.';
     } else if (!emailRegex.test(formData.email)) {
@@ -103,13 +108,9 @@ const Page = () => {
       return;
     }
     if (validateForm()) {
-      setIsLoading(() => true)
+      setIsLoading(() => true);
       const firstname = formData.name.split(' ')[0];
       const lastname = formData.name.split(' ')[1];
-      if (!firstname || !lastname) {
-        setErrors({ name: 'Name is invalid, firstame and lastname required' });
-        return;
-      }
       const apiFormData = new FormData();
       apiFormData.append('firstname', firstname);
       apiFormData.append('lastname', lastname);
@@ -154,7 +155,7 @@ const Page = () => {
         const response = error;
         document.getElementById('response').innerText = response;
       }
-      setIsLoading(() => false)
+      setIsLoading(() => false);
     }
   };
 
@@ -414,18 +415,22 @@ const Page = () => {
                       accept="image/*"
                       onChange={handleFileChange}
                       className="fileInput"
-                    />
+                      />
                     {imagePreview ? (
                       <div className="previewContainer">
                         <Image
                           src={imagePreview}
+                          id="userprofile"
                           alt="Preview"
                           width={500}
                           height={300}
                           unoptimized
                         />
                         <button
-                          onClick={() => setImagePreview(null)}
+                          onClick={() => {
+                            setImagePreview(null);
+                            document.getElementById("userprofile").src = null
+                          }}
                           className="closeButton"
                         >
                           ❌
@@ -454,7 +459,11 @@ const Page = () => {
                   <span className="text-xs text-pink-700">{photoError}</span>
                 )}
                 <p className="text-sm text-pink-700" id="response"></p>
-                <button onClick={handleSubmit} className="sbtbtm" disabled={isLoading}>
+                <button
+                  onClick={handleSubmit}
+                  className="sbtbtm"
+                  disabled={isLoading}
+                >
                   Submit
                 </button>
               </div>
