@@ -373,7 +373,8 @@ body {
   height: 200px;
   border-radius: 0 0 200px 0;
   border: 1px solid #fff;
-  background: url('../Assets/Ellipse\ .jpg'),
+  background:
+    url('../Assets/Ellipse\ .jpg'),
     radial-gradient(
       77.84% 77.84% at 45.87% 14.53%,
       rgba(0, 0, 0, 0) 0%,
@@ -390,7 +391,8 @@ body {
 .quarter-circle2 {
   width: 200px;
   height: 200px;
-  background: url('../Assets/Ellipse\ .jpg'),
+  background:
+    url('../Assets/Ellipse\ .jpg'),
     radial-gradient(
       77.84% 77.84% at 45.87% 14.53%,
       rgba(0, 0, 0, 0) 0%,
@@ -949,7 +951,8 @@ button :disabled {
   width: 200px;
   height: 200px;
   border-radius: 0 200px 0 0;
-  background: url('../Assets/Ellipse\ .jpg'),
+  background:
+    url('../Assets/Ellipse\ .jpg'),
     radial-gradient(
       77.84% 77.84% at 45.87% 14.53%,
       rgba(0, 0, 0, 0) 0%,
@@ -971,7 +974,8 @@ button :disabled {
   height: 200px;
   border-radius: 200px 0 0 0;
 
-  background: url('../Assets/Ellipse\ .jpg'),
+  background:
+    url('../Assets/Ellipse\ .jpg'),
     radial-gradient(
       77.84% 77.84% at 45.87% 14.53%,
       rgba(0, 0, 0, 0) 0%,
@@ -1674,9 +1678,8 @@ button :disabled {
     background: transparent;
     border: 0.8px solid transparent;
     box-shadow: 0 4px 6px transparent;
-  
   }
-  
+
   .card {
     height: 450px;
     width: 130%;
@@ -1689,7 +1692,6 @@ button :disabled {
   .bg-card {
     width: 35%;
     height: 50%;
-    
   }
 
   .nav-button {
@@ -2631,7 +2633,6 @@ th {
   .chat-side-icon {
     display: none;
   }
- 
 }
 @media (max-width: 810px) {
   .chatpage {
@@ -2805,7 +2806,6 @@ th {
   .profiledetail {
     margin-left: 35px;
   }
-  
 }
 /* booking history */
 .booking-side {
@@ -3046,6 +3046,33 @@ th {
   border-radius: 8px;
   color: white;
   margin-top: 20px;
+}
+
+.dropdown-menu-bookingrequest {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  max-width: 300px;
+  background-color: transparent;
+
+  list-style: none;
+  margin: 0;
+
+  transition: all 0.3s ease-in-out;
+  transform: translateY(-20px);
+  z-index: 4;
+}
+
+.notificationsvg-bookingrequest {
+  display: flex;
+  justify-content: center;
+  margin-left: 200px;
+  margin-top: 10px;
+}
+
+.dropdown-menu-bookingrequest img {
+  width: 50px;
+  height: 50px;
 }
 @media (max-width: 810px) {
   .companion-modal-overlay {
@@ -3509,7 +3536,6 @@ th {
 .sidebar.open {
   width: 385px;
   position: fixed;
-  
 }
 .user-profile-sidebar {
   display: flex;
@@ -3637,7 +3663,7 @@ th {
 .notifymbsecond {
   position: absolute;
   right: 0;
-  
+
   display: none;
 }
 .threelinembview {
@@ -3650,7 +3676,6 @@ th {
   }
   .notifymbsecond {
     display: block;
-    
   }
 }
 /* rate box */
@@ -3678,7 +3703,7 @@ th {
   flex-shrink: 0;
 }
 .rate-photo img {
- max-width: 200px;
+  max-width: 200px;
   max-height: 182px;
   flex-shrink: 0;
 }
@@ -3867,11 +3892,10 @@ th {
   .margin-box {
     margin-left: 15px;
   }
-  .companion-leftgap{
+  .companion-leftgap {
     margin-left: 20px;
   }
 }
-
 
 /* header profile button */
 
@@ -3980,4 +4004,26 @@ input[type='checkbox']:disabled + span {
   margin-top: 50px;
   width: 70px;
   height: 70px;
+}
+
+/* booking request details */
+
+.booking-details img{
+  width: 200px;
+  height: 200px;
+}
+
+@media screen and (max-width: 810px) {
+  .booking-details img{
+  width: 150px;
+  height: 150px;
+}
+}
+
+/* earning analysis */
+
+.earning-box img{
+  width: 75px;
+  height: 75px;
+   
 }
