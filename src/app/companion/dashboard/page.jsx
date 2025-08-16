@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import { PiSquaresFourDuotone } from 'react-icons/pi';
 import Couple from '@/shared/Assets/dashcouple.png';
 import Image from 'next/image';
@@ -11,12 +11,38 @@ import { BASEURL } from '@/Constants/services.constants';
 import { capitalizedWord } from '@/utils/common.utils';
 import { CancelBookingModel } from '@/components/Models';
 import Loadingbar from '@/components/Loadingbar';
+import { FaUserPlus } from 'react-icons/fa';
+import Profilepicture from '@/shared/Assets/Rectangle 10.png'
 
 const page = () => {
   const [openModel, setOpenModel] = useState({ data: null, open: false });
-
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const userDetails = useSelector((state) => state.AuthReducer.data);
   const [historyData, setHistoryData] = useState(null);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+
+    useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    // Add event listener when dropdown is open
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    // Cleanup event listener
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
 
   const openModal = (id) => {
     setOpenModel({
@@ -68,7 +94,6 @@ const page = () => {
       setOpenModel({ data: null, open: false });
     }
   };
-
 
   useEffect(() => {
     import('../../../services/user/bookings.service')
@@ -122,12 +147,12 @@ const page = () => {
           <Notify backgroundColor="transparent" color="black" />
         </div>
       </div>
-      <div className="flex">
+      <div className="flex" >
         <div>
           <Mastersidebar isCompanion={true} className="sbar-height" />
         </div>
         <div className="dashboard">
-          <div className="dashboard-header ">
+          <div className="dashboard-header " ref={dropdownRef}>
             <div className="flex justify-center items-center ml-4 ">
               <div className="dots4">
                 <PiSquaresFourDuotone color="gray" size={50} />
@@ -146,15 +171,54 @@ const page = () => {
                 </h1>
               </div>
             </div>
-            <div className="comp-admin flex justify-center items-center">
-              <Image
-                src={ userDetails?.Images[0]}
-                alt="Picture of the author"
-                width={117}
-                height={111}
-              />
-              <h1 className="text-sm">{userDetails?.name}</h1>
+            
+            <div
+              onClick={toggleDropdown}
+              className="comp-admin flex justify-center items-center"
+            >
+              <FaUserPlus size={25} color="black" />
             </div>
+            {isOpen && (
+              <div className="dropdown-menu-bookingrequest">
+                <div className="notificationsvg-bookingrequest">
+                  <svg
+                    width="26"
+                    height="13"
+                    viewBox="0 0 26 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M25.5 13H0.5L12.5 0L25.5 13Z" fill="white" />
+                  </svg>
+                </div>
+                <div className="notificatioview text-sm text-gray-900 ">
+                  <div className='flex justify-between items-center my-2'>
+                    <div className='flex items-center gap-3'>
+                    <Image src={Profilepicture} alt='Profile Picture'/>
+                    <div>
+                      <p className=' font-bold'>Alisha Parker</p>
+                      <p className='text-xs mt-2'>12 July:10:00AM-11:00 AM</p>
+                    </div>
+                    </div>
+
+                    <button className='text-xs font-bold text-pink-700 mr-3'>View</button>
+                    </div>
+                    <hr />
+                    <div className='flex justify-between items-center my-2'>
+                    <div className='flex items-center gap-3'>
+                    <Image src={Profilepicture} alt='Profile Picture'/>
+                    <div>
+                      <p className=' font-bold'>Robert Downy jr</p>
+                      <p className='text-xs mt-2'>14 July:10:00AM-11:00 AM</p>
+                    </div>
+                    </div>
+
+                    <button className='text-xs font-bold text-pink-700 mr-3'>View</button>
+                    </div>
+                   
+               </div>
+              </div>
+            )}
           </div>
           <div className="dashboard-midsection flex">
             <div className="mt-5">
@@ -208,7 +272,7 @@ const page = () => {
               <div className="dashboard-userdetail" key={l.id}>
                 <div className="dashboard-userprofile">
                   <Image
-                    src={ l?.user?.Images[0]}
+                    src={l?.user?.Images[0]}
                     alt="Picture of the author"
                     width={117}
                     height={111}
