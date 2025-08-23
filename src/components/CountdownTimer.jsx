@@ -4,8 +4,8 @@ import { useState, useEffect, use } from 'react';
 const CountdownTimer = ({ startTime, endTime }) => {
   const calculateRemainingTime = () => {
     const currentTime = Date.now();
-    const offsetInMs = 5.5 * 60 * 60 * 1000;
-    const remainingTime = endTime - currentTime - offsetInMs;
+   // const offsetInMs = 5.5 * 60 * 60 * 1000;
+    const remainingTime = endTime - currentTime //- offsetInMs;
 
     if (remainingTime <= 0) return 0;
 

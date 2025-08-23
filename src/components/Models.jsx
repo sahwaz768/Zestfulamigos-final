@@ -1124,7 +1124,7 @@ export function GoogleSignUp({ handleClose, userId }) {
     }
   };
   const handleChange = (e) => {
-    const { name, target } = e.target;
+    const { name, value } = e.target;
     setData((l) => ({ ...l, [name]: value }));
     if (Object.values(errors).length) {
       setErrors({});
@@ -1370,7 +1370,7 @@ export const Emailverification = ({ handleModel, ...props }) => {
         >
           {isLoading ? 'Plese wait' : 'Submit'}
         </button>
-        {error && <p className="text-xs">{error}</p>}
+        {error && <p className="text-xs text-black">{error}</p>}
       </div>
     </div>
   );
