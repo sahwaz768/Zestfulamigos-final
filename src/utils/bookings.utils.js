@@ -37,7 +37,7 @@ export function formatBookingTimingsforUi(startTime, endtime) {
   const enddate = new Date(Number(endtime));
 
   const options = {
-    timeZone: "UTC",
+    timeZone: "Asia/Kolkata",
     month: 'short',
     day: 'numeric',
     hour: 'numeric',
@@ -45,7 +45,7 @@ export function formatBookingTimingsforUi(startTime, endtime) {
     hour12: true
   };
   const endtimeoptions = {
-    timeZone: "UTC",
+    timeZone: "Asia/Kolkata",
     hour: 'numeric',
     minute: 'numeric',
     hour12: true
@@ -137,7 +137,7 @@ export function formatBookingTime(startTime) {
   // const enddate = new Date(Number(endtime));
 
   const options = {
-   timeZone: "UTC",
+   timeZone: "Asia/Kolkata",
     month: 'short',
     day: 'numeric',
     hour: 'numeric',
