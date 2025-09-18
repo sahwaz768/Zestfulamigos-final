@@ -28,6 +28,7 @@ const Page = () => {
   useEffect(() => {
     let params = new URL(document.location.toString()).searchParams;
     let companionId = params.get('companionId');
+    
     if (companionId) {
       import('@/services/user/companionDetails.service')
         .then(({ checkCompanionSlots }) => checkCompanionSlots(companionId))

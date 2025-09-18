@@ -137,7 +137,7 @@ export const getUpcomingBookingforCompanion = async () => {
     default: { get }
   } = await import('../interface/interceptor');
   try {
-    const url = BASEURL + '/user/booking/getupcomingbookingforcompanion';
+    const url = `${BASEURL}/user/booking/getupcomingbookingforcompanion`;
     const {
       data: { data }
     } = await get(url);
@@ -149,6 +149,7 @@ export const getUpcomingBookingforCompanion = async () => {
     return { error: 'Server Error' };
   }
 };
+
 
 export const getUpcomingBookingforUser = async () => {
   const { BASEURL } = await import('../../Constants/services.constants');
@@ -189,5 +190,118 @@ export const getPreviousBookingsforCompanion = async (values) => {
     if (error.response?.status >= 400)
       return { error: error.response.data.message };
     return { error: 'Server Error' };
+  }
+};
+
+export const getCompanionAnalysisDetails = async () => {
+  try {
+    const { BASEURL } = await import('../../Constants/services.constants');
+    const {
+      default: { get }
+    } = await import('../interface/interceptor');
+    const url = BASEURL + '/companion/analysis/companionoverallanalysis?companionId=45ccffb5-50d6-4a75-b450-222ef56c27d1';
+
+    const response = await get(url);
+    return response;
+   // console.log('Full API response:', response);
+  } catch (error) {
+    console.error('API Error:', error);
+    if (error.response) {
+      if (error.response.status >= 400) {
+        return {
+          error:
+            error.response.data?.message ||
+            `HTTP ${error.response.status} Error`
+        };
+      }
+    }
+
+    return { error: error.message || 'Network or Server Error' };
+  }
+};
+
+
+export const getBookingRequestDetails = async (bookingid) => {
+  try {
+    const { BASEURL } = await import('../../Constants/services.constants');
+    const {
+      default: { get }
+    } = await import('../interface/interceptor');
+
+    // Correct URL
+    const url = `${BASEURL}/companion/booking/companionbookingdetails?bookingid=${bookingid}`;
+    
+    
+
+    const response = await get(url);
+    return response;
+  } catch (error) {
+    console.error('API Error:', error);
+    if (error.response) {
+      if (error.response.status >= 400) {
+        return {
+          error:
+            error.response.data?.message ||
+            `HTTP ${error.response.status} Error`
+        };
+      }
+    }
+    return { error: error.message || 'Network or Server Error' };
+  }
+};
+
+
+export const getAcceptBooking = async (bookingid) => {
+  try {
+    const { BASEURL } = await import('../../Constants/services.constants');
+    const {
+      default: { get }
+    } = await import('../interface/interceptor');
+
+    // Correct URL
+    const url = `${BASEURL}/companion/booking/companionacceptbooking?bookingid=${bookingid}`;
+
+    const response = await get(url);
+    return response;
+  } catch (error) {
+    console.error('API Error:', error);
+    if (error.response) {
+      if (error.response.status >= 400) {
+        return {
+          error:
+            error.response.data?.message ||
+            `HTTP ${error.response.status} Error`
+        };
+      }
+    }
+    return { error: error.message || 'Network or Server Error' };
+  }
+};
+
+
+export const getRejectBooking = async (bookingid) => {
+  try {
+    const { BASEURL } = await import('../../Constants/services.constants');
+    const {
+      default: { get }
+    } = await import('../interface/interceptor');
+
+    // Correct URL
+    const url = `${BASEURL}/companion/booking/companionrejectbooking?bookingid=${bookingid}`;
+
+    const response = await get(url);
+    return response;
+  } catch (error) {
+    console.error('API Error:', error);
+    if (error.response) {
+      if (error.response.status >= 400) {
+        return {
+          error:
+            error.response.data?.message ||
+            `HTTP ${error.response.status} Error`
+        };
+      }
+    }
+    return { error: error.message || 'Network or Server Error' };
   }
 };

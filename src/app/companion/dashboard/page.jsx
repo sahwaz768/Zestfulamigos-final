@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState,useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PiSquaresFourDuotone } from 'react-icons/pi';
 import Couple from '@/shared/Assets/dashcouple.png';
 import Image from 'next/image';
@@ -7,138 +7,46 @@ import { IoIosStar } from 'react-icons/io';
 import { Mastersidebar } from '@/components/MasterSidebar';
 import Notify from '@/components/Notify';
 import { useSelector } from 'react-redux';
-import { BASEURL } from '@/Constants/services.constants';
-import { capitalizedWord } from '@/utils/common.utils';
-import { CancelBookingModel } from '@/components/Models';
 import Loadingbar from '@/components/Loadingbar';
-import { FaUserPlus } from 'react-icons/fa';
-import Profilepicture from '@/shared/Assets/Rectangle 10.png'
+import { formatBookingTimingsforUi } from '@/utils/bookings.utils';
+import Pagination from '@/components/Pagination';
+import Link from 'next/link';
 
-const page = () => {
-  const [openModel, setOpenModel] = useState({ data: null, open: false });
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
+const Page = () => {
   const userDetails = useSelector((state) => state.AuthReducer.data);
-  const [historyData, setHistoryData] = useState(null);
+  const [Booking, setBooking] = useState(null);
+  const [isLoading, setLoading] = useState(true);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const { getUpcomingBookingforCompanion } = await import(
+        '@/services/user/bookings.service'
+      );
+      const result = await getUpcomingBookingforCompanion();
 
-
-    useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
+      if (result.data) {
+        setBooking(result.data);
+      //  console.log('Upcoming booking data:', result.data);
       }
-    };
-
-    // Add event listener when dropdown is open
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    // Cleanup event listener
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen]);
-
-  const openModal = (id) => {
-    setOpenModel({
-      data: { userId: userDetails?.userId, id: id },
-      open: true
-    });
-  };
-  const closeModal = (l) => {
-    if (l) {
-      import('../../../services/user/bookings.service')
-        .then(({ getUpcomingBookingforCompanion, getRatingforUser }) =>
-          Promise.all([getUpcomingBookingforCompanion(), getRatingforUser()])
-        )
-        .then(async ([{ data }, { data: ratingdata }]) => {
-          if (data) {
-            const { formatBookingTimingsforUi } = await import(
-              '../../../utils/bookings.utils'
-            );
-            const values = { pastBooking: [], upcoming: [], rating: null };
-            for (let i = 0; i < data.length; i += 1) {
-              const value = {
-                id: data[i].id,
-                companion: data[i].users.filter((l) => l.isCompanion)[0],
-                user: data[i].users.filter((l) => !l.isCompanion)[0],
-                bookingdate: formatBookingTimingsforUi(
-                  data[i].bookingstart,
-                  data[i].bookingend
-                ),
-                isPast:
-                  new Date(Number(data[i].bookingstart)).getTime() < Date.now(),
-                status: data[i].status,
-                amount: data[i].amount,
-                purpose: data[i].purpose,
-                meetinglocation: data[i].meetinglocation,
-                sessions: data[i].sessions
-              };
-              if (value.isPast) values.pastBooking.push(value);
-              else values.upcoming.push(value);
-            }
-            if (ratingdata) {
-              values.rating = ratingdata[0];
-            }
-            setHistoryData(values);
-          }
-        })
-        .catch((err) => console.log('Error', err))
-        .finally(() => setOpenModel({ data: null, open: false }));
-    } else {
-      setOpenModel({ data: null, open: false });
+    } catch (err) {
+      console.error('Fetch error:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    import('../../../services/user/bookings.service')
-      .then(({ getUpcomingBookingforCompanion, getRatingforUser }) =>
-        Promise.all([getUpcomingBookingforCompanion(), getRatingforUser()])
-      )
-      .then(async ([{ data }, { data: ratingdata }]) => {
-        if (data) {
-          const { formatBookingTimingsforUi } = await import(
-            '../../../utils/bookings.utils'
-          );
-          const values = { pastBooking: [], upcoming: [], rating: null };
-          for (let i = 0; i < data.length; i += 1) {
-            const value = {
-              id: data[i].id,
-              companion: data[i].users.filter((l) => l.isCompanion)[0],
-              user: data[i].users.filter((l) => !l.isCompanion)[0],
-              bookingdate: formatBookingTimingsforUi(
-                data[i].bookingstart,
-                data[i].bookingend
-              ),
-              status: data[i].status,
-              amount: data[i].amount,
-              purpose: data[i].purpose,
-              meetinglocation: data[i].meetinglocation,
-              sessions: data[i].sessions
-            };
-            if (value.isPast) values.pastBooking.push(value);
-            else values.upcoming.push(value);
-          }
-          if (ratingdata) {
-            values.rating = ratingdata[0];
-          }
-          setHistoryData(values);
-        }
-      })
-      .catch((err) => console.log('Error', err));
+    fetchData(); 
   }, []);
 
-  if (!userDetails)
+  if (!userDetails || isLoading) {
     return (
       <div>
         <Loadingbar />
       </div>
     );
+  }
 
   return (
     <>
@@ -147,12 +55,12 @@ const page = () => {
           <Notify backgroundColor="transparent" color="black" />
         </div>
       </div>
-      <div className="flex" >
+      <div className="flex">
         <div>
           <Mastersidebar isCompanion={true} className="sbar-height" />
         </div>
         <div className="dashboard">
-          <div className="dashboard-header " ref={dropdownRef}>
+          <div className="dashboard-header ">
             <div className="flex justify-center items-center ml-4 ">
               <div className="dots4">
                 <PiSquaresFourDuotone color="gray" size={50} />
@@ -162,7 +70,6 @@ const page = () => {
                 <h1 className="text-sm text-pink-700">
                   {new Date().toLocaleString('en-US', { weekday: 'long' })}{' '}
                   <span className="text-black">
-                    {' '}
                     {new Date().toLocaleString('en-US', {
                       day: 'numeric',
                       month: 'short'
@@ -171,54 +78,6 @@ const page = () => {
                 </h1>
               </div>
             </div>
-            
-            <div
-              onClick={toggleDropdown}
-              className="comp-admin flex justify-center items-center"
-            >
-              <FaUserPlus size={25} color="black" />
-            </div>
-            {isOpen && (
-              <div className="dropdown-menu-bookingrequest">
-                <div className="notificationsvg-bookingrequest">
-                  <svg
-                    width="26"
-                    height="13"
-                    viewBox="0 0 26 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M25.5 13H0.5L12.5 0L25.5 13Z" fill="white" />
-                  </svg>
-                </div>
-                <div className="notificatioview text-sm text-gray-900 ">
-                  <div className='flex justify-between items-center my-2'>
-                    <div className='flex items-center gap-3'>
-                    <Image src={Profilepicture} alt='Profile Picture'/>
-                    <div>
-                      <p className=' font-bold'>Alisha Parker</p>
-                      <p className='text-xs mt-2'>12 July:10:00AM-11:00 AM</p>
-                    </div>
-                    </div>
-
-                    <button className='text-xs font-bold text-pink-700 mr-3'>View</button>
-                    </div>
-                    <hr />
-                    <div className='flex justify-between items-center my-2'>
-                    <div className='flex items-center gap-3'>
-                    <Image src={Profilepicture} alt='Profile Picture'/>
-                    <div>
-                      <p className=' font-bold'>Robert Downy jr</p>
-                      <p className='text-xs mt-2'>14 July:10:00AM-11:00 AM</p>
-                    </div>
-                    </div>
-
-                    <button className='text-xs font-bold text-pink-700 mr-3'>View</button>
-                    </div>
-                   
-               </div>
-              </div>
-            )}
           </div>
           <div className="dashboard-midsection flex">
             <div className="mt-5">
@@ -240,102 +99,78 @@ const page = () => {
                 <IoIosStar color="yellow" size={30} />
                 <div>
                   Last rating
-                  <div className="flex  items-center">
-                    {historyData?.rating?.last_rating ? (
-                      Array.from(
-                        { length: Number(historyData?.rating?.last_rating) },
-                        (_, i) => i
-                      ).map((l) => (
-                        <IoIosStar color="yellow" size={15} key={l} />
-                      ))
-                    ) : (
-                      <IoIosStar color="gray" size={15} />
-                    )}
-                  </div>
+                  <div className="flex items-center">NA</div>
                 </div>
               </div>
               <div className="overview-box">
                 <IoIosStar color="yellow" size={30} />
                 <div>
                   <h1>Average rating</h1>
-                  <h1 className="font-bold">
-                    {historyData?.rating?.bayesian_avg
-                      ? `${Number(historyData?.rating?.bayesian_avg).toFixed(2)}/${historyData.rating.rating_count}`
-                      : ''}
-                  </h1>
+                  NA
                 </div>
               </div>
             </div>
           </div>
-          {historyData?.upcoming.length ? (
-            historyData.upcoming?.map((l) => (
-              <div className="dashboard-userdetail" key={l.id}>
-                <div className="dashboard-userprofile">
-                  <Image
-                    src={l?.user?.Images[0]}
-                    alt="Picture of the author"
-                    width={117}
-                    height={111}
-                  />
-                </div>
-                <div className="flex flex-wrap">
-                  <div className="md:mt-2 ml-2 gap-2">
-                    <h1 className="text-sm md:text-base">
-                      Name:
-                      <span className="md:font-bold">{l.user?.firstname}</span>
-                    </h1>
-                    <h1 className="text-sm md:text-base">
-                      Age:<span className="md:font-bold">{l.user?.age}</span>
-                    </h1>
-                    <h1 className="text-sm md:text-base">
-                      Gender:
-                      <span className="md:font-bold">{l.user?.gender}</span>
-                    </h1>
+
+          {Booking?.bookings?.length > 0 ? (
+            <>
+              {Booking.bookings.map((listitem) => {
+                const user = listitem.users.find((u) => !u.isCompanion);
+
+                return (
+                  <div className="dashboard-userdetail" key={listitem.id}>
+                    <div className="dashboard-userprofile">
+                      <Image
+                        src={user?.Images?.[0] || Couple}
+                        alt={user?.firstname || 'User'}
+                        width={117}
+                        height={111}
+                      />
+                    </div>
+                    <div className="flex flex-wrap">
+                      <div className="md:mt-2 ml-2 gap-2">
+                        <h1 className="text-sm md:text-base">
+                          Name:{' '}
+                          <span className="md:font-bold">
+                            {user?.firstname || 'NA'}
+                          </span>
+                        </h1>
+                      </div>
+
+                      <div className="dashboard-purpose md:mt-2 gap-2">
+                        <h1 className="text-sm md:text-base">
+                          Time and date:{' '}
+                          <span className="md:font-bold">
+                            {formatBookingTimingsforUi(
+                              listitem.bookingstart,
+                              listitem.bookingend
+                            )}
+                          </span>
+                        </h1>
+                      </div>
+                    </div>
+
+                    <div className="dashboard-cancel">
+                      <Link
+                        href={`/companion/BookingrequestDetail?bookingid=${listitem.id}`}
+                      >
+                        {' '}
+                        <button>Check Details</button>
+                      </Link>
+                    </div>
                   </div>
-                  <div className="dashboard-purpose md:mt-2  gap-2">
-                    <h1 className="text-sm md:text-base">
-                      Time and date:
-                      <span className="md:font-bold ">{l?.bookingdate} </span>
-                    </h1>
-                    <h1 className="text-sm md:text-base">
-                      Location of meet- up:
-                      <span className="md:font-bold ">
-                        {l.meetinglocation.address}
-                      </span>
-                    </h1>
-                    <h1 className="text-sm md:text-base">
-                      Purpose of meet:
-                      <span className="md:font-bold ">{l?.purpose}</span>
-                    </h1>
-                    <h1 className="text-sm md:text-base">
-                      status:
-                      <span className="md:font-bold ">
-                        {capitalizedWord(l.status)}
-                      </span>
-                    </h1>
-                  </div>
-                </div>
-                {l.status === 'ACCEPTED' && !l.sessions?.length ? (
-                  <div className="dashboard-cancel">
-                    <button onClick={() => openModal(l.id)}>Cancel</button>
-                  </div>
-                ) : null}
-              </div>
-            ))
+                );
+              })}
+
+           
+            </>
           ) : (
             <div>No Upcoming Bookings...</div>
           )}
         </div>
       </div>
-
-      {openModel.open && (
-        <CancelBookingModel
-          closeModal={closeModal}
-          bookingDetail={openModel.data}
-        />
-      )}
     </>
   );
 };
 
-export default page;
+export default Page;

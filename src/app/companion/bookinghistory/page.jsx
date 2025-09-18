@@ -69,6 +69,7 @@ const Page = () => {
     const { getBookingDataforUserUi } = await import('@/utils/bookings.utils');
     const { data } = await getUpcomingBookingforCompanion();
     if (data) {
+      console.log('Upcoming Booking history:', data);
       const values = historydata;
       values.upcoming = getBookingDataforUserUi(data);
       setHistoryData(values);
@@ -84,7 +85,7 @@ const Page = () => {
           <Notify backgroundColor="transparent" color="black" />
         </div>
         <div className="bookingbox">
-          <Mastersidebar className="sbar-height-chat" />
+          <Mastersidebar className="sbar-height-chat" isCompanion={true} />
           <div className="booking-side">
             <div className="booking-type">
               <div

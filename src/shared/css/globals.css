@@ -2979,7 +2979,7 @@ th {
   color: #000;
   border-radius: 5px;
   margin: 10px 20px 0px 20px;
-  padding: 15px;
+  padding: 5px;
   display: flex;
 }
 
@@ -2989,9 +2989,10 @@ th {
   gap: 10px;
 }
 .dashboard-userprofile img {
-  width: 117px;
-  height: 111px;
+  width: 60px;
+  height: 60px;
   flex-shrink: 0;
+  border-radius: 10px;
 }
 .dashboard-purpose {
   margin-left: 60px;
@@ -3000,6 +3001,7 @@ th {
   margin-left: auto;
 }
 .dashboard-cancel button {
+  margin-top: 5px;
   background-color: rgb(250, 48, 75);
   padding: 10px;
   border-radius: 10px;
@@ -3119,6 +3121,11 @@ th {
     gap: 5px;
     margin-right: 10px;
   }
+  .dashboard-userprofile img {
+  width: 45px;
+  height: 45px;
+ 
+}
 }
 
 /* be a companion */
@@ -4026,4 +4033,14 @@ input[type='checkbox']:disabled + span {
   width: 75px;
   height: 75px;
    
+}
+
+/* all booking details */
+.dashboard-userdetail-second {
+  background-color: rgb(255, 236, 236);
+  color: #000;
+  border-radius: 5px;
+  margin-top: 10px;
+  padding: 5px;
+  display: flex;
 }

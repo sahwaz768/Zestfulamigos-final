@@ -5,6 +5,8 @@ import Chatheader from '@/components/Masterheader';
 import Notify from '@/components/Notify';
 import { Mastersidebar } from '@/components/MasterSidebar';
 import Profilepicture from '@/shared/Assets/Rectangle 10.png';
+import { useEffect, useState } from 'react';
+import Loadingbar from '@/components/Loadingbar';
 import {
   ResponsiveContainer,
   BarChart,
@@ -12,28 +14,53 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  CartesianGrid,
+  CartesianGrid
 } from 'recharts';
 
 const page = () => {
-  const data = [
-    { name: 'Mon', earnings: 4000 },
-    { name: 'Tues', earnings: 3000 },
-    { name: 'Wed', earnings: 5000 },
-    { name: 'Thus', earnings: 5000 },
-    { name: 'Fri', earnings: 5000 },
-    { name: 'Sat', earnings: 5000 },
-    { name: 'Sun', earnings: 5000 }
-  ];
+  const [analysisData, setAnalysisData] = useState(null);
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    const fetchAnalysisData = async () => {
+      try {
+        const { getCompanionAnalysisDetails } = await import(
+          '@/services/user/bookings.service'
+        );
+        const result = await getCompanionAnalysisDetails();
+
+        if (result.data) {
+          console.log(result.data.data);
+          setAnalysisData(result.data.data);
+          const formatted = result.data.data.earnings_last_week_by_days.map(
+            (item) => ({
+              Days: item.day.slice(0, 3),
+              Hours: item.hours
+            })
+          );
+          setChartData(formatted);
+        }
+      } catch (err) {
+        console.error('Fetch error:', err);
+      }
+    };
+
+    fetchAnalysisData();
+  }, []);
+
+
+   if(!analysisData){
+      return <div><Loadingbar/></div>
+    } 
   return (
     <>
       <Chatheader backgroundColor="rgba(250, 236, 236, 0.8)" />
       <div className="notifymbsecond">
         <Notify backgroundColor="transparent" color="black" />
       </div>
-      <Mastersidebar className="sbar-height-chat" />
+      <Mastersidebar className="sbar-height-chat" isCompanion={true} />
 
-      <div className="md:w-[75rem] w-[95%] mx-auto md:my-5 my-10 p-8  rounded-2xl shadow-sm">
+      <div className="md:w-[75rem] w-[100%] mx-auto md:my-5 my-10 p-8  rounded-2xl shadow-sm">
         {/* Header Section */}
         <div className="mb-8">
           <h1 className="font-black text-4xl text-black bg-clip-text ">
@@ -57,7 +84,8 @@ const page = () => {
                   <span className="text-3xl">⏰</span>
                 </div>
                 <h3 className="text-4xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-                  76<span className="text-xl">Hr</span>
+                  {analysisData?.total_booking_hours ?? 0}
+                  <span className="text-xl">Hr</span>
                 </h3>
                 <p className="text-sm text-gray-600 font-medium mt-2">
                   Total Booking
@@ -70,7 +98,7 @@ const page = () => {
                   <span className="text-3xl">⭐</span>
                 </div>
                 <h3 className="text-4xl font-black bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-                  4.2
+                  {analysisData?.average_rating ?? 'N/A'}
                 </h3>
                 <p className="text-sm text-gray-600 font-medium mt-2">
                   Average Rating
@@ -83,7 +111,7 @@ const page = () => {
                   <span className="text-3xl">💰</span>
                 </div>
                 <h3 className="text-4xl font-black bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                  10k
+                  {analysisData?.total_earning ?? 0}
                 </h3>
                 <p className="text-sm text-gray-600 font-medium mt-2">
                   Total Earned
@@ -96,7 +124,7 @@ const page = () => {
                   <span className="text-3xl">📈</span>
                 </div>
                 <h3 className="text-4xl font-black bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                  5.2k
+                  {analysisData?.last_week_earning ?? 0}
                 </h3>
                 <p className="text-sm text-gray-600 font-medium mt-2">
                   Last Week Earned
@@ -216,12 +244,12 @@ const page = () => {
             <div>
               <div style={{ width: '100%', height: 300 }}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={data}>
+                  <BarChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
+                    <XAxis dataKey="Days" />
                     <YAxis />
                     <Tooltip />
-                    <Bar dataKey="earnings" fill="#ef4444" />
+                    <Bar dataKey="Hours" fill="#ef4444" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
