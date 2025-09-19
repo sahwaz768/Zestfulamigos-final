@@ -5,6 +5,7 @@ import { MdOutlinePaid, MdPendingActions } from 'react-icons/md';
 import { RiServiceLine } from 'react-icons/ri';
 import { CancelBookingModel } from './Models';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const UpcomingBooking = ({ bookingdata, isCompanion, getUpcomingBooking }) => {
   const [isOpen, setIsOpen] = useState(null);
@@ -36,10 +37,14 @@ const UpcomingBooking = ({ bookingdata, isCompanion, getUpcomingBooking }) => {
   return bookingdata?.length ? (
     bookingdata.map((l, i) => (
       <div className="upcoming-slot" key={i * 500}>
+        <div className='flex '>
         <h1 className="text-sm font-bold text-gray-500 mt-2">
           Upcoming meting with{' '}
           {isCompanion ? l.user?.firstname : l.companion?.firstname}
         </h1>
+       
+        </div>
+   
         <div className="flex flex-wrap mt-1 gap-4 md:gap-8">
           <div className="flex items-center text-sm gap-2">
             <IoCalendarOutline />
@@ -59,6 +64,8 @@ const UpcomingBooking = ({ bookingdata, isCompanion, getUpcomingBooking }) => {
               <h1>Paid amount: {l.amount}</h1>
             </div>
           )}
+       <Link href={`/companion/BookingrequestDetail?bookingid=${l.id}`}>   <h1 className='text-red-500 text-xs'>view detail</h1> </Link>
+          
         </div>
         {l.status === 'ACCEPTED' && !l.sessions.length ? (
           <div>

@@ -8,9 +8,9 @@ import { redirect } from 'next/navigation';
 import { MdOutlineSwipe } from "react-icons/md";
 import Loadingbar from './Loadingbar';
 
-export const Mastersidebar = ({ isCompanion,className }) => {
+export const Mastersidebar = ({ isCompanion, className }) => {
   const userDetails = useSelector((state) => state.AuthReducer.data);
-
+  
   const handleLogout = async () => {
     const { logoutUserService } = await import(
       '../services/auth/logout.service'
@@ -20,6 +20,7 @@ export const Mastersidebar = ({ isCompanion,className }) => {
     await removeUserData();
     redirect('/');
   };
+
   const menuItems = [
     { label: 'Chats', route: './chat', icon: RiChatSmile3Line },
     {
@@ -38,17 +39,26 @@ export const Mastersidebar = ({ isCompanion,className }) => {
           route: './concern',
           icon: MdOutlineReportProblem
         },
+        // Conditionally add Analysis to dropdown if isCompanion
+        ...(isCompanion ? [{
+          label: 'Analysis',
+          route: './Analysis',
+          icon: MdOutlineReportProblem
+        }] : []),
         { label: 'Logout', icon: MdLogout, handleclick: handleLogout }
       ]
     }
   ];
-  if (isCompanion){
+
+  // Add items to beginning of array based on isCompanion
+  if (isCompanion) {
     menuItems.unshift({
       label: 'Dashboard',
       route: './dashboard',
       icon: MdOutlineReportProblem
     });
-  }else {
+   
+  } else {
     menuItems.unshift({
       label: 'Choose Companion',
       route: '/user/genderchoose',
@@ -57,6 +67,7 @@ export const Mastersidebar = ({ isCompanion,className }) => {
   }
 
   if (!userDetails) return <div><Loadingbar/></div>;
+  
   return (
     <>
       <Sidebar menuItems={menuItems} userDetails={userDetails} className={className} />

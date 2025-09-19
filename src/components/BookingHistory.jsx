@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { MdOutlinePaid, MdPendingActions } from 'react-icons/md';
 import { RiServiceLine } from 'react-icons/ri';
+import Link from 'next/link';
 
 const BookingHistory = ({ bookingdata, isCompanion }) => {
   const router = useRouter();
@@ -32,6 +33,7 @@ const BookingHistory = ({ bookingdata, isCompanion }) => {
               <h1>Paid amount: {l.amount}</h1>
             </div>
           )}
+          <Link href={`/companion/BookingrequestDetail?bookingid=${l.id}`}>   <h1 className='text-red-500 text-xs'>view detail</h1> </Link>
         </div>
         <div>
           {l.status === 'COMPLETED' ? (

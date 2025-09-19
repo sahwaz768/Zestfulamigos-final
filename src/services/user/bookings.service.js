@@ -131,16 +131,22 @@ export const getRatingforUser = async () => {
   return { error: 'Server Error' };
 };
 
-export const getUpcomingBookingforCompanion = async () => {
+export const getUpcomingBookingforCompanion = async (values) => {
   const { BASEURL } = await import('../../Constants/services.constants');
   const {
     default: { get }
   } = await import('../interface/interceptor');
   try {
-    const url = `${BASEURL}/user/booking/getupcomingbookingforcompanion`;
+    let params = {};
+    if (values) {
+      params = values;
+    }
+    const url = `${BASEURL}/user/booking/getupcomingbookingforcompanion?`;
     const {
       data: { data }
-    } = await get(url);
+    } = await get(url,{ params });
+    
+    
     return { data };
   } catch (error) {
     console.log(error?.response);
@@ -151,16 +157,20 @@ export const getUpcomingBookingforCompanion = async () => {
 };
 
 
-export const getUpcomingBookingforUser = async () => {
+export const getUpcomingBookingforUser = async (values) => {
   const { BASEURL } = await import('../../Constants/services.constants');
   const {
     default: { get }
   } = await import('../interface/interceptor');
   try {
+     let params = {};
+    if (values) {
+      params = values;
+    }
     const url = BASEURL + '/user/booking/getupcomingbookingforuser';
     const {
       data: { data }
-    } = await get(url);
+    } = await get(url, { params });
     return { data };
   } catch (error) {
     console.log(error?.response);
@@ -184,6 +194,8 @@ export const getPreviousBookingsforCompanion = async (values) => {
     const {
       data: { data }
     } = await get(url, { params });
+    
+    
     return { data };
   } catch (error) {
     console.log(error?.response);

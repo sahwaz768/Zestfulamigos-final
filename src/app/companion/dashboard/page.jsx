@@ -14,20 +14,25 @@ import Link from 'next/link';
 
 const Page = () => {
   const userDetails = useSelector((state) => state.AuthReducer.data);
-  const [Booking, setBooking] = useState(null);
+  const [bookingData, setBookingData] = useState(null); // Renamed for clarity
   const [isLoading, setLoading] = useState(true);
 
+  
+
+  // ✅ FIXED: Cleaner fetchData function
   const fetchData = async () => {
     try {
       setLoading(true);
       const { getUpcomingBookingforCompanion } = await import(
         '@/services/user/bookings.service'
       );
+
+      // Initial load - no pageNo means page 1
       const result = await getUpcomingBookingforCompanion();
 
       if (result.data) {
-        setBooking(result.data);
-      //  console.log('Upcoming booking data:', result.data);
+        setBookingData(result.data);
+        console.log('Initial booking data:', result.data);
       }
     } catch (err) {
       console.error('Fetch error:', err);
@@ -37,7 +42,7 @@ const Page = () => {
   };
 
   useEffect(() => {
-    fetchData(); 
+    fetchData();
   }, []);
 
   if (!userDetails || isLoading) {
@@ -79,6 +84,7 @@ const Page = () => {
               </div>
             </div>
           </div>
+
           <div className="dashboard-midsection flex">
             <div className="mt-5">
               <h1 className="md:text-3xl font-bold ml-5 ">
@@ -91,7 +97,9 @@ const Page = () => {
             <div className="midsection-image">
               <Image src={Couple} alt="Picture of the author" />
             </div>
+
           </div>
+
           <div className="dashboard-overview">
             <h1>Overview</h1>
             <div className="flex gap-4">
@@ -112,9 +120,10 @@ const Page = () => {
             </div>
           </div>
 
-          {Booking?.bookings?.length > 0 ? (
+          {/* ✅ FIXED: Proper null checking and pagination */}
+          {bookingData?.bookings?.length > 0 ? (
             <>
-              {Booking.bookings.map((listitem) => {
+              {bookingData.bookings.map((listitem) => {
                 const user = listitem.users.find((u) => !u.isCompanion);
 
                 return (
@@ -154,14 +163,17 @@ const Page = () => {
                       <Link
                         href={`/companion/BookingrequestDetail?bookingid=${listitem.id}`}
                       >
-                        {' '}
                         <button>Check Details</button>
                       </Link>
                     </div>
                   </div>
                 );
               })}
+              <div className='flex justify-center mb-5 mt-4'>
+        <Link href={'/companion/bookinghistory'}>      <button className='py-2 px-4 bg-red-500 text-white rounded-lg'>view all booking</button> </Link>  
+              </div>
 
+              
            
             </>
           ) : (
