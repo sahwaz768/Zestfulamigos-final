@@ -27,14 +27,24 @@ const Page = () => {
           { data: previousbookingdata, error },
           { data: upcomingbookingdata }
         ]) => {
+          
           const { getBookingDataforUserUi } = await import(
             '@/utils/bookings.utils'
           );
           const values = { pastBooking: [], upcoming: [] };
+          
+          // Handle previous bookings
           const { bookings, ...otherdetails } = previousbookingdata;
           values.pastBooking = getBookingDataforUserUi(bookings);
           values.pastBookingDetails = otherdetails;
-          values.upcoming = getBookingDataforUserUi(upcomingbookingdata);
+          
+          // Handle upcoming bookings with pagination details
+          const { bookings: upcomingBookings, ...upcomingOtherDetails } = upcomingbookingdata;
+          values.upcoming = getBookingDataforUserUi(upcomingBookings);
+          values.upcomingBookingDetails = upcomingOtherDetails;
+          
+          console.log('upcoming data:', values);
+
           setHistoryData(values);
           setLoading(() => false);
         }
@@ -52,11 +62,32 @@ const Page = () => {
     const { getBookingDataforUserUi } = await import('@/utils/bookings.utils');
     const { data } = await getPreviousBookingsforCompanion(values);
     if (data) {
-      const values = historydata;
+      const updatedValues = { ...historydata };
       const { bookings, ...otherdetails } = data;
-      values.pastBooking = getBookingDataforUserUi(bookings);
-      values.pastBookingDetails = otherdetails;
-      setHistoryData(values);
+      updatedValues.pastBooking = getBookingDataforUserUi(bookings);
+      updatedValues.pastBookingDetails = otherdetails;
+      setHistoryData(updatedValues);
+    }
+    setLoading(() => false);
+  };
+
+  const onUpcomingPageChange = async (pageNo) => {
+    setLoading(() => true);
+    const values = {
+      pageNo
+    };
+    const { getUpcomingBookingforCompanion } = await import(
+      '@/services/user/bookings.service'
+    );
+    const { getBookingDataforUserUi } = await import('@/utils/bookings.utils');
+    const { data } = await getUpcomingBookingforCompanion(values);
+    if (data) {
+      console.log('Upcoming Booking pagination page:', values);
+      const updatedValues = { ...historydata };
+      const { bookings, ...otherdetails } = data;
+      updatedValues.upcoming = getBookingDataforUserUi(bookings);
+      updatedValues.upcomingBookingDetails = otherdetails;
+      setHistoryData(updatedValues);
     }
     setLoading(() => false);
   };
@@ -70,9 +101,11 @@ const Page = () => {
     const { data } = await getUpcomingBookingforCompanion();
     if (data) {
       console.log('Upcoming Booking history:', data);
-      const values = historydata;
-      values.upcoming = getBookingDataforUserUi(data);
-      setHistoryData(values);
+      const updatedValues = { ...historydata };
+      const { bookings, ...otherdetails } = data;
+      updatedValues.upcoming = getBookingDataforUserUi(bookings);
+      updatedValues.upcomingBookingDetails = otherdetails;
+      setHistoryData(updatedValues);
     }
     setLoading(() => false);
   };
@@ -128,11 +161,24 @@ const Page = () => {
 
                     case 'upcoming':
                       return (
-                        <UpcomingBooking
-                          isCompanion={true}
-                          bookingdata={historydata.upcoming}
-                          getUpcomingBooking={getUpcomingBooking}
-                        />
+                        <>
+                          <UpcomingBooking
+                            isCompanion={true}
+                            bookingdata={historydata.upcoming}
+                            getUpcomingBooking={getUpcomingBooking}
+                          />
+                          {historydata.upcomingBookingDetails && (
+                            <Pagination
+                              currentPage={
+                                historydata.upcomingBookingDetails.currentPage
+                              }
+                              totalPage={
+                                historydata.upcomingBookingDetails.totalPages
+                              }
+                              onPageChange={onUpcomingPageChange}
+                            />
+                          )}
+                        </>
                       );
                     default:
                       return null;
