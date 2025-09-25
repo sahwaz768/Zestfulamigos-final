@@ -65,6 +65,16 @@ export const validateCompanion = (
     if (!register.smokinghabits) {
       errors.smokinghabits = "Smoking habits are required";
     }
+   const filledPaymentMethods = (register.paymentMethods || []).filter(
+    (pm) => pm.type && pm.recipientName && pm.nickname
+  );
+  if (filledPaymentMethods.length === 0) {
+    errors.paymentMethods = "At least one complete payment method is required";
+  }
+
+    if (!register.images || register.images.length < 2) {
+    errors.images = "At least 2 profile pictures are required";
+  }
   
     return errors ;
   };

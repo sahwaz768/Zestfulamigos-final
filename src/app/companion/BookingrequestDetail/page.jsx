@@ -66,6 +66,7 @@ const page = () => {
         const result = await getBookingRequestDetails(bookingId);
         if (result.data) {
           setBookingData(result.data.data);
+          console.log('for status data', result.data.data);
         }
       } catch (err) {
         console.error('Fetch error:', err);
@@ -82,8 +83,6 @@ const page = () => {
         const { toast } = await import('@/utils/reduxtrigger.utils');
         const result = await getAcceptBooking(bookingId);
         if (result.data) {
-          
-          
           toast.success('Successfully request Accepted!!');
           router.back();
         }
@@ -117,7 +116,7 @@ const page = () => {
 
   useEffect(() => {
     if (Bookingdata) {
-      console.log('Booking Data Updated:', Bookingdata);
+      console.log('Booking Data Updated:', Bookingdata.bookingstatus);
     }
   }, [Bookingdata]);
 
@@ -246,20 +245,22 @@ const page = () => {
 
         {/* Action Buttons */}
         <div className="bg-white p-6 shadow-sm ">
-          <div className="flex justify-end gap-4">
-            <button
-              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2"
-              onClick={() => setStatus('accepted')}
-            >
-              Accept
-            </button>
-            <button
-              className="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2"
-              onClick={() => setStatus('rejected')}
-            >
-              Reject
-            </button>
-          </div>
+          {Bookingdata?.bookingstatus !== 'ACCEPTED' && (
+            <div className="flex justify-end gap-4">
+              <button
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2"
+                onClick={() => setStatus('accepted')}
+              >
+                Accept
+              </button>
+              <button
+                className="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2"
+                onClick={() => setStatus('rejected')}
+              >
+                Reject
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>

@@ -2,6 +2,9 @@ export const SkinToneData = ['Fair', 'Medium', 'Dark'];
 
 export const GenderData = ['MALE', 'FEMALE', 'OTHER'];
 
+export const AccountType = { SAVINGS: 'SAVINGS', CURRENT: 'CURRENT' };
+export const GenderEnum = { MALE: 'MALE', FEMALE: 'FEMALE', OTHER: 'OTHER' };
+
 export const descriptionData = [
   'CASUAL_COMPANIONSHIP',
   'COFFEEANDCONVERSATIONS',
@@ -74,3 +77,29 @@ export const getBodyTypes = (gender) => {
       return [];
   }
 };
+
+ export const PaymentMethodType = {
+  BANK_ACCOUNT: 'BANK_ACCOUNT',
+  UPI: 'UPI',
+  WALLET: 'WALLET'
+};
+
+export const walletProviders = [
+  'PAYTM',
+  'PHONEPE',
+  'AMAZONPAY',
+  'MOBIKWIK',
+  'AIRTELMONEY',
+  'JIOMONEY',
+  'OTHER'
+];
+export const upiProviders = [
+  'Paytm',
+  'PhonePe',
+  'Google Pay',
+  'Amazon Pay',
+  'BHIM',
+  'MobiKwik',
+  'Airtel Money',
+  'Other'
+];

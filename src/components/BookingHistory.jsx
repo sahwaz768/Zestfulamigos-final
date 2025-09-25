@@ -33,7 +33,11 @@ const BookingHistory = ({ bookingdata, isCompanion }) => {
               <h1>Paid amount: {l.amount}</h1>
             </div>
           )}
-          <Link href={`/companion/BookingrequestDetail?bookingid=${l.id}`}>   <h1 className='text-red-500 text-xs'>view detail</h1> </Link>
+{isCompanion && (
+  <Link href={`/companion/BookingrequestDetail?bookingid=${l.id}`}>
+    <h1 className='text-red-500 text-xs'>view detail</h1>
+  </Link>
+)}
         </div>
         <div>
           {l.status === 'COMPLETED' ? (

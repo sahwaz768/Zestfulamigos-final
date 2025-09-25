@@ -64,8 +64,9 @@ const UpcomingBooking = ({ bookingdata, isCompanion, getUpcomingBooking }) => {
               <h1>Paid amount: {l.amount}</h1>
             </div>
           )}
+          {isCompanion && (
        <Link href={`/companion/BookingrequestDetail?bookingid=${l.id}`}>   <h1 className='text-red-500 text-xs'>view detail</h1> </Link>
-          
+          )}
         </div>
         {l.status === 'ACCEPTED' && !l.sessions.length ? (
           <div>
