@@ -48,9 +48,9 @@ const Footer = () => {
             </div>
 
             <div className="mt-4">
-              <Link href={'/becompanion'}>
+              <Link href={'/companionsignup'}>
                 {' '}
-                <h1>Be a Companion</h1>
+                <h1>Companion registration </h1>
               </Link>
               {/* <Link href={'/user/concern'}>
                 {' '}

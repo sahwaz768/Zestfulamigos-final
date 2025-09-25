@@ -10,7 +10,10 @@ import {
   // GenderData,
   getBodyTypes,
   skinToneData,
-  smokingHabitsData
+  smokingHabitsData,
+  AccountType,
+  walletProviders,
+  upiProviders
 } from '@/shared/data/companion.data';
 import { convertCompanionData } from '@/utils/location';
 import { validateCompanion } from '@/shared/validations/companion.validation';
@@ -33,8 +36,42 @@ const initialFormData = {
   description: [],
   bookingrate: 0,
   height: 160,
-  baselocations: []
+  baselocations: [],
+  paymentMethods: []
 };
+
+{
+  /*const initialPaymentData = [
+  {
+    
+    recipientName: 'John Doe',
+    nickname: 'Personal Bank',
+    accountNumber: '123456789',
+    ifscCode: 'SBIN0001234',
+    bankName: 'SBI',
+    branchName: 'Mumbai',
+    accountType: 'Saving',
+    upiId: '',
+    upiProvider: '',
+    walletProvider: '',
+    walletIdentifier: ''
+  },
+  {
+    
+    recipientName: 'wallo hill',
+    nickname: 'Personal Bank',
+    accountNumber: '123456789',
+    ifscCode: 'SBIN0001234',
+    bankName: 'SBI',
+    branchName: 'Mumbai',
+    accountType: 'Saving',
+    upiId: '',
+    upiProvider: '',
+    walletProvider: '',
+    walletIdentifier: ''
+  }
+]; */
+}
 
 const Page = () => {
   const [formData, setFormData] = useState(initialFormData);
@@ -43,6 +80,8 @@ const Page = () => {
     Array.from({ length: 4 }, () => null)
   );
   const [errors, setErrors] = useState({});
+  const [finalPaymentData, setFinalPaymentData] = useState([]);
+  const [RecievedPaymentdata, setRecievedPaymentData] = useState([]);
 
   // Initialize formData with existing data when the component mounts
   useEffect(() => {
@@ -50,6 +89,9 @@ const Page = () => {
       ({ getCompanionProfileDetails }) =>
         getCompanionProfileDetails().then(({ data }) => {
           if (data) {
+            console.log('Existing companion data:', data.userpaymentmethods);
+            setRecievedPaymentData(data.userpaymentmethods);
+
             setFormData(convertCompanionData(data));
           }
         })
@@ -131,6 +173,11 @@ const Page = () => {
     setSelectedButton(buttons);
   };
 
+  const handlePaymentData = (data) => {
+    console.log('data received:', data);
+    setFinalPaymentData(JSON.stringify(data)); // save it into state
+  };
+
   return (
     <>
       <Chatheader backgroundColor="rgba(250, 236, 236, 0.8)" />
@@ -144,20 +191,18 @@ const Page = () => {
           className="sbar-height-companionprofile"
         />
         <div className="margin-box">
-            {/* Image Uploader */}
-            <div className="form-group mt-2 mb-3">
-              <label className="text-sm mb-3">Profile Pictures</label>
-              <ImageUploader
-                images={formData.images}
-                onUpload={handleImageUpload}
-              />
-              {errors.images && (
-                <span className="text-xs">{errors.images}</span>
-              )}
-            </div>
+          {/* Image Uploader */}
+          <div className="form-group mt-2 mb-3">
+            <label className="text-sm mb-3">Profile Pictures</label>
+            <ImageUploader
+              images={formData.images}
+              onUpload={handleImageUpload}
+            />
+            {errors.images && <span className="text-xs">{errors.images}</span>}
+          </div>
 
-            {/* First Name */}
-            <div className='companion-leftgap'>
+          {/* First Name */}
+          <div className="companion-leftgap">
             <div className="userprofile-detail mt-3">
               <div className="form-group">
                 <label className="text-sm">First Name</label>
@@ -351,7 +396,9 @@ const Page = () => {
               <div className="flex flex-col gap-2 mt-3">
                 {formData.baselocations.map((l, i) => (
                   <div key={i + 200}>
-                    <label className="text-sm mt-2">Base location {i + 1}</label>
+                    <label className="text-sm mt-2">
+                      Base location {i + 1}
+                    </label>
                     <br />
                     <button
                       onClick={(e) => handleChangeLocation(e, i)}
@@ -367,7 +414,7 @@ const Page = () => {
                           If you want to update your base location {i + 1} check
                           here
                         </p>
-                        <div className='w-5/6'>
+                        <div className="w-5/6">
                           <LocationAccess
                             mapkey={i}
                             setLocation={(l) => {
@@ -389,6 +436,23 @@ const Page = () => {
                 <span className="text-xs">{errors.baselocations}</span>
               )}
             </div>
+            <div>
+              <label className="text-sm ">Payment (Atleast 1 required)</label>
+              <div>
+                <PaymentMethods
+                  onPaymentDataChange={handlePaymentData}
+                  initialData={RecievedPaymentdata}
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={() =>
+                console.log('recieved payment data:', RecievedPaymentdata)
+              }
+            >
+              Show Payment Data
+            </button>
 
             {/* Description Checkboxes */}
             <div className="form-group mt-2">
@@ -423,11 +487,16 @@ const Page = () => {
                 <span className="text-xs">{errors.description}</span>
               )}
             </div>
-            </div>
-            {/* Submit Button */}
-            <button type="submit" className="savechgbtn" disabled={isLoading} onClick={handleSubmit}>
-              {isLoading ? 'Requesting' : 'Update Profile'}
-            </button>
+          </div>
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="savechgbtn"
+            disabled={isLoading}
+            onClick={handleSubmit}
+          >
+            {isLoading ? 'Requesting' : 'Update Profile'}
+          </button>
         </div>
       </div>
     </>
@@ -448,19 +517,19 @@ const ImageUploader = ({ images, onUpload }) => {
   const handleImageUpload = async (event) => {
     event.preventDefault();
     const files = Array.from(event.target.files || []);
-    const { toast } = await import("@/utils/reduxtrigger.utils")
+    const { toast } = await import('@/utils/reduxtrigger.utils');
     const maxImages = 4;
     if (files.length > maxImages) {
       toast.error(`You can only upload up to ${maxImages} images.`);
       return;
     }
-    const validTypes = ["image/jpeg", "image/png"];
+    const validTypes = ['image/jpeg', 'image/png'];
     for (let i = 0; i < files.length; i += 1) {
       if (
         !validTypes.includes(files[i].type) ||
         files[i].size > 2 * 1024 * 1024
       ) {
-        toast.error("Invalid Image");
+        toast.error('Invalid Image');
         return;
       }
     }
@@ -523,6 +592,245 @@ const ImageUploader = ({ images, onUpload }) => {
           <span>+</span>
         </label>
       )}
+    </div>
+  );
+};
+
+const PaymentMethods = ({ onPaymentDataChange, initialData = [] }) => {
+  const [paymentForms, setPaymentForms] = useState([initialData]);
+
+  // handle input change
+  const handleChange = (index, e) => {
+    const { name, value } = e.target;
+    setPaymentForms((prev) => {
+      const updated = [...prev];
+      updated[index][name] = value;
+      return updated;
+    });
+  };
+
+  // add new payment method
+  const addPaymentMethod = () => {
+    setPaymentForms((prev) => [
+      ...prev,
+      {
+        PaymentMethodType: '',
+        recipientName: '',
+        nickname: '',
+        accountHolderName: '',
+        accountNumber: '',
+        ifscCode: '',
+        bankName: '',
+        branchName: '',
+        accountType: '',
+        upiId: '',
+        upiProvider: '',
+        walletProvider: '',
+        walletIdentifier: ''
+      }
+    ]);
+  };
+
+  // remove a payment method
+  const removePaymentMethod = (index) => {
+    setPaymentForms((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const submit = () => {
+    console.log('payment data submited', paymentForms);
+  };
+
+  useEffect(() => {
+    onPaymentDataChange(paymentForms);
+  }, [paymentForms, onPaymentDataChange]);
+
+  return (
+    <div>
+      {paymentForms.map((form, index) => (
+        <div
+          key={index}
+          className="border p-4 my-4 rounded-lg shadow-sm bg-gray-50"
+        >
+          <div className="flex justify-between items-center">
+            <h3 className="font-semibold text-lg mb-2">
+              Payment Method {index + 1}
+            </h3>
+
+            {/* Show remove button only if more than 1 form */}
+            {paymentForms.length > 1 && (
+              <button
+                onClick={() => removePaymentMethod(index)}
+                className="text-red-500 text-sm hover:underline"
+              >
+                Remove
+              </button>
+            )}
+          </div>
+
+          {/* Payment Type */}
+          <select
+            name="PaymentMethodType"
+            value={form.PaymentMethodType}
+            onChange={(e) => handleChange(index, e)}
+            className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+          >
+            <option value="">Select Payment Method</option>
+            <option value="Bankmethod">Bank Method</option>
+            <option value="UPI">UPI</option>
+            <option value="wallet">Wallet</option>
+          </select>
+
+          {/* Common fields */}
+          <div className="flex gap-5 flex-wrap my-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Recipient Name
+              </label>
+              <input
+                type="text"
+                name="recipientName"
+                value={form.recipientName}
+                onChange={(e) => handleChange(index, e)}
+                className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                placeholder="Enter recipient name"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Nickname
+              </label>
+              <input
+                type="text"
+                name="nickname"
+                value={form.nickname}
+                onChange={(e) => handleChange(index, e)}
+                className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                placeholder="Enter nickname"
+              />
+            </div>
+          </div>
+
+          {/* Bank Method Fields */}
+          {form.PaymentMethodType === 'Bankmethod' && (
+            <div className="flex gap-5 flex-wrap my-3">
+              <input
+                type="text"
+                name="accountHolderName"
+                value={form.accountHolderName}
+                onChange={(e) => handleChange(index, e)}
+                placeholder="Account Holder Name"
+                className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              />
+              <input
+                type="text"
+                name="accountNumber"
+                value={form.accountNumber}
+                onChange={(e) => handleChange(index, e)}
+                placeholder="Account Number"
+                className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              />
+              <input
+                type="text"
+                name="ifscCode"
+                value={form.ifscCode}
+                onChange={(e) => handleChange(index, e)}
+                placeholder="IFSC Code"
+                className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              />
+              <input
+                type="text"
+                name="bankName"
+                value={form.bankName}
+                onChange={(e) => handleChange(index, e)}
+                placeholder="Bank Name"
+                className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              />
+              <input
+                type="text"
+                name="branchName"
+                value={form.branchName}
+                onChange={(e) => handleChange(index, e)}
+                placeholder="Branch Name"
+                className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              />
+              <select
+                name="accountType"
+                value={form.accountType}
+                onChange={(e) => handleChange(index, e)}
+                className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              >
+                <option value="">Select Account Type</option>
+                <option value="Saving">Savings</option>
+                <option value="Current">Current</option>
+              </select>
+            </div>
+          )}
+
+          {/* UPI Fields */}
+          {form.PaymentMethodType === 'UPI' && (
+            <div className="flex gap-5 flex-wrap my-3">
+              <input
+                type="text"
+                name="upiId"
+                value={form.upiId}
+                onChange={(e) => handleChange(index, e)}
+                placeholder="UPI ID"
+                className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              />
+              <select
+                name="upiProvider"
+                value={form.upiProvider}
+                onChange={(e) => handleChange(index, e)}
+                className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              >
+                <option value="">Select UPI Provider</option>
+                {upiProviders.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* Wallet Fields */}
+          {form.PaymentMethodType === 'wallet' && (
+            <div className="flex gap-5 flex-wrap my-3">
+              <select
+                name="walletProvider"
+                value={form.walletProvider}
+                onChange={(e) => handleChange(index, e)}
+                className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              >
+                <option value="">Select Wallet Provider</option>
+                {walletProviders.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="text"
+                name="walletIdentifier"
+                value={form.walletIdentifier}
+                onChange={(e) => handleChange(index, e)}
+                placeholder="Wallet ID / Phone Number"
+                className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              />
+            </div>
+          )}
+        </div>
+      ))}
+
+      {/* Add More Button */}
+      <button
+        onClick={addPaymentMethod}
+        className="mt-3 px-4 py-2 bg-red-400 text-white rounded-lg"
+      >
+        + Add More Payment Method
+      </button>
+
+      <button onClick={submit}>submit</button>
     </div>
   );
 };

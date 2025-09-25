@@ -2,82 +2,24 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import LocationAccess from '@/components/Locationaccess';
 import Masterheader from '@/components/Masterheader';
+import {
+  descriptionData,
+  drinkingHabitsData,
+  eatingHabitsData,
+  GenderData,
+  getBodyTypes,
+  skinToneData,
+  smokingHabitsData,
+  PaymentMethodType,
+  AccountType,
+  GenderEnum,
+  walletProviders,
+  upiProviders
+} from '@/shared/data/companion.data';
+import { validateCompanion } from '@/shared/validations/companion.validation';
 
-// Enums / constants
-const PaymentMethodType = {
-  BANK_ACCOUNT: 'BANK_ACCOUNT',
-  UPI: 'UPI',
-  WALLET: 'WALLET'
-};
-const AccountType = { SAVINGS: 'SAVINGS', CURRENT: 'CURRENT' };
-const GenderEnum = { MALE: 'MALE', FEMALE: 'FEMALE', OTHER: 'OTHER' };
-const CompanionSkinToneEnum = { FAIR: 'FAIR', DARK: 'DARK', BROWN: 'BROWN' };
-
-const GenderData = ['MALE', 'FEMALE', 'OTHER'];
-const skinToneData = ['FAIR', 'DARK', 'BROWN'];
-const bodyTypeData = {
-  MALE: ['ATHLETIC', 'MUSCULAR', 'SLIM'],
-  FEMALE: ['RECTANGLE', 'TRIANGLE', 'SPOON', 'TOPHOURGLASS'],
-  OTHER: ['ATHLETIC', 'MUSCULAR', 'SLIM', 'AVERAGE', 'HEAVY', 'CURVY']
-};
-const eatingHabitsData = ['VEG', 'NONVEG', 'JAIN', 'EGGETERIAN', 'VEGAN'];
-const smokingHabitsData = [
-  'PASSIVE_SMOKER',
-  'ACTIVE_SMOKER',
-  'NON_SMOKER',
-  'OCCASIONALLY'
-];
-const drinkingHabitsData = [
-  'DAILY_DRINKER',
-  'NON_DRINKER',
-  'OCCASIONAL_DRINKER'
-];
-const Description = [
-  'CASUAL_COMPANIONSHIP',
-  'COFFEE_AND_CONVERSATIONS',
-  'MOVIES',
-  'CITY_TOURS',
-  'DINING_PARTNER',
-  'ADVENTURE_COMPANIONSHIP',
-  'HIKING_BUDDY',
-  'BEACH_AND_WATER_SPORTS',
-  'CAMPING_TRIPS',
-  'ROAD_TRIPS',
-  'SOCIAL_COMPANIONSHIP',
-  'EVENT_PLUS_ONE',
-  'PARTY_PARTNER',
-  'BUSINESS_NETWORKING',
-  'CULTURAL_OUTINGS',
-  'LIFESTYLE_COMPANIONSHIP',
-  'FITNESS_PARTNER',
-  'SHOPPING_BUDDY',
-  'COOKING_COMPANION',
-  'LANGUAGE_EXCHANGE',
-  'PERSONALIZED_EXPERIENCE',
-  'TRAVEL_BUDDY',
-  'PET_LOVER_COMPANION',
-  'UNIQUE_REQUESTS'
-];
-
-const walletProviders = [
-  'PAYTM',
-  'PHONEPE',
-  'AMAZONPAY',
-  'MOBIKWIK',
-  'AIRTELMONEY',
-  'JIOMONEY',
-  'OTHER'
-];
-const upiProviders = [
-  'Paytm',
-  'PhonePe',
-  'Google Pay',
-  'Amazon Pay',
-  'BHIM',
-  'MobiKwik',
-  'Airtel Money',
-  'Other'
-];
+const CompanionSkinToneEnum = skinToneData;
+//const Description = descriptionData;
 
 const initialForm = {
   images: /** @type {Array<{file: File}> | null} */ (null),
@@ -99,56 +41,6 @@ const initialForm = {
   baselocations: [],
   paymentMethods: []
 };
-
-// Utils
-const getBodyTypes = (gender) => bodyTypeData[gender] || bodyTypeData.OTHER;
-const cn = (...classes) => classes.filter(Boolean).join(' ');
-
-// Simple UI primitives
-const Input = ({ className = '', ...props }) => (
-  <input
-    className={cn(
-      'inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50',
-      className
-    )}
-    {...props}
-  />
-);
-
-const Label = ({ htmlFor, children, className = '' }) => (
-  <label
-    htmlFor={htmlFor}
-    className={cn('block text-sm font-medium text-gray-700', className)}
-  >
-    {children}
-  </label>
-);
-
-const Card = ({ children, className = '' }) => (
-  <div className={cn('bg-white shadow-md rounded-lg', className)}>
-    {children}
-  </div>
-);
-
-const CardHeader = ({ children, className = '' }) => (
-  <div className={cn('px--2 py-4 border-b border-gray-200', className)}>
-    {children}
-  </div>
-);
-
-const CardTitle = ({ children, className = '' }) => (
-  <h3 className={cn('text-lg font-semibold text-gray-900', className)}>
-    {children}
-  </h3>
-);
-
-const CardDescription = ({ children, className = '' }) => (
-  <p className={cn('mt-1 text-sm text-gray-600', className)}>{children}</p>
-);
-
-const CardContent = ({ children, className = '' }) => (
-  <div className={cn('px-0 py-4', className)}>{children}</div>
-);
 
 // Image Uploader (keeps previews in sync with parent `images`)
 const ImageUploader = ({ images, onUpload }) => {
@@ -229,54 +121,6 @@ export default function Companionsignup({
   );
   const [error, setError] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-
-  // Validation
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!form.images?.length || form.images.length < 2)
-      newErrors.images = 'Minimum 2 images are required';
-    if (!form.firstname.trim()) newErrors.firstname = 'First name is required';
-    if (!form.lastname.trim()) newErrors.lastname = 'Last name is required';
-    if (!form.phoneno.trim()) newErrors.phoneno = 'Phone number is required';
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!form.email.trim()) newErrors.email = 'Email is required';
-    else if (!emailRegex.test(form.email))
-      newErrors.email = 'Please enter a valid email address';
-
-    if (!form.password) newErrors.password = 'Password is required';
-    else if (form.password.length < 8)
-      newErrors.password = 'Password must be at least 8 characters long';
-
-    if (!form.gender) newErrors.gender = 'Gender selection is required';
-    if (!form.skintone) newErrors.skintone = 'Skin tone selection is required';
-    if (!form.bodytype) newErrors.bodytype = 'Body type selection is required';
-
-    if (!form.height || Number(form.height) <= 0)
-      newErrors.height = 'Height is required';
-    if (!form.eatinghabits)
-      newErrors.eatinghabits = 'Eating habits selection is required';
-    if (!form.smokinghabits)
-      newErrors.smokinghabits = 'Smoking habit selection is required';
-    if (!form.drinkinghabits)
-      newErrors.drinkinghabits = 'Drinking habit selection is required';
-    if (!form.bookingrate || Number(form.bookingrate) <= 0)
-      newErrors.bookingrate =
-        'Booking rate is required and must be greater than 0';
-
-    const filledPaymentMethods = (form.paymentMethods || []).filter(
-      (pm) => pm.type && pm.recipientName && pm.nickname
-    );
-    if (filledPaymentMethods.length === 0)
-      newErrors.paymentMethods =
-        'At least one complete payment method is required';
-
-    if (form.description.length < 2)
-      newErrors.description = 'Please select at least 2 description options';
-
-    return newErrors;
-  };
 
   // Handlers
   const handleChange = (e) => {
@@ -378,25 +222,37 @@ export default function Companionsignup({
     <div className="">
       <div className="flex gap-5 flex-wrap my-3">
         <div>
-          <Label htmlFor={`recipient-name-${index}`}>Recipient Name</Label>
-          <Input
+          <label
+            htmlFor={`recipient-name-${index}`}
+            className="block text-sm font-medium text-gray-700"
+          >
+            Recipient Name
+          </label>
+          <input
             type="text"
             value={method.recipientName}
             onChange={(e) =>
               updatePaymentMethodField(index, 'recipientName', e.target.value)
             }
+            className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
             placeholder="Enter recipient name"
             required
           />
         </div>
         <div>
-          <Label htmlFor={`nickname-${index}`}>Nickname</Label>
-          <Input
+          <label
+            htmlFor={`nickname-${index}`}
+            className="block text-sm font-medium text-gray-700"
+          >
+            Nickname
+          </label>
+          <input
             type="text"
             value={method.nickname}
             onChange={(e) =>
               updatePaymentMethodField(index, 'nickname', e.target.value)
             }
+            className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
             placeholder="Enter nickname for this payment method"
             required
           />
@@ -406,10 +262,13 @@ export default function Companionsignup({
       {method.type === PaymentMethodType.BANK_ACCOUNT && (
         <div className="flex gap-5 flex-wrap my-3">
           <div>
-            <Label htmlFor={`account-holder-${index}`}>
+            <label
+              htmlFor={`account-holder-${index}`}
+              className="block text-sm font-medium text-gray-700"
+            >
               Account Holder Name
-            </Label>
-            <Input
+            </label>
+            <input
               type="text"
               value={method.accountHolderName || ''}
               onChange={(e) =>
@@ -419,26 +278,39 @@ export default function Companionsignup({
                   e.target.value
                 )
               }
+              className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               placeholder="Enter account holder name"
               required
             />
           </div>
           <div>
-            <Label htmlFor={`account-number-${index}`}>Account Number</Label>
-            <Input
+            <label
+              htmlFor={`account-number-${index}`}
+              className="block text-sm font-medium text-gray-700"
+            >
+              Account Number
+            </label>
+            <input
               type="text"
               value={method.accountNumber || ''}
               onChange={(e) =>
                 updatePaymentMethodField(index, 'accountNumber', e.target.value)
               }
+              className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               placeholder="Enter account number"
               required
             />
           </div>
           <div>
-            <Label htmlFor={`ifsc-${index}`}>IFSC Code</Label>
-            <Input
+            <label
+              htmlFor={`ifsc-${index}`}
+              className="block text-sm font-medium text-gray-700"
+            >
+              IFSC Code
+            </label>
+            <input
               type="text"
+              className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               value={method.ifscCode || ''}
               onChange={(e) =>
                 updatePaymentMethodField(index, 'ifscCode', e.target.value)
@@ -448,9 +320,15 @@ export default function Companionsignup({
             />
           </div>
           <div>
-            <Label htmlFor={`bank-name-${index}`}>Bank Name</Label>
-            <Input
+            <label
+              htmlFor={`bank-name-${index}`}
+              className="block text-sm font-medium text-gray-700"
+            >
+              Bank Name
+            </label>
+            <input
               type="text"
+              className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               value={method.bankName || ''}
               onChange={(e) =>
                 updatePaymentMethodField(index, 'bankName', e.target.value)
@@ -460,9 +338,15 @@ export default function Companionsignup({
             />
           </div>
           <div>
-            <Label htmlFor={`branch-name-${index}`}>Branch Name</Label>
-            <Input
+            <label
+              htmlFor={`branch-name-${index}`}
+              className="block text-sm font-medium text-gray-700"
+            >
+              Branch Name
+            </label>
+            <input
               type="text"
+              className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               value={method.branchName || ''}
               onChange={(e) =>
                 updatePaymentMethodField(index, 'branchName', e.target.value)
@@ -472,7 +356,12 @@ export default function Companionsignup({
             />
           </div>
           <div>
-            <Label htmlFor={`account-type-${index}`}>Account Type</Label>
+            <label
+              htmlFor={`account-type-${index}`}
+              className="block text-sm font-medium text-gray-700"
+            >
+              Account Type
+            </label>
             <select
               value={method.accountType || AccountType.SAVINGS}
               onChange={(e) =>
@@ -491,19 +380,30 @@ export default function Companionsignup({
       {method.type === PaymentMethodType.UPI && (
         <div className="flex gap-5 flex-wrap my-3">
           <div>
-            <Label htmlFor={`upi-id-${index}`}>UPI ID</Label>
-            <Input
+            <label
+              htmlFor={`upi-id-${index}`}
+              className="block text-sm font-medium text-gray-700"
+            >
+              UPI ID
+            </label>
+            <input
               type="text"
               value={method.upiId || ''}
               onChange={(e) =>
                 updatePaymentMethodField(index, 'upiId', e.target.value)
               }
+              className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               placeholder="Enter UPI ID (e.g., user@paytm)"
               required
             />
           </div>
           <div>
-            <Label htmlFor={`upi-provider-${index}`}>UPI Provider</Label>
+            <label
+              htmlFor={`upi-provider-${index}`}
+              className="block text-sm font-medium text-gray-700"
+            >
+              UPI Provider
+            </label>
             <select
               value={method.upiProvider || ''}
               onChange={(e) =>
@@ -526,7 +426,12 @@ export default function Companionsignup({
       {method.type === PaymentMethodType.WALLET && (
         <div className="flex gap-5 flex-wrap my-3">
           <div>
-            <Label htmlFor={`wallet-provider-${index}`}>Wallet Provider</Label>
+            <label
+              htmlFor={`wallet-provider-${index}`}
+              className="block text-sm font-medium text-gray-700"
+            >
+              Wallet Provider
+            </label>
             <select
               value={method.walletProvider || ''}
               onChange={(e) =>
@@ -548,9 +453,15 @@ export default function Companionsignup({
             </select>
           </div>
           <div>
-            <Label htmlFor={`wallet-id-${index}`}>Wallet Identifier</Label>
-            <Input
+            <label
+              htmlFor={`wallet-id-${index}`}
+              className="block text-sm font-medium text-gray-700"
+            >
+              Wallet Identifier
+            </label>
+            <input
               type="text"
+              className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               value={method.walletIdentifier || ''}
               onChange={(e) =>
                 updatePaymentMethodField(
@@ -568,17 +479,21 @@ export default function Companionsignup({
     </div>
   );
 
+  const debug  = error;
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const { toast } = await import('@/utils/reduxtrigger.utils');
 
-    const errors = validateForm();
+    const errors = validateCompanion(form);
+
     if (Object.keys(errors).length > 0) {
       setError(errors);
-      alert(
-        errors.images
-          ? errors.images
-          : 'Please fill all required fields before proceeding'
-      );
+      console.log('debug value of error:', debug);
+      
+      
+      console.log('error in companion signupform:', errors.description);
+
+      toast.error(errors);
       return;
     }
 
@@ -674,8 +589,7 @@ export default function Companionsignup({
       toast.success(
         'Successfully requested for companion Will contact you soon!!'
       );
-      // e.g., reset or navigate
-      // navigate(-1);
+
       setForm(initialForm);
     } catch (err) {
       toast.error(err);
@@ -704,6 +618,7 @@ export default function Companionsignup({
               <h3 className="text-lg font-medium text-gray-700">
                 Personal Details
               </h3>
+
               <div>
                 <p className="font-bold my-4">
                   Profile picture (Minimum 2 required):
@@ -718,14 +633,20 @@ export default function Companionsignup({
               </div>
               <div className="flex gap-5 flex-wrap my-3">
                 <div>
-                  <Label htmlFor="firstname">First Name</Label>
-                  <Input
+                  <label
+                    htmlFor="firstname"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    First Name
+                  </label>
+                  <input
                     type="text"
                     placeholder="Enter your first name"
                     name="firstname"
                     value={form.firstname}
                     onChange={handleChange}
                     required
+                    className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   />
                   {error?.firstname && (
                     <span className="text-red-500 text-sm mt-1">
@@ -734,14 +655,20 @@ export default function Companionsignup({
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="lastname">Last Name</Label>
-                  <Input
+                  <label
+                    htmlFor="lastname"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Last Name
+                  </label>
+                  <input
                     type="text"
                     placeholder="Enter your last name"
                     name="lastname"
                     value={form.lastname}
                     onChange={handleChange}
                     required
+                    className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   />
                   {error?.lastname && (
                     <span className="text-red-500 text-sm mt-1">
@@ -750,14 +677,20 @@ export default function Companionsignup({
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="phoneno">Phone Number</Label>
-                  <Input
+                  <label
+                    htmlFor="phoneno"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Phone Number
+                  </label>
+                  <input
                     type="text"
                     placeholder="Enter your phone number"
                     name="phoneno"
                     value={form.phoneno}
                     onChange={handleChange}
                     required
+                    className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   />
                   {error?.phoneno && (
                     <span className="text-red-500 text-sm mt-1">
@@ -773,7 +706,12 @@ export default function Companionsignup({
               <h3 className="text-lg font-medium text-gray-700">Appearance</h3>
               <div className="flex gap-5 flex-wrap my-3">
                 <div>
-                  <Label htmlFor="gender">Gender</Label>
+                  <label
+                    htmlFor="gender"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Gender
+                  </label>
                   <select
                     name="gender"
                     value={form.gender}
@@ -794,7 +732,12 @@ export default function Companionsignup({
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="skintone">Skin Tone</Label>
+                  <label
+                    htmlFor="skintone"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Skin Tone
+                  </label>
                   <select
                     name="skintone"
                     value={form.skintone}
@@ -815,7 +758,12 @@ export default function Companionsignup({
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="bodytype">Body Type</Label>
+                  <label
+                    htmlFor="bodytype"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Body Type
+                  </label>
                   <select
                     name="bodytype"
                     value={form.bodytype}
@@ -844,7 +792,12 @@ export default function Companionsignup({
               <h3 className="text-lg font-medium text-gray-700">Habits</h3>
               <div className="flex gap-5 flex-wrap my-3">
                 <div>
-                  <Label htmlFor="eatinghabits">Eating Habits</Label>
+                  <label
+                    htmlFor="eatinghabits"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Eating Habits
+                  </label>
                   <select
                     name="eatinghabits"
                     value={form.eatinghabits}
@@ -865,7 +818,12 @@ export default function Companionsignup({
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="smokinghabits">Smoking Habit</Label>
+                  <label
+                    htmlFor="smokinghabits"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Smoking Habit
+                  </label>
                   <select
                     name="smokinghabits"
                     value={form.smokinghabits}
@@ -886,7 +844,12 @@ export default function Companionsignup({
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="drinkinghabits">Drinking Habit</Label>
+                  <label
+                    htmlFor="drinkinghabits"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Drinking Habit
+                  </label>
                   <select
                     name="drinkinghabits"
                     value={form.drinkinghabits}
@@ -931,11 +894,11 @@ export default function Companionsignup({
 
               {(form.paymentMethods || []).map((method, index) => (
                 <div key={index} className="">
-                  <CardHeader className="pb-3">
+                  <div className="pb-3">
                     <div className="flex justify-between items-center">
-                      <CardTitle className="text-base">
+                      <div className="text-base">
                         Payment Method {index + 1}
-                      </CardTitle>
+                      </div>
                       <button
                         type="button"
                         onClick={() => removePaymentMethod(index)}
@@ -944,12 +907,15 @@ export default function Companionsignup({
                         ✕ Remove
                       </button>
                     </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
+                  </div>
+                  <div className="space-y-4">
                     <div>
-                      <Label htmlFor={`payment-type-${index}`}>
+                      <label
+                        htmlFor={`payment-type-${index}`}
+                        className="block text-sm font-medium text-gray-700"
+                      >
                         Payment Method Type
-                      </Label>
+                      </label>
                       <select
                         value={method.type}
                         onChange={(e) =>
@@ -966,7 +932,7 @@ export default function Companionsignup({
                       </select>
                     </div>
                     {renderPaymentMethodForm(method, index)}
-                  </CardContent>
+                  </div>
                 </div>
               ))}
             </div>
@@ -978,14 +944,20 @@ export default function Companionsignup({
               </h3>
               <div className="flex gap-5 flex-wrap my-3">
                 <div>
-                  <Label htmlFor="email">Email</Label>
-                  <Input
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Email
+                  </label>
+                  <input
                     type="email"
                     placeholder="Enter your email"
                     name="email"
                     value={form.email}
                     onChange={handleChange}
                     required
+                    className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   />
                   {error?.email && (
                     <span className="text-red-500 text-sm mt-1">
@@ -994,13 +966,19 @@ export default function Companionsignup({
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="password">Password</Label>
-                  <Input
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Password
+                  </label>
+                  <input
                     type="password"
                     placeholder="Enter your password"
                     name="password"
                     value={form.password || ''}
                     onChange={handleChange}
+                    className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   />
                   {error?.password && (
                     <span className="text-red-500 text-sm mt-1">
@@ -1009,14 +987,20 @@ export default function Companionsignup({
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="bookingrate">Booking Rate (per hour)</Label>
-                  <Input
+                  <label
+                    htmlFor="bookingrate"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Booking Rate (per hour)
+                  </label>
+                  <input
                     type="number"
                     placeholder="Enter your booking rate"
                     name="bookingrate"
                     value={form.bookingrate}
                     onChange={handleChange}
                     required
+                    className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   />
                   {error?.bookingrate && (
                     <span className="text-red-500 text-sm mt-1">
@@ -1025,14 +1009,20 @@ export default function Companionsignup({
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="height">Height (cm)</Label>
-                  <Input
+                  <label
+                    htmlFor="height"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Height (cm)
+                  </label>
+                  <input
                     type="number"
                     placeholder="Enter your height"
                     name="height"
                     value={form.height}
                     onChange={handleChange}
                     required
+                    className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   />
                   {error?.height && (
                     <span className="text-red-500 text-sm mt-1">
@@ -1051,7 +1041,8 @@ export default function Companionsignup({
               <div className="">
                 {[0, 1, 2, 3].map((idx) => (
                   <div key={idx} className="my-3">
-                    <Label className="text-sm">Base Location {idx + 1}</Label>
+                    <label className="text-sm">Base Location {idx + 1}</label>
+                    <br />
                     <LocationAccess
                       mapkey={idx}
                       setLocation={(l) => setMapBaseLocation(idx, l)}
@@ -1067,7 +1058,7 @@ export default function Companionsignup({
                 Description (Select at least 2)
               </h3>
               <div className="grid md:grid-cols-4 md:gap-3 gap-2 grid-cols-2">
-                {Description.map((desc) => (
+                {descriptionData.map((desc) => (
                   <div key={desc} className="flex items-center">
                     <input
                       type="checkbox"
@@ -1078,9 +1069,9 @@ export default function Companionsignup({
                       onChange={handleChange}
                       className="mx-2"
                     />
-                    <Label htmlFor={desc} className="md:text-sm text-xs">
+                    <label htmlFor={desc} className="md:text-sm text-xs">
                       {desc}
-                    </Label>
+                    </label>
                   </div>
                 ))}
               </div>
