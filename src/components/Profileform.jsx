@@ -35,7 +35,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
     }
   ]);
   const [formData, setFormData] = useState({
-    images: [],
+    images: initialValues?.Images || [],
     firstname: initialValues.firstname || '',
     lastname: initialValues.lastname || '',
     email: initialValues.email || '',
@@ -48,17 +48,19 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
     eatinghabits: initialValues.Companion?.[0]?.eatinghabits || '',
     smokinghabits: initialValues.Companion?.[0]?.smokinghabits || '',
     drinkinghabits: initialValues.Companion?.[0]?.drinkinghabits || '',
-
     description: Array.isArray(initialValues.Companion?.[0]?.description)
       ? [...initialValues.Companion[0].description]
       : [],
     bookingrate: '',
     height: initialValues.Companion?.[0]?.height || '',
-    baselocations: [],
+    baselocations: initialValues.Companion?.[0]?.baselocation || [],
     paymentmethods: []
   });
   const [errors, setErrors] = useState({});
   const [paymentErrors, setPaymentErrors] = useState({});
+   const [selectedButton, setSelectedButton] = useState(
+    Array.from({ length: 4 }, () => null)
+  );
 
   const addPaymentMethod = () => {
     setPaymentForms((prev) => [
@@ -190,6 +192,13 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
       updated[index] = value; // set new value at index
       return { ...prev, baselocations: updated };
     });
+  };
+
+  const handleChangeLocation = (e, index) => {
+    e.preventDefault();
+    const buttons = [...selectedButton];
+    buttons[index] = true;
+    setSelectedButton(buttons);
   };
 
   return (
@@ -481,7 +490,44 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
 
                   <div className=" mt-2">
                     <div className="w-5/6">
-                      {[0, 1, 2, 3].map((idx) => (
+                      {formData.baselocations.map((l, i) => (
+                        <div key={i + 200}>
+                          <label className="text-sm mt-2">
+                            Base location {i + 1}
+                          </label>
+                          <br />
+                          <button
+                            onClick={(e) => handleChangeLocation(e, i)}
+                            className={`border-2 w-3/4  cursor-pointer text-start p-3 text-sm rounded-lg  
+                     ${selectedButton[i] ? 'border-pink-600' : 'border-gray-500'}`}
+                          >
+                            {(l && l.formattedaddress) ||
+                              '1600 Pennsylvania Avenue NW Washington, DC 20500 United States'}
+                          </button>
+                          {selectedButton[i] && (
+                            <div className=" mt-2">
+                              <p className="text-sm mb-2 ">
+                                If you want to update your base location {i + 1}{' '}
+                                check here
+                              </p>
+                              <div className="w-5/6">
+                                <LocationAccess
+                                  mapkey={i}
+                                  setLocation={(l) => {
+                                    const baseloc = [...formData.baselocations];
+                                    baseloc[i] = l;
+                                    setFormData((p) => ({
+                                      ...p,
+                                      baselocations: baseloc
+                                    }));
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                      {/* {[0, 1, 2, 3].map((idx) => (
                         <div key={idx} className="my-3">
                           <label className="text-sm">
                             Base Location {idx + 1}
@@ -492,7 +538,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                             setLocation={(l) => setMapBaseLocation(idx, l)}
                           />
                         </div>
-                      ))}
+                      ))} */}
                     </div>
                   </div>
                 </div>
@@ -785,11 +831,11 @@ const ImageUploader = ({ images, onUpload }) => {
 
   return (
     <div className="image-uploader flex gap-3 flex-wrap">
-      {previewImages.map((src, index) => (
+      {images.map((src, index) => (
         <div key={index} className="image-container">
           {src && (
             <img
-              src={src}
+              src={typeof src === 'object' ? src.url : src}
               alt={`Preview ${index + 1}`}
               className="uploaded-image"
             />
