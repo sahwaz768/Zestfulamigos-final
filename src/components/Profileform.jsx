@@ -12,9 +12,10 @@ import {
   walletProviders,
   upiProviders
 } from '@/shared/data/companion.data';
-import { convertCompanionData } from '@/utils/location';
+
 import { validateCompanion } from '@/shared/validations/companion.validation';
 import LocationAccess from '@/components/Locationaccess';
+
 
 const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
   const [paymentForms, setPaymentForms] = useState([
@@ -31,7 +32,8 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
       upiId: '',
       upiProvider: '',
       walletProvider: '',
-      walletIdentifier: ''
+      walletIdentifier: '',
+      isDefault: false
     }
   ]);
   const [formData, setFormData] = useState({
@@ -54,11 +56,12 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
     bookingrate: '',
     height: initialValues.Companion?.[0]?.height || '',
     baselocations: initialValues.Companion?.[0]?.baselocation || [],
-    paymentmethods: []
+    paymentmethods: [],
+    isPrimary: 'false'
   });
   const [errors, setErrors] = useState({});
   const [paymentErrors, setPaymentErrors] = useState({});
-   const [selectedButton, setSelectedButton] = useState(
+  const [selectedButton, setSelectedButton] = useState(
     Array.from({ length: 4 }, () => null)
   );
 
@@ -78,7 +81,8 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
         upiId: '',
         upiProvider: '',
         walletProvider: '',
-        walletIdentifier: ''
+        walletIdentifier: '',
+        isDefault: false
       }
     ]);
   };
@@ -201,12 +205,24 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
     setSelectedButton(buttons);
   };
 
+  const handlePrimaryChange = (index) => {
+    setPaymentForms((prev) =>
+      prev.map((form, i) => ({
+        ...form,
+        isDefault: i === index ? true : false
+      }))
+    );
+  };
+
+
+
   return (
     <>
       <div className="profilebox">
-        <div className="margin-box">
+        <div className="margin-box-">
           {/* Image Uploader */}
           <div className="form-group mt-2 mb-3">
+            <h1 className="font-bold mb-2">Profile Picture(4 required)</h1>
             <ImageUploader
               images={formData.images}
               onUpload={handleImageUpload}
@@ -215,144 +231,144 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
           </div>
 
           {/* First Name */}
-          <div className="companion-leftgap">
-            <div className="userprofile-detail mt-3">
+          <div className="">
+            <div className=" mt-3">
+              <h1 className="font-bold">Personal Detail:</h1>
+              <div className="flex gap-5 flex-wrap">
+                {/* First Name */}
+                <div className="form-group">
+                  <label className="text-sm">First Name</label>
+                  <br />
+                  <input
+                    type="text"
+                    name="firstname"
+                    placeholder="Enter first name"
+                    value={formData.firstname}
+                    onChange={handleInputChange}
+                    className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                  />
+                  {errors.firstname && (
+                    <span className="text-xs">{errors.firstname}</span>
+                  )}
+                </div>
+                {/* Last Name */}
+                <div className="form-group">
+                  <label className="text-sm">Last Name</label>
+                  <br />
+                  <input
+                    type="text"
+                    name="lastname"
+                    placeholder="Enter last name"
+                    value={formData.lastname}
+                    onChange={handleInputChange}
+                    className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                  />
+                  {errors.lastname && (
+                    <span className="text-xs">{errors.lastname}</span>
+                  )}
+                </div>
+                {/* Email */}
+{ mode === 'signup' && (
+                
+                <div className="form-group">
+                  <label className="text-sm">Email:</label>
+                  <br />
+                  <input
+                    type="text"
+                    name="email"
+                    placeholder="Enter your email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                  />
+
+                  {errors.email && (
+                    <span className="text-xs">{errors.email}</span>
+                  )}
+                </div>
+)}
+              </div>
+            </div>
+            {/* password */}
+            <div className="flex gap-5 flex-wrap">
+              {mode === 'signup' && (
               <div className="form-group">
-                <label className="text-sm">First Name</label>
+                <label className="text-sm">Password:</label>
+                <br />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Enter new password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                />
+
+                {errors.password && (
+                  <span className="text-xs">{errors.password}</span>
+                )}
+              </div>
+              )}
+              {/* age */}
+              <div className="form-group">
+                <label className="text-sm">Age:</label>
                 <br />
                 <input
                   type="text"
-                  name="firstname"
-                  placeholder="Enter first name"
-                  value={formData.firstname}
+                  name="age"
+                  placeholder="Enter new password"
+                  value={formData.age}
                   onChange={handleInputChange}
-                  className="userprofile-input-text"
+                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 />
-                {errors.firstname && (
-                  <span className="text-xs">{errors.firstname}</span>
+
+                {errors.password && (
+                  <span className="text-xs">{errors.password}</span>
                 )}
               </div>
-              {/* Last Name */}
+              {/* phoneno */}
               <div className="form-group">
-                <label className="text-sm">Last Name</label>
+                <label className="text-sm">Phoneno:</label>
                 <br />
                 <input
                   type="text"
-                  name="lastname"
-                  placeholder="Enter last name"
-                  value={formData.lastname}
+                  name="phoneno"
+                  placeholder="Enter your phone no"
+                  value={formData.phoneno}
                   onChange={handleInputChange}
-                  className="userprofile-input-text"
+                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 />
-                {errors.lastname && (
-                  <span className="text-xs">{errors.lastname}</span>
+
+                {errors.phoneno && (
+                  <span className="text-xs">{errors.phoneno}</span>
                 )}
               </div>
             </div>
-            {/* Gender */}
-            <div className="form-group">
-              <label className="text-sm">Password:</label>
-              <br />
-              <input
-                type="text"
-                name="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              />
 
-              {errors.email && <span className="text-xs">{errors.email}</span>}
-            </div>
-            <div className="form-group">
-              <label className="text-sm">Password:</label>
-              <br />
-              <input
-                type="password"
-                name="password"
-                placeholder="Enter new password"
-                value={formData.password}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              />
+            <h1 className="font-bold">Appearance:</h1>
+            <div className="flex gap-5 flex-wrap">
+              {/* gender */}
+              <div className="form-group">
+                <label className="text-sm">Gender:</label>
+                <br />
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleInputChange}
+                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                >
+                  <option value="">Select Your Gender</option>
+                  {GenderData.map((l, i) => (
+                    <option key={i * 20} value={l}>
+                      {l}
+                    </option>
+                  ))}
+                </select>
+                {errors.gender && (
+                  <span className="text-xs">{errors.gender}</span>
+                )}
+              </div>
 
-              {errors.password && (
-                <span className="text-xs">{errors.password}</span>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label className="text-sm">Age:</label>
-              <br />
-              <input
-                type="text"
-                name="age"
-                placeholder="Enter new password"
-                value={formData.age}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              />
-
-              {errors.password && (
-                <span className="text-xs">{errors.password}</span>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label className="text-sm">Booking rate:</label>
-              <br />
-              <input
-                type="text"
-                name="bookingrate"
-                placeholder="Enter your booking rate"
-                value={formData.bookingrate}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              />
-
-              {errors.bookingrate && (
-                <span className="text-xs">{errors.bookingrate}</span>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label className="text-sm">Phoneno:</label>
-              <br />
-              <input
-                type="text"
-                name="phoneno"
-                placeholder="Enter your phone no"
-                value={formData.phoneno}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              />
-
-              {errors.phoneno && (
-                <span className="text-xs">{errors.phoneno}</span>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label className="text-sm">Gender:</label>
-              <br />
-              <select
-                name="gender"
-                value={formData.gender}
-                onChange={handleInputChange}
-                className="userprofile-input-text"
-              >
-                <option value="">Select Your Gender</option>
-                {GenderData.map((l, i) => (
-                  <option key={i * 20} value={l}>
-                    {l}
-                  </option>
-                ))}
-              </select>
-              {errors.gender && (
-                <span className="text-xs">{errors.gender}</span>
-              )}
-            </div>
-            <div className="userprofile-detail">
               {/* Skin Tone */}
               <div className="form-group">
                 <label className="text-sm">Skin Tone</label>
@@ -361,7 +377,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   name="skintone"
                   value={formData.skintone}
                   onChange={handleInputChange}
-                  className="userprofile-input-text"
+                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 >
                   <option value="">Select Skin Tone</option>
                   {skinToneData.map((l, i) => (
@@ -374,24 +390,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   <span className="text-xs">{errors.skintone}</span>
                 )}
               </div>
-
-              <div className="form-group">
-                <label className="text-sm">Height</label>
-                <br />
-                <input
-                  type="text"
-                  name="height"
-                  value={formData.height}
-                  onChange={handleInputChange}
-                  className="userprofile-input-text"
-                />
-                {errors.height && (
-                  <span className="error">{errors.height}</span>
-                )}
-              </div>
-            </div>
-            {/* Body Type */}
-            <div className="userprofile-detail">
+              {/* Body Type */}
               <div className="form-group">
                 <label className="text-sm">Body Type</label>
                 <br />
@@ -399,7 +398,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   name="bodytype"
                   value={formData.bodytype}
                   onChange={handleInputChange}
-                  className="userprofile-input-text"
+                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 >
                   <option value="">Select Body Type</option>
                   {getBodyTypes(formData.gender).map((type) => (
@@ -412,7 +411,23 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   <span className="text-xs">{errors.bodytype}</span>
                 )}
               </div>
+            </div>
 
+            <div className="form-group">
+              <label className="text-sm">Height</label>
+              <br />
+              <input
+                type="text"
+                name="height"
+                placeholder='Enter your height in cm (e.g., "170 cm")'
+                value={formData.height}
+                onChange={handleInputChange}
+                className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+              />
+              {errors.height && <span className="error">{errors.height}</span>}
+            </div>
+            <h1 className="font-bold">Habbits:</h1>
+            <div className="flex gap-5 flex-wrap">
               {/* Eating Habit */}
               <div className="form-group">
                 <label className="text-sm">Eating Habit</label>
@@ -421,7 +436,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   name="eatinghabits"
                   value={formData.eatinghabits}
                   onChange={handleInputChange}
-                  className="userprofile-input-text"
+                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 >
                   <option value="">Select Eating Habit</option>
                   {eatingHabitsData.map((l, i) => (
@@ -434,9 +449,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   <span className="text-xs">{errors.eatinghabits}</span>
                 )}
               </div>
-            </div>
-            {/* Smoking Habit */}
-            <div className="userprofile-detail">
+
+              {/* Smoking Habit */}
+
               <div className="form-group">
                 <label className="text-sm">Smoking Habit</label>
                 <br />
@@ -444,7 +459,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   name="smokinghabits"
                   value={formData.smokinghabits}
                   onChange={handleInputChange}
-                  className="userprofile-input-text"
+                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 >
                   <option value="">Select Smoking Habit</option>
                   {smokingHabitsData.map((l, i) => (
@@ -466,7 +481,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   name="drinkinghabits"
                   value={formData.drinkinghabits}
                   onChange={handleInputChange}
-                  className="userprofile-input-text"
+                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 >
                   <option value="">Select Drinking Habit</option>
                   {drinkingHabitsData.map((l, i) => (
@@ -480,16 +495,34 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                 )}
               </div>
             </div>
+            {/* booking rate */}
+            <h1 className="font-bold">Other Details:</h1>
+            <div className="form-group">
+              <label className="text-sm">Booking rate:</label>
+              <br />
+              <input
+                type="text"
+                name="bookingrate"
+                placeholder="Enter your booking rate"
+                value={formData.bookingrate}
+                onChange={handleInputChange}
+                className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+              />
+
+              {errors.bookingrate && (
+                <span className="text-xs">{errors.bookingrate}</span>
+              )}
+            </div>
 
             {/* Location */}
             <div>
               <div className="flex flex-col gap-2 mt-3">
                 <div>
-                  <label className="text-sm mt-2">Base location</label>
+                  <label className="font-bold my-2">Base location Details:(4 Required)</label>
                   <br />
 
                   <div className=" mt-2">
-                    <div className="w-5/6">
+                    <div className="w-7/8">
                       {formData.baselocations.map((l, i) => (
                         <div key={i + 200}>
                           <label className="text-sm mt-2">
@@ -527,18 +560,22 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                           )}
                         </div>
                       ))}
-                      {/* {[0, 1, 2, 3].map((idx) => (
-                        <div key={idx} className="my-3">
-                          <label className="text-sm">
-                            Base Location {idx + 1}
-                          </label>
-                          <br />
-                          <LocationAccess
-                            mapkey={idx}
-                            setLocation={(l) => setMapBaseLocation(idx, l)}
-                          />
-                        </div>
-                      ))} */}
+                      {mode === 'signup' && (
+                        <>
+                          {[0, 1, 2, 3].map((idx) => (
+                            <div key={idx} className="my-3">
+                              <label className="text-sm">
+                                Base Location {idx + 1}
+                              </label>
+                              <br />
+                              <LocationAccess
+                                mapkey={idx}
+                                setLocation={(l) => setMapBaseLocation(idx, l)}
+                              />
+                            </div>
+                          ))}
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -549,7 +586,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
             </div>
 
             <div>
-              <label className="text-sm ">Payment (Atleast 1 required)</label>
+              <label className="font-bold ">Payment (Atleast 1 required)</label>
               <div></div>
             </div>
 
@@ -574,8 +611,23 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                       </button>
                     )}
                   </div>
+                  <div className="flex items-center gap-2 my-2">
+                    <input
+                      type="radio"
+                      name="primaryPayment" // ensures only one can be selected
+                      checked={form.isDefault === true}
+                      onChange={() => handlePrimaryChange(index)}
+                    />
+                    <label className="text-sm">Set as Primary</label>
+                  </div>
 
                   {/* Payment Type */}
+                  <div className='flex gap-5 flex-wrap'>
+                     
+                    <div className=''>
+                      <label className="block text-sm font-medium text-gray-700">
+                      Select Payment Method Type
+                      </label>
                   <select
                     name="type"
                     value={form.type}
@@ -587,9 +639,10 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                     <option value="UPI">UPI</option>
                     <option value="WALLET">Wallet</option>
                   </select>
+                  </div>
 
                   {/* Common fields */}
-                  <div className="flex gap-5 flex-wrap my-3">
+                  
                     <div>
                       <label className="block text-sm font-medium text-gray-700">
                         Recipient Name
@@ -615,7 +668,8 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                         className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                         placeholder="Enter nickname"
                       />
-                    </div>
+                    
+                  </div>
                   </div>
                   {paymentErrors[index] && (
                     <span className="text-xs text-red-500">
@@ -746,7 +800,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
 
             {/* Description Checkboxes */}
             <div className="form-group mt-2">
-              <label className="text-sm ">
+              <label className="font-bold mb-2">
                 Description (Select at least 2)
               </label>
               <div className="grid md:grid-cols-4 md:gap-3  gap-2  grid-cols-2">

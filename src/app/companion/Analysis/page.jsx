@@ -64,12 +64,10 @@ const page = () => {
         {/* Header Section */}
         <div className="mb-8">
           <h1 className="font-black text-4xl text-black bg-clip-text ">
-            User Analysis
+            Your Insights
           </h1>
           <p className="text-sm mt-4 text-gray-600 max-w-2xl leading-relaxed">
-            Zestful Amigos connects companions and clients across major cities.
-            The insights below reflect companion performance, ratings, and
-            earnings.
+           "Comprehensive overview of your performance, client ratings, and earnings"
           </p>
         </div>
 
