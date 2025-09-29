@@ -2,7 +2,7 @@
 import Masterheader from '@/components/Masterheader';
 import Form from '@/components/Profileform';
 
-export default function Companionsignup() {
+export default function Page() {
   const signup = async (payload) => {
 
     console.log('payload from companion signup page:', payload);
