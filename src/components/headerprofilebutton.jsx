@@ -12,6 +12,7 @@ import { selectAuthData } from '@/Redux/auth/auth.reducer';
 import Loadingbar from './Loadingbar';
 import { BASEURL } from '@/Constants/services.constants';
 import { redirect } from 'next/navigation';
+import { MdOutlineAttachMoney } from "react-icons/md";
 
 const HeaderProfileButton = ({ handleClose, dropdownRef }) => {
   const userDetails = useSelector(selectAuthData);
@@ -31,6 +32,10 @@ const HeaderProfileButton = ({ handleClose, dropdownRef }) => {
         handleClose();
       }
     };
+    console.log('header profile button user details:', userDetails.isCompanion
+);
+
+    
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -82,6 +87,15 @@ const HeaderProfileButton = ({ handleClose, dropdownRef }) => {
             <h1 className="text-sm">Raise a concern</h1>
           </div>
         </Link>
+        {  userDetails.isCompanion === true && (
+         <Link href={'./Analysis'}>
+          <div className="flex gap-4 p-2 hover:bg-red-400 rounded-lg cursor-pointer">
+            <MdOutlineAttachMoney color='black' size={25} />
+            <h1 className="text-sm">Analysis</h1>
+          </div>
+        </Link>
+        )
+        }
         <div
           className="flex gap-4 p-2 hover:bg-red-400 rounded-lg cursor-pointer"
           onClick={handleLogout}
