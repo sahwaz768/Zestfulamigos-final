@@ -48,10 +48,13 @@ const page = () => {
     fetchAnalysisData();
   }, []);
 
-
-   if(!analysisData){
-      return <div><Loadingbar/></div>
-    } 
+  if (!analysisData) {
+    return (
+      <div>
+        <Loadingbar />
+      </div>
+    );
+  }
   return (
     <>
       <Chatheader backgroundColor="rgba(250, 236, 236, 0.8)" />
@@ -67,7 +70,8 @@ const page = () => {
             Your Insights
           </h1>
           <p className="text-sm mt-4 text-gray-600 max-w-2xl leading-relaxed">
-           "Comprehensive overview of your performance, client ratings, and earnings"
+            "Comprehensive overview of your performance, client ratings, and
+            earnings"
           </p>
         </div>
 
@@ -109,7 +113,7 @@ const page = () => {
                   <span className="text-3xl">💰</span>
                 </div>
                 <h3 className="text-4xl font-black bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                  {analysisData?.total_earning ?? 0}
+                  {Math.floor(analysisData?.total_earning ?? 0)}
                 </h3>
                 <p className="text-sm text-gray-600 font-medium mt-2">
                   Total Earned
@@ -128,11 +132,35 @@ const page = () => {
                   Last Week Earned
                 </p>
               </div>
+
+              {/* Pending amount */}
+              <div className="flex flex-col justify-center items-center text-center p-4 bg-white/50 rounded-2xl backdrop-blur-sm border border-orange-100">
+                <div className="w-16 h-16 bg-gradient-to-br rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                  <span className="text-3xl">⏳</span>
+                </div>
+                <h3 className="text-4xl font-black bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
+                  {Math.floor(analysisData?.pending_amount ?? 0)}
+                </h3>
+                <p className="text-sm text-gray-600 font-medium mt-2">
+                  Pending amount
+                </p>
+              </div>
+              <div className="flex flex-col justify-center items-center text-center p-4 bg-white/50 rounded-2xl backdrop-blur-sm border border-orange-100">
+                <div className="w-16 h-16 bg-gradient-to-br rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                  <span className="text-3xl">🚩</span>
+                </div>
+                <h3 className="text-4xl font-black bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">
+                  {Math.floor(analysisData?.penalty_charges ?? 0)}
+                </h3>
+                <p className="text-sm text-gray-600 font-medium mt-2">
+                  panelty charged
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Recent Earnings Card */}
-          <div className="bg-gradient-to-br from-white to-purple-50 p-8 border border-purple-200 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300">
+          <div className="bg-gradient-to-br from-white to-purple-50 p-8 border border-purple-200 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 h-160 ">
             <div className="flex items-center gap-3 mb-6">
               <h3 className="text-2xl font-bold text-gray-800">
                 Recent Earnings
@@ -142,6 +170,33 @@ const page = () => {
             <div className="space-y-4">
               {/* Earning Item 1 */}
               <div className="group flex justify-between items-center p-4 bg-white/80 rounded-2xl border border-purple-100 hover:bg-white hover:shadow-md transition-all duration-200 ">
+                <div className="flex items-center gap-4">
+                  <Image
+                    src={Profilepicture}
+                    alt="Profile Picture"
+                    className="w-14 h-14 rounded-2xl object-cover ring-2 ring-purple-200"
+                  />
+                  <div>
+                    <p className="font-bold text-gray-800">Alisha Parker</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs">📅</span>
+                      <p className="text-xs text-gray-500">
+                        12 July: 10:00 AM - 11:00 AM
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className="text-2xl font-black text-green-600 group-hover:text-green-700 transition-colors">
+                    +₹8,000
+                  </span>
+                  <p className="text-xs text-gray-500 mt-1">1 hour session</p>
+                </div>
+              </div>
+
+              
+
+               <div className="group flex justify-between items-center p-4 bg-white/80 rounded-2xl border border-purple-100 hover:bg-white hover:shadow-md transition-all duration-200 ">
                 <div className="flex items-center gap-4">
                   <Image
                     src={Profilepicture}

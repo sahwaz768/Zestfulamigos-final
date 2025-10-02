@@ -82,7 +82,7 @@ const Page = () => {
     const { getBookingDataforUserUi } = await import('@/utils/bookings.utils');
     const { data } = await getUpcomingBookingforCompanion(values);
     if (data) {
-      console.log('Upcoming Booking pagination page:', values);
+      
       const updatedValues = { ...historydata };
       const { bookings, ...otherdetails } = data;
       updatedValues.upcoming = getBookingDataforUserUi(bookings);
@@ -100,7 +100,7 @@ const Page = () => {
     const { getBookingDataforUserUi } = await import('@/utils/bookings.utils');
     const { data } = await getUpcomingBookingforCompanion();
     if (data) {
-      console.log('Upcoming Booking history:', data);
+      
       const updatedValues = { ...historydata };
       const { bookings, ...otherdetails } = data;
       updatedValues.upcoming = getBookingDataforUserUi(bookings);

@@ -26,6 +26,8 @@ export const validateCompanion = (register) => {
 
   if (!register.age) {
     errors.age = 'Age must be a valid number';
+  } else if (register.age < 18 || register.age > 50) {
+    errors.age = 'Age must be between 18 and 50';
   }
 
   if (!register.phoneno || !/^\d{10}$/.test(register.phoneno)) {
@@ -63,12 +65,18 @@ export const validateCompanion = (register) => {
   if (!register.smokinghabits) {
     errors.smokinghabits = 'Smoking habits are required';
   }
-  const filledPaymentMethods = (register.paymentMethods || []).filter(
+
+  
+  if (!register.bookingrate) {
+    errors.bookingrate = 'Bookingrate are required';
+  }
+  const filledPaymentMethods = (register.paymentmethods || []).filter(
     (pm) => pm.type && pm.recipientName && pm.nickname
   );
-  //if (filledPaymentMethods.length === 0) {
-   // errors.paymentMethods = 'At least one complete payment method is required';
-  //}
+
+  if (filledPaymentMethods.length === 0) {
+  errors.paymentMethods = 'At least one complete payment method is required';
+  }
 
   if (!register.images || register.images.length < 2) {
     errors.images = 'At least 2 profile pictures are required';

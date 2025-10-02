@@ -16,7 +16,6 @@ import {
 import { validateCompanion } from '@/shared/validations/companion.validation';
 import LocationAccess from '@/components/Locationaccess';
 
-
 const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
   const [paymentForms, setPaymentForms] = useState([
     {
@@ -214,8 +213,6 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
     );
   };
 
-
-
   return (
     <>
       <div className="profilebox">
@@ -227,7 +224,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
               images={formData.images}
               onUpload={handleImageUpload}
             />
-            {errors.images && <span className="text-xs">{errors.images}</span>}
+            {errors.images && <span className="text-xs text-red-700">{errors.images}</span>}
           </div>
 
           {/* First Name */}
@@ -248,7 +245,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                     className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   />
                   {errors.firstname && (
-                    <span className="text-xs">{errors.firstname}</span>
+                    <span className="text-xs text-red-700">{errors.firstname}</span>
                   )}
                 </div>
                 {/* Last Name */}
@@ -264,57 +261,56 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                     className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   />
                   {errors.lastname && (
-                    <span className="text-xs">{errors.lastname}</span>
+                    <span className="text-xs text-red-700">{errors.lastname}</span>
                   )}
                 </div>
                 {/* Email */}
-{ mode === 'signup' && (
-                
-                <div className="form-group">
-                  <label className="text-sm">Email:</label>
-                  <br />
-                  <input
-                    type="text"
-                    name="email"
-                    placeholder="Enter your email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-                  />
+                {mode === 'signup' && (
+                  <div className="form-group">
+                    <label className="text-sm">Email:</label>
+                    <br />
+                    <input
+                      type="text"
+                      name="email"
+                      placeholder="Enter your email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                    />
 
-                  {errors.email && (
-                    <span className="text-xs">{errors.email}</span>
-                  )}
-                </div>
-)}
+                    {errors.email && (
+                      <span className="text-xs text-red-700">{errors.email}</span>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
             {/* password */}
             <div className="flex gap-5 flex-wrap">
               {mode === 'signup' && (
-              <div className="form-group">
-                <label className="text-sm">Password:</label>
-                <br />
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Enter new password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-                />
+                <div className="form-group">
+                  <label className="text-sm">Password:</label>
+                  <br />
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter new password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                  />
 
-                {errors.password && (
-                  <span className="text-xs">{errors.password}</span>
-                )}
-              </div>
+                  {errors.password && (
+                    <span className="text-xs text-red-700">{errors.password}</span>
+                  )}
+                </div>
               )}
               {/* age */}
               <div className="form-group">
                 <label className="text-sm">Age:</label>
                 <br />
                 <input
-                  type="text"
+                  type="number"
                   name="age"
                   placeholder="Enter new password"
                   value={formData.age}
@@ -323,7 +319,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                 />
 
                 {errors.password && (
-                  <span className="text-xs">{errors.password}</span>
+                  <span className="text-xs text-red-700">{errors.password}</span>
                 )}
               </div>
               {/* phoneno */}
@@ -331,7 +327,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                 <label className="text-sm">Phoneno:</label>
                 <br />
                 <input
-                  type="text"
+                  type="number"
                   name="phoneno"
                   placeholder="Enter your phone no"
                   value={formData.phoneno}
@@ -340,7 +336,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                 />
 
                 {errors.phoneno && (
-                  <span className="text-xs">{errors.phoneno}</span>
+                  <span className="text-xs text-red-700">{errors.phoneno}</span>
                 )}
               </div>
             </div>
@@ -365,7 +361,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   ))}
                 </select>
                 {errors.gender && (
-                  <span className="text-xs">{errors.gender}</span>
+                  <span className="text-xs text-red-700">{errors.gender}</span>
                 )}
               </div>
 
@@ -387,7 +383,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   ))}
                 </select>
                 {errors.skintone && (
-                  <span className="text-xs">{errors.skintone}</span>
+                  <span className="text-xs text-red-700">{errors.skintone}</span>
                 )}
               </div>
               {/* Body Type */}
@@ -408,7 +404,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   ))}
                 </select>
                 {errors.bodytype && (
-                  <span className="text-xs">{errors.bodytype}</span>
+                  <span className="text-xs text-red-700">{errors.bodytype}</span>
                 )}
               </div>
             </div>
@@ -417,14 +413,14 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
               <label className="text-sm">Height</label>
               <br />
               <input
-                type="text"
+                type="number"
                 name="height"
                 placeholder='Enter your height in cm (e.g., "170 cm")'
                 value={formData.height}
                 onChange={handleInputChange}
                 className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               />
-              {errors.height && <span className="error">{errors.height}</span>}
+              {errors.height && <span className="error text-red-700">{errors.height}</span>}
             </div>
             <h1 className="font-bold">Habbits:</h1>
             <div className="flex gap-5 flex-wrap">
@@ -446,7 +442,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   ))}
                 </select>
                 {errors.eatinghabits && (
-                  <span className="text-xs">{errors.eatinghabits}</span>
+                  <span className="text-xs text-red-700">{errors.eatinghabits}</span>
                 )}
               </div>
 
@@ -469,7 +465,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   ))}
                 </select>
                 {errors.smokinghabits && (
-                  <span className="text-xs">{errors.smokinghabits}</span>
+                  <span className="text-xs text-red-700">{errors.smokinghabits}</span>
                 )}
               </div>
 
@@ -491,17 +487,17 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   ))}
                 </select>
                 {errors.drinkinghabits && (
-                  <span className="text-xs">{errors.drinkinghabits}</span>
+                  <span className="text-xs text-red-700">{errors.drinkinghabits}</span>
                 )}
               </div>
             </div>
             {/* booking rate */}
             <h1 className="font-bold">Other Details:</h1>
             <div className="form-group">
-              <label className="text-sm">Booking rate:</label>
+              <label className="text-sm">Booking rate(per hour):</label>
               <br />
               <input
-                type="text"
+                type="number"
                 name="bookingrate"
                 placeholder="Enter your booking rate"
                 value={formData.bookingrate}
@@ -510,7 +506,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
               />
 
               {errors.bookingrate && (
-                <span className="text-xs">{errors.bookingrate}</span>
+                <span className="text-xs text-red-700">{errors.bookingrate}</span>
               )}
             </div>
 
@@ -518,7 +514,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
             <div>
               <div className="flex flex-col gap-2 mt-3">
                 <div>
-                  <label className="font-bold my-2">Base location Details:(4 Required)</label>
+                  <label className="font-bold my-2">
+                    Base location Details:(4 Required)
+                  </label>
                   <br />
 
                   <div className=" mt-2">
@@ -581,7 +579,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                 </div>
               </div>
               {errors.baselocations && (
-                <span className="text-xs">{errors.baselocations}</span>
+                <span className="text-xs text-red-700">{errors.baselocations}</span>
               )}
             </div>
 
@@ -622,27 +620,26 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   </div>
 
                   {/* Payment Type */}
-                  <div className='flex gap-5 flex-wrap'>
-                     
-                    <div className=''>
+                  <div className="flex gap-5 flex-wrap">
+                    <div className="">
                       <label className="block text-sm font-medium text-gray-700">
-                      Select Payment Method Type
+                        Select Payment Method Type
                       </label>
-                  <select
-                    name="type"
-                    value={form.type}
-                    onChange={(e) => handleChange(index, e)}
-                    className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-                  >
-                    <option value="">Select Payment Method</option>
-                    <option value="Bankmethod">Bank Method</option>
-                    <option value="UPI">UPI</option>
-                    <option value="WALLET">Wallet</option>
-                  </select>
-                  </div>
+                      <select
+                        name="type"
+                        value={form.type}
+                        onChange={(e) => handleChange(index, e)}
+                        className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                      >
+                        <option value="">Select Payment Method</option>
+                        <option value="Bankmethod">Bank Method</option>
+                        <option value="UPI">UPI</option>
+                        <option value="WALLET">Wallet</option>
+                      </select>
+                    </div>
 
-                  {/* Common fields */}
-                  
+                    {/* Common fields */}
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700">
                         Recipient Name
@@ -668,8 +665,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                         className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                         placeholder="Enter nickname"
                       />
-                    
-                  </div>
+                    </div>
                   </div>
                   {paymentErrors[index] && (
                     <span className="text-xs text-red-500">
@@ -797,6 +793,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                 + Add More Payment Method
               </button>
             </div>
+            {errors.paymentMethods && (
+              <span className="text-xs text-red-700">{errors.paymentMethods}</span>
+            )}
 
             {/* Description Checkboxes */}
             <div className="form-group mt-2">
@@ -828,7 +827,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                 ))}
               </div>
               {errors.description && (
-                <span className="text-xs">{errors.description}</span>
+                <span className="text-xs text-red-700">{errors.description}</span>
               )}
             </div>
           </div>
