@@ -144,9 +144,8 @@ export const getUpcomingBookingforCompanion = async (values) => {
     const url = `${BASEURL}/user/booking/getupcomingbookingforcompanion?`;
     const {
       data: { data }
-    } = await get(url,{ params });
-    
-    
+    } = await get(url, { params });
+
     return { data };
   } catch (error) {
     console.log(error?.response);
@@ -156,14 +155,13 @@ export const getUpcomingBookingforCompanion = async (values) => {
   }
 };
 
-
 export const getUpcomingBookingforUser = async (values) => {
   const { BASEURL } = await import('../../Constants/services.constants');
   const {
     default: { get }
   } = await import('../interface/interceptor');
   try {
-     let params = {};
+    let params = {};
     if (values) {
       params = values;
     }
@@ -194,8 +192,7 @@ export const getPreviousBookingsforCompanion = async (values) => {
     const {
       data: { data }
     } = await get(url, { params });
-    
-    
+
     return { data };
   } catch (error) {
     console.log(error?.response);
@@ -211,11 +208,13 @@ export const getCompanionAnalysisDetails = async () => {
     const {
       default: { get }
     } = await import('../interface/interceptor');
-    const url = BASEURL + '/companion/analysis/companionoverallanalysis?companionId=45ccffb5-50d6-4a75-b450-222ef56c27d1';
+    const url =
+      BASEURL +
+      '/companion/analysis/companionoverallanalysis?companionId=45ccffb5-50d6-4a75-b450-222ef56c27d1';
 
     const response = await get(url);
     return response;
-   // console.log('Full API response:', response);
+    // console.log('Full API response:', response);
   } catch (error) {
     console.error('API Error:', error);
     if (error.response) {
@@ -232,6 +231,36 @@ export const getCompanionAnalysisDetails = async () => {
   }
 };
 
+export const getCompanionPendingEarnings = async (values) => {
+  try {
+    const { BASEURL } = await import('../../Constants/services.constants');
+    const {
+      default: { get }
+    } = await import('../interface/interceptor');
+    const url = BASEURL + '/companion/analysis/getallcompanionpendingearnings';
+    let params = {};
+    if (values) {
+      params = values;
+    }
+
+    const response = await get(url, { params });
+    return response;
+    // console.log('Full API response:', response);
+  } catch (error) {
+    console.error('API Error:', error);
+    if (error.response) {
+      if (error.response.status >= 400) {
+        return {
+          error:
+            error.response.data?.message ||
+            `HTTP ${error.response.status} Error`
+        };
+      }
+    }
+
+    return { error: error.message || 'Network or Server Error' };
+  }
+};
 
 export const getBookingRequestDetails = async (bookingid) => {
   try {
@@ -242,8 +271,6 @@ export const getBookingRequestDetails = async (bookingid) => {
 
     // Correct URL
     const url = `${BASEURL}/companion/booking/companionbookingdetails?bookingid=${bookingid}`;
-    
-    
 
     const response = await get(url);
     return response;
@@ -261,7 +288,6 @@ export const getBookingRequestDetails = async (bookingid) => {
     return { error: error.message || 'Network or Server Error' };
   }
 };
-
 
 export const getAcceptBooking = async (bookingid) => {
   try {
@@ -289,7 +315,6 @@ export const getAcceptBooking = async (bookingid) => {
     return { error: error.message || 'Network or Server Error' };
   }
 };
-
 
 export const getRejectBooking = async (bookingid) => {
   try {
