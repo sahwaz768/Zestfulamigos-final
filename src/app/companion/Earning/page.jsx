@@ -6,10 +6,10 @@ import { Mastersidebar } from '@/components/MasterSidebar';
 import PendingEarnings from '@/components/pendingEarnings';
 import Pagination from '@/components/Pagination';
 
-
 const Page = () => {
   const [PendingData, setPendingData] = useState({});
-  const [activeTab,SetActiveTab] = useState('pending');
+  const [CompletedData, setCompletedData] = useState({});
+  const [activeTab, SetActiveTab] = useState('pending');
 
   useEffect(() => {
     const fetchPendingEarningData = async () => {
@@ -19,7 +19,6 @@ const Page = () => {
         );
         const result = await getCompanionPendingEarnings();
         if (result) {
-         
           setPendingData(result.data.data);
         }
       } catch (err) {
@@ -28,6 +27,22 @@ const Page = () => {
     };
 
     fetchPendingEarningData();
+    const fetchCompletedEarningData = async () => {
+      try {
+        const { getCompanionCompletedEarnings } = await import(
+          '@/services/user/bookings.service'
+        );
+        const result = await getCompanionCompletedEarnings();
+        if (result) {
+          setCompletedData(result.data.data);
+          console.log('Completed Earnings Data:', result.data.data);
+        }
+      } catch (err) {
+        console.error('Fetch error:', err);
+      }
+    };
+
+    fetchCompletedEarningData();
   }, []);
 
   const onPageChange = async (pageNo) => {
@@ -45,7 +60,20 @@ const Page = () => {
     }
   };
 
-  
+    const onPage = async (pageNo) => {
+    const values = {
+      pageNo
+    };
+    try {
+      const { getCompanionCompletedEarnings } = await import(
+        '@/services/user/bookings.service'
+      );
+      const result = await getCompanionCompletedEarnings(values);
+      CompletedData(result.data.data);
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
+  };
 
   return (
     <>
@@ -70,7 +98,10 @@ const Page = () => {
               </div>
 
               <div className="relative">
-                <select className="appearance-none bg-gradient-to-r from-rose-500 to-pink-500 text-white px-6 py-3 pr-10 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-rose-200 cursor-pointer" onChange={(e) => SetActiveTab(e.target.value)}>
+                <select
+                  className="appearance-none bg-gradient-to-r from-rose-500 to-pink-500 text-white px-6 py-3 pr-10 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-rose-200 cursor-pointer"
+                  onChange={(e) => SetActiveTab(e.target.value)}
+                >
                   <option value="pending" className="bg-white text-gray-800">
                     transactions pending
                   </option>
@@ -97,21 +128,27 @@ const Page = () => {
             </div>
           </div>
           {/* pending Earnings */}
-          { Object.keys(PendingData).length > 0 && activeTab === 'pending' && (
+          {Object.keys(PendingData).length > 0 && activeTab === 'pending' && (
             <PendingEarnings initialData={PendingData.earnings} />
           )}
-          {PendingData  && activeTab === 'pending' && (
+          {PendingData && activeTab === 'pending' && (
             <Pagination
               currentPage={PendingData.currentPage}
               totalPage={PendingData.totalPages}
               onPageChange={onPageChange}
             />
           )}
-          { activeTab === 'completed' && (
-            <>
-            <h1>this is completed Earning tab</h1>
-            </>
-         ) }
+          {Object.keys(CompletedData).length > 0 &&
+            activeTab === 'completed' && (
+              <PendingEarnings initialData={CompletedData.earnings} />
+            )}
+             {CompletedData && activeTab === 'completed' && (
+            <Pagination
+              currentPage={CompletedData.currentPage}
+              totalPage={CompletedData.totalPages}
+              onPageChange={onPage}
+            />
+          )}
         </div>
       </div>
     </>

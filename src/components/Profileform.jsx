@@ -35,6 +35,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
       isDefault: false
     }
   ]);
+  
   const [formData, setFormData] = useState({
     images: initialValues?.Images || [],
     firstname: initialValues.firstname || '',
@@ -56,7 +57,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
     height: initialValues.Companion?.[0]?.height || '',
     baselocations: initialValues.Companion?.[0]?.baselocation || [],
     paymentmethods: [],
-    isPrimary: 'false'
+    
   });
   const [errors, setErrors] = useState({});
   const [paymentErrors, setPaymentErrors] = useState({});
