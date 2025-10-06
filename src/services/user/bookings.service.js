@@ -262,6 +262,37 @@ export const getCompanionPendingEarnings = async (values) => {
   }
 };
 
+export const getCompanionCompletedEarnings = async (values) => {
+  try {
+    const { BASEURL } = await import('../../Constants/services.constants');
+    const {
+      default: { get }
+    } = await import('../interface/interceptor');
+    const url = BASEURL + '/companion/analysis/getallcompanioncompletedearnings';
+    let params = {};
+    if (values) {
+      params = values;
+    }
+
+    const response = await get(url, { params });
+    return response;
+    // console.log('Full API response:', response);
+  } catch (error) {
+    console.error('API Error:', error);
+    if (error.response) {
+      if (error.response.status >= 400) {
+        return {
+          error:
+            error.response.data?.message ||
+            `HTTP ${error.response.status} Error`
+        };
+      }
+    }
+
+    return { error: error.message || 'Network or Server Error' };
+  }
+};
+
 export const getBookingRequestDetails = async (bookingid) => {
   try {
     const { BASEURL } = await import('../../Constants/services.constants');

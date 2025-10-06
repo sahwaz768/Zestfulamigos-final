@@ -7,6 +7,8 @@ import { Mastersidebar } from '@/components/MasterSidebar';
 import Profilepicture from '@/shared/Assets/Rectangle 10.png';
 import { useEffect, useState } from 'react';
 import Loadingbar from '@/components/Loadingbar';
+import { formatBookingTimingsforUi } from '@/utils/bookings.utils';
+
 import {
   ResponsiveContainer,
   BarChart,
@@ -126,7 +128,7 @@ const page = () => {
                   <span className="text-3xl">📈</span>
                 </div>
                 <h3 className="text-4xl font-black bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                  {analysisData?.last_week_earning ?? 0}
+                  {Math.floor(analysisData?.last_week_earning ?? 0)}
                 </h3>
                 <p className="text-sm text-gray-600 font-medium mt-2">
                   Last Week Earned
@@ -160,120 +162,130 @@ const page = () => {
           </div>
 
           {/* Recent Earnings Card */}
-          <div className="bg-gradient-to-br from-white to-purple-50 p-8 border border-purple-200 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 h-160 ">
-            <div className="flex items-center gap-3 mb-6">
-              <h3 className="text-2xl font-bold text-gray-800">
+          <div className="bg-white p-8 border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 h-auto">
+            <div className="flex items-center justify-between mb-3 pb-4 border-b border-gray-100">
+              <h3 className="text-2xl font-semibold text-gray-900">
                 Recent Earnings
               </h3>
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 rounded-full">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-sm font-medium text-green-700">
+                  Active
+                </span>
+              </div>
             </div>
 
             <div className="space-y-4">
-              {/* Earning Item 1 */}
-              <div className="group flex justify-between items-center p-4 bg-white/80 rounded-2xl border border-purple-100 hover:bg-white hover:shadow-md transition-all duration-200 ">
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={Profilepicture}
-                    alt="Profile Picture"
-                    className="w-14 h-14 rounded-2xl object-cover ring-2 ring-purple-200"
-                  />
-                  <div>
-                    <p className="font-bold text-gray-800">Alisha Parker</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs">📅</span>
-                      <p className="text-xs text-gray-500">
+              {/* Earning Item */}
+              <div className="group p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:bg-red-50 transition-all duration-200">
+                <div className="flex justify-between items-start">
+                  <div className="">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="text-sm font-medium text-gray-500">
+                        Transaction ID
+                      </p>
+                      <span className="text-sm font-semibold text-gray-900">
+                        123456677ccc
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <svg
+                          className="w-2 h-2 text-purple-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </div>
+                      <p className="text-sm text-gray-700">
                         12 July: 10:00 AM - 11:00 AM
                       </p>
                     </div>
                   </div>
+                  <div className="text-right ml-6 pl-2 border-l border-gray-200">
+                    <div className="bg-green-50 rounded-xl px-2 py-1 border border-green-200">
+                      <span className="text-lg font-bold text-green-600">
+                        +₹8,000
+                      </span>
+                      <p className="text-xs text-gray-600 font-medium mt-1.5">
+                      Earned amount
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <span className="text-2xl font-black text-green-600 group-hover:text-green-700 transition-colors">
-                    +₹8,000
-                  </span>
-                  <p className="text-xs text-gray-500 mt-1">1 hour session</p>
+                <div className="space-y-2.5">
+                  <div className="flex gap-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <svg
+                          className="w-4 h-4 text-orange-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                          />
+                        </svg>
+                      </div>
+                      <p className="text-sm text-gray-700">
+                        Platform fee:{' '}
+                        <span className="font-semibold text-gray-900">₹31</span>
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <svg
+                          className="w-4 h-4 text-blue-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </div>
+                      <p className="text-sm text-gray-700">
+                        Tax Amount:{' '}
+                        <span className="font-semibold text-gray-900">₹50</span>
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
-
               
 
-               <div className="group flex justify-between items-center p-4 bg-white/80 rounded-2xl border border-purple-100 hover:bg-white hover:shadow-md transition-all duration-200 ">
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={Profilepicture}
-                    alt="Profile Picture"
-                    className="w-14 h-14 rounded-2xl object-cover ring-2 ring-purple-200"
-                  />
-                  <div>
-                    <p className="font-bold text-gray-800">Alisha Parker</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs">📅</span>
-                      <p className="text-xs text-gray-500">
-                        12 July: 10:00 AM - 11:00 AM
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <span className="text-2xl font-black text-green-600 group-hover:text-green-700 transition-colors">
-                    +₹8,000
-                  </span>
-                  <p className="text-xs text-gray-500 mt-1">1 hour session</p>
-                </div>
-              </div>
-
-              {/* Earning Item 2 */}
-              <div className="group flex justify-between items-center p-4 bg-white/80 rounded-2xl border border-purple-100 hover:bg-white hover:shadow-md transition-all duration-200">
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={Profilepicture}
-                    alt="Profile Picture"
-                    className="w-14 h-14 rounded-2xl object-cover ring-2 ring-purple-200"
-                  />
-                  <div>
-                    <p className="font-bold text-gray-800">Alisha Parker</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs">📅</span>
-                      <p className="text-xs text-gray-500">
-                        12 July: 10:00 AM - 11:00 AM
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <span className="text-2xl font-black text-green-600 group-hover:text-green-700 transition-colors">
-                    +₹8,000
-                  </span>
-                  <p className="text-xs text-gray-500 mt-1">1 hour session</p>
-                </div>
-              </div>
-              <div className="group flex justify-between items-center p-4 bg-white/80 rounded-2xl border border-purple-100 hover:bg-white hover:shadow-md transition-all duration-200">
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={Profilepicture}
-                    alt="Profile Picture"
-                    className="w-14 h-14 rounded-2xl object-cover ring-2 ring-purple-200"
-                  />
-                  <div>
-                    <p className="font-bold text-gray-800">Alisha Parker</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs">📅</span>
-                      <p className="text-xs text-gray-500">
-                        12 July: 10:00 AM - 11:00 AM
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <span className="text-2xl font-black text-green-600 group-hover:text-green-700 transition-colors">
-                    +₹8,000
-                  </span>
-                  <p className="text-xs text-gray-500 mt-1">1 hour session</p>
-                </div>
-              </div>
-
               {/* View All Button */}
-              <button className="w-full mt-4 py-3 px-6 bg-gradient-to-r from-red-400 to-red-500 text-white font-semibold rounded-xl hover:from-red-500 hover:to-red-600 transition-all duration-200">
-                View All Earnings
+              <button className="w-full mt-6 py-3.5 px-6 bg-red-500 text-white font-semibold rounded-xl hover:bg-red-700 transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2">
+                <span>View All Earnings</span>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
               </button>
             </div>
           </div>

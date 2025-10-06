@@ -8,7 +8,7 @@ const PendingEarnings = (initialData = {}) => {
   useEffect(() => {
     console.log('Initial pending Data:', initialData);
     SetbookingData(initialData.initialData);
-  }, []);
+  }, [initialData]);
 
   return (
     <div className="w-full">
@@ -28,9 +28,10 @@ const PendingEarnings = (initialData = {}) => {
                         Transaction ID: {item.txnId || 'alex parker'}
                       </h3>
 
-                      <div className="inline-flex items-center px-3 sm:px-4 py-1 sm:py-0 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-200">
-                        <span className="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></span>
-                        TRANSACTION: {item.transactionStatus || 'PENDING'}
+                      <div className={`${ item.status === 'COMPLETED' ? "text-green-700 bg-green-50 border-green-200" : "text-red-700 bg-red-50 border-red-200"}  inline-flex items-center px-3 sm:px-4 py-1 sm:py-0 rounded-full text-xs font-medium  border `}>
+                        <span className={`w-2 h-2 ${ item.status === "COMPLETED" ? "bg-green-500" : "bg-red-500" }  rounded-full mr-2 animate-pulse`}></span>
+                        TRANSACTION: {item.status
+}
                       </div>
                     </div>
                     <div>
@@ -71,6 +72,25 @@ const PendingEarnings = (initialData = {}) => {
                           <span className="font-medium">Tax Amount:</span>
                           <span className="text-gray-900">
                             ₹{Math.floor(item.taxAmount)}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                          <svg
+                            className="w-4 h-4 text-gray-400 flex-shrink-0"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                            />
+                          </svg>
+                          <span className="font-medium">Penalty charged:</span>
+                          <span className="text-gray-900">
+                            ₹{Math.floor(item.penaltyAmount)}
                           </span>
                         </div>
                       </div>
