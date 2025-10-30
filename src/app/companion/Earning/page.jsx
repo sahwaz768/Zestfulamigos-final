@@ -5,11 +5,13 @@ import Notify from '@/components/Notify';
 import { Mastersidebar } from '@/components/MasterSidebar';
 import PendingEarnings from '@/components/pendingEarnings';
 import Pagination from '@/components/Pagination';
+import Loadingbar from '@/components/Loadingbar';
 
 const Page = () => {
   const [PendingData, setPendingData] = useState({});
   const [CompletedData, setCompletedData] = useState({});
   const [activeTab, SetActiveTab] = useState('pending');
+ 
 
   useEffect(() => {
     const fetchPendingEarningData = async () => {
@@ -20,6 +22,7 @@ const Page = () => {
         const result = await getCompanionPendingEarnings();
         if (result) {
           setPendingData(result.data.data);
+          console.log('Pending Earnings Data:', result.data.data);
         }
       } catch (err) {
         console.error('Fetch error:', err);
@@ -60,7 +63,7 @@ const Page = () => {
     }
   };
 
-    const onPage = async (pageNo) => {
+  const onPage = async (pageNo) => {
     const values = {
       pageNo
     };
@@ -69,11 +72,19 @@ const Page = () => {
         '@/services/user/bookings.service'
       );
       const result = await getCompanionCompletedEarnings(values);
-      CompletedData(result.data.data);
+      setCompletedData(result.data.data);
     } catch (error) {
       console.error('Fetch error:', error);
     }
   };
+
+  if (!PendingData && !CompletedData) {
+    return (
+      <div>
+        <Loadingbar />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -81,7 +92,7 @@ const Page = () => {
       <div className="notifymbsecond">
         <Notify backgroundColor="transparent" color="black" />
       </div>
-      <Mastersidebar className="sbar-height-chat" />
+      <Mastersidebar className="sbar-height-chat" isCompanion={true} />
 
       <div className="min-h-screen  py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -128,9 +139,11 @@ const Page = () => {
             </div>
           </div>
           {/* pending Earnings */}
+
           {Object.keys(PendingData).length > 0 && activeTab === 'pending' && (
             <PendingEarnings initialData={PendingData.earnings} />
           )}
+
           {PendingData && activeTab === 'pending' && (
             <Pagination
               currentPage={PendingData.currentPage}
@@ -142,7 +155,7 @@ const Page = () => {
             activeTab === 'completed' && (
               <PendingEarnings initialData={CompletedData.earnings} />
             )}
-             {CompletedData && activeTab === 'completed' && (
+          {CompletedData && activeTab === 'completed' && (
             <Pagination
               currentPage={CompletedData.currentPage}
               totalPage={CompletedData.totalPages}

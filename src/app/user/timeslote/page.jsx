@@ -14,6 +14,7 @@ const Page = () => {
     '11:00 AM - 12:00 PM',
     '12:00 PM - 1:00 PM',
     '1:00 PM - 2:00 PM',
+    '2:00 PM - 3:00 PM',
     '3:00 PM - 4:00 PM',
     '4:00 PM - 5:00 PM',
     '5:00 PM - 6:00 PM',
@@ -41,10 +42,13 @@ const Page = () => {
               const end = Number(l.end);
               const getCurrentIndex = new Date(start).getDate() - todaydate;
               const generatedTimeslots = generateStimeSlots(start, end);
+              
               bookSlots[getCurrentIndex] = bookSlots[getCurrentIndex]
                 ? [...bookSlots[getCurrentIndex], ...generatedTimeslots]
                 : generatedTimeslots;
             });
+            console.log('booked slote:', bookSlots);
+            
             setBookedSlots(bookSlots);
           }
         });
@@ -122,14 +126,14 @@ const Page = () => {
         bookingdurationUnit: 'HOUR',
         bookinglocation: location
       };
-      console.log(values);
+    //  console.log(values);
       const { bookaCompanionService } = await import(
         '../../../services/user/bookings.service'
       );
       const { toast } = await import('@/utils/reduxtrigger.utils');
       const { data, error } = await bookaCompanionService(values);
       if (data) {
-        console.log(data);
+       // console.log(data);
 
         router.push(`./payment?bookingId=${data.bookingid}`);
       } else {

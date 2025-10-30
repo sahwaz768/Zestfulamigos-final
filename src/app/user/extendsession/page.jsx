@@ -219,9 +219,9 @@ const ExtensionBookingPage = () => {
                   </tr>
 
                   <tr>
-                    <th className="text-sm font-normal">GST (18%)</th>
+                    <th className="text-sm font-normal">GST (5%)</th>
                     <td className="text-sm font-normal">
-                      : ₹{Number(bookingdata.bookingrate * 0.18).toFixed(2)}
+                      : ₹{Number(bookingdata.bookingrate * 0.05).toFixed(2)}
                     </td>
                   </tr>
                   <tr>

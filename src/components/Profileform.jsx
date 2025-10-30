@@ -53,13 +53,15 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
     description: Array.isArray(initialValues.Companion?.[0]?.description)
       ? [...initialValues.Companion[0].description]
       : [],
-    bookingrate: '',
+    bookingrate: initialValues.Companion?.[0]?.bookingrate || '',
     height: initialValues.Companion?.[0]?.height || '',
     baselocations: initialValues.Companion?.[0]?.baselocation || [],
     paymentmethods: [],
     
   });
   const [errors, setErrors] = useState({});
+    const [isLoading, setisLoading] = useState(false);
+  
   const [paymentErrors, setPaymentErrors] = useState({});
   const [selectedButton, setSelectedButton] = useState(
     Array.from({ length: 4 }, () => null)
@@ -177,6 +179,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+        setisLoading(true)
 
     if (validateForm()) {
       const payload = {
@@ -185,6 +188,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
       };
 
       await onSubmit(payload);
+      setisLoading(false)
     } else {
       console.log('Form has errors');
     }
@@ -633,7 +637,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                         className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                       >
                         <option value="">Select Payment Method</option>
-                        <option value="Bankmethod">Bank Method</option>
+                        <option value="BANK_ACCOUNT">Bank Method</option>
                         <option value="UPI">UPI</option>
                         <option value="WALLET">Wallet</option>
                       </select>
@@ -675,7 +679,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   )}
 
                   {/* Bank Method Fields */}
-                  {form.type === 'Bankmethod' && (
+                  {form.type === 'BANK_ACCOUNT' && (
                     <div className="flex gap-5 flex-wrap my-3">
                       <input
                         type="text"
@@ -724,8 +728,8 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                         className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                       >
                         <option value="">Select Account Type</option>
-                        <option value="Saving">Savings</option>
-                        <option value="Current">Current</option>
+                        <option value="SAVINGS">Savings</option>
+                        <option value="CURRENT">Current</option>
                       </select>
                     </div>
                   )}
@@ -835,10 +839,10 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
           {/* Submit Button */}
           <button
             className="savechgbtn"
-            //  disabled={isLoading}
+           
             onClick={handleSubmit}
           >
-            submit
+           submit
           </button>
         </div>
       </div>
@@ -847,45 +851,38 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
 };
 
 // ImageUploader Component
-const ImageUploader = ({ images, onUpload }) => {
+const ImageUploader = ({ images = [], onUpload }) => {
   const previewImages = useMemo(() => {
     if (!images?.length) return [];
     return images.map((i) => (i?.file ? URL.createObjectURL(i.file) : ''));
   }, [images]);
-
   useEffect(() => {
     // Revoke object URLs on unmount/update
     return () => {
       previewImages.forEach((src) => src && URL.revokeObjectURL(src));
     };
   }, [previewImages]);
-
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files || []);
     const currentCount = images?.length || 0;
     const remaining = Math.max(0, 4 - currentCount);
-
     const filesToAdd = selectedFiles.slice(0, remaining).map((file, idx) => ({
       file,
       url: URL.createObjectURL(file),
       isMain: currentCount === 0 && idx === 0 // make first image main by default
     }));
-
     const updated = [...(images || []), ...filesToAdd];
     onUpload(updated);
-
     // Reset input so same file can be chosen again if removed
     e.target.value = '';
   };
-
   const handleRemoveImage = (index) => {
     const updated = (images || []).filter((_, i) => i !== index);
     onUpload(updated.length ? updated : null);
   };
-
   return (
     <div className="image-uploader flex gap-3 flex-wrap">
-      {images.map((src, index) => (
+      {(images || []).map((src, index) => (
         <div key={index} className="image-container">
           {src && (
             <img
@@ -904,7 +901,6 @@ const ImageUploader = ({ images, onUpload }) => {
           </button>
         </div>
       ))}
-
       {(images?.length || 0) < 4 && (
         <label className="add-image">
           <input

@@ -101,9 +101,9 @@ export function convertToTimeSlots(startMs, endMs, intervalMinutes = 60) {
 }
 
 export function generateStimeSlots(startMs, endMs) {
-  const offsetInMs = 5.5 * 60 * 60 * 1000;
-  let startTime = new Date(startMs - offsetInMs);
-  let endTime = new Date(endMs - offsetInMs);
+ // const offsetInMs = 5.5 * 60 * 60 * 1000;
+  let startTime = new Date(startMs);
+  let endTime = new Date(endMs);
   let times = [];
   while (startTime < endTime) {
 
@@ -211,3 +211,106 @@ export const calculateRemainingTime = (endTime) => {
 
   return remainingTime;
 };
+
+
+
+
+export const convertSlotsToSchedule = (selectedSlots) => {
+  // Day mapping: Sunday = 0, Monday = 1, etc.
+  const dayMap = {
+    'Sun': 0,
+    'Mon': 1,
+    'Tue': 2,
+    'Wed': 3,
+    'Thu': 4,
+    'Fri': 5,
+    'Sat': 6
+  };
+
+  // Group slots by day
+  const groupedByDay = {};
+  selectedSlots.forEach(slot => {
+    const [day, hour] = slot.split('-');
+    if (!groupedByDay[day]) {
+      groupedByDay[day] = [];
+    }
+    groupedByDay[day].push(parseInt(hour));
+  });
+
+  // Convert to desired format
+  const result = Object.entries(groupedByDay).map(([day, hours]) => {
+    hours.sort((a, b) => a - b);
+    const startHour = Math.min(...hours);
+    const endHour = Math.max(...hours) + 1; // End time is one hour after last selected hour
+
+    // Create a date for today to get unix milliseconds for the time
+    const today = new Date();
+    today.setHours(startHour, 0, 0, 0);
+    const startTime = today.getTime();
+
+    today.setHours(endHour, 0, 0, 0);
+    const endTime = today.getTime();
+
+    return {
+      dayOfWeek: dayMap[day],
+      startTime: JSON.stringify(startTime),
+      endTime: JSON.stringify(endTime)
+    };
+  });
+
+  return result;
+};
+
+
+
+export const ScheduleToSlots = (schedule) => {
+  // Reverse day mapping: 0 = Sunday, 1 = Monday, etc.
+  const dayMap = {
+    0: 'Sun',
+    1: 'Mon',
+    2: 'Tue',
+    3: 'Wed',
+    4: 'Thu',
+    5: 'Fri',
+    6: 'Sat'
+  };
+
+  const slots = [];
+
+  schedule.forEach(slot => {
+    const { dayOfWeek, startTime, endTime } = slot;
+    
+    // Parse timestamps (handle both string and number formats)
+    const startTimestamp = typeof startTime === 'string' ? parseInt(startTime) : startTime;
+    const endTimestamp = typeof endTime === 'string' ? parseInt(endTime) : endTime;
+    
+    // Convert timestamps to Date objects
+    const startDate = new Date(startTimestamp);
+    const endDate = new Date(endTimestamp);
+    
+    // Get start and end hours
+    const startHour = startDate.getHours();
+    const endHour = endDate.getHours();
+    
+    // Get day abbreviation
+    const dayAbbr = dayMap[dayOfWeek];
+    
+    // Generate slot strings for each hour in the range
+    for (let hour = startHour; hour < endHour; hour++) {
+      slots.push(`${dayAbbr}-${hour}`);
+    }
+  });
+
+  return slots;
+};
+
+
+export const formatUnixMillisToDate =(unixMillis) =>{
+  const date = new Date(unixMillis);
+  
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}`;
+}
