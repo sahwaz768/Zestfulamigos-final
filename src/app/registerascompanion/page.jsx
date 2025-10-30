@@ -31,22 +31,32 @@ export default function Page() {
     for (let [key, value] of companionDetails.entries()) {
       obj[key] = value;
     }
+ //   console.log('companion signup form submitted', obj);
     
+   
+try {
+  const { companionRegisterService } = await import(
+    '@/services/auth/companionregister.service'
+  );
 
-    const { companionRegisterService } = await import(
-      '@/services/auth/companionregister.service'
+  const { toast } = await import('@/utils/reduxtrigger.utils');
+
+  const { data, error } = await companionRegisterService(companionDetails);
+
+  if (data) {
+    toast.success(
+      "Successfully registered as companion, wait for admin's approval"
     );
+  } else {
+    toast.error(`Sorry, registration failed: ${error || 'Unknown error'}`);
+  }
+} catch (err) {
+  console.error('Error during companion registration:', err);
+  const { toast } = await import('@/utils/reduxtrigger.utils');
+  toast.error('An unexpected error occurred. Please try again later.');
+}  
 
-    const { toast } = await import('@/utils/reduxtrigger.utils');
-    const { data, error } = await companionRegisterService(companionDetails);
-    if (data) {
-      toast.success(
-        "succesfully registered as companion, wait for admin's approval"
-      );
-    } else {
-      toast.error('sorry registration failed:', error);
-    }
-  };
+  }; 
  
 
   return (

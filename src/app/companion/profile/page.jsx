@@ -10,6 +10,8 @@ export default function Page() {
   const [getData, setgetData] = useState({});
   const [id, setId] = useState(null);
   const signup = async (payload) => {
+    console.log( 'payload in profile',payload);
+    
     
     const companionDetails = new FormData();
     const previousImages = [];
@@ -38,6 +40,8 @@ export default function Page() {
     for (let [key, value] of companionDetails.entries()) {
       obj[key] = value;
     }
+    console.log('after stringification in profile:', obj);
+    
     
 
     const { updateCompanionProfileService } = await import(
@@ -61,7 +65,7 @@ export default function Page() {
       ({ getCompanionProfileDetails }) =>
         getCompanionProfileDetails().then(({ data }) => {
           if (data) {
-            console.log('Existing companion data:', data);
+           // console.log('Existing companion data:', data);
             setId(data.Companion?.[0]?.id);
 
             setgetData(data);

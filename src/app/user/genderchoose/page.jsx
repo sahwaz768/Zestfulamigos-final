@@ -41,11 +41,12 @@ const Page = () => {
       const { datafetched } = await import(
         '../../../Redux/companionfindReducer/companionFinReducer'
       );
+      const { toast } = await import('@/utils/reduxtrigger.utils');
       if (data) {
         dispatch(datafetched(data));
         router.push('/user/swipepage');
       } else {
-        console.log(error);
+        toast.error('Please try different location or try again later');
       }
       setisLoading(() => false);
     }
@@ -91,7 +92,6 @@ const Page = () => {
             className="submit-button"
             onClick={handleSubmit}
             disabled={isLoading}
-
           >
             {isLoading ? 'Please wait....' : 'Countinue'}
           </button>

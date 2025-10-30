@@ -157,15 +157,15 @@ const page = () => {
                 </tr>
 
                 <tr>
-                  <th className="text-sm font-normal">GST(18% Exclusive)</th>
+                  <th className="text-sm font-normal">Service Charge</th>
                   <td className="text-sm font-normal">
-                    : ₹{Number(bookingDetails.bookingrate * 0.18).toFixed(2)}
+                    : ₹{Number(bookingDetails.bookingrate * 0.05).toFixed(2)}
                   </td>
                 </tr>
-                <tr>
+             {/*   <tr>
                   <th className="text-sm font-normal">Service Charge</th>
                   <td className="text-sm font-normal">: 0.00</td>
-                </tr>
+                </tr> */}
 
                 <tr>
                   <th className="text-sm font-normal">Total Amount</th>

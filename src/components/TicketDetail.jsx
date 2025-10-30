@@ -26,6 +26,9 @@ const TicketDetail = ({ userIssue, getLatestDetails }) => {
     if (userCommentData.images) {
       formData.append('images', userCommentData.images);
     }
+    // const dataForm = Object.fromEntries(formData.entries());
+   // console.log(dataForm);
+    
     const { data } = await addCommentonIssue(formData);
     if (data) {
       getLatestDetails(userIssue.issueId);
