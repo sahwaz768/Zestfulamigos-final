@@ -314,3 +314,102 @@ export const formatUnixMillisToDate =(unixMillis) =>{
   
   return `${year}-${month}-${day}`;
 }
+
+
+export const  getTodayIndex = () => {
+  const today = new Date();
+  return today.getDay(); // Returns 0-6 (Sunday-Saturday)
+}
+
+export const  filterScheduleByDay = (index, data) => {
+  // Calculate the next 4 consecutive days starting from index
+  const daysToInclude = [];
+  for (let i = 0; i < 4; i++) {
+    daysToInclude.push((index + i) % 7);
+  }
+  
+  // Filter the data array to include only the calculated days
+  const filtered = data.filter(item => daysToInclude.includes(item.dayOfWeek));
+  
+  // Sort by the order of days in daysToInclude
+  filtered.sort((a, b) => {
+    return daysToInclude.indexOf(a.dayOfWeek) - daysToInclude.indexOf(b.dayOfWeek);
+  });
+  
+  return filtered;
+}
+
+
+export const  convertArrayToIndexedObject = (arr) => {
+    const result = {};
+    
+    arr.forEach((item, index) => {
+        // Use the array index as the key in the result object
+        result[index] = item.slots;
+    });
+    
+    return result;
+}
+
+
+export const  replaceTimeslots = (data) => {
+  // Define the new timeslots that should be used
+  const newTimeslots = [
+    '11:00 AM - 12:00 PM',
+    '12:00 PM - 1:00 PM',
+    '1:00 PM - 2:00 PM',
+    '2:00 PM - 3:00 PM',
+    '3:00 PM - 4:00 PM',
+    '4:00 PM - 5:00 PM',
+    '5:00 PM - 6:00 PM',
+    '6:00 PM - 7:00 PM',
+    '7:00 PM - 8:00 PM',
+    '8:00 PM - 9:00 PM',
+    '9:00 PM - 10:00 PM',
+    '10:00 PM - 11:00 PM'
+  ];
+
+  // Create a new object to store the result
+  const result = {};
+
+  // Iterate through each key in the data object
+  for (const key in data) {
+    // Get the existing timeslots for this key
+    const existingTimeslots = data[key];
+    
+    // Filter out timeslots from newTimeslots that already exist
+    const filteredTimeslots = newTimeslots.filter(
+      slot => !existingTimeslots.includes(slot)
+    );
+    
+    // Assign the filtered timeslots to the result
+    result[key] = filteredTimeslots;
+  }
+
+  return result;
+}
+
+
+export const  mergeTimeSlots = (obj1, obj2) => {
+    // Create a deep copy of obj1 to avoid mutation
+    const result = JSON.parse(JSON.stringify(obj1));
+    
+    // Iterate through keys in obj2
+    for (const key in obj2) {
+        if (obj2.hasOwnProperty(key)) {
+            // If the key exists in result, merge arrays
+            if (result[key]) {
+                // Combine both arrays
+                const combined = [...result[key], ...obj2[key]];
+                
+                // Remove duplicates using Set
+                result[key] = [...new Set(combined)];
+            } else {
+                // If key doesn't exist in result, add it
+                result[key] = [...obj2[key]];
+            }
+        }
+    }
+    
+    return result;
+}

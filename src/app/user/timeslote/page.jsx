@@ -7,6 +7,11 @@ import { useSelector } from 'react-redux';
 import { generateStimeSlots, parseTimeSlot } from '@/utils/bookings.utils';
 import Threeline from '@/components/ThreeLine';
 import LocationAccess from '@/components/Locationaccess';
+import { getTodayIndex } from '@/utils/bookings.utils';
+import { filterScheduleByDay } from '@/utils/bookings.utils';
+import { convertArrayToIndexedObject } from '@/utils/bookings.utils';
+import { replaceTimeslots } from '@/utils/bookings.utils';
+import { mergeTimeSlots } from '@/utils/bookings.utils';
 
 const Page = () => {
   const [bookedSlots, setBookedSlots] = useState({});
@@ -29,27 +34,41 @@ const Page = () => {
   useEffect(() => {
     let params = new URL(document.location.toString()).searchParams;
     let companionId = params.get('companionId');
-    
+
     if (companionId) {
       import('@/services/user/companionDetails.service')
         .then(({ checkCompanionSlots }) => checkCompanionSlots(companionId))
         .then(({ data }) => {
           if (data) {
             const bookSlots = {};
-            data.forEach((l) => {
+            data.bookedslots.forEach((l) => {
               const todaydate = new Date().getDate();
               const start = Number(l.start);
               const end = Number(l.end);
               const getCurrentIndex = new Date(start).getDate() - todaydate;
               const generatedTimeslots = generateStimeSlots(start, end);
-              
+
               bookSlots[getCurrentIndex] = bookSlots[getCurrentIndex]
                 ? [...bookSlots[getCurrentIndex], ...generatedTimeslots]
                 : generatedTimeslots;
             });
-            console.log('booked slote:', bookSlots);
-            
-            setBookedSlots(bookSlots);
+            const todayIndex = getTodayIndex();
+            const apiAvaliablityData = data.companionslots;
+            const filterAvaliableData = filterScheduleByDay(
+              todayIndex,
+              apiAvaliablityData
+            );
+            const convertedAvaliableData =
+              convertArrayToIndexedObject(filterAvaliableData);
+            const replacedAvailableSlots = replaceTimeslots(
+              convertedAvaliableData
+            );
+            const merged = mergeTimeSlots(replacedAvailableSlots, bookSlots);
+            // console.log('mergedSlote:', merged);
+
+            // console.log ('bookSlots', bookSlots);
+
+            setBookedSlots(merged);
           }
         });
     }
@@ -67,10 +86,13 @@ const Page = () => {
   const dates = Array.from({ length: 4 }, (_, i) => {
     const today = new Date();
     today.setDate(today.getDate() + i);
+
     return {
       month: today.toLocaleDateString('en-US', { month: 'short' }),
       monthTime: today.getMonth() + 1,
-      day: today.toLocaleDateString('en-US', { day: 'numeric' })
+      day: today.toLocaleDateString('en-US', { day: 'numeric' }),
+      weekday: today.toLocaleDateString('en-US', { weekday: 'long' }),
+      weekdayIndex: today.getDay() // Sunday = 0, Monday = 1, ..., Saturday = 6
     };
   });
 
@@ -126,14 +148,14 @@ const Page = () => {
         bookingdurationUnit: 'HOUR',
         bookinglocation: location
       };
-    //  console.log(values);
+      //  console.log(values);
       const { bookaCompanionService } = await import(
         '../../../services/user/bookings.service'
       );
       const { toast } = await import('@/utils/reduxtrigger.utils');
       const { data, error } = await bookaCompanionService(values);
       if (data) {
-       // console.log(data);
+        // console.log(data);
 
         router.push(`./payment?bookingId=${data.bookingid}`);
       } else {
@@ -166,7 +188,7 @@ const Page = () => {
         backgroundColor="rgba(250, 236, 236, 0.8)"
         navLinks={navLinks}
       />
-      {modelopen && <Guidmodel closeModal={() => setModelopen(false)}/>}
+      {modelopen && <Guidmodel closeModal={() => setModelopen(false)} />}
       <form onSubmit={handleFormSubmit} className="flex flex-col space-y-4">
         <div className="timeslote-box ">
           <div className="timeslotebox ">
