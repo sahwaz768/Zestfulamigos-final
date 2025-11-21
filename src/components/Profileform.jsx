@@ -35,7 +35,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
       isDefault: false
     }
   ]);
-  
+
   const [formData, setFormData] = useState({
     images: initialValues?.Images || [],
     firstname: initialValues.firstname || '',
@@ -56,12 +56,11 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
     bookingrate: initialValues.Companion?.[0]?.bookingrate || '',
     height: initialValues.Companion?.[0]?.height || '',
     baselocations: initialValues.Companion?.[0]?.baselocation || [],
-    paymentmethods: [],
-    
+    paymentmethods: []
   });
   const [errors, setErrors] = useState({});
-    const [isLoading, setisLoading] = useState(false);
-  
+  const [isLoading, setisLoading] = useState(false);
+
   const [paymentErrors, setPaymentErrors] = useState({});
   const [selectedButton, setSelectedButton] = useState(
     Array.from({ length: 4 }, () => null)
@@ -167,19 +166,22 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
     setFormData({ ...formData, images });
   };
 
-  const validateForm = () => {
-    const errors = validateCompanion(formData);
-    if (Object.keys(errors).length > 0) {
-      console.log('Errors', errors);
-      setErrors(errors);
-      return false;
-    }
-    return true;
-  };
+ const validateForm = () => {
+  const skipPasswordValidation = mode !== 'signup';
+  const errors = validateCompanion(formData, skipPasswordValidation);
+  
+  if (Object.keys(errors).length > 0) {
+    console.log('Errors', errors);
+    setErrors(errors);
+    return false;
+  }
+  
+  return true;
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-        setisLoading(true)
+    setisLoading(true);
 
     if (validateForm()) {
       const payload = {
@@ -188,7 +190,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
       };
 
       await onSubmit(payload);
-      setisLoading(false)
+      setisLoading(false);
     } else {
       console.log('Form has errors');
     }
@@ -229,7 +231,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
               images={formData.images}
               onUpload={handleImageUpload}
             />
-            {errors.images && <span className="text-xs text-red-700">{errors.images}</span>}
+            {errors.images && (
+              <span className="text-xs text-red-700">{errors.images}</span>
+            )}
           </div>
 
           {/* First Name */}
@@ -250,7 +254,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                     className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   />
                   {errors.firstname && (
-                    <span className="text-xs text-red-700">{errors.firstname}</span>
+                    <span className="text-xs text-red-700">
+                      {errors.firstname}
+                    </span>
                   )}
                 </div>
                 {/* Last Name */}
@@ -266,7 +272,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                     className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   />
                   {errors.lastname && (
-                    <span className="text-xs text-red-700">{errors.lastname}</span>
+                    <span className="text-xs text-red-700">
+                      {errors.lastname}
+                    </span>
                   )}
                 </div>
                 {/* Email */}
@@ -284,7 +292,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                     />
 
                     {errors.email && (
-                      <span className="text-xs text-red-700">{errors.email}</span>
+                      <span className="text-xs text-red-700">
+                        {errors.email}
+                      </span>
                     )}
                   </div>
                 )}
@@ -306,7 +316,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   />
 
                   {errors.password && (
-                    <span className="text-xs text-red-700">{errors.password}</span>
+                    <span className="text-xs text-red-700">
+                      {errors.password}
+                    </span>
                   )}
                 </div>
               )}
@@ -323,8 +335,8 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 />
 
-                {errors.password && (
-                  <span className="text-xs text-red-700">{errors.password}</span>
+                {errors.age && (
+                  <span className="text-xs text-red-700">{errors.age}</span>
                 )}
               </div>
               {/* phoneno */}
@@ -388,7 +400,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   ))}
                 </select>
                 {errors.skintone && (
-                  <span className="text-xs text-red-700">{errors.skintone}</span>
+                  <span className="text-xs text-red-700">
+                    {errors.skintone}
+                  </span>
                 )}
               </div>
               {/* Body Type */}
@@ -409,7 +423,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   ))}
                 </select>
                 {errors.bodytype && (
-                  <span className="text-xs text-red-700">{errors.bodytype}</span>
+                  <span className="text-xs text-red-700">
+                    {errors.bodytype}
+                  </span>
                 )}
               </div>
             </div>
@@ -425,7 +441,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                 onChange={handleInputChange}
                 className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               />
-              {errors.height && <span className="error text-red-700">{errors.height}</span>}
+              {errors.height && (
+                <span className="text-xs text-red-700">{errors.height}</span>
+              )}
             </div>
             <h1 className="font-bold">Habbits:</h1>
             <div className="flex gap-5 flex-wrap">
@@ -447,7 +465,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   ))}
                 </select>
                 {errors.eatinghabits && (
-                  <span className="text-xs text-red-700">{errors.eatinghabits}</span>
+                  <span className="text-xs text-red-700">
+                    {errors.eatinghabits}
+                  </span>
                 )}
               </div>
 
@@ -470,7 +490,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   ))}
                 </select>
                 {errors.smokinghabits && (
-                  <span className="text-xs text-red-700">{errors.smokinghabits}</span>
+                  <span className="text-xs text-red-700">
+                    {errors.smokinghabits}
+                  </span>
                 )}
               </div>
 
@@ -492,7 +514,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   ))}
                 </select>
                 {errors.drinkinghabits && (
-                  <span className="text-xs text-red-700">{errors.drinkinghabits}</span>
+                  <span className="text-xs text-red-700">
+                    {errors.drinkinghabits}
+                  </span>
                 )}
               </div>
             </div>
@@ -511,7 +535,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
               />
 
               {errors.bookingrate && (
-                <span className="text-xs text-red-700">{errors.bookingrate}</span>
+                <span className="text-xs text-red-700">
+                  {errors.bookingrate}
+                </span>
               )}
             </div>
 
@@ -584,7 +610,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                 </div>
               </div>
               {errors.baselocations && (
-                <span className="text-xs text-red-700">{errors.baselocations}</span>
+                <span className="text-xs text-red-700">
+                  {errors.baselocations}
+                </span>
               )}
             </div>
 
@@ -799,7 +827,9 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
               </button>
             </div>
             {errors.paymentMethods && (
-              <span className="text-xs text-red-700">{errors.paymentMethods}</span>
+              <span className="text-xs text-red-700">
+                {errors.paymentMethods}
+              </span>
             )}
 
             {/* Description Checkboxes */}
@@ -832,17 +862,15 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                 ))}
               </div>
               {errors.description && (
-                <span className="text-xs text-red-700">{errors.description}</span>
+                <span className="text-xs text-red-700">
+                  {errors.description}
+                </span>
               )}
             </div>
           </div>
           {/* Submit Button */}
-          <button
-            className="savechgbtn"
-           
-            onClick={handleSubmit}
-          >
-           submit
+          <button className="savechgbtn" onClick={handleSubmit}>
+            {mode === 'signup' ? 'Sign Up' : 'Request Update'}
           </button>
         </div>
       </div>

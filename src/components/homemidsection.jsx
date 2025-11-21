@@ -59,7 +59,8 @@ const Homemidsection = () => {
            
 
             <div className="step">
-              <h2 className="mt-3 text-gray-800 font-bold mb-1">Get Sign up</h2>
+
+              <h2 className="mt-3 text-gray-800 font-bold mb-1">1.Get Sign up</h2>
               <div className="icon-wrapper">
                 <svg className="icon" viewBox="0 0 24 24">
                   <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
@@ -74,7 +75,7 @@ const Homemidsection = () => {
 
             <div className="step">
               <h2 className="mt-3 text-gray-800 font-bold mb-1">
-                Choose Gender
+                2.Choose Gender
               </h2>
 
               <div className="icon-wrapper">
@@ -88,10 +89,25 @@ const Homemidsection = () => {
                 match you with compatible connections.
               </p>
             </div>
+             <div className="step">
+              <h2 className="mt-3 text-gray-800 font-bold mb-1">
+                3.Choose Companion
+              </h2>
+              <div className="icon-wrapper">
+                <svg className="icon" viewBox="0 0 24 24">
+                  <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                </svg>
+              </div>
+
+              <p className="text-sm text-gray-800">
+                Select the type of partner you are looking for we well help you
+                find a date who matches and align well with your preferences.
+              </p>
+            </div>
 
             <div className="step">
               <h2 className="mt-3 text-gray-800 font-bold mb-1">
-                Ready to Meetup
+                4.Ready to Meetup
               </h2>
               <div className="icon-wrapper">
                 <svg className="icon" viewBox="0 0 24 24">
@@ -105,21 +121,7 @@ const Homemidsection = () => {
               </p>
             </div>
 
-            <div className="step">
-              <h2 className="mt-3 text-gray-800 font-bold mb-1">
-                Choose Companion
-              </h2>
-              <div className="icon-wrapper">
-                <svg className="icon" viewBox="0 0 24 24">
-                  <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-                </svg>
-              </div>
-
-              <p className="text-sm text-gray-800">
-                Select the type of partner you are looking for we well help you
-                find a date who matches and align well with your preferences.
-              </p>
-            </div>
+           
           </div>
         </div>
       </div>

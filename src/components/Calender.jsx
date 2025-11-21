@@ -287,16 +287,14 @@ export const Calendar = ({ CalendarData, initialStartDate = null, initialEndDate
       {dateRange && (
         <div className="mt-6 p-4 bg-red-50 border-l-4 border-red-500 rounded">
           <p className="text-sm font-semibold text-red-800">
-            Chosen availability duration:
+             Avaliable Dates:
           </p>
           <p className="text-sm text-red-700 mt-1">{dateRange[0]}</p>
         </div>
       )}
 
       <div className="mt-4 text-xs text-gray-500 text-center">
-        <p>Click a date to start selection.</p>
-        <p className="mt-1">Click the next consecutive date to extend, or click the last date to remove it.</p>
-        <p className="mt-1">Start date marked with green dot • Last date has ring around it</p>
+        
       </div>
     </div>
   );

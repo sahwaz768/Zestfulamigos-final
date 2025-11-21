@@ -380,7 +380,7 @@ const Page = () => {
                 )}
               </div>
               <div
-                className=" flex  cntbtn justify-center mt-3"
+                className=" flex  cntbtn justify-center mt-3 cursor-pointer"
                 onClick={handleContinue}
               >
                 <h3 className="mt-1 mx-3"> Continue</h3>

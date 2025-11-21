@@ -15,6 +15,7 @@ const Page = () => {
   const [weeklySlot, setWeeklySlot] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [isOn, setIsOn] = useState(false);
 
   const handleCalendarSubmit = (data) => {
     setSelectedRange(data);
@@ -33,6 +34,7 @@ const Page = () => {
       try {
         const data = await getEnableSlotService();
         if (data) {
+          console.log('slot data fetched:', data);
           const weeklySchedule = ScheduleToSlots(
             data.data.CompanionAvailability.availabletimeslot
           );
@@ -101,11 +103,27 @@ const Page = () => {
       <Mastersidebar className="sbar-height-chat" isCompanion={true} />
 
       <div className="md:w-[75rem] w-[95%] mx-auto md:my-5 my-10 p-8 md:p-10">
+        <div className='flex justify-between'>
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-black">Set Availability</h1>
           <p className="text-gray-600 text-sm">
             Configure your schedule and weekly availability patterns
           </p>
+        </div>
+        <div>
+          <button
+            onClick={() => setIsOn(!isOn)}
+            className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
+              isOn ? 'bg-red-600' : 'bg-white border-2 border-red-600'
+            }`}
+          >
+            <span
+              className={`inline-block h-6 w-6 transform rounded-full transition-transform ${
+                isOn ? 'bg-white translate-x-7' : 'bg-red-600 translate-x-1'
+              }`}
+            />
+          </button>
+        </div>
         </div>
 
         <div className="bg-white overflow-hidden">
@@ -120,7 +138,7 @@ const Page = () => {
               <p className="text-gray-600 mb-6 text-sm">
                 Select the date range for your availability
               </p>
-              <div className="bg-gradient-to-br from-red-50 to-pink-50 p-0 md:p-6 rounded-2xl shadow-inner">
+              <div className="bg-gradient-to-br from-red-50 to-pink-50 p-0 md:p-6 rounded-2xl shadow-inner ">
                 {startDate ? (
                   <Calendar
                     CalendarData={handleCalendarSubmit}
