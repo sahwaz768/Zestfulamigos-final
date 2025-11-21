@@ -6,6 +6,7 @@ import { CiSettings } from 'react-icons/ci';
 import { useSelector } from 'react-redux';
 import { redirect } from 'next/navigation';
 import { MdOutlineSwipe } from "react-icons/md";
+import { FaCheckToSlot } from "react-icons/fa6";
 import Loadingbar from './Loadingbar';
 
 export const Mastersidebar = ({ isCompanion, className }) => {
@@ -44,6 +45,11 @@ export const Mastersidebar = ({ isCompanion, className }) => {
           label: 'Analysis',
           route: './Analysis',
           icon: MdOutlineReportProblem
+        }] : []),
+         ...(isCompanion ? [{
+          label: 'Availability',
+          route: './slot',
+          icon: FaCheckToSlot
         }] : []),
         { label: 'Logout', icon: MdLogout, handleclick: handleLogout }
       ]

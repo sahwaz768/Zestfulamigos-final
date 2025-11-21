@@ -44,6 +44,7 @@ const Footer = () => {
            <Link href={'/'}>  <p className="mt-1">Home</p> </Link> 
             <Link href={'/aboutus'}>  <p className="mt-1">AboutUs</p> </Link>
            <Link href={'/privacypolicy'}>   <p className="mt-1">Privacy Policy</p> </Link>
+            <Link href={'/refundpolicy'}>   <p className="mt-1">Refund Policy</p> </Link>
            <Link href={'/contactus'}>   <p className="mt-1">Contact Us</p> </Link>
             </div>
 

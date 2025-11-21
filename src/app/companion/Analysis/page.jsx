@@ -179,116 +179,125 @@ const page = () => {
               </div>
             </div>
 
-            <div className="space-y-4 h-4/5">
-              {recentEarnings.map((item, index) => (
-                <div
-                  className="group p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:bg-red-50 transition-all duration-200"
-                  key={index}
-                >
-                  <div className="flex justify-between items-start">
-                    <div className="">
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className="text-sm font-medium text-gray-500">
-                          Transaction ID
-                        </p>
-                        <span className="text-sm font-semibold text-gray-900">
-                          {item.txn_id}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <svg
-                            className="w-2 h-2 text-purple-600"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                          </svg>
+            <div className="space-y-4 h-4/5 ">
+              {recentEarnings.length === 0 ? (
+                <p className="text-gray-500 text-center mt-4">
+                  No recent earnings available.
+                </p>
+              ) : (
+                <div>
+                  {recentEarnings.map((item, index) => (
+                    <div
+                      className="group p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:bg-red-50 transition-all duration-200"
+                      key={index}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <p className="text-sm font-medium text-gray-500">
+                              Transaction ID
+                            </p>
+                            <span className="text-sm font-semibold text-gray-900">
+                              {item.txn_id}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <svg
+                                className="w-2 h-2 text-purple-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                />
+                              </svg>
+                            </div>
+                            <p className="text-sm text-gray-700">
+                              {formatBookingTimingsforUi(
+                                item.booking_start,
+                                item.booking_end
+                              )}
+                            </p>
+                          </div>
                         </div>
-                        <p className="text-sm text-gray-700">
-                          {formatBookingTimingsforUi(
-                            item.booking_start,
-                            item.booking_end
-                          )}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right ml-6 pl-2 border-l border-gray-200">
-                      <div className="bg-green-50 rounded-xl px-2 py-1 border border-green-200">
-                        <span className="text-lg font-bold text-green-600">
-                          + ₹{Math.floor(item.amount)}
-                        </span>
-                        <p className="text-xs text-gray-600 font-medium mt-1.5">
-                          Earned amount
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="space-y-2.5">
-                    <div className="flex gap-6">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <svg
-                            className="w-4 h-4 text-orange-600"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                            />
-                          </svg>
+                        <div className="text-right ml-6 pl-2 border-l border-gray-200">
+                          <div className="bg-green-50 rounded-xl px-2 py-1 border border-green-200">
+                            <span className="text-lg font-bold text-green-600">
+                              + ₹{Math.floor(item.amount)}
+                            </span>
+                            <p className="text-xs text-gray-600 font-medium mt-1.5">
+                              Earned amount
+                            </p>
+                          </div>
                         </div>
-                        <p className="text-sm text-gray-700">
-                          Platform fee:₹
-                          <span className="font-semibold text-gray-900">
-                          {Math.floor(item.platform_fee)}
-                          </span>
-                        </p>
                       </div>
+                      <div className="space-y-2.5">
+                        <div className="flex gap-6">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <svg
+                                className="w-4 h-4 text-orange-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                                />
+                              </svg>
+                            </div>
+                            <p className="text-sm text-gray-700">
+                              Platform fee: ₹
+                              <span className="font-semibold text-gray-900">
+                                {Math.floor(item.platform_fee)}
+                              </span>
+                            </p>
+                          </div>
 
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <svg
-                            className="w-4 h-4 text-blue-600"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                            />
-                          </svg>
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <svg
+                                className="w-4 h-4 text-blue-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                                />
+                              </svg>
+                            </div>
+                            <p className="text-sm text-gray-700">
+                              Tax Amount: ₹
+                              <span className="font-semibold text-gray-900">
+                                {Math.floor(item.tax_amount)}
+                              </span>
+                            </p>
+                          </div>
                         </div>
-                        <p className="text-sm text-gray-700">
-                          Tax Amount:₹
-                          <span className="font-semibold text-gray-900">
-                            {Math.floor(item.tax_amount)}
-                          </span>
-                        </p>
                       </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
+              )}
+              
 
               {/* View All Button */}
             </div>
             <Link href={'/companion/Earning'}>
               {' '}
-              <button className="w-full mt-10 py-3.5 px-6 bg-red-500 text-white font-semibold rounded-xl hover:bg-red-700 transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2 bottom-0">
+              <button className="w-full mt-7 py-3.5 px-6  bg-red-500 text-white font-semibold rounded-xl hover:bg-red-700 transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2 bottom-0 mb-2">
                 <span>View All Earnings</span>
                 <svg
                   className="w-4 h-4"

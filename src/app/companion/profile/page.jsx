@@ -10,7 +10,7 @@ export default function Page() {
   const [getData, setgetData] = useState({});
   const [id, setId] = useState(null);
   const signup = async (payload) => {
-    console.log( 'payload in profile',payload);
+   // console.log( 'payload in profile',payload);
     
     
     const companionDetails = new FormData();
@@ -40,7 +40,7 @@ export default function Page() {
     for (let [key, value] of companionDetails.entries()) {
       obj[key] = value;
     }
-    console.log('after stringification in profile:', obj);
+   // console.log('after stringification in profile:', obj);
     
     
 
@@ -56,7 +56,7 @@ export default function Page() {
     if (data) {
       toast.success('succesfully requested for profile update,please wait for admin approval');
     } else {
-      toast.error('sorry profile update failed');
+      toast.error('sorry profile update failed:', error);
     }
   };
 

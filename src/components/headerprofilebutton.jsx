@@ -13,6 +13,7 @@ import Loadingbar from './Loadingbar';
 import { BASEURL } from '@/Constants/services.constants';
 import { redirect } from 'next/navigation';
 import { MdOutlineAttachMoney } from "react-icons/md";
+import { FaCheckToSlot } from "react-icons/fa6";
 
 const HeaderProfileButton = ({ handleClose, dropdownRef }) => {
   const userDetails = useSelector(selectAuthData);
@@ -94,6 +95,19 @@ const HeaderProfileButton = ({ handleClose, dropdownRef }) => {
             <h1 className="text-sm">Analysis</h1>
           </div>
         </Link>
+        
+
+        )
+        }
+        {  userDetails.isCompanion === true && (
+         <Link href={'./slot'}>
+          <div className="flex gap-4 p-2 hover:bg-red-400 rounded-lg cursor-pointer">
+            <FaCheckToSlot color='black' size={25} />
+            <h1 className="text-sm">Availability</h1>
+          </div>
+        </Link>
+        
+
         )
         }
         <div
