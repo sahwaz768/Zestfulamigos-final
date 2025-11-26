@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { PiSquaresFourDuotone } from 'react-icons/pi';
-import Couple from '@/shared/Assets/dashcouple.png';
+import Couple from '@/shared/Assets/Femalegender.svg';
 import Image from 'next/image';
 import { IoIosStar } from 'react-icons/io';
 import { Mastersidebar } from '@/components/MasterSidebar';
@@ -9,14 +9,13 @@ import Notify from '@/components/Notify';
 import { useSelector } from 'react-redux';
 import Loadingbar from '@/components/Loadingbar';
 import { formatBookingTimingsforUi } from '@/utils/bookings.utils';
-
 import Link from 'next/link';
 
 const Page = () => {
   const userDetails = useSelector((state) => state.AuthReducer.data);
   const [bookingData, setBookingData] = useState(null);
   const [isLoading, setLoading] = useState(true);
-  const [lastrate,setlastrate] = useState()
+  const [lastrate, setlastrate] = useState();
 
   const fetchData = async () => {
     try {
@@ -50,7 +49,6 @@ const Page = () => {
       const result = await getRatingforUser();
 
       if (result.data) {
-        
         setlastrate(result.data[0]?.last_rating);
       }
     } catch (err) {
@@ -63,6 +61,7 @@ const Page = () => {
   useEffect(() => {
     fetchData();
     RatingData();
+    console.log('userDetail', userDetails);
   }, []);
 
   if (!userDetails || isLoading) {
@@ -75,252 +74,390 @@ const Page = () => {
 
   return (
     <>
-      <div className="dashboard-threeline">
+      <div className="min-h-screen  relative overflow-hidden">
+        {/* Animated Background Elements */}
         <div className="notifymbsecond">
           <Notify backgroundColor="transparent" color="black" />
         </div>
-      </div>
-      <div className="flex">
         <div>
           <Mastersidebar isCompanion={true} className="sbar-height" />
         </div>
-        <div className="dashboard">
-          <div className="dashboard-header ">
-            <div className="flex justify-center items-center ml-4 ">
-              <div className="dots4">
-                <PiSquaresFourDuotone color="gray" size={50} />
-              </div>
-              <div>
-                <h1 className="font-bold">Dashboard</h1>
-                <h1 className="text-sm text-pink-700">
-                  {new Date().toLocaleString('en-US', { weekday: 'long' })}{' '}
-                  <span className="text-black">
-                    {new Date().toLocaleString('en-US', {
-                      day: 'numeric',
-                      month: 'short'
-                    })}
-                  </span>
-                </h1>
-              </div>
-            </div>
-          </div>
 
-          <div className="dashboard-midsection flex">
-            <div className="mt-5">
-              <h1 className="md:text-3xl font-bold ml-5 ">
-                Hi, {userDetails?.name}
-              </h1>
-              <h1 className="md:mt-3 ml-5 md:text-base text-sm">
-                Ready to start your day with same pitch decks
-              </h1>
-            </div>
-            <div className="midsection-image">
-              <Image src={Couple} alt="Picture of the author" />
-            </div>
-          </div>
-
-          <div className="dashboard-overview">
-            <h1>Overview</h1>
-            <div className="flex gap-4">
-              <div className="overview-box">
-                <IoIosStar color="yellow" size={30} />
+        <div className="md:w-[75rem] w-[95%] mx-auto px-6 py-8 relative z-10">
+          {/* Header Profile Section */}
+          <div className=" rounded-3xl border border-red-200 p-8 mb-10 shadow-lg hover:shadow-xl transition-all  bg-opacity-95">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-5">
+                <div className="relative group">
+                  <div className="absolute inset-0  rounded-full blur-lg opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <Image
+                    src={Couple}
+                    width={15}
+                    height={15}
+                    className="w-28 h-24 rounded-full "
+                    alt="profile picture"
+                  />
+                  <div className="absolute bottom-0 right-0 w-6 h-6 bg-green-500 rounded-full border-3 border-white shadow-lg animate-pulse"></div>
+                </div>
                 <div>
-                  Last rating
-                  <div className="flex items-center">{lastrate}</div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h1 className="text-3xl font-black bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
+                      {userDetails.name}
+                    </h1>
+                    <span className="w-3 h-3 bg-green-500 rounded-full shadow-lg animate-pulse"></span>
+                  </div>
                 </div>
               </div>
-              
-            </div>
-          </div>
-
-          {/* ✅ FIXED: Proper null checking and pagination */}
-          {bookingData?.bookings?.length > 0 ? (
-            <div className=" p-3 md:p-5">
-              <div className="max-w-full ">
-                {/* Header */}
-                <div className="mb-5">
-                  <h2 className="text-lg md:text-xl font-bold text-red-600 mb-1">
-                    Your Bookings
-                  </h2>
-                  <p className="text-xs md:text-sm text-gray-500">
-                    View and manage your upcoming bookings
+              <div className="flex items-center gap-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-2xl px-6 py-4 border border-red-200 hover:border-red-300 transition-all duration-300 group">
+                <div className="flex items-center gap-4">
+                  <p className="text-xs text-black font-bold uppercase tracking-wider">
+                    Withdrawable Balance
+                  </p>
+                  <p className="text-xl font-black bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
+                    $5,430
                   </p>
                 </div>
-
-                {/* Bookings Grid */}
-                <div className="space-y-2 mb-5">
-                  {bookingData.bookings.map((listitem) => {
-                    const user = listitem.users.find((u) => !u.isCompanion);
-                    return (
-                      <div
-                        key={listitem.id}
-                        className="group  bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-red-100 hover:border-red-300"
-                      >
-                        <div className="flex justify-between sm:flex-row gap-3 p-3 md:p-4">
-                          {/* Profile Image */}
-                          <div className='flex gap-3'>
-                          <div className="flex-shrink-0">
-                            <div className="relative">
-                              <div className="absolute inset-0 bg-red-400 rounded-lg blur opacity-15 group-hover:opacity-25 transition-opacity"></div>
-                              <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden flex items-center justify-center shadow-md border border-red-100">
-                                <img
-                                  src={
-                                    user?.Images?.[0] ||
-                                    '/api/placeholder/96/96'
-                                  }
-                                  alt={user?.firstname || 'User'}
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* User Details */}
-                          <div className="flex-1 flex flex-col justify-center gap-1">
-                            <div>
-                              <span className="inline-block px-2 py-0.5 bg-red-100 text-red-600 text-xs font-semibold rounded">
-                                Username:
-                              </span>
-                              <p className="text-sm md:text-base font-semibold text-gray-900 mt-0.5">
-                                {user?.firstname || 'N/A'}
-                              </p>
-                            </div>
-
-                            <div>
-                              <span className="inline-block px-2 py-0.5 bg-red-100 text-red-600 text-xs font-semibold rounded">
-                                Booking Time:
-                              </span>
-                              <p className="text-xs md:text-sm font-medium text-gray-700 mt-2 flex items-center gap-1">
-                                <svg
-                                  className="w-4 h-4 text-purple-600"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                  />
-                                </svg>
-                                {formatBookingTimingsforUi(
-                                  listitem.bookingstart,
-                                  listitem.bookingend
-                                )}
-                              </p>
-                            </div>
-                          </div>
-                          </div>
-
-                          {/* Action Button */}
-                          <div className="flex items-center justify-end pt-2 sm:pt-0">
-                            <Link
-                              href={`/companion/BookingrequestDetail?bookingid=${listitem.id}`}
-                            >
-                              <button className="px-4 py-1.5 md:px-5 md:py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white text-xs md:text-sm font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center gap-1.5">
-                                <span>Details</span>
-                                <svg
-                                  className="w-3.5 h-3.5 md:w-4 md:h-4"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2.5}
-                                    d="M9 5l7 7-7 7"
-                                  />
-                                </svg>
-                              </button>
-                            </Link>
-                          </div>
-                        </div>
-
-                        {/* Gradient bottom border */}
-                        <div className="h-0.5 bg-gradient-to-r from-red-400 to-red-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* View All Button */}
-                <div className="flex justify-center pt-1">
-                  <Link href={'/companion/bookinghistory'}>
-                    <button className="px-6 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold text-sm rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 inline-flex items-center gap-2">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 10V3L4 14h7v7l9-11h-7z"
-                        />
-                      </svg>
-                      View all booking
-                    </button>
-                  </Link>
-                </div>
+                <span className="text-red-600 text-xl group-hover:translate-x-1 transition-transform duration-300">
+                  →
+                </span>
               </div>
             </div>
-          ) : (
-            <div className="bg-gradient-to-br from-white via-red-50 to-white flex items-center justify-center p-4 min-h-80">
-              <div className="text-center max-w-xs">
-                {/* Icon */}
-                <div className="mb-3 flex justify-center">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-red-400 rounded-full blur opacity-15"></div>
-                    <div className="relative w-16 h-16 rounded-full bg-red-50 flex items-center justify-center border border-red-100">
-                      <svg
-                        className="w-8 h-8 text-red-500"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+          </div>
+
+          {/* Stats Cards with Enhanced Design */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mb-10">
+            {/* This Month Earnings */}
+            <div className="group bg-gradient-to-br from-white to-red-50 rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+              <div className="flex items-center justify-between ">
+                <p className="text-xs uppercase tracking-widest font-bold text-red-600">
+                  This Month earning
+                </p>
+                <span className="text-2xl group-hover:rotate-12 transition-transform duration-300">
+                  💰
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <p className="text-4xl font-black text-gray-900 mb-2">
+                  $18,450
+                </p>
+                <span className="text-sm font-bold text-green-600 bg-green-100 px-3 py-1 rounded-full">
+                  ↑
+                </span>
+              </div>
+            </div>
+
+            {/* Average Rating */}
+            <div className="group bg-gradient-to-br from-white to-red-50 rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xs uppercase tracking-widest font-bold text-red-600">
+                  Rating
+                </p>
+                <span className="text-2xl group-hover:scale-125 transition-transform duration-300">
+                  ⭐
+                </span>
+              </div>
+              <p className="text-3xl font-black text-gray-900 mb-2">4.97</p>
+            </div>
+
+            {/* Completed Bookings */}
+            <div className="group bg-gradient-to-br from-white to-red-50 rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xs uppercase tracking-widest font-bold text-red-600">
+                  Completed bookings
+                </p>
+                <span className="text-2xl group-hover:rotate-12 transition-transform duration-300">
+                  ✓
+                </span>
+              </div>
+              <p className="text-3xl font-black text-gray-900 mb-3">24</p>
+            </div>
+
+            {/* Upcoming This Week */}
+            <div className="group bg-gradient-to-br from-white to-red-50 rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xs uppercase tracking-widest font-bold text-red-600">
+                  Upcoming bookings
+                </p>
+                <span className="text-2xl group-hover:bounce transition-transform duration-300">
+                  📅
+                </span>
+              </div>
+              <p className="text-4xl font-black text-gray-900 mb-2">5</p>
+            </div>
+          </div>
+
+          {/* Main Content Grid */}
+          <div className=" gap-8">
+            {/* Left Column - Bookings and Reviews */}
+            <div className="flex flex-wrap space-y-10">
+              {/* Upcoming Bookings */}
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-1.5 h-8 bg-gradient-to-b from-red-500 to-red-600 rounded-full"></div>
+                  <h2 className="text-2xl font-black text-gray-900">
+                    UPCOMING BOOKINGS
+                  </h2>
+                  <span className="text-xs bg-red-100 text-red-700 font-bold px-3 py-1 rounded-full">
+                    5 Bookings
+                  </span>
+                </div>
+                <div className='flex md:justify-between items-center gap-8'>
+                <div className="grid grid-cols-3 gap-10">
+                  {/* Booking 1 */}
+                  <div className="group bg-white rounded-2xl border border-red-200 overflow-hidden shadow-lg hover:shadow-2xl  transition-all duration-300 hover:-translate-y-2 cursor-pointer">
+                    <div className="h-40  flex items-center justify-center relative overflow-hidden">
+                      <div className="absolute inset-0   transition-opacity duration-300">
+                        {' '}
+                        <img
+                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvUhQvoTaGpcz0RVO8vXqlhFFE7GUQd5dwUw&s"
+                          alt="userimages"
+                          className="h-40 w-full object-cover"
                         />
-                      </svg>
+                      </div>
+                    </div>
+                    <div className="p-5">
+                      <div className="flex items-center gap-2 mb-3 text-xs text-gray-600 font-semibold">
+                        <span>📅</span>
+                        <span>Oct 26, 2025 • 7:00 PM-8.00 PM</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-2 mb-4">
+                        <p className="text-sm font-bold text-gray-900">
+                          Alex bannar
+                        </p>
+                        <p className="text-2xl font-black bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
+                          $1,200
+                        </p>
+                        <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all duration-300">
+                          →
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Booking 2 */}
+                  <div className="group bg-white rounded-2xl border border-red-200 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer">
+                    <div className="h-40  flex items-center justify-center relative overflow-hidden">
+                      <div className="absolute inset-0   transition-opacity duration-300">
+                        {' '}
+                        <img
+                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvUhQvoTaGpcz0RVO8vXqlhFFE7GUQd5dwUw&s"
+                          alt="userimages"
+                          className="h-40 w-full object-cover"
+                        />
+                      </div>
+                    </div>
+                    <div className="p-5">
+                      <div className="flex items-center gap-2 mb-3 text-xs text-gray-600 font-semibold">
+                        <span>📅</span>
+                        <span>Oct 26, 2025 • 7:00 PM-8.00 PM</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-2 mb-4">
+                        <p className="text-sm font-bold text-gray-900">
+                          Alex bannar
+                        </p>
+                        <p className="text-2xl font-black bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
+                          $1,200
+                        </p>
+                        <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all duration-300">
+                          →
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Booking 3 */}
+                  <div className="group bg-white rounded-2xl border border-red-200 overflow-hidden shadow-lg hover:shadow-2xl  transition-all duration-300 hover:-translate-y-2 cursor-pointer">
+                    <div className="h-40  flex items-center justify-center relative overflow-hidden">
+                      <div className="absolute inset-0   transition-opacity duration-300">
+                        {' '}
+                        <img
+                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvUhQvoTaGpcz0RVO8vXqlhFFE7GUQd5dwUw&s"
+                          alt="userimages"
+                          className="h-40 w-full object-cover"
+                        />
+                      </div>
+                    </div>
+                    <div className="p-5">
+                      <div className="flex items-center gap-2 mb-3 text-xs text-gray-600 font-semibold">
+                        <span>📅</span>
+                        <span>Oct 26, 2025 • 7:00 PM-8.00 PM</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-2 mb-4">
+                        <p className="text-sm font-bold text-gray-900">
+                          Alex bannar
+                        </p>
+                        <p className="text-2xl font-black bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
+                          $1,200
+                        </p>
+                        <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all duration-300">
+                          →
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-
-                <h3 className="text-lg font-bold text-red-600 mb-1">
-                  No Upcoming Bookings
-                </h3>
-                <p className="text-xs text-gray-600 mb-4">
-                  You don't have any upcoming bookings at the moment.
-                </p>
-
-                <Link href={'/companion/bookinghistory'}>
-                  <button className="px-5 py-1.5 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold text-xs rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 inline-flex items-center gap-1.5">
-                    <svg
-                      className="w-3.5 h-3.5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                    View History
-                  </button>
-                </Link>
+                 {/* Right Column - Actions and Chart */}
+              <div className="space-y-6">
+                {/* Action Buttons */}
+                <div>
+                  <div className="flex items-center gap-3 mb-7">
+                    <div className="w-1.5 h-6 bg-gradient-to-b from-red-500 to-red-600 rounded-full"></div>
+                    <h3 className="text-lg font-black text-gray-900">
+                      QUICK ACTIONS
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button className="group  text-black rounded-xl py-6 px-3 font-bold hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center justify-center gap-2 text-xs shadow-lg hover:from-red-600 hover:to-red-700">
+                      <span className="text-2xl group-hover:scale-125 transition-transform duration-300">
+                        📅
+                      </span>
+                      <span className="text-center leading-tight">
+                        VIEW
+                        <br />
+                        ALL BOOKINGS
+                      </span>
+                    </button>
+                    <button className="group bg-white  text-gray-900 rounded-xl py-6 px-3 font-bold  hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center justify-center gap-2 text-xs">
+                      <span className="text-2xl group-hover:scale-125 transition-transform duration-300">
+                        📊
+                      </span>
+                      <span className="text-center leading-tight">
+                        EARNINGS
+                        <br />
+                        ANALYTICS
+                      </span>
+                    </button>
+                    <button className="group bg-white  text-gray-900 rounded-xl py-6 px-3 font-bold  hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center justify-center gap-2 text-xs">
+                      <span className="text-2xl group-hover:scale-125 transition-transform duration-300">
+                        🛡️
+                      </span>
+                      <span className="text-center leading-tight">
+                        SAFETY
+                        <br />
+                        CENTER
+                      </span>
+                    </button>
+                    <button className="group bg-white  text-gray-900 rounded-xl py-6 px-3 font-bold  hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col items-center justify-center gap-2 text-xs">
+                      <span className="text-2xl group-hover:scale-125 transition-transform duration-300">
+                        ✏️
+                      </span>
+                      <span className="text-center leading-tight">
+                        EDIT
+                        <br />
+                        PROFILE
+                      </span>
+                    </button>
+                  </div>
+                </div>
               </div>
+              </div>
+
+             
+              </div>
+
+
+              {/* Recent Reviews */}
+              
             </div>
-          )}
+            <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-1.5 h-8 bg-gradient-to-b from-red-500 to-red-600 rounded-full"></div>
+                  <h2 className="text-2xl font-black text-gray-900">
+                    RECENT REVIEWS
+                  </h2>
+                </div>
+                <div className="grid grid-cols-4 gap-5">
+                  {/* Review 1 */}
+                  <div className="group bg-white rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <span
+                          key={i}
+                          className="text-yellow-400 text-lg group-hover:scale-110 transition-transform duration-300"
+                          style={{ transitionDelay: `${i * 50}ms` }}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-gray-800 font-semibold mb-4 leading-relaxed">
+                      "Absolutely incredible experience. Sophia is charming and
+                      professional."
+                    </p>
+                    <div className="flex items-center justify-between pt-4 border-t border-red-100">
+                      <p className="text-xs font-bold text-gray-900">- J.D.</p>
+                      <span className="text-xs text-gray-600">2 days ago</span>
+                    </div>
+                  </div>
+
+                  {/* Review 2 */}
+                  <div className="group bg-white rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <span
+                          key={i}
+                          className="text-yellow-400 text-lg group-hover:scale-110 transition-transform duration-300"
+                          style={{ transitionDelay: `${i * 50}ms` }}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-gray-800 font-semibold mb-4 leading-relaxed">
+                      "Best companion I've ever met. Highly recommended for
+                      anyone!"
+                    </p>
+                    <div className="flex items-center justify-between pt-4 border-t border-red-100">
+                      <p className="text-xs font-bold text-gray-900">- M.R.</p>
+                      <span className="text-xs text-gray-600">1 week ago</span>
+                    </div>
+                  </div>
+
+                  {/* Review 3 */}
+                  <div className="group bg-white rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <span
+                          key={i}
+                          className="text-yellow-400 text-lg group-hover:scale-110 transition-transform duration-300"
+                          style={{ transitionDelay: `${i * 50}ms` }}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-gray-800 font-semibold mb-4 leading-relaxed">
+                      "A perfect evening. Sophia exceeded all expectations!"
+                    </p>
+                    <div className="flex items-center justify-between pt-4 border-t border-red-100">
+                      <p className="text-xs font-bold text-gray-900">- A.K.</p>
+                      <span className="text-xs text-gray-600">3 days ago</span>
+                    </div>
+                  </div>
+
+                  <div className="group bg-white rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <span
+                          key={i}
+                          className="text-yellow-400 text-lg group-hover:scale-110 transition-transform duration-300"
+                          style={{ transitionDelay: `${i * 50}ms` }}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-gray-800 font-semibold mb-4 leading-relaxed">
+                      "A perfect evening. Sophia exceeded all expectations!"
+                    </p>
+                    <div className="flex items-center justify-between pt-4 border-t border-red-100">
+                      <p className="text-xs font-bold text-gray-900">- A.K.</p>
+                      <span className="text-xs text-gray-600">3 days ago</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
         </div>
       </div>
     </>

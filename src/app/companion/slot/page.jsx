@@ -8,6 +8,8 @@ import WeeklyScheduler from '@/components/Weeklyslote';
 import { convertSlotsToSchedule } from '@/utils/bookings.utils';
 import { ScheduleToSlots } from '@/utils/bookings.utils';
 import { formatUnixMillisToDate } from '@/utils/bookings.utils';
+import { formatUnixToDate } from '@/utils/bookings.utils';
+import { getUnixMsAfter3Days } from '@/utils/bookings.utils';
 
 const Page = () => {
   const [selectedRange, setSelectedRange] = useState(null);
@@ -33,8 +35,49 @@ const Page = () => {
 
       try {
         const data = await getEnableSlotService();
-        if (data) {
-          console.log('slot data fetched:', data);
+        const unixMs = Date.now();
+        const todayDate = formatUnixToDate(unixMs);
+        const slotEndDate = formatUnixToDate(
+          Number(data.data.CompanionAvailability?.endDate)
+        );
+
+        if (
+          data.data.CompanionAvailability?.isAvailable === false ||
+          slotEndDate < todayDate
+        ) {
+          setIsOn(false);
+        } else {
+          setIsOn(true);
+        }
+      } catch (error) {
+        console.log('error fetching slot data:', error);
+      }
+    };
+    init();
+  }, []);
+
+  useEffect(() => {
+    const init = async () => {
+      const { getEnableSlotService } = await import(
+        '@/services/user/slot.service'
+      );
+
+      try {
+        const data = await getEnableSlotService();
+        const unixMs = Date.now();
+        const todayDate = formatUnixToDate(unixMs);
+        const slotEndDate = formatUnixToDate(
+          Number(data.data.CompanionAvailability?.endDate)
+        );
+        if (isOn === true && slotEndDate < todayDate) {
+          const threeDaysAfterUnixMs = getUnixMsAfter3Days();
+
+          const formattedStartDate = formatUnixMillisToDate(unixMs);
+          const formattedEndDate = formatUnixMillisToDate(threeDaysAfterUnixMs);
+          setStartDate(formattedStartDate);
+          setEndDate(formattedEndDate);
+        } else if (isOn === true) {
+          console.log('second condition true');
           const weeklySchedule = ScheduleToSlots(
             data.data.CompanionAvailability.availabletimeslot
           );
@@ -48,13 +91,17 @@ const Page = () => {
 
           setStartDate(formattedStartDate);
           setEndDate(formattedEndDate);
+        } else {
+          setWeeklySlot([]);
+          setStartDate(null);
+          setEndDate(null);
         }
       } catch (error) {
         console.log('error fetching slot data:', error);
       }
     };
     init();
-  }, []);
+  }, [isOn]);
 
   const handleFinalSubmit = async () => {
     const { toast } = await import('@/utils/reduxtrigger.utils');
@@ -103,30 +150,37 @@ const Page = () => {
       <Mastersidebar className="sbar-height-chat" isCompanion={true} />
 
       <div className="md:w-[75rem] w-[95%] mx-auto md:my-5 my-10 p-8 md:p-10">
-        <div className='flex justify-between'>
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-black">Set Availability</h1>
-          <p className="text-gray-600 text-sm">
-            Configure your schedule and weekly availability patterns
-          </p>
-        </div>
-        <div>
-          <button
-            onClick={() => setIsOn(!isOn)}
-            className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
-              isOn ? 'bg-red-600' : 'bg-white border-2 border-red-600'
-            }`}
-          >
-            <span
-              className={`inline-block h-6 w-6 transform rounded-full transition-transform ${
-                isOn ? 'bg-white translate-x-7' : 'bg-red-600 translate-x-1'
+        <div className="flex justify-between">
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold text-black">Set Availability</h1>
+            <p className="text-gray-600 text-sm">
+              Configure your schedule and weekly availability patterns
+            </p>
+          </div>
+          <div className="flex items-center justify-center">
+            <button
+              onClick={() => setIsOn(!isOn)}
+              className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
+                isOn ? 'bg-red-600' : 'bg-white border-2 border-red-600'
               }`}
-            />
-          </button>
-        </div>
+            >
+              <span
+                className={`inline-block h-6 w-6 transform rounded-full transition-transform ${
+                  isOn ? 'bg-white translate-x-7' : 'bg-red-600 translate-x-1'
+                }`}
+              />
+            </button>
+            <p className="ml-3 text-lg font-bold">
+              <span className={isOn ? 'text-red-600' : 'text-black'}>
+                {isOn ? 'ON' : 'OFF'}
+              </span>
+            </p>
+          </div>
         </div>
 
-        <div className="bg-white overflow-hidden">
+        <div
+          className={`bg-white overflow-hidden `}
+        >
           <div className="flex flex-wrap">
             <div className="w-full lg:w-1/2 p-1 md:p-1 border-b lg:border-b-0 lg:border-r border-red-100">
               <div className="flex items-center gap-3 mb-6">
@@ -138,7 +192,7 @@ const Page = () => {
               <p className="text-gray-600 mb-6 text-sm">
                 Select the date range for your availability
               </p>
-              <div className="bg-gradient-to-br from-red-50 to-pink-50 p-0 md:p-6 rounded-2xl shadow-inner ">
+              <div className={`bg-gradient-to-br from-red-50 to-pink-50 p-0 md:p-6 rounded-2xl shadow-inner pointer-events-none cursor-not-allowed  ${isOn ? '' : 'opacity-60 '}`}>
                 {startDate ? (
                   <Calendar
                     CalendarData={handleCalendarSubmit}
@@ -158,6 +212,7 @@ const Page = () => {
                   Weekly Availability Pattern
                 </h2>
               </div>
+              <div className={` ${isOn ? '' : 'opacity-60 pointer-events-none cursor-not-allowed'}`}>
               <p className="text-gray-500 text-sm my-6">
                 Click on time slots to select consecutive hours
               </p>
@@ -171,6 +226,7 @@ const Page = () => {
                   <WeeklyScheduler selectedslotData={handleslotselected} />
                 </>
               )}
+              </div>
             </div>
           </div>
           {/* Info Banner */}
@@ -195,6 +251,7 @@ const Page = () => {
           </div>
 
           <div className="px-8 md:px-10 py-6 bg-gray-50 flex justify-end">
+            {isOn === true && (
             <button
               className="group relative px-10 py-4 bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold rounded-xl hover:from-red-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-red-300 hover:scale-105 active:scale-95 overflow-hidden"
               onClick={handleFinalSubmit}
@@ -217,6 +274,7 @@ const Page = () => {
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </button>
+            ) }
           </div>
         </div>
       </div>

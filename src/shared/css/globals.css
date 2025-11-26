@@ -2928,7 +2928,7 @@ th {
 
 .dashboard {
   margin-left: 85px;
-  background: var(--Foundation-Red-red-50, #ffecf1);
+  
   width: 93vw;
   min-height: 100vh;
 }
