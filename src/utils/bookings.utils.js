@@ -413,3 +413,23 @@ export const  mergeTimeSlots = (obj1, obj2) => {
     
     return result;
 }
+
+
+
+export const  formatUnixToDate = (unixMs) => {
+  const date = new Date(unixMs);
+
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+
+  return `${y}${m}${d}`;
+}
+
+export const getUnixMsAfter3Days = () => {
+  const today = new Date();
+  const after3Days = new Date(today);
+  after3Days.setDate(today.getDate() + 3);
+
+  return after3Days.getTime(); // returns unix milliseconds
+}
