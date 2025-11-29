@@ -155,6 +155,32 @@ export const getUpcomingBookingforCompanion = async (values) => {
   }
 };
 
+
+
+export const getDashboardetails = async (values) => {
+  const { BASEURL } = await import('../../Constants/services.constants');
+  const {
+    default: { get }
+  } = await import('../interface/interceptor');
+  try {
+    let params = {};
+    if (values) {
+      params = values;
+    }
+    const url = `${BASEURL}/companion/dashboard/companiondashboard?`;
+    const {
+      data: { data }
+    } = await get(url, { params });
+
+    return { data };
+  } catch (error) {
+    console.log(error?.response);
+    if (error.response?.status >= 400)
+      return { error: error.response.data.message };
+    return { error: 'Server Error' };
+  }
+};
+
 export const getUpcomingBookingforUser = async (values) => {
   const { BASEURL } = await import('../../Constants/services.constants');
   const {

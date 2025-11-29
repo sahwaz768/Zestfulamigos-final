@@ -2922,90 +2922,12 @@ th {
 }
 
 /* companion dashboard */
-.dashboard-threeline {
+.scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
-
-.dashboard {
-  margin-left: 85px;
-  
-  width: 93vw;
-  min-height: 100vh;
-}
-.dashboard-header {
-  display: flex;
-
-  margin-top: 10px;
-}
-.comp-admin {
-  gap: 10px;
-  margin-left: auto;
-  margin-right: 40px;
-}
-.comp-admin img {
-  width: 35px;
-  height: 35px;
-  border-radius: 8px;
-}
-.dashboard-midsection {
-  padding: 5px 0px 5px 25px;
-  border-radius: 28px;
-  background: rgba(254, 60, 113, 0.2);
-  margin: 20px 20px 0px 20px;
-}
-.midsection-image {
-  margin-left: auto;
-}
-.midsection-image img {
-  width: 189px;
-  height: 189px;
-  flex-shrink: 0;
-}
-.dashboard-overview {
-  padding: 25px;
-}
-.overview-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  background: #fc5799;
-  padding: 15px;
-  gap: 10px;
-  color: white;
-}
-.dashboard-userdetail {
-  background-color: white;
-  color: #000;
-  border-radius: 5px;
-  margin: 10px 20px 0px 20px;
-  padding: 5px;
-  display: flex;
-}
-
-.dashboard-userprofile {
-  display: flex;
-
-  gap: 10px;
-}
-.dashboard-userprofile img {
-  width: 60px;
-  height: 60px;
-  flex-shrink: 0;
-  border-radius: 10px;
-}
-.dashboard-purpose {
-  margin-left: 60px;
-}
-.dashboard-cancel {
-  margin-left: auto;
-}
-.dashboard-cancel button {
-  margin-top: 5px;
-  background-color: rgb(250, 48, 75);
-  padding: 10px;
-  border-radius: 10px;
-  color: white;
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .companion-modal-overlay {
@@ -3122,10 +3044,9 @@ th {
     margin-right: 10px;
   }
   .dashboard-userprofile img {
-  width: 45px;
-  height: 45px;
- 
-}
+    width: 45px;
+    height: 45px;
+  }
 }
 
 /* be a companion */
@@ -4015,24 +3936,23 @@ input[type='checkbox']:disabled + span {
 
 /* booking request details */
 
-.booking-details img{
+.booking-details img {
   width: 200px;
   height: 200px;
 }
 
 @media screen and (max-width: 810px) {
-  .booking-details img{
-  width: 150px;
-  height: 150px;
-}
+  .booking-details img {
+    width: 150px;
+    height: 150px;
+  }
 }
 
 /* earning analysis */
 
-.earning-box img{
+.earning-box img {
   width: 75px;
   height: 75px;
-   
 }
 
 /* all booking details */

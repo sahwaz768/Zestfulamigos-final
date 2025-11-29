@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ConcernComponent from '@/components/ConcernComponents';
 import Loadingbar from '@/components/Loadingbar';
+import Chatheader from '@/components/Masterheader';
+import Notify from '@/components/Notify';
+import { Mastersidebar } from '@/components/MasterSidebar';
 
 
 const page = () => {
@@ -29,7 +32,20 @@ const page = () => {
     { name: 'Privacy Policy', href: './privacypolicy' },
     { name: 'Contact', href: './contactus' }
   ];
-  return <ConcernComponent issuedata={issuedata} userDetails={userDetails} />
+  return <> 
+  <Chatheader backgroundColor="rgba(250, 236, 236, 0.8)" />
+  
+        <div className="notifymbsecond">
+          <Notify backgroundColor="transparent" color="black" />
+        </div>
+        <Mastersidebar className="sbar-height-chat"  />
+        <div className="min-h-screen  overflow-hidden">
+          <div className="md:w-[75rem] w-[100%] mx-auto md:px-0 px-2 py-2">
+  
+  <ConcernComponent issuedata={issuedata} userDetails={userDetails} />
+  </div>
+  </div>
+   </>
    
 };
 

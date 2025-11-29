@@ -17,8 +17,7 @@ const ConcernComponent = ({ issuedata, userDetails }) => {
 
   return (
     <div>
-      <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" />
-      <Threeline />
+    
       <div className="support-head mt-2">
         <div className="support-txt">
           <h1 className="md:text-xl ml-3 md:font-bold mt-2">

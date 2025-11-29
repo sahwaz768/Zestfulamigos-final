@@ -167,6 +167,7 @@ const Page = () => {
                             bookingdata={historydata.upcoming}
                             getUpcomingBooking={getUpcomingBooking}
                           />
+                          <br />
                           {historydata.upcomingBookingDetails && (
                             <Pagination
                               currentPage={
