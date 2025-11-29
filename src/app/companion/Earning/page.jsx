@@ -94,23 +94,23 @@ const Page = () => {
       </div>
       <Mastersidebar className="sbar-height-chat" isCompanion={true} />
 
-      <div className="min-h-screen  py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen  py-8 ">
+        <div className="max-w-7xl mx-auto px-4">
           {/* Header Section */}
-          <div className="bg-white  px-8 mb-2 ">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+          <div className="bg-white  px-8 mb-2 mt-4 ">
+            <div className="flex  justify-between  gap-6">
               <div>
-                <h1 className="font-black text-2xl text-black bg-clip-text">
+                <h1 className="font-black md:text-2xl text-lg text-black bg-clip-text">
                   All Earnings
                 </h1>
-                <p className="text-sm mt-2 text-gray-600 max-w-2xl leading-relaxed">
+                <p className="md:text-sm text-xs  mt-2 text-gray-600 max-w-2xl leading-relaxed">
                   Track your earnings and payment history
                 </p>
               </div>
 
               <div className="relative">
                 <select
-                  className="appearance-none bg-gradient-to-r from-rose-500 to-pink-500 text-white px-6 py-3 pr-10 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-rose-200 cursor-pointer"
+                  className="appearance-none bg-gradient-to-r from-rose-500 to-pink-500 text-white md:px-6 px-2 py-3  rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-rose-200 cursor-pointer"
                   onChange={(e) => SetActiveTab(e.target.value)}
                 >
                   <option value="pending" className="bg-white text-gray-800">

@@ -69,7 +69,7 @@ const page = () => {
       </div>
       <Mastersidebar className="sbar-height-chat" isCompanion={true} />
 
-      <div className="md:w-[75rem] w-[100%] mx-auto md:my-5 my-10 p-8  rounded-2xl shadow-sm">
+      <div className="md:w-[75rem] w-[100%] mx-auto md:my-5 my-10 md:p-8  p-2 rounded-2xl shadow-sm">
         {/* Header Section */}
         <div className="mb-8">
           <h1 className="font-black text-4xl text-black bg-clip-text ">
@@ -168,12 +168,12 @@ const page = () => {
           {/* Recent Earnings Card */}
           <div className="bg-white p-8 border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 h-auto">
             <div className="flex items-center justify-between mb-3 pb-4 border-b border-gray-100">
-              <h3 className="text-2xl font-semibold text-gray-900">
+              <h3 className="md:text-2xl text-xs font-semibold text-gray-900">
                 Recent Earnings
               </h3>
               <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 rounded-full">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm font-medium text-green-700">
+                <span className="md:text-sm text-xs font-medium text-green-700">
                   TRANSACTION: COMPLETED
                 </span>
               </div>
@@ -193,11 +193,11 @@ const page = () => {
                     >
                       <div className="flex justify-between items-start">
                         <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <p className="text-sm font-medium text-gray-500">
+                          <div className="md:flex flex-row items-center gap-2 mb-1">
+                            <p className="md:text-sm text-xs font-medium text-gray-500">
                               Transaction ID
                             </p>
-                            <span className="text-sm font-semibold text-gray-900">
+                            <span className="md:text-sm text-xs font-semibold text-gray-900">
                               {item.txn_id}
                             </span>
                           </div>
@@ -227,7 +227,7 @@ const page = () => {
                         </div>
                         <div className="text-right ml-6 pl-2 border-l border-gray-200">
                           <div className="bg-green-50 rounded-xl px-2 py-1 border border-green-200">
-                            <span className="text-lg font-bold text-green-600">
+                            <span className="md:text-lg text-sm font-bold text-green-600">
                               + ₹{Math.floor(item.amount)}
                             </span>
                             <p className="text-xs text-gray-600 font-medium mt-1.5">
@@ -297,7 +297,7 @@ const page = () => {
             </div>
             <Link href={'/companion/Earning'}>
               {' '}
-              <button className="w-full mt-7 py-3.5 px-6  bg-red-500 text-white font-semibold rounded-xl hover:bg-red-700 transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2 bottom-0 mb-2">
+              <button className="w-full md:mt-7 mt-1 py-3.5 px-6  bg-red-500 text-white font-semibold rounded-xl hover:bg-red-700 transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2 bottom-0 mb-2">
                 <span>View All Earnings</span>
                 <svg
                   className="w-4 h-4"
