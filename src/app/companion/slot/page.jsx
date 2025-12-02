@@ -10,6 +10,7 @@ import { ScheduleToSlots } from '@/utils/bookings.utils';
 import { formatUnixMillisToDate } from '@/utils/bookings.utils';
 import { formatUnixToDate } from '@/utils/bookings.utils';
 import { getUnixMsAfter3Days } from '@/utils/bookings.utils';
+import Loadingbar from '@/components/Loadingbar';
 
 const Page = () => {
   const [selectedRange, setSelectedRange] = useState(null);
@@ -18,6 +19,7 @@ const Page = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [isOn, setIsOn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleCalendarSubmit = (data) => {
     setSelectedRange(data);
@@ -64,6 +66,7 @@ const Page = () => {
 
       try {
         const data = await getEnableSlotService();
+        setIsLoading(true);
         const unixMs = Date.now();
         const todayDate = formatUnixToDate(unixMs);
         const slotEndDate = formatUnixToDate(
@@ -96,6 +99,7 @@ const Page = () => {
           setStartDate(null);
           setEndDate(null);
         }
+        setIsLoading(false);
       } catch (error) {
         console.log('error fetching slot data:', error);
       }
@@ -141,6 +145,12 @@ const Page = () => {
     availableSlots: weeklySlot
   };
 
+  if (isLoading) {
+    return (
+      <div><Loadingbar /></div>
+    );
+  }
+
   return (
     <div>
       <Chatheader backgroundColor="rgba(250, 236, 236, 0.8)" />
@@ -149,7 +159,7 @@ const Page = () => {
       </div>
       <Mastersidebar className="sbar-height-chat" isCompanion={true} />
 
-      <div className="md:w-[75rem] w-[95%] mx-auto md:my-5 my-10 p-8 md:p-10">
+      <div className="md:w-[75rem] w-[95%] mx-auto md:my-5 my-10 p-2 md:p-10">
         <div className="flex justify-between">
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-black">Set Availability</h1>
@@ -208,7 +218,7 @@ const Page = () => {
             <div className="w-full lg:w-1/2 px-2 py-1">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-1 h-8 bg-gradient-to-b from-red-500 to-pink-500 rounded-full"></div>
-                <h2 className="text-2xl font-bold text-gray-800">
+                <h2 className="text-2xl font-bold text-gray-800 md:mt-0  mt-10 ">
                   Weekly Availability Pattern
                 </h2>
               </div>

@@ -89,7 +89,7 @@ export default function Page() {
       </div>
       <Mastersidebar className="sbar-height-chat" isCompanion={true} />
 
-      <div className="md:w-[75rem] w-[100%]  mx-auto my-10 p-5 bg-white rounded-lg shadow-md">
+      <div className="md:w-[75rem] w-[100%]  mx-auto mt-6 mb-4  p-5 bg-white ">
         {getData && Object.keys(getData).length > 0 ? 
           <>
             <h1 className="font-bold text-center">Update Your Profile</h1>

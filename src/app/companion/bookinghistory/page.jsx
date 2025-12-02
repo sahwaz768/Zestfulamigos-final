@@ -147,6 +147,8 @@ const Page = () => {
                             isCompanion={true}
                             bookingdata={historydata.pastBooking}
                           />
+                           <div className='flex justify-center w-full'>
+                          <div className=' bottom-0 w-fit mt-4'>
                           <Pagination
                             currentPage={
                               historydata.pastBookingDetails.currentPage
@@ -156,6 +158,8 @@ const Page = () => {
                             }
                             onPageChange={onPageChange}
                           />
+                          </div>
+                          </div>
                         </>
                       );
 
@@ -169,6 +173,8 @@ const Page = () => {
                           />
                           <br />
                           {historydata.upcomingBookingDetails && (
+                             <div className='flex justify-center w-full'>
+                          <div className=' bottom-0 w-fit mt-4'>
                             <Pagination
                               currentPage={
                                 historydata.upcomingBookingDetails.currentPage
@@ -178,6 +184,8 @@ const Page = () => {
                               }
                               onPageChange={onUpcomingPageChange}
                             />
+                            </div>
+                            </div>
                           )}
                         </>
                       );
