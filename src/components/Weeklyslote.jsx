@@ -73,18 +73,18 @@ const WeeklyScheduler = ({ selectedslotData, initialSlots = [] }) => {
   }, [selectedSlots]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-0 md:p-4">
       <div className="max-w-8xl mx-auto">
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
           {/* Day selector */}
           <div className="flex border-b border-gray-200 bg-gray-50">
-            <div className="flex-shrink-0 w-24"></div>
+            <div className="flex-shrink-0 w-16 md:w-24"></div>
             <div className="flex flex-1">
               {days.map((day) => (
                 <button
                   key={day}
                   onClick={() => setSelectedDay(day)}
-                  className={`flex-1 h-20 text-base font-bold transition-all duration-300 border-l border-gray-200 relative ${
+                  className={`flex-1 h-20 text-base p-0.5 font-bold transition-all duration-300 border-l border-gray-200 relative ${
                     selectedDay === day
                       ? 'bg-white text-red-500 shadow-lg'
                       : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
@@ -101,7 +101,7 @@ const WeeklyScheduler = ({ selectedslotData, initialSlots = [] }) => {
 
           <div className="flex">
             {/* Time column */}
-            <div className="flex-shrink-0 w-24 bg-gray-50">
+            <div className="flex-shrink-0 w-16 md:w-24 bg-gray-50">
               {hours.map((hour) => (
                 <div
                   key={hour}

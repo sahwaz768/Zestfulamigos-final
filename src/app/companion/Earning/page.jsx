@@ -95,7 +95,7 @@ const Page = () => {
       <Mastersidebar className="sbar-height-chat" isCompanion={true} />
 
       <div className="min-h-screen  py-8 ">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto p-1 md:px-4">
           {/* Header Section */}
           <div className="bg-white  px-8 mb-2 mt-4 ">
             <div className="flex  justify-between  gap-6">
@@ -110,13 +110,13 @@ const Page = () => {
 
               <div className="relative">
                 <select
-                  className="appearance-none bg-gradient-to-r from-rose-500 to-pink-500 text-white md:px-6 px-2 py-3  rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-rose-200 cursor-pointer"
+                  className="appearance-none bg-gradient-to-r from-rose-500 to-pink-500 text-white md:px-8 gap-3 px-5 py-4 md:py-3 text-xs md:text-base rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-rose-200 cursor-pointer"
                   onChange={(e) => SetActiveTab(e.target.value)}
                 >
-                  <option value="pending" className="bg-white text-gray-800">
+                  <option value="pending" className=" bg-gradient-to-r from-rose-50 to-pink-50 text-gray-900 font-semibold">
                     transactions pending
                   </option>
-                  <option value="completed" className="bg-white text-gray-800">
+                  <option value="completed" className=" bg-gradient-to-r from-rose-50 to-pink-50 text-gray-900 font-semibold">
                     transactions completed
                   </option>
                 </select>
@@ -145,11 +145,13 @@ const Page = () => {
           )}
 
           {PendingData && activeTab === 'pending' && (
+            
             <Pagination
               currentPage={PendingData.currentPage}
               totalPage={PendingData.totalPages}
               onPageChange={onPageChange}
             />
+            
           )}
           {Object.keys(CompletedData).length > 0 &&
             activeTab === 'completed' && (

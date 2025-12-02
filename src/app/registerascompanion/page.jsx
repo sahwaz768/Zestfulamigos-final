@@ -1,11 +1,13 @@
 'use client';
 import Masterheader from '@/components/Masterheader';
 import Form from '@/components/Profileform';
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const signup = async (payload) => {
     const companionDetails = new FormData();
     const previousImages = [];
+    //  const router = useRouter();
 
     for (let key in payload) {
       if (key === 'images') {
@@ -47,6 +49,7 @@ try {
     toast.success(
       "Successfully registered as companion, wait for admin's approval"
     );
+  //  router.back();
   } else {
     toast.error(`Sorry, registration failed: ${error || 'Unknown error'}`);
   }
@@ -62,7 +65,7 @@ try {
   return (
     <>
       <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" fillBlank />
-      <div className="md:w-[80rem] w-[100%]  mx-auto my-10 p-5 bg-white rounded-lg shadow-md">
+      <div className="md:w-[80rem] w-[100%]  mx-auto my-10 p-5 bg-white ">
         <h1 className="text-center font-extrabold text-lg">Companion Registration</h1>
         <Form initialValues={{}} onSubmit={signup} mode="signup" />
       </div>

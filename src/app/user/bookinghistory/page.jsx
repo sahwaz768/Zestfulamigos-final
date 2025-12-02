@@ -107,7 +107,8 @@ const page = () => {
                           <BookingHistory
                             bookingdata={historydata.pastBooking}
                           />
-                          <div className='absolute bottom-0 mx-0'>
+                          <div className='flex justify-center w-full'>
+                          <div className=' bottom-0 w-fit mt-4'>
                           <Pagination
                             currentPage={
                               historydata.pastBookingDetails.currentPage
@@ -117,6 +118,7 @@ const page = () => {
                             }
                             onPageChange={onPageChange}
                           />
+                          </div>
                           </div>
                         </>
                       );

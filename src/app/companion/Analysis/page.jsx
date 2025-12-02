@@ -35,7 +35,7 @@ const page = () => {
 
         if (result.data) {
           setrecentEarning(result.data.data.recent_earnings);
-          console.log('recent earning', result.data.data.recent_earnings);
+         // console.log('recent earning', result.data.data.recent_earnings);
 
           setAnalysisData(result.data.data);
           const formatted = result.data.data.earnings_last_week_by_days.map(
@@ -69,7 +69,7 @@ const page = () => {
       </div>
       <Mastersidebar className="sbar-height-chat" isCompanion={true} />
 
-      <div className="md:w-[75rem] w-[100%] mx-auto md:my-5 my-10 md:p-8  p-2 rounded-2xl shadow-sm">
+      <div className=" md:w-[75rem] w-[100%] mx-auto md:my-5 my-10 md:p-8  p-2 rounded-2xl shadow-sm">
         {/* Header Section */}
         <div className="mb-8">
           <h1 className="font-black text-4xl text-black bg-clip-text ">
@@ -166,8 +166,8 @@ const page = () => {
           </div>
 
           {/* Recent Earnings Card */}
-          <div className="bg-white p-8 border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 h-auto">
-            <div className="flex items-center justify-between mb-3 pb-4 border-b border-gray-100">
+          <div className="bg-white md:p-8 p-2 border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 h-auto">
+            <div className="flex items-center justify-between md:mb-3 mb-0 md:pb-4 pb-0 border-b border-gray-100">
               <h3 className="md:text-2xl text-xs font-semibold text-gray-900">
                 Recent Earnings
               </h3>
@@ -181,14 +181,14 @@ const page = () => {
 
             <div className="space-y-4 h-4/5 ">
               {recentEarnings.length === 0 ? (
-                <p className="text-gray-500 text-center mt-4">
+                <p className="text-gray-500 text-center md:mt-4">
                   No recent earnings available.
                 </p>
               ) : (
                 <div>
                   {recentEarnings.map((item, index) => (
                     <div
-                      className="group p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:bg-red-50 transition-all duration-200"
+                      className="group p-4  bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:bg-red-50 transition-all duration-200 mb-1"
                       key={index}
                     >
                       <div className="flex justify-between items-start">
@@ -225,8 +225,8 @@ const page = () => {
                             </p>
                           </div>
                         </div>
-                        <div className="text-right ml-6 pl-2 border-l border-gray-200">
-                          <div className="bg-green-50 rounded-xl px-2 py-1 border border-green-200">
+                        <div className="text-right md:ml-6 ml-3 pl-2  border-l border-gray-200">
+                          <div className="bg-green-50 rounded-xl px-0 py-1 border border-green-200">
                             <span className="md:text-lg text-sm font-bold text-green-600">
                               + ₹{Math.floor(item.amount)}
                             </span>
@@ -297,7 +297,7 @@ const page = () => {
             </div>
             <Link href={'/companion/Earning'}>
               {' '}
-              <button className="w-full md:mt-7 mt-1 py-3.5 px-6  bg-red-500 text-white font-semibold rounded-xl hover:bg-red-700 transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2 bottom-0 mb-2">
+              <button className="w-full md:mt-7 mt-1 md:py-3.5 py-1 px-6  bg-red-500 text-white font-semibold rounded-xl hover:bg-red-700 transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2 bottom-0 mb-2">
                 <span>View All Earnings</span>
                 <svg
                   className="w-4 h-4"
@@ -318,7 +318,7 @@ const page = () => {
         </div>
 
         {/* Analytics Chart Section */}
-        <div className="bg-white p-6 border border-pink-100 rounded-2xl shadow-sm">
+        <div className="bg-white md:p-6 p-2 border border-pink-100 rounded-2xl shadow-sm">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-2xl font-semibold text-gray-800">
               Performance Analytics

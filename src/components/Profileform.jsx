@@ -222,7 +222,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
 
   return (
     <>
-      <div className="profilebox">
+      <div className="">
         <div className="margin-box-">
           {/* Image Uploader */}
           <div className="form-group mt-2 mb-3">
@@ -251,7 +251,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                     placeholder="Enter first name"
                     value={formData.firstname}
                     onChange={handleInputChange}
-                    className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                    className="inputfield-glg-be mt-1 block w-full mb-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   />
                   {errors.firstname && (
                     <span className="text-xs text-red-700">
@@ -269,7 +269,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                     placeholder="Enter last name"
                     value={formData.lastname}
                     onChange={handleInputChange}
-                    className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                    className="inputfield-glg-be mt-1 block w-full mb-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   />
                   {errors.lastname && (
                     <span className="text-xs text-red-700">
@@ -288,7 +288,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                       placeholder="Enter your email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                      className="inputfield-glg-be mt-1 block w-full mb-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                     />
 
                     {errors.email && (
@@ -312,7 +312,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                     placeholder="Enter new password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                    className="inputfield-glg-be mt-1 block w-full mb-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   />
 
                   {errors.password && (
@@ -329,10 +329,10 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                 <input
                   type="number"
                   name="age"
-                  placeholder="Enter new password"
+                  placeholder="Enter your age"
                   value={formData.age}
                   onChange={handleInputChange}
-                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                  className="inputfield-glg-be mt-1 block w-full mb-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 />
 
                 {errors.age && (
@@ -349,7 +349,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   placeholder="Enter your phone no"
                   value={formData.phoneno}
                   onChange={handleInputChange}
-                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                  className="inputfield-glg-be mt-1 block w-full mb-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 />
 
                 {errors.phoneno && (
@@ -368,7 +368,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   name="gender"
                   value={formData.gender}
                   onChange={handleInputChange}
-                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                  className="inputfield-glg-be mt-1 block w-full mb-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 >
                   <option value="">Select Your Gender</option>
                   {GenderData.map((l, i) => (
@@ -390,7 +390,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   name="skintone"
                   value={formData.skintone}
                   onChange={handleInputChange}
-                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                  className="inputfield-glg-be mt-1 block w-full mb-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 >
                   <option value="">Select Skin Tone</option>
                   {skinToneData.map((l, i) => (
@@ -413,7 +413,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   name="bodytype"
                   value={formData.bodytype}
                   onChange={handleInputChange}
-                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                  className="inputfield-glg-be mt-1 block w-full mb-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 >
                   <option value="">Select Body Type</option>
                   {getBodyTypes(formData.gender).map((type) => (
@@ -439,7 +439,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                 placeholder='Enter your height in cm (e.g., "170 cm")'
                 value={formData.height}
                 onChange={handleInputChange}
-                className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                className="inputfield-glg-be mt-1 block w-full mb-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               />
               {errors.height && (
                 <span className="text-xs text-red-700">{errors.height}</span>
@@ -455,7 +455,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   name="eatinghabits"
                   value={formData.eatinghabits}
                   onChange={handleInputChange}
-                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                  className="inputfield-glg-be mt-1 block w-full mb-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 >
                   <option value="">Select Eating Habit</option>
                   {eatingHabitsData.map((l, i) => (
@@ -480,7 +480,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   name="smokinghabits"
                   value={formData.smokinghabits}
                   onChange={handleInputChange}
-                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                  className="inputfield-glg-be mt-1 block w-full mb-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 >
                   <option value="">Select Smoking Habit</option>
                   {smokingHabitsData.map((l, i) => (
@@ -504,7 +504,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   name="drinkinghabits"
                   value={formData.drinkinghabits}
                   onChange={handleInputChange}
-                  className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                  className="inputfield-glg-be mt-1 block w-full mb-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 >
                   <option value="">Select Drinking Habit</option>
                   {drinkingHabitsData.map((l, i) => (
@@ -531,7 +531,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                 placeholder="Enter your booking rate"
                 value={formData.bookingrate}
                 onChange={handleInputChange}
-                className="inputfield-glg-be mt-1 block w-full mb-3 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                className="inputfield-glg-be mt-1 block w-full mb-1 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               />
 
               {errors.bookingrate && (
@@ -625,7 +625,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
               {paymentForms.map((form, index) => (
                 <div
                   key={index}
-                  className="border p-4 my-4 rounded-lg shadow-sm bg-gray-50"
+                  className="border md:p-4 p-0  my-4 rounded-lg shadow-sm bg-gray-50"
                 >
                   <div className="flex justify-between items-center">
                     <h3 className="font-semibold text-lg mb-2">
@@ -700,11 +700,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                       />
                     </div>
                   </div>
-                  {paymentErrors[index] && (
-                    <span className="text-xs text-red-500">
-                      {paymentErrors[index]}
-                    </span>
-                  )}
+                  
 
                   {/* Bank Method Fields */}
                   {form.type === 'BANK_ACCOUNT' && (
@@ -814,6 +810,12 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                         className="inputfield-glg-be mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                       />
                     </div>
+                  )}
+
+                  {paymentErrors[index] && (
+                    <span className="text-xs text-red-500">
+                      {paymentErrors[index]}
+                    </span>
                   )}
                 </div>
               ))}

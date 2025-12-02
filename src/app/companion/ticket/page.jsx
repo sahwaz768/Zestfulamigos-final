@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import TicketDetail from '@/components/TicketDetail';
 import Loadingbar from '@/components/Loadingbar';
+import Chatheader from '@/components/Masterheader';
+import Notify from '@/components/Notify';
+import { Mastersidebar } from '@/components/MasterSidebar';
 
 const Page = () => {
   const [userIssue, setUserIssue] = useState(null);
@@ -38,7 +41,21 @@ const Page = () => {
     );
 
   return (
-    <TicketDetail userIssue={userIssue} getLatestDetails={getTicketDetails} />
+   <>
+   <Chatheader backgroundColor="rgba(250, 236, 236, 0.8)" />
+
+      <div className="notifymbsecond">
+        <Notify backgroundColor="transparent" color="black" />
+      </div>
+      <Mastersidebar className="sbar-height-chat" isCompanion={true} />
+      <div className="min-h-screen  overflow-hidden">
+        <div className="md:w-[75rem] w-[100%] mx-auto md:px-0 px-2 py-2">
+   
+   <TicketDetail userIssue={userIssue} getLatestDetails={getTicketDetails} />
+   </div>
+   </div>
+   
+   </> 
   );
 };
 

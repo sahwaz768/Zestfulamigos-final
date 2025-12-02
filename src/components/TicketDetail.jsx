@@ -52,14 +52,14 @@ const TicketDetail = ({ userIssue, getLatestDetails }) => {
 
   return (
     <>
-      <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" />
-      <Threeline />
+      
+     
       <div className="">
         <div className="ticket-head">
           <hr />
           <div className="flex justify-between p-3">
             <div>
-              <h1 className="font-bold text-2xl">Ticket#{userIssue.issueId}</h1>
+              <h1 className="font-bold text-sm md:text-2xl">Ticket#{userIssue.issueId}</h1>
               <h1>{userIssue.subject}</h1>
             </div>
             <div className="pending">{userIssue.status}</div>
