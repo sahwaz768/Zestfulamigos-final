@@ -155,8 +155,6 @@ export const getUpcomingBookingforCompanion = async (values) => {
   }
 };
 
-
-
 export const getDashboardetails = async (values) => {
   const { BASEURL } = await import('../../Constants/services.constants');
   const {
@@ -294,7 +292,8 @@ export const getCompanionCompletedEarnings = async (values) => {
     const {
       default: { get }
     } = await import('../interface/interceptor');
-    const url = BASEURL + '/companion/analysis/getallcompanioncompletedearnings';
+    const url =
+      BASEURL + '/companion/analysis/getallcompanioncompletedearnings';
     let params = {};
     if (values) {
       params = values;
@@ -373,17 +372,18 @@ export const getAcceptBooking = async (bookingid) => {
   }
 };
 
-export const getRejectBooking = async (bookingid) => {
+export const getRejectBooking = async (values) => {
   try {
     const { BASEURL } = await import('../../Constants/services.constants');
     const {
-      default: { get }
+      default: { post }
     } = await import('../interface/interceptor');
 
     // Correct URL
-    const url = `${BASEURL}/companion/booking/companionrejectbooking?bookingid=${bookingid}`;
+    const url = `${BASEURL}/companion/booking/companionrejectbooking`;
+  
 
-    const response = await get(url);
+    const response = await post(url, values);
     return response;
   } catch (error) {
     console.error('API Error:', error);
