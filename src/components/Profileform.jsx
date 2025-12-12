@@ -238,6 +238,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
 
           {/* First Name */}
           <div className="">
+            <div className='px-3 md:px-0'>
             <div className=" mt-3">
               <h1 className="font-bold">Personal Detail:</h1>
               <div className="flex gap-5 flex-wrap">
@@ -615,16 +616,17 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                 </span>
               )}
             </div>
+            </div>
 
-            <div>
-              <label className="font-bold ">Payment (Atleast 1 required)</label>
-              <div></div>
+            <div className='mt-3 md:mt-0'>
+              <label className="font-bold  ">Payment (Atleast 1 required)</label>
+            
             </div>
 
             {paymentForms.map((form, index) => (
               <div
                 key={index}
-                className={`border md:p-4 p-0 my-4 rounded-lg shadow-sm bg-gray-50 ${
+                className={`border md:p-4 px-2 my-4 rounded-lg shadow-sm bg-gray-50 ${
                   errors.paymentMethods?.[index]
                     ? 'border-2 border-red-500'
                     : ''
@@ -969,6 +971,12 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
               </div>
             ))}
 
+            {typeof errors.paymentMethods === 'string' && (
+              <span className="text-xs text-red-700 block mt-2">
+                {errors.paymentMethods}
+              </span>
+            )}
+
             {/* Add More Button */}
             <button
               onClick={addPaymentMethod}
@@ -982,17 +990,15 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
               + Add More Payment Method {paymentForms.length >= 4 && '(Max 4)'}
             </button>
 
-            {typeof errors.paymentMethods === 'string' && (
-              <span className="text-xs text-red-700 block mt-2">
-                {errors.paymentMethods}
-              </span>
-            )}
+            
 
             {/* Description Checkboxes */}
-            <div className="form-group mt-2">
-              <label className="font-bold mb-2">
+            <div className="form-group my-3 ">
+              <div className='mb-2'>
+              <label className="font-bold ">
                 Description (Select at least 2)
               </label>
+              </div>
               <div className="grid md:grid-cols-4 md:gap-3  gap-2  grid-cols-2">
                 {descriptionData.map((desc) => (
                   <div key={desc} className="flex items-center">

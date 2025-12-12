@@ -73,7 +73,7 @@ const HeaderProfileButton = ({ handleClose, dropdownRef }) => {
         <Link href={'./bookinghistory'}>
           <div className="flex gap-4 p-2 hover:bg-red-400 rounded-lg cursor-pointer">
             <MdHistory color="black" size={25} />
-            <h1 className="text-sm">Booking history</h1>
+            <h1 className="text-sm">Booking History</h1>
           </div>
         </Link>
         <Link href={'./profile'}>
@@ -85,7 +85,7 @@ const HeaderProfileButton = ({ handleClose, dropdownRef }) => {
         <Link href={'./concern'}>
           <div className="flex gap-4 p-2 hover:bg-red-400 rounded-lg cursor-pointer">
             <IoTicketOutline color="black" size={25} />
-            <h1 className="text-sm">Raise a concern</h1>
+            <h1 className="text-sm">Raise a Concern</h1>
           </div>
         </Link>
         {  userDetails.isCompanion === true && (

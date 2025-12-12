@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { redirect } from 'next/navigation';
 import { MdOutlineSwipe } from "react-icons/md";
 import { FaCheckToSlot } from "react-icons/fa6";
+import { RiDashboardLine } from "react-icons/ri";
 import Loadingbar from './Loadingbar';
 
 export const Mastersidebar = ({ isCompanion, className }) => {
@@ -61,7 +62,7 @@ export const Mastersidebar = ({ isCompanion, className }) => {
     menuItems.unshift({
       label: 'Dashboard',
       route: './dashboard',
-      icon: MdOutlineReportProblem
+      icon: RiDashboardLine
     });
    
   } else {

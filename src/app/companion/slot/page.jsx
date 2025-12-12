@@ -115,7 +115,7 @@ const Page = () => {
     const weeklySchedule = convertSlotsToSchedule(slotSelected);
     if (formatedstartDate == 0 || formatedendDate == 0) {
       toast.error('Please select any start and end Date.');
-    } else if (!weeklySchedule.length == 7) {
+    } else if (weeklySchedule.length <= 6) {
       toast.error('Please select slots of all days in the weekly schedule.');
     } else {
       const availabilityData = {
@@ -131,9 +131,11 @@ const Page = () => {
       );
 
       try {
-        const { data } = await enableSlotService(availabilityData);
+        const { data,error } = await enableSlotService(availabilityData);
         if (data) {
           toast.success(`Successfully updated`);
+        } else if(error){
+          toast.error(`something error occured:`, error);
         }
       } catch (error) {
         toast.error(`something error occured:`, error);

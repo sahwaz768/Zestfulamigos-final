@@ -88,14 +88,30 @@ const PendingEarnings = ({ initialData = [] }) => {
                           />
                         </svg>
                       </div>
-                      <div className="flex flex-col items-start lg:items-end">
+                     { !item.penaltyAmount > 0 && ( <div className="flex flex-col items-start lg:items-end">
                         <h3 className="text-xl sm:text-2xl font-bold text-emerald-600 group-hover:text-emerald-700 transition-colors duration-200">
                           +₹{Math.floor(item.netAmount)}
                         </h3>
                         <h1 className="text-xs sm:text-sm text-gray-600">
                           Net Amount Earned
                         </h1>
+                      </div> )
+                      }
+                      { item.penaltyAmount > 0 && (
+
+                         <div className="flex flex-col items-start lg:items-end">
+                        <h3 className="text-xl sm:text-2xl font-bold text-red-600 group-hover:text-red-700 transition-colors duration-200">
+                          -₹{Math.floor(item.netAmount)}
+                        </h3>
+                        <h1 className="text-xs sm:text-sm text-gray-600">
+                            Penalty Charged
+                        </h1>
                       </div>
+
+                      )
+
+                      }
+
                     </div>
                   </div>
                 </div>

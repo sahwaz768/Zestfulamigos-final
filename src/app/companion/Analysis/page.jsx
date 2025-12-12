@@ -35,7 +35,7 @@ const page = () => {
 
         if (result.data) {
           setrecentEarning(result.data.data.recent_earnings);
-         // console.log('recent earning', result.data.data.recent_earnings);
+          // console.log('recent earning', result.data.data.recent_earnings);
 
           setAnalysisData(result.data.data);
           const formatted = result.data.data.earnings_last_week_by_days.map(
@@ -148,7 +148,7 @@ const page = () => {
                   {Math.floor(analysisData?.pending_amount ?? 0)}
                 </h3>
                 <p className="text-sm text-gray-600 font-medium mt-2">
-                  Pending amount
+                  Pending Amount
                 </p>
               </div>
               <div className="flex flex-col justify-center items-center text-center p-4 bg-white/50 rounded-2xl backdrop-blur-sm border border-orange-100">
@@ -159,7 +159,7 @@ const page = () => {
                   {Math.floor(analysisData?.penalty_charges ?? 0)}
                 </h3>
                 <p className="text-sm text-gray-600 font-medium mt-2">
-                  panelty charged
+                  Panelty Charged
                 </p>
               </div>
             </div>
@@ -181,9 +181,17 @@ const page = () => {
 
             <div className="space-y-4 h-4/5 ">
               {recentEarnings.length === 0 ? (
-                <p className="text-gray-500 text-center md:mt-4">
-                  No recent earnings available.
-                </p>
+                <div className="flex items-center justify-center  bg-white">
+                  <div className="text-center">
+                    <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-3xl">📊</span>
+                    </div>
+                    <p className="text-2xl font-semibold text-red-600 mb-2">
+                      No Recent Earnings
+                    </p>
+                   
+                  </div>
+                </div>
               ) : (
                 <div>
                   {recentEarnings.map((item, index) => (
@@ -291,7 +299,6 @@ const page = () => {
                   ))}
                 </div>
               )}
-              
 
               {/* View All Button */}
             </div>
