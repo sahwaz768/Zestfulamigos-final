@@ -13,7 +13,10 @@ const page = () => {
   const [Bookingdata, setBookingData] = useState(null);
   const [status, setStatus] = useState(null);
   const [isLoading, setisLoading] = useState(false);
-   const [isLoadingII, setisLoadingII] = useState(false);
+  const [isLoadingII, setisLoadingII] = useState(false);
+  const [reason, setReason] = useState('');
+  const [error, setError] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   const formatBookingTime = (startTimestamp, endTimestamp) => {
@@ -95,30 +98,65 @@ const page = () => {
       }
     };
 
-    const fetchRejectData = async () => {
-      try {
-        const { getRejectBooking } = await import(
-          '@/services/user/bookings.service'
-        );
-        const { toast } = await import('@/utils/reduxtrigger.utils');
-        setisLoadingII(true);
-        const result = await getRejectBooking(bookingId);
-        if (result.data) {
-          setisLoadingII(false);
-          toast.error(' request Rejected!!');
-          router.back();
-        }
-      } catch (err) {
-        console.error('Fetch error:', err);
-      }
-    };
-
     if (status === 'accepted') {
       fetchAcceptData();
-    } else if (status === 'rejected') {
-      fetchRejectData();
     }
   }, [status]);
+
+  const handleSubmit = async () => {
+    if (reason.trim() === '') {
+      setError('Please provide a reason for rejection');
+      return;
+    } else {
+    setError('');
+    console.log('Rejection reason:', reason);
+    try {
+      let params = new URL(document.location.toString()).searchParams;
+      let bookingId = params.get('bookingid');
+      const { getRejectBooking } = await import(
+        '@/services/user/bookings.service'
+      );
+
+      const { toast } = await import('@/utils/reduxtrigger.utils');
+      setisLoadingII(true);
+      const RejectBooking = {
+        bookingid: bookingId,
+        Reason: JSON.stringify(reason)
+      };
+      console.log('rejection reaon', RejectBooking);
+      
+      const result = await getRejectBooking(RejectBooking);
+      if (result.data) {
+        setisLoadingII(false);
+        toast.error(' The request could not be processed.!!');
+        router.back();
+      }
+    } catch (err) {
+      console.error('Fetch error:', err);
+    }
+
+    setReason('');
+    setIsOpen(false);
+  };}
+
+  const handleInputChange = (e) => {
+    setReason(e.target.value);
+    if (error) {
+      setError('');
+    }
+  };
+
+  const openModal = () => {
+    setIsOpen(true);
+    setReason('');
+    setError('');
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    setReason('');
+    setError('');
+  };
 
   if (!Bookingdata) {
     return (
@@ -257,15 +295,70 @@ const page = () => {
 
               <button
                 className="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2"
-                onClick={() => setStatus('rejected')}
+                onClick={openModal}
                 disabled={isLoading}
               >
-                {isLoadingII ? 'Rejecting..' : 'Reject'}
+                Reject
               </button>
             </div>
           )}
         </div>
       </div>
+
+      {/* Modal */}
+      {isOpen && (
+        <div className="companion-modal-overlay">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold text-gray-800">
+                Rejection Reason
+              </h2>
+              <button
+                onClick={closeModal}
+                className="text-gray-500 hover:text-gray-700 transition text-2xl"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Description */}
+
+            {/* Input Field */}
+            <div className="mb-4">
+              <textarea
+                id="reason"
+                value={reason}
+                onChange={handleInputChange}
+                placeholder="Enter the reason for rejection..."
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition resize-none ${
+                  error
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-gray-300 focus:ring-blue-500'
+                }`}
+                rows="4"
+              />
+            </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-red-600 text-sm font-medium">{error}</p>
+              </div>
+            )}
+
+            {/* Buttons */}
+            <div className="flex gap-3">
+              <button
+                onClick={handleSubmit}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
