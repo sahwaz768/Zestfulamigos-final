@@ -45,7 +45,7 @@ const page = () => {
         );
         const map = new window.google.maps.Map(document.getElementById('map'), {
           center: location,
-          zoom: 14
+          zoom: 17
         });
         new window.google.maps.Marker({
           position: location,

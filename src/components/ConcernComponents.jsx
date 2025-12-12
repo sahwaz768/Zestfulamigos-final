@@ -21,7 +21,7 @@ const ConcernComponent = ({ issuedata, userDetails }) => {
       <div className="support-head mt-2">
         <div className="support-txt">
           <h1 className="md:text-xl ml-3 md:font-bold mt-2">
-            Your support requests
+            Your Support Requests
           </h1>
         </div>
         <div className="support mt-3" onClick={openModal}>

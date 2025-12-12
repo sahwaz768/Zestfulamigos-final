@@ -283,6 +283,24 @@ body {
     width: 40px;
   }
 }
+@media (max-width: 350px) {
+   .companionconnect {
+    margin-left: 20px;
+   }
+  .lgbtn2 {
+    
+    margin-left: 70px;
+    margin-top: 30px;
+  }
+  .zestful {
+    
+    font-size: 40px;
+    font-weight: 500;
+  }
+
+}
+
+
 /* homepage mid section */
 
 .bodymid {
@@ -3119,9 +3137,9 @@ th {
   padding: 5px 8px;
   border-radius: 10px;
 }
-@media (max-width: 377px) {
+@media (max-width: 391px) {
   .inputfield-glg-be {
-    width: 320px;
+    width: 315px;
   }
 }
 
@@ -3463,7 +3481,7 @@ th {
 
 .sidebar.open {
   width: 385px;
-  position: fixed;
+  position: absolute;
 }
 .user-profile-sidebar {
   display: flex;
