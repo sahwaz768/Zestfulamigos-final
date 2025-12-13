@@ -35,7 +35,7 @@ const page = () => {
             <div className="p-3 md:p-2 md:px-5">
               <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
                 {/* Profile Image */}
-                <div className="relative flex-shrink-0">
+                <div className="relative shrink-0">
                   <div className="w-12 h-12 md:w-22 md:h-22 rounded-2xl overflow-hidden ring-4 ring-rose-100 group-hover:ring-rose-200 transition-all duration-300">
                     <Image
                       src={UserProfile}
@@ -52,7 +52,7 @@ const page = () => {
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center gap-3">
                     <h3 className="text-xl md:text-xl font-bold text-gray-800">Alex Parker</h3>
-                    <span className="px-3 py-1 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 text-xs font-medium rounded-full">
+                    <span className="px-3 py-1 bg-linear-to-r from-blue-100 to-blue-200 text-blue-700 text-xs font-medium rounded-full">
                       New Request
                     </span>
                   </div>
@@ -81,7 +81,7 @@ const page = () => {
                 {/* Action Button */}
                 <div className="w-full md:w-auto">
                   <Link href={'/companion/BookingrequestDetail'}>
-                    <button className="w-full md:w-auto bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-rose-200">
+                    <button className="w-full md:w-auto bg-linear-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-rose-200">
                       Check Details
                     </button>
                   </Link>
@@ -96,7 +96,7 @@ const page = () => {
 
         {/* Empty State or Load More */}
         <div className="text-center mt-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-rose-100 to-pink-100 rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-r from-rose-100 to-pink-100 rounded-full mb-4">
             <svg className="w-8 h-8 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
             </svg>

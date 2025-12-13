@@ -110,13 +110,13 @@ const Page = () => {
 
               <div className="relative">
                 <select
-                  className="appearance-none bg-gradient-to-r from-rose-500 to-pink-500 text-white md:px-8 gap-3 px-5 py-4 md:py-3 text-xs md:text-base rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-rose-200 cursor-pointer"
+                  className="appearance-none bg-linear-to-r from-rose-500 to-pink-500 text-white md:px-8 gap-3 px-5 py-4 md:py-3 text-xs md:text-base rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-rose-200 cursor-pointer"
                   onChange={(e) => SetActiveTab(e.target.value)}
                 >
-                  <option value="pending" className=" bg-gradient-to-r from-rose-50 to-pink-50 text-gray-900 font-semibold">
+                  <option value="pending" className=" bg-linear-to-r from-rose-50 to-pink-50 text-gray-900 font-semibold">
                     transactions pending
                   </option>
-                  <option value="completed" className=" bg-gradient-to-r from-rose-50 to-pink-50 text-gray-900 font-semibold">
+                  <option value="completed" className=" bg-linear-to-r from-rose-50 to-pink-50 text-gray-900 font-semibold">
                     transactions completed
                   </option>
                 </select>

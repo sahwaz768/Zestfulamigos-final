@@ -60,7 +60,7 @@ const LocationAccess = ({ setLocation, mapkey }) => {
 
       <div
         id={mapkey ? `map${mapkey}` : 'map'}
-        className={isLocationSet ? 'w-[20rem] md:w-[40rem] h-[25rem] my-5' : ''}
+        className={isLocationSet ? 'w-[20rem] md:w-160 h-100 my-5' : ''}
       ></div>
     </>
   );

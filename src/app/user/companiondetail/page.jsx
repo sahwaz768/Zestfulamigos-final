@@ -53,6 +53,7 @@ const page = () => {
               width={500}
               height={300}
               alt="profile"
+               unoptimized
             />
 
             {companionDetails.images[1] && (
@@ -61,6 +62,7 @@ const page = () => {
                 width={500}
                 height={300}
                 alt="profile"
+                 unoptimized
               />
             )}
 
@@ -71,6 +73,7 @@ const page = () => {
                 height={300}
                 alt="profile"
                 className=""
+                  unoptimized
               />
             )}
             {companionDetails.images[3] && (
@@ -80,6 +83,7 @@ const page = () => {
                 width={500}
                 height={300}
                 alt="profile"
+                 unoptimized
               />
             )}
           </div>

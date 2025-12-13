@@ -69,6 +69,7 @@ useEffect(() => {
             className="profile-photo-sidebar"
             width={20}
             height={20}
+             unoptimized
           />
           {isSidebarOpen && (
             <div className="user-info-sidebar">

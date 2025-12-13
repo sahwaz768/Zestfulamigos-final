@@ -18,13 +18,13 @@ const PendingEarnings = ({ initialData = [] }) => {
             bookingData.map((item, index) => (
               <div
                 key={index}
-                className="group bg-white hover:bg-gradient-to-br hover:from-rose-50 hover:via-white hover:to-pink-50 rounded-xl py-3 px-3 sm:py-1 sm:px-6 transition-all duration-300 border border-gray-200 hover:border-rose-300 hover:shadow-xl"
+                className="group bg-white hover:bg-linear-to-br hover:from-rose-50 hover:via-white hover:to-pink-50 rounded-xl py-3 px-3 sm:py-1 sm:px-6 transition-all duration-300 border border-gray-200 hover:border-rose-300 hover:shadow-xl"
               >
                 <div className="flex justify-between gap-4 mb-2 sm:gap-6">
                   {/* Left Section */}
                   <div className="space-y-3 sm:space-y-4 w-full">
                     <div>
-                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 mt-1 group-hover:text-rose-700 transition-colors duration-200 break-words">
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 mt-1 group-hover:text-rose-700 transition-colors duration-200 wrap-break-word">
                         Transaction ID: {item.txnId || 'alex parker'}
                       </h3>
 
@@ -74,7 +74,7 @@ const PendingEarnings = ({ initialData = [] }) => {
                   {/* Right Section */}
                   <div className="lg:text-right space-y-2 w-full lg:w-auto mt-5">
                     <div className="flex items-center gap-3 justify-start lg:justify-end">
-                      <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-200 flex-shrink-0">
+                      <div className="w-10 h-10 bg-linear-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-200 shrink-0">
                         <svg
                           className="w-5 h-5 text-white"
                           fill="currentColor"

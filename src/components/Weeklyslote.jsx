@@ -73,12 +73,12 @@ const WeeklyScheduler = ({ selectedslotData, initialSlots = [] }) => {
   }, [selectedSlots]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-0 md:p-4">
+    <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 p-0 md:p-4">
       <div className="max-w-8xl mx-auto">
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
           {/* Day selector */}
           <div className="flex border-b border-gray-200 bg-gray-50">
-            <div className="flex-shrink-0 w-16 md:w-24"></div>
+            <div className="shrink-0 w-16 md:w-24"></div>
             <div className="flex flex-1">
               {days.map((day) => (
                 <button
@@ -101,7 +101,7 @@ const WeeklyScheduler = ({ selectedslotData, initialSlots = [] }) => {
 
           <div className="flex">
             {/* Time column */}
-            <div className="flex-shrink-0 w-16 md:w-24 bg-gray-50">
+            <div className="shrink-0 w-16 md:w-24 bg-gray-50">
               {hours.map((hour) => (
                 <div
                   key={hour}
@@ -128,7 +128,7 @@ const WeeklyScheduler = ({ selectedslotData, initialSlots = [] }) => {
                     onClick={() => handleSlotClick(selectedDay, hour)}
                   >
                     {isSlotSelected(selectedDay, hour) && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-red-400/20 to-transparent"></div>
+                      <div className="absolute inset-0 bg-linear-to-r from-red-400/20 to-transparent"></div>
                     )}
                     {!isSlotSelected(selectedDay, hour) && (
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-red-500/5"></div>

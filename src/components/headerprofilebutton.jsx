@@ -60,6 +60,7 @@ const HeaderProfileButton = ({ handleClose, dropdownRef }) => {
             alt="this is profile"
             height={120}
             width={120}
+             unoptimized
           />
         </div>
         <div className="text-center font-bold my-2">{userDetails.name}</div>

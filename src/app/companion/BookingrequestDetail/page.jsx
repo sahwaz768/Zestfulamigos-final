@@ -121,22 +121,25 @@ const page = () => {
       setisLoadingII(true);
       const RejectBooking = {
         bookingid: bookingId,
-        Reason: JSON.stringify(reason)
+        reason: reason
       };
       console.log('rejection reaon', RejectBooking);
       
-      const result = await getRejectBooking(RejectBooking);
+      const {result,error} = await getRejectBooking(RejectBooking);
       if (result.data) {
         setisLoadingII(false);
-        toast.error(' The request could not be processed.!!');
+        toast.success(' The request has been successfully declined.');
         router.back();
+        setIsOpen(false);
+        setReason('');
       }
     } catch (err) {
       console.error('Fetch error:', err);
+       toast.error('sorry error occured, please try after sometime .');
     }
 
-    setReason('');
-    setIsOpen(false);
+    
+    
   };}
 
   const handleInputChange = (e) => {
@@ -174,7 +177,7 @@ const page = () => {
       </div>
       <Mastersidebar className="sbar-height-chat" isCompanion={true} />
 
-      <div className="md:w-[75rem] w-[95%] mx-auto md:my-5 my-10 p-8  rounded-2xl shadow-sm">
+      <div className="md:w-300 w-[95%] mx-auto md:my-5 my-10 p-8  rounded-2xl shadow-sm">
         {/* Header Section */}
         <div className="mb-8">
           <h1 className="font-black text-2xl text-black bg-clip-text">
@@ -216,6 +219,7 @@ const page = () => {
                   width={80}
                   height={80}
                   className="w-20 h-20 rounded-2xl object-cover ring-4 ring-red-500 shadow-lg"
+                   unoptimized
                 />
               )}
               <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-4 border-white shadow-sm"></div>
@@ -286,7 +290,7 @@ const page = () => {
           {Bookingdata?.bookingstatus === 'UNDERREVIEW' && (
             <div className="flex justify-end gap-4">
               <button
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2"
+                className="bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2"
                 onClick={() => setStatus('accepted')}
                 disabled={isLoading}
               >

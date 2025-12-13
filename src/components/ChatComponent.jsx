@@ -86,6 +86,7 @@ const ChatComponent = ({ chatrooms, isCompanion, isEmailVerified }) => {
                         alt="profile"
                         width={20}
                         height={20}
+                         unoptimized
                       />
                       <h1 className="ml-2 text-sm">
                         {isCompanion ? l.user.firstname : l.companion.firstname}
@@ -125,7 +126,7 @@ const ChatComponent = ({ chatrooms, isCompanion, isEmailVerified }) => {
             ) : (
               <div className="chat-emptyspace">
                 <div className="flex justify-center ">
-                  <Image src={Logo} alt="logo" />
+                  <Image src={Logo} alt="logo"  unoptimized />
                 </div>
                 <h1 className="text-center font-extrabold text-red-700 text-2xl">
                   "Your perfect companion is just a choice away!"

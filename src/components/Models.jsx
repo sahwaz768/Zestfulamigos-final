@@ -382,7 +382,7 @@ export const RaiseaIssueModel = ({ closeModal, userDetails }) => {
               name="image"
               accept="image/*"
               onChange={handleChange}
-              className="my-3"
+              className="my-3 bg-slate-200 p-2 rounded-lg text-black"
             />
           </div>
           <div className="mt-2">

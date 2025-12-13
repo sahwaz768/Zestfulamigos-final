@@ -40,7 +40,7 @@ const page = () => {
       </div>
       <Mastersidebar className="sbar-height-chat" isCompanion={true} />
       <div className="min-h-screen  overflow-hidden">
-        <div className="md:w-[75rem] w-[100%] mx-auto md:px-0 px-2 py-2">
+        <div className="md:w-300 w-full mx-auto md:px-0 px-2 py-2">
   
   <ConcernComponent issuedata={issuedata} userDetails={userDetails} /> 
   </div>
