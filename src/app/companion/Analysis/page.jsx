@@ -69,7 +69,7 @@ const page = () => {
       </div>
       <Mastersidebar className="sbar-height-chat" isCompanion={true} />
 
-      <div className=" md:w-[75rem] w-[100%] mx-auto md:my-5 my-10 md:p-8  p-2 rounded-2xl shadow-sm">
+      <div className=" md:w-300 w-full mx-auto md:my-5 my-10 md:p-8  p-2 rounded-2xl shadow-sm">
         {/* Header Section */}
         <div className="mb-8">
           <h1 className="font-black text-4xl text-black bg-clip-text ">
@@ -84,14 +84,14 @@ const page = () => {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
           {/* Stats Card */}
-          <div className="group relative overflow-hidden bg-gradient-to-br p-8 border border-gray rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 ">
+          <div className="group relative overflow-hidden bg-linear-to-br p-8 border border-gray rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 ">
             <div className="relative grid grid-cols-2 gap-6 h-full">
               {/* Total Booking */}
               <div className="flex flex-col justify-center items-center text-center p-4 bg-white/50 rounded-2xl backdrop-blur-sm border border-pink-100">
-                <div className="w-16 h-16 bg-gradient-to-br   rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                <div className="w-16 h-16 bg-linear-to-br   rounded-2xl flex items-center justify-center mb-4 shadow-lg">
                   <span className="text-3xl">⏰</span>
                 </div>
-                <h3 className="text-4xl font-black bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                <h3 className="text-4xl font-black bg-linear-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
                   {analysisData?.total_booking_hours ?? 0}
                   <span className="text-xl">Hr</span>
                 </h3>
@@ -102,10 +102,10 @@ const page = () => {
 
               {/* Average Rating */}
               <div className="flex flex-col justify-center items-center text-center p-4 bg-white/50 rounded-2xl backdrop-blur-sm border border-purple-100">
-                <div className="w-16 h-16 bg-gradient-to-br rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                <div className="w-16 h-16 bg-linear-to-br rounded-2xl flex items-center justify-center mb-4 shadow-lg">
                   <span className="text-3xl">⭐</span>
                 </div>
-                <h3 className="text-4xl font-black bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                <h3 className="text-4xl font-black bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                   {analysisData?.average_rating ?? 'N/A'}
                 </h3>
                 <p className="text-sm text-gray-600 font-medium mt-2">
@@ -115,10 +115,10 @@ const page = () => {
 
               {/* Total Earned */}
               <div className="flex flex-col justify-center items-center text-center p-4 bg-white/50 rounded-2xl backdrop-blur-sm border border-green-100">
-                <div className="w-16 h-16 bg-gradient-to-br rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                <div className="w-16 h-16 bg-linear-to-br rounded-2xl flex items-center justify-center mb-4 shadow-lg">
                   <span className="text-3xl">💰</span>
                 </div>
-                <h3 className="text-4xl font-black bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                <h3 className="text-4xl font-black bg-linear-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                   {Math.floor(analysisData?.total_earning ?? 0)}
                 </h3>
                 <p className="text-sm text-gray-600 font-medium mt-2">
@@ -128,10 +128,10 @@ const page = () => {
 
               {/* Last Week Earned */}
               <div className="flex flex-col justify-center items-center text-center p-4 bg-white/50 rounded-2xl backdrop-blur-sm border border-orange-100">
-                <div className="w-16 h-16 bg-gradient-to-br rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                <div className="w-16 h-16 bg-linear-to-br rounded-2xl flex items-center justify-center mb-4 shadow-lg">
                   <span className="text-3xl">📈</span>
                 </div>
-                <h3 className="text-4xl font-black bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                <h3 className="text-4xl font-black bg-linear-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
                   {Math.floor(analysisData?.last_week_earning ?? 0)}
                 </h3>
                 <p className="text-sm text-gray-600 font-medium mt-2">
@@ -141,10 +141,10 @@ const page = () => {
 
               {/* Pending amount */}
               <div className="flex flex-col justify-center items-center text-center p-4 bg-white/50 rounded-2xl backdrop-blur-sm border border-orange-100">
-                <div className="w-16 h-16 bg-gradient-to-br rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                <div className="w-16 h-16 bg-linear-to-br rounded-2xl flex items-center justify-center mb-4 shadow-lg">
                   <span className="text-3xl">⏳</span>
                 </div>
-                <h3 className="text-4xl font-black bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
+                <h3 className="text-4xl font-black bg-linear-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">
                   {Math.floor(analysisData?.pending_amount ?? 0)}
                 </h3>
                 <p className="text-sm text-gray-600 font-medium mt-2">
@@ -152,10 +152,10 @@ const page = () => {
                 </p>
               </div>
               <div className="flex flex-col justify-center items-center text-center p-4 bg-white/50 rounded-2xl backdrop-blur-sm border border-orange-100">
-                <div className="w-16 h-16 bg-gradient-to-br rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                <div className="w-16 h-16 bg-linear-to-br rounded-2xl flex items-center justify-center mb-4 shadow-lg">
                   <span className="text-3xl">🚩</span>
                 </div>
-                <h3 className="text-4xl font-black bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">
+                <h3 className="text-4xl font-black bg-linear-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">
                   {Math.floor(analysisData?.penalty_charges ?? 0)}
                 </h3>
                 <p className="text-sm text-gray-600 font-medium mt-2">
@@ -210,7 +210,7 @@ const page = () => {
                             </span>
                           </div>
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center shrink-0">
                               <svg
                                 className="w-2 h-2 text-purple-600"
                                 fill="none"
@@ -247,7 +247,7 @@ const page = () => {
                       <div className="space-y-2.5">
                         <div className="flex gap-6">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center shrink-0">
                               <svg
                                 className="w-4 h-4 text-orange-600"
                                 fill="none"
@@ -271,7 +271,7 @@ const page = () => {
                           </div>
 
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center shrink-0">
                               <svg
                                 className="w-4 h-4 text-blue-600"
                                 fill="none"
@@ -331,7 +331,7 @@ const page = () => {
               Performance Analytics
             </h3>
             <div className="flex gap-2">
-              <button className="px-4 py-2 bg-gradient-to-r from-red-400 to-red-500 text-white rounded-lg text-sm font-medium">
+              <button className="px-4 py-2 bg-linear-to-r from-red-400 to-red-500 text-white rounded-lg text-sm font-medium">
                 Weekly
               </button>
             </div>

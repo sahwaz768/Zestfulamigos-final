@@ -58,7 +58,7 @@ const Page = () => {
       </div>
       <Mastersidebar className="sbar-height-chat" isCompanion={true} />
       <div className="min-h-screen  overflow-hidden">
-        <div className="md:w-[75rem] w-[95%] mx-auto md:px-6 px-2 py-8 my-10">
+        <div className="md:w-300 w-[95%] mx-auto md:px-6 px-2 py-8 my-10">
           {/* Header Profile Section */}
           <div className=" rounded-3xl border border-red-200 md:p-8 p-5 md:mt-1 mb-10  shadow-lg  ">
             <div className="md:flex flex-row  md:items-center  md:justify-between ">
@@ -71,25 +71,26 @@ const Page = () => {
                     height={75}
                     className=" rounded-full object-cover "
                     alt="profile picture"
+                     unoptimized
                   />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <h1 className="text-3xl font-black bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
+                    <h1 className="text-3xl font-black bg-linear-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
                       {userDetails.name}
                     </h1>
                   </div>
                   <Link href={'/companion/slot'}>
                     {' '}
                     <div
-                      className={`md:hidden flex items-center md:gap-4 gap-1 bg-gradient-to-r ${bookingData?.companionDetails?.isavailable === true ? 'from-green-50 to-green-50 border-green-200 hover:border-green-300' : 'from-red-50 to-red-50 border-red-200 hover:border-red-300'}rounded-2xl md:px-6 md:py-4 px-2 py-1  border  transition-all duration-300 group`}
+                      className={`md:hidden flex items-center md:gap-4 gap-1 bg-linear-to-r ${bookingData?.companionDetails?.isavailable === true ? 'from-green-50 to-green-50 border-green-200 hover:border-green-300' : 'from-red-50 to-red-50 border-red-200 hover:border-red-300'}rounded-2xl md:px-6 md:py-4 px-2 py-1  border  transition-all duration-300 group`}
                     >
                       <div className="flex items-center md:gap-4 gap-1">
                         <p className="text-xs text-black font-bold uppercase tracking-wider">
                           Availability:
                         </p>
                         <p
-                          className={`text-sm font-black bg-gradient-to-r ${bookingData?.companionDetails?.isavailable === true ? ' from-green-600 to-green-500' : ' from-red-600 to-red-500'} from-green-600 to-green-500 bg-clip-text text-transparent`}
+                          className={`text-sm font-black bg-linear-to-r ${bookingData?.companionDetails?.isavailable === true ? ' from-green-600 to-green-500' : ' from-red-600 to-red-500'} from-green-600 to-green-500 bg-clip-text text-transparent`}
                         >
                           {bookingData?.companionDetails?.isavailable === true
                             ? 'ON'
@@ -108,14 +109,14 @@ const Page = () => {
               <Link href={'/companion/slot'}>
                 <div className="hidden md:block">
                   <div
-                    className={` flex items-center md:gap-4 gap-1 bg-gradient-to-r ${bookingData?.companionDetails?.isavailable === true ? 'from-green-50 to-green-50 border-green-200 hover:border-green-300' : 'from-red-50 to-red-50 border-red-200 hover:border-red-300'}  border rounded-2xl md:px-6 md:py-4 px-2 py-1     transition-all duration-300 group`}
+                    className={` flex items-center md:gap-4 gap-1 bg-linear-to-r ${bookingData?.companionDetails?.isavailable === true ? 'from-green-50 to-green-50 border-green-200 hover:border-green-300' : 'from-red-50 to-red-50 border-red-200 hover:border-red-300'}  border rounded-2xl md:px-6 md:py-4 px-2 py-1     transition-all duration-300 group`}
                   >
                     <div className="flex items-center md:gap-4 gap-1">
                       <p className="text-xs text-black font-bold uppercase tracking-wider">
                         Availability:
                       </p>
                       <p
-                        className={`text-sm font-black bg-gradient-to-r ${bookingData?.companionDetails?.isavailable === true ? ' from-green-600 to-green-500' : ' from-red-600 to-red-500'} from-green-600 to-green-500 bg-clip-text text-transparent`}
+                        className={`text-sm font-black bg-linear-to-r ${bookingData?.companionDetails?.isavailable === true ? ' from-green-600 to-green-500' : ' from-red-600 to-red-500'} from-green-600 to-green-500 bg-clip-text text-transparent`}
                       >
                         {bookingData?.companionDetails?.isavailable === true
                           ? 'ON'
@@ -136,7 +137,7 @@ const Page = () => {
           {/* Stats Cards with Enhanced Design */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-10">
             {/* This Month Earnings */}
-            <div className="group bg-gradient-to-br from-white to-red-50 rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+            <div className="group bg-linear-to-br from-white to-red-50 rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
               <div className="flex items-center justify-between ">
                 <p className="text-xs uppercase tracking-widest font-bold text-red-600">
                   This Month earning
@@ -153,7 +154,7 @@ const Page = () => {
             </div>
 
             {/* Average Rating */}
-            <div className="group bg-gradient-to-br from-white to-red-50 rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+            <div className="group bg-linear-to-br from-white to-red-50 rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-xs uppercase tracking-widest font-bold text-red-600">
                   Rating
@@ -168,7 +169,7 @@ const Page = () => {
             </div>
 
             {/* Completed Bookings */}
-            <div className="group bg-gradient-to-br from-white to-red-50 rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+            <div className="group bg-linear-to-br from-white to-red-50 rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-xs uppercase tracking-widest font-bold text-red-600">
                   Completed bookings
@@ -183,7 +184,7 @@ const Page = () => {
             </div>
 
             {/* Upcoming This Week */}
-            <div className="group bg-gradient-to-br from-white to-red-50 rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+            <div className="group bg-linear-to-br from-white to-red-50 rounded-2xl border border-red-200 p-6 shadow-lg hover:shadow-2xl hover:border-red-400 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-xs uppercase tracking-widest font-bold text-red-600">
                   Upcoming bookings
@@ -204,7 +205,7 @@ const Page = () => {
               <div>
                 <div className="flex items-center justify-between gap-3 mb-6">
                   <div className="flex items-center">
-                    <div className="w-1.5 h-8 bg-gradient-to-b from-red-500 to-red-600 rounded-full"></div>
+                    <div className="w-1.5 h-8 bg-linear-to-b from-red-500 to-red-600 rounded-full"></div>
                     <h2 className="md:text-2xl ml-2 text-sm font-black text-gray-900">
                       UPCOMING BOOKINGS 
                     </h2>
@@ -226,7 +227,7 @@ const Page = () => {
                               <div className="">
                                 <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
                                   {/* Red header accent */}
-                                  <div className="h-2 bg-gradient-to-r from-red-600 to-red-500"></div>
+                                  <div className="h-2 bg-linear-to-r from-red-600 to-red-500"></div>
 
                                   {/* Content */}
                                   <div className="p-8 text-center">
@@ -271,7 +272,7 @@ const Page = () => {
                                   href={`/companion/BookingrequestDetail?bookingid=${booking.bookingId}`}
                                 >
                                   {' '}
-                                  <div className="group bg-white rounded-2xl border border-red-200 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer flex-shrink-0 w-60 md:w-72">
+                                  <div className="group bg-white rounded-2xl border border-red-200 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer shrink-0 w-60 md:w-72">
                                     <div className="h-40 flex items-center justify-center relative overflow-hidden">
                                       {booking?.images && (
                                         <div className="absolute inset-0 transition-opacity duration-300">
@@ -284,6 +285,7 @@ const Page = () => {
                                             className="h-40 w-full object-cover"
                                             width={200}
                                             height={100}
+                                             unoptimized
                                           />
                                         </div>
                                       )}
@@ -305,9 +307,9 @@ const Page = () => {
                                           {booking.name}, {booking.age}
                                         </p>
 
-                                        <p className="text-base font-black bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent whitespace-nowrap"></p>
+                                        <p className="text-base font-black bg-linear-to-r from-red-600 to-red-500 bg-clip-text text-transparent whitespace-nowrap"></p>
 
-                                        <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all duration-300 flex-shrink-0">
+                                        <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all duration-300 shrink-0">
                                           →
                                         </div>
                                       </div>
@@ -335,7 +337,7 @@ const Page = () => {
               <div>
                 <div className="flex items-center justify-between gap-3 mb-6">
                   <div className="flex items-center">
-                    <div className="w-1.5 h-8 bg-gradient-to-b from-red-500 to-red-600 rounded-full"></div>
+                    <div className="w-1.5 h-8 bg-linear-to-b from-red-500 to-red-600 rounded-full"></div>
                     <h2 className="md:text-2xl ml-2 text-sm font-black text-gray-900">
                       BOOKINGS REQUEST
                     </h2>
@@ -357,7 +359,7 @@ const Page = () => {
                               <div className="">
                                 <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
                                   {/* Red header accent */}
-                                  <div className="h-2 bg-gradient-to-r from-red-600 to-red-500"></div>
+                                  <div className="h-2 bg-linear-to-r from-red-600 to-red-500"></div>
 
                                   {/* Content */}
                                   <div className="p-8 text-center">
@@ -402,7 +404,7 @@ const Page = () => {
                                   href={`/companion/BookingrequestDetail?bookingid=${booking.bookingId}`}
                                 >
                                   {' '}
-                                  <div className="group bg-white rounded-2xl border border-red-200 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer flex-shrink-0 w-60 md:w-72">
+                                  <div className="group bg-white rounded-2xl border border-red-200 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer shrink-0 w-60 md:w-72">
                                     <div className="h-40 flex items-center justify-center relative overflow-hidden">
                                       {booking?.images && (
                                         <div className="absolute inset-0 transition-opacity duration-300">
@@ -415,6 +417,7 @@ const Page = () => {
                                             className="h-40 w-full object-cover"
                                             width={200}
                                             height={100}
+                                             unoptimized
                                           />
                                         </div>
                                       )}
@@ -436,9 +439,9 @@ const Page = () => {
                                           {booking.name}, {booking.age}
                                         </p>
 
-                                        <p className="text-base font-black bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent whitespace-nowrap"></p>
+                                        <p className="text-base font-black bg-linear-to-r from-red-600 to-red-500 bg-clip-text text-transparent whitespace-nowrap"></p>
 
-                                        <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all duration-300 flex-shrink-0">
+                                        <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all duration-300 shrink-0">
                                           →
                                         </div>
                                       </div>
@@ -455,14 +458,14 @@ const Page = () => {
                     {/* Right Column - Actions */}
                     <div className="w-full lg:w-1/4 ">
                       <div className="flex items-center gap-3 mb-7">
-                        <div className="w-1.5 h-6 bg-gradient-to-b from-red-500 to-red-600 rounded-full"></div>
+                        <div className="w-1.5 h-6 bg-linear-to-b from-red-500 to-red-600 rounded-full"></div>
                         <h3 className="text-lg font-black text-gray-900">
                           QUICK ACTIONS
                         </h3>
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <Link href={'/companion/bookinghistory'}>
-                          <div className="group bg-gradient-to-br from-red-500 to-red-600 text-white rounded-xl py-6 px-3 font-bold hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center justify-center gap-2 text-xs shadow-lg">
+                          <div className="group bg-linear-to-br from-red-500 to-red-600 text-white rounded-xl py-6 px-3 font-bold hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center justify-center gap-2 text-xs shadow-lg">
                             <span className="text-2xl group-hover:scale-125 transition-transform duration-300">
                               📅
                             </span>

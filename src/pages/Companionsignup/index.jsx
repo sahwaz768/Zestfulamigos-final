@@ -54,7 +54,7 @@ export default function Companionsignup() {
   return (
     <>
       <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" fillBlank />
-      <div className="md:w-[80rem] w-[100%]  mx-auto my-10 p-5 bg-white rounded-lg shadow-md">
+      <div className="md:w-7xl w-full  mx-auto my-10 p-5 bg-white rounded-lg shadow-md">
         <h1 className='text-center font-bold'>Companion Registration</h1>
         <Form initialValues={{}} onSubmit={signup} mode="signup" />
       </div>

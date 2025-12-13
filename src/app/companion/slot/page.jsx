@@ -161,7 +161,7 @@ const Page = () => {
       </div>
       <Mastersidebar className="sbar-height-chat" isCompanion={true} />
 
-      <div className="md:w-[75rem] w-[95%] mx-auto md:my-5 my-10 p-2 md:p-10">
+      <div className="md:w-300 w-[95%] mx-auto md:my-5 my-10 p-2 md:p-10">
         <div className="flex justify-between">
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-black">Set Availability</h1>
@@ -196,7 +196,7 @@ const Page = () => {
           <div className="flex flex-wrap">
             <div className="w-full lg:w-1/2 p-1 md:p-1 border-b lg:border-b-0 lg:border-r border-red-100">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-1 h-8 bg-gradient-to-b from-red-500 to-pink-500 rounded-full"></div>
+                <div className="w-1 h-8 bg-linear-to-b from-red-500 to-pink-500 rounded-full"></div>
                 <h2 className="text-2xl font-bold text-gray-800">
                   Availability Period
                 </h2>
@@ -204,7 +204,7 @@ const Page = () => {
               <p className="text-gray-600 mb-6 text-sm">
                 Select the date range for your availability
               </p>
-              <div className={`bg-gradient-to-br from-red-50 to-pink-50 p-0 md:p-6 rounded-2xl shadow-inner pointer-events-none cursor-not-allowed  ${isOn ? '' : 'opacity-60 '}`}>
+              <div className={`bg-linear-to-br from-red-50 to-pink-50 p-0 md:p-6 rounded-2xl shadow-inner pointer-events-none cursor-not-allowed  ${isOn ? '' : 'opacity-60 '}`}>
                 {startDate ? (
                   <Calendar
                     CalendarData={handleCalendarSubmit}
@@ -219,7 +219,7 @@ const Page = () => {
 
             <div className="w-full lg:w-1/2 px-2 py-1">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-1 h-8 bg-gradient-to-b from-red-500 to-pink-500 rounded-full"></div>
+                <div className="w-1 h-8 bg-linear-to-b from-red-500 to-pink-500 rounded-full"></div>
                 <h2 className="text-2xl font-bold text-gray-800 md:mt-0  mt-10 ">
                   Weekly Availability Pattern
                 </h2>
@@ -242,10 +242,10 @@ const Page = () => {
             </div>
           </div>
           {/* Info Banner */}
-          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-t border-amber-200 px-8 py-5 mt-3">
+          <div className="bg-linear-to-r from-amber-50 to-orange-50 border-t border-amber-200 px-8 py-5 mt-3">
             <div className="flex items-start gap-3">
               <svg
-                className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0"
+                className="w-5 h-5 text-amber-600 mt-0.5 shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -265,7 +265,7 @@ const Page = () => {
           <div className="px-8 md:px-10 py-6 bg-gray-50 flex justify-end">
             {isOn === true && (
             <button
-              className="group relative px-10 py-4 bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold rounded-xl hover:from-red-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-red-300 hover:scale-105 active:scale-95 overflow-hidden"
+              className="group relative px-10 py-4 bg-linear-to-r from-red-500 to-pink-500 text-white font-bold rounded-xl hover:from-red-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-red-300 hover:scale-105 active:scale-95 overflow-hidden"
               onClick={handleFinalSubmit}
             >
               <span className="relative z-10 flex items-center gap-2">
@@ -284,7 +284,7 @@ const Page = () => {
                   />
                 </svg>
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-linear-to-r from-red-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </button>
             ) }
           </div>
