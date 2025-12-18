@@ -109,7 +109,7 @@ const page = () => {
       return;
     } else {
     setError('');
-    console.log('Rejection reason:', reason);
+  //  console.log('Rejection reason:', reason);
     try {
       let params = new URL(document.location.toString()).searchParams;
       let bookingId = params.get('bookingid');
@@ -123,7 +123,7 @@ const page = () => {
         bookingid: bookingId,
         reason: reason
       };
-      console.log('rejection reaon', RejectBooking);
+     // console.log('rejection reaon', RejectBooking);
       
       const {result,error} = await getRejectBooking(RejectBooking);
       if (result.data) {
@@ -135,7 +135,7 @@ const page = () => {
       }
     } catch (err) {
       console.error('Fetch error:', err);
-       toast.error('sorry error occured, please try after sometime .');
+       toast.error('Sorry error occured, please try after sometime .');
     }
 
     

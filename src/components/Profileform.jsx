@@ -104,7 +104,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
 
         // Define type-specific fields
         const typeFields = {
-          Bankmethod: [
+          BANK_ACCOUNT: [
             'accountHolderName',
             'accountNumber',
             'ifscCode',
