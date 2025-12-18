@@ -80,7 +80,7 @@ const Page = () => {
           setStartDate(formattedStartDate);
           setEndDate(formattedEndDate);
         } else if (isOn === true) {
-          console.log('second condition true');
+        //  console.log('second condition true');
           const weeklySchedule = ScheduleToSlots(
             data.data.CompanionAvailability.availabletimeslot
           );
@@ -101,7 +101,7 @@ const Page = () => {
         }
         setIsLoading(false);
       } catch (error) {
-        console.log('error fetching slot data:', error);
+     //   console.log('error fetching slot data:', error);
       }
     };
     init();
@@ -124,7 +124,7 @@ const Page = () => {
         endDate: JSON.stringify(formatedendDate),
         availabletimeslot: JSON.stringify(weeklySchedule)
       };
-      console.log('avalibity data in handlesubmit:', availabilityData);
+     // console.log('avalibity data in handlesubmit:', availabilityData);
 
       const { enableSlotService } = await import(
         '@/services/user/slot.service'
@@ -135,10 +135,10 @@ const Page = () => {
         if (data) {
           toast.success(`Successfully updated`);
         } else if(error){
-          toast.error(`something error occured:`, error);
+          toast.error(`Something error occured:`, error);
         }
       } catch (error) {
-        toast.error(`something error occured:`, error);
+        toast.error(`Something error occured:`, error);
       }
     }
   };

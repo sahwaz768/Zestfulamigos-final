@@ -110,6 +110,10 @@ const Page = () => {
     setLoading(() => false);
   };
 
+  if (isLoading) {
+    return <Loadingbar />;
+  }
+
   return (
     <>
       <div>
@@ -134,9 +138,7 @@ const Page = () => {
                 History{' '}
               </div>
             </div>
-            {isLoading ? (
-              <Loadingbar />
-            ) : (
+          
               <div className="booking-box">
                 {(() => {
                   switch (activeTab) {
@@ -194,7 +196,7 @@ const Page = () => {
                   }
                 })()}
               </div>
-            )}
+          
           </div>
         </div>
       </div>
