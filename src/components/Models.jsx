@@ -888,7 +888,7 @@ export const CancelBookingModel = ({ closeModal, bookingDetail }) => {
           {error && <div className="text-xs">{error}</div>}
           <button
             type="submit"
-            className="companion-cancel-btn"
+            className="companion-cancel-btn "
             disabled={isLoading}
           >
             {isLoading ? 'Submitting...' : 'Submit'}
