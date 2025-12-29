@@ -75,12 +75,12 @@ const Page = () => {
               aria-label="Select Male"
             ></button>
           </div>
-          <div className="rightimg">
+          <div className="rightimg ">
             <button
               type="button"
               name="female"
               onClick={() => handleGenderSelect('Female')}
-              className={`femalegender ${gender === 'Female' ? 'selected-female' : ''}`}
+              className={`femalegender  ${gender === 'Female' ? 'selected-female' : ''}`}
               aria-label="Select Female"
             ></button>
           </div>

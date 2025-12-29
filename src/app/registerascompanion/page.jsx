@@ -1,7 +1,7 @@
 'use client';
 import Masterheader from '@/components/Masterheader';
 import Form from '@/components/Profileform';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
   const signup = async (payload) => {
@@ -33,40 +33,38 @@ export default function Page() {
     for (let [key, value] of companionDetails.entries()) {
       obj[key] = value;
     }
- //   console.log('companion signup form submitted', obj);
-    
-   
-try {
-  const { companionRegisterService } = await import(
-    '@/services/auth/companionregister.service'
-  );
+    //   console.log('companion signup form submitted', obj);
 
-  const { toast } = await import('@/utils/reduxtrigger.utils');
+    try {
+      const { companionRegisterService } =
+        await import('@/services/auth/companionregister.service');
 
-  const { data, error } = await companionRegisterService(companionDetails);
+      const { toast } = await import('@/utils/reduxtrigger.utils');
 
-  if (data) {
-    toast.success(
-      "Successfully registered as companion, wait for admin's approval"
-    );
-  //  router.back();
-  } else {
-    toast.error(`Sorry, registration failed: ${error || 'Unknown error'}`);
-  }
-} catch (err) {
-  console.error('Error during companion registration:', err);
-  const { toast } = await import('@/utils/reduxtrigger.utils');
-  toast.error('An unexpected error occurred. Please try again later.');
-}  
+      const { data, error } = await companionRegisterService(companionDetails);
 
-  }; 
- 
+      if (data) {
+        toast.success(
+          "Successfully registered as companion, wait for admin's approval"
+        );
+        // router.back();
+      } else {
+        toast.error(`Sorry, registration failed: ${error || 'Unknown error'}`);
+      }
+    } catch (err) {
+      
+      const { toast } = await import('@/utils/reduxtrigger.utils');
+      toast.error('An unexpected error occurred. Please try again later.');
+    }
+  };
 
   return (
     <>
       <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" fillBlank />
       <div className="md:w-7xl w-full  mx-auto my-10 p-5 bg-white ">
-        <h1 className="text-center font-extrabold text-lg">Companion Registration</h1>
+        <h1 className="text-center font-extrabold text-lg">
+          Companion Registration
+        </h1>
         <Form initialValues={{}} onSubmit={signup} mode="signup" />
       </div>
     </>

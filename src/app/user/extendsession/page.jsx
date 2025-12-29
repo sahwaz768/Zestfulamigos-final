@@ -7,6 +7,8 @@ import Loadingbar from '@/components/Loadingbar';
 import LocationAccess from '@/components/Locationaccess';
 import { CgDanger } from 'react-icons/cg';
 
+
+
 const ExtensionBookingPage = () => {
   const [isLoading, setisLoading] = useState(false);
   const [bookingdata, setBookingData] = useState(null);
@@ -147,6 +149,7 @@ const ExtensionBookingPage = () => {
     );
   return (
     <>
+      
       <Masterheader backgroundColor="rgba(250, 236, 236, 0.8)" />
       <div className="flex justify-center">
         <div className="flex items-center justify-center gap-3 bg-red-400 rounded-lg py-3 text-white w-3/4 md:w-1/4">

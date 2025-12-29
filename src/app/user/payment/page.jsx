@@ -181,6 +181,7 @@ const page = () => {
                 name="checkbox1"
                 checked={checkboxes.checkbox1}
                 onChange={handleCheckboxChange}
+                className="cursor-pointer"
               />
               <p className="text-xs font-normal ml-2">
                 I acknowledge that this service is for companionship and
@@ -196,6 +197,7 @@ const page = () => {
                 name="checkbox2"
                 checked={checkboxes.checkbox2}
                 onChange={handleCheckboxChange}
+                className="cursor-pointer"
               />
               <p className="text-xs font-normal ml-2">
                 I understand and agree to the platform’s terms and conditions,
@@ -206,7 +208,7 @@ const page = () => {
               <p className="text-xs text-red-800">{errors.checkbox2}</p>
             )}
             <button
-              className="paymentbtn"
+              className="paymentbtn cursor-pointer"
               type="submit"
               onClick={handleSubmit}
               disabled={isLoading}

@@ -14,7 +14,7 @@ const Pagination = ({ currentPage, totalPage, onPageChange}) => {
           <button
             key={l}
             onClick={() => onPageChange(l)}
-            className={`px-3 py-2 rounded-md ${currentPage === l ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+            className={`px-3 py-2 rounded-md cursor-pointer ${currentPage === l ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-800'}`}
             disabled={currentPage === l}
           >
             {l}

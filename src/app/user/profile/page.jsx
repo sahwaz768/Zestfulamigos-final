@@ -227,7 +227,7 @@ const Page = () => {
                 <span className="text-sm">{errors.gender}</span>
               )}
             </div>
-            <button type="submit" className="savechgbtn" disabled={isLoading}>
+            <button type="submit" className="savechgbtn cursor-pointer" disabled={isLoading}>
               {isLoading ? 'Saving..' : 'Save Changes'}
             </button>
           </form>

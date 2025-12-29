@@ -101,7 +101,7 @@ const Page = () => {
             <div className="flex  justify-between  gap-6">
               <div>
                 <h1 className="font-black md:text-2xl text-lg text-black bg-clip-text">
-                  All Earnings
+                  Transaction:
                 </h1>
                 <p className="md:text-sm text-xs  mt-2 text-gray-600 max-w-2xl leading-relaxed">
                   Track your earnings and payment history
@@ -110,30 +110,18 @@ const Page = () => {
 
               <div className="relative">
                 <select
-                  className="appearance-none bg-linear-to-r from-rose-500 to-pink-500 text-white md:px-8 gap-3 px-5 py-4 md:py-3 text-xs md:text-base rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-rose-200 cursor-pointer"
+                  className="w-full px-4 py-3 bg-red-400 text-white font-medium border-2 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:scale-105 cursor-pointer focus:bg-red-700"
                   onChange={(e) => SetActiveTab(e.target.value)}
                 >
-                  <option value="pending" className=" bg-linear-to-r from-rose-50 to-pink-50 text-gray-900 font-semibold">
-                    transactions pending
+                  <option value="pending" className=" bg-white text-gray-800">
+                    PENDING
                   </option>
-                  <option value="completed" className=" bg-linear-to-r from-rose-50 to-pink-50 text-gray-900 font-semibold">
-                    transactions completed
+                  <option value="completed" className=" bg-white text-gray-800">
+                    COMPLETED
                   </option>
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
-                  <svg
-                    className="w-5 h-5 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
+                 
                 </div>
               </div>
             </div>

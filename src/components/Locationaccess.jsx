@@ -36,6 +36,7 @@ const LocationAccess = ({ setLocation, mapkey }) => {
 
   return (
     <>
+    <div className='flex'>
       <input
         ref={inputRef}
         type="text"
@@ -52,10 +53,11 @@ const LocationAccess = ({ setLocation, mapkey }) => {
       <button
         type="button"
         onClick={handleManualLocationSubmit}
-        className="meet-up-btn"
+        className="meet-up-btn cursor-pointer"
       >
         Check
       </button>
+      </div>
       {error && <p className="text-xs text-pink-600">{error}</p>}
 
       <div
