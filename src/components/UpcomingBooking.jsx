@@ -70,7 +70,7 @@ const UpcomingBooking = ({ bookingdata, isCompanion, getUpcomingBooking }) => {
         </div>
         {l.status === 'ACCEPTED' && !l.sessions.length ? (
           <div>
-            <button onClick={() => setIsOpen(l)}>Cancel</button>
+            <button onClick={() => setIsOpen(l)} className='cursor-pointer'>Cancel</button>
           </div>
         ) : null}
         {!isCompanion &&
@@ -84,6 +84,7 @@ const UpcomingBooking = ({ bookingdata, isCompanion, getUpcomingBooking }) => {
                   router.push(`/user/extendsession?bookingId=${l.id}`);
                 }
               }}
+              className='cursor-pointer'
             >
               Complete your Payment
             </button>
@@ -106,10 +107,10 @@ const UpcomingBooking = ({ bookingdata, isCompanion, getUpcomingBooking }) => {
                     Are you sure
                   </h1>
                   <div className="flex justify-center gap-2 mr-3 my-3">
-                    <button className="yes" onClick={handleCancelClick}>
+                    <button className="yes cursor-pointer" onClick={handleCancelClick} >
                       Yes
                     </button>
-                    <button className="no" onClick={() => setIsOpen(null)}>
+                    <button className="no cursor-pointer" onClick={() => setIsOpen(null)}>
                       No
                     </button>
                   </div>

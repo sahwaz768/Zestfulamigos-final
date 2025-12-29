@@ -93,7 +93,7 @@ const refundpolicy = () => {
           <h1>Clients seeking a refund must follow these steps:</h1>
           <h1 className="text-sm my-1">
             Contact Customer Support: Clients should reach out to Zestful Amigos
-            customer support at [Insert Contact Information] within 7 days of
+            customer support at support@zestfulamigos.com within 7 days of
             the booking date to initiate the refund process.
           </h1>
           <h1 className="text-sm my-1">
@@ -142,7 +142,7 @@ const refundpolicy = () => {
           <h1>
             For further assistance or inquiries regarding this Refund Policy,
             clients are encouraged to contact our dedicated customer support
-            team at [Contact Information]. We value your feedback and are
+            team at support@zestfulamigos.com. We value your feedback and are
             committed to ensuring a satisfactory experience with our services.
           </h1>
         </div>

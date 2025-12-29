@@ -410,14 +410,14 @@ const Chatwindow = ({ selected, isCompanion, setSelectedChat }) => {
                     ) < 1 && isLocationOn ? (
                       <Link
                         href={`${isCompanion ? '/companion' : '/user'}/livetracker/?bookingId=${selected.booking.id}`}
-                        legacyBehavior
+                        
                       >
-                        <a target="_blank" rel="noopener noreferrer">
+                        <p target="_blank" rel="noopener noreferrer">
                           <li className="p-2 rounded-md hover:bg-red-500 cursor-pointer text-xs flex items-center gap-2">
                             <FiMapPin color="red" size={20} /> Track
                             {isCompanion ? 'User' : 'Companion'}
                           </li>
-                        </a>
+                        </p>
                       </Link>
                     ) : null}
                   </ul>

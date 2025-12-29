@@ -386,7 +386,7 @@ export const RaiseaIssueModel = ({ closeModal, userDetails }) => {
             />
           </div>
           <div className="mt-2">
-            <button type="submit" className="sbtbtm" disabled={isLoading}>
+            <button type="submit" className="sbtbtm cursor-pointer" disabled={isLoading}>
               {isLoading ? 'Submitting' : 'Submit'}
             </button>
           </div>
@@ -449,7 +449,7 @@ export const ForgotPasswordModel = ({ handleModel }) => {
           {error && <p className="text-xs text-pink-600">{error}</p>}
           <br />
           <button
-            className="w-full loginbtn text-center"
+            className="w-full loginbtn text-center cursor-pointer"
             onClick={handleForgorPassword}
             disabled={isLoading}
           >
@@ -640,7 +640,7 @@ export const FillOtpModel = ({ handleModel, data: modeldata }) => {
           className="inputfield"
         />
         <button
-          className="w-full loginbtn text-center"
+          className="w-full loginbtn text-center cursor-pointer"
           onClick={handleResetPassword}
           disabled={isLoading}
         >
@@ -809,7 +809,7 @@ export const LoginModel = ({ handleModel }) => {
 
           <button
             type="submit"
-            className="w-full loginbtn text-center"
+            className="w-full loginbtn text-center cursor-pointer"
             onClick={handleSubmit}
             disabled={isLoading}
           >
@@ -1006,8 +1006,8 @@ export const LocationaccessModel = ({ setLocation, closeModal }) => {
             Zestful amigos would like to access your location, to get better
             results.
           </p>
-          <div className="locationacessbtn">
-            <button onClick={requestLocation}>Allow Location Access</button>
+          <div className="locationacessbtn c">
+            <button onClick={requestLocation} className="cursor-pointer">Allow Location Access</button>
           </div>
           <h4 className="hrline mx-3 my-3 text-gray-600"> or </h4>
           <p>Enter Manually</p>
@@ -1016,7 +1016,7 @@ export const LocationaccessModel = ({ setLocation, closeModal }) => {
           </div>
           <button
             onClick={handleManualLocationSubmit}
-            className="manual-location-btn"
+            className="manual-location-btn cursor-pointer"
           >
             Submit
           </button>
@@ -1220,7 +1220,7 @@ export function GoogleSignUp({ handleClose, userId }) {
             )}
 
             <select
-              className="select-gender"
+              className="inputfield-glg mt-3"
               value={data.gender}
               name="gender"
               onChange={handleChange}

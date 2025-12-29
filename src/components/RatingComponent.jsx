@@ -65,6 +65,7 @@ export default function RatingComponent({ bookingDetails }) {
               alt="Picture of the author"
               width={200}
               height={200}
+              unoptimized
             />
           </div>
           <h1 className="text-center ">

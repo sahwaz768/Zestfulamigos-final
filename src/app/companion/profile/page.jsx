@@ -56,7 +56,7 @@ export default function Page() {
     if (data) {
       toast.success('succesfully requested for profile update,please wait for admin approval');
     } else {
-      toast.error('sorry profile update failed:', error);
+      toast.error(error || 'Sorry, profile update failed');
     }
   };
 

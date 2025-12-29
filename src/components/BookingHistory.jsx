@@ -42,12 +42,12 @@ const BookingHistory = ({ bookingdata, isCompanion }) => {
         <div>
           {l.status === 'COMPLETED' ? (
             <>
-              <button onClick={() => router.push(`./rate?bookingId=${l.id}`)}>
+              <button onClick={() => router.push(`./rate?bookingId=${l.id}`)} className='cursor-pointer'>
                 Rate
               </button>
               {isCompanion ? null : (
                 <button
-                  className="ml-4"
+                  className=" cursor-pointer"
                   onClick={() => {
                     router.push(`./timeslote?companionId=${l.companion.id}`);
                   }}

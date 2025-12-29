@@ -137,7 +137,7 @@ const ChatComponent = ({ chatrooms, isCompanion, isEmailVerified }) => {
                 </h1>
                 <div className="flex justify-center">
                   <Link href={'/user/genderchoose'}>
-                    <button className="chat-emptyspace-btn">
+                    <button className="chat-emptyspace-btn cursor-pointer">
                       Start a conversation
                     </button>
                   </Link>

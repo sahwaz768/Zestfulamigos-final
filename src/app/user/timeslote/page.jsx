@@ -359,17 +359,19 @@ const Page = () => {
                 disabled={!location}
                 onChange={() => setIsConfirmed(!isConfirmed)}
                 id="check"
+                className=" cursor-pointer"
               />
               <span className="ml-2 text-sm " htmlFor="check">
                 Confirm the meet-up location
               </span>
             </div>
+            {errorMessage && <p className=" text-xs md:mt-1.5 mt-5">{errorMessage}</p>}
 
-            <button type="submit" className="cntbtn3 mt-6" disabled={isLoading}>
+            <button type="submit" className="cntbtn3 " disabled={isLoading}>
               {isLoading ? 'Please wait....' : 'Continue'}
             </button>
 
-            {errorMessage && <p className="error text-xs">{errorMessage}</p>}
+            
           </div>
         </div>
       </form>

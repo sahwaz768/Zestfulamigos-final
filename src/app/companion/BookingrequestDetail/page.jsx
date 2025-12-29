@@ -65,9 +65,8 @@ const page = () => {
 
     const fetchData = async () => {
       try {
-        const { getBookingRequestDetails } = await import(
-          '@/services/user/bookings.service'
-        );
+        const { getBookingRequestDetails } =
+          await import('@/services/user/bookings.service');
         const result = await getBookingRequestDetails(bookingId);
         if (result.data) {
           setBookingData(result.data.data);
@@ -82,15 +81,14 @@ const page = () => {
 
     const fetchAcceptData = async () => {
       try {
-        const { getAcceptBooking } = await import(
-          '@/services/user/bookings.service'
-        );
+        const { getAcceptBooking } =
+          await import('@/services/user/bookings.service');
         const { toast } = await import('@/utils/reduxtrigger.utils');
         setisLoading(true);
         const result = await getAcceptBooking(bookingId);
         if (result.data) {
           setisLoading(false);
-          toast.success('Successfully request Accepted!!');
+          toast.success('Successfully request accepted!!');
           router.back();
         }
       } catch (err) {
@@ -103,49 +101,49 @@ const page = () => {
     }
   }, [status]);
 
-  const handleSubmit = async () => {
-    if (reason.trim() === '') {
-      setError('Please provide a reason for rejection');
-      return;
-    } else {
-    setError('');
-  //  console.log('Rejection reason:', reason);
-    try {
-      let params = new URL(document.location.toString()).searchParams;
-      let bookingId = params.get('bookingid');
-      const { getRejectBooking } = await import(
-        '@/services/user/bookings.service'
-      );
-
-      const { toast } = await import('@/utils/reduxtrigger.utils');
-      setisLoadingII(true);
-      const RejectBooking = {
-        bookingid: bookingId,
-        reason: reason
-      };
-     // console.log('rejection reaon', RejectBooking);
-      
-      const {result,error} = await getRejectBooking(RejectBooking);
-      if (result.data) {
-        setisLoadingII(false);
-        toast.success(' The request has been successfully declined.');
-        router.back();
-        setIsOpen(false);
-        setReason('');
-      }
-    } catch (err) {
-      console.error('Fetch error:', err);
-       toast.error('Sorry error occured, please try after sometime .');
-    }
-
-    
-    
-  };}
-
   const handleInputChange = (e) => {
     setReason(e.target.value);
     if (error) {
       setError('');
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (reason.trim() === '') {
+      setError('Please provide a reason for rejection');
+      return;
+    }
+
+    setError('');
+    setisLoadingII(true);
+    const { toast } = await import('@/utils/reduxtrigger.utils');
+
+    const params = new URL(document.location.toString()).searchParams;
+    const bookingId = params.get('bookingid');
+
+    const { getRejectBooking } =
+      await import('@/services/user/bookings.service');
+
+    const RejectBooking = {
+      bookingid: bookingId,
+      reason
+    };
+
+    const { result, error } = await getRejectBooking(RejectBooking);
+
+    if (result) {
+      setisLoadingII(true);
+      toast.success('The request has been successfully declined.');
+
+      setIsOpen(false);
+      setReason('');
+      setisLoadingII(false);
+      router.back();
+    } else {
+      setisLoadingII(true);
+      toast.error(error || 'Failed to reject the booking request.');
+      setisLoadingII(false);
+      setIsOpen(false);
     }
   };
 
@@ -219,7 +217,7 @@ const page = () => {
                   width={80}
                   height={80}
                   className="w-20 h-20 rounded-2xl object-cover ring-4 ring-red-500 shadow-lg"
-                   unoptimized
+                  unoptimized
                 />
               )}
               <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-4 border-white shadow-sm"></div>
@@ -357,7 +355,7 @@ const page = () => {
                 onClick={handleSubmit}
                 className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition"
               >
-                Submit
+                {isLoadingII ? 'Rejecting...' : 'Submit'}
               </button>
             </div>
           </div>

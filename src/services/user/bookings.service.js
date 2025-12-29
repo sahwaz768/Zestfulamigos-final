@@ -384,7 +384,8 @@ export const getRejectBooking = async (values) => {
   
 
     const response = await post(url, values);
-    return response;
+   
+    return { result: response.data };
   } catch (error) {
     console.error('API Error:', error);
     if (error.response) {

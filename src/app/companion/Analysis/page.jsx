@@ -302,10 +302,10 @@ const page = () => {
 
               {/* View All Button */}
             </div>
-            <Link href={'/companion/Earning'}>
+            <Link href={'/companion/Earning'}   >
               {' '}
-              <button className="w-full md:mt-7 mt-1 md:py-3.5 py-1 px-6  bg-red-500 text-white font-semibold rounded-xl hover:bg-red-700 transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2 bottom-0 mb-2">
-                <span>View All Earnings</span>
+              <button className="w-full md:mt-7 mt-1 md:py-3.5 py-1 px-6   bg-red-500 text-white font-semibold rounded-xl hover:bg-red-700 transition-all duration-200 shadow-sm hover:shadow-md flex items-center justify-center gap-2 bottom-0 mb-2 ">
+                <span >View All Earnings</span>
                 <svg
                   className="w-4 h-4"
                   fill="none"

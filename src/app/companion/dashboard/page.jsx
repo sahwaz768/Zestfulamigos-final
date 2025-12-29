@@ -465,11 +465,11 @@ const Page = () => {
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <Link href={'/companion/bookinghistory'}>
-                          <div className="group bg-linear-to-br from-red-500 to-red-600 text-white rounded-xl py-6 px-3 font-bold hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center justify-center gap-2 text-xs shadow-lg">
+                          <div className="group bg-white text-white rounded-xl py-6 px-3 font-bold hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center justify-center gap-2 text-xs shadow-lg">
                             <span className="text-2xl group-hover:scale-125 transition-transform duration-300">
                               📅
                             </span>
-                            <span className="text-center leading-tight">
+                            <span className="text-center leading-tight text-black">
                               VIEW
                               <br />
                               ALL BOOKINGS

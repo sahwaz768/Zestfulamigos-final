@@ -32,7 +32,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
       upiProvider: '',
       walletProvider: '',
       walletIdentifier: '',
-      isDefault: false
+      isDefault: true
     }
   ]);
 
@@ -226,7 +226,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
         <div className="margin-box-">
           {/* Image Uploader */}
           <div className="form-group mt-2 mb-3">
-            <h1 className="font-bold mb-2">Profile Picture(4 required)</h1>
+            <h1 className="font-bold mb-2">Profile Picture</h1>
             <ImageUploader
               images={formData.images}
               onUpload={handleImageUpload}
@@ -626,7 +626,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
             {paymentForms.map((form, index) => (
               <div
                 key={index}
-                className={`border md:p-4 px-2 my-4 rounded-lg shadow-sm bg-gray-50 ${
+                className={`border md:p-4 px-2 my-4 rounded-lg shadow-sm bg-gray-50 max-[370px]:px-0 ${
                   errors.paymentMethods?.[index]
                     ? 'border-2 border-red-500'
                     : ''
@@ -641,7 +641,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                   {paymentForms.length > 1 && (
                     <button
                       onClick={() => removePaymentMethod(index)}
-                      className="text-red-500 text-sm hover:underline"
+                      className="text-red-500 text-sm hover:underline cursor-pointer"
                     >
                       Remove
                     </button>
@@ -655,6 +655,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                     name="primaryPayment"
                     checked={form.isDefault === true}
                     onChange={() => handlePrimaryChange(index)}
+                    className="cursor-pointer"
                   />
                   <label className="text-sm">Set as Primary</label>
                 </div>
@@ -981,7 +982,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
             <button
               onClick={addPaymentMethod}
               disabled={paymentForms.length >= 4}
-              className={`mt-3 px-4 py-2 rounded-lg ${
+              className={`mt-3 px-4 py-2 rounded-lg cursor-pointer ${
                 paymentForms.length >= 4
                   ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
                   : 'bg-red-400 text-white'
@@ -1008,6 +1009,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                       name="description"
                       value={desc}
                       checked={formData.description.includes(desc)}
+                      
                       onChange={(e) => {
                         const { value, checked } = e.target;
                         setFormData((prev) => ({
@@ -1017,7 +1019,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
                             : prev.description.filter((d) => d !== value)
                         }));
                       }}
-                      className="mr-2"
+                      className="mr-2 cursor-pointer"
                     />
                     <span className="md:text-sm text-xs">{desc}</span>
                   </div>
@@ -1031,7 +1033,7 @@ const Profileform = ({ initialValues = {}, onSubmit, mode = 'signup' }) => {
             </div>
           </div>
           {/* Submit Button */}
-          <button className="savechgbtn" onClick={handleSubmit}>
+          <button className="savechgbtn cursor-pointer" onClick={handleSubmit}>
             {mode === 'signup' ? 'Sign Up' : 'Request Update'}
           </button>
         </div>

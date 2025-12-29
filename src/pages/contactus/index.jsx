@@ -40,7 +40,7 @@ const ContactUsPage = () => {
         </div>
         <div>
           <h1 className='font-bold'>Email</h1>
-          <p>zestfulamigos@gmail.com</p>
+          <p>support@zestfulamigos.com</p>
         </div>
       </div>
       <div className='mt-8'>

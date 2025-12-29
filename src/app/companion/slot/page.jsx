@@ -31,9 +31,8 @@ const Page = () => {
 
   useEffect(() => {
     const init = async () => {
-      const { getEnableSlotService } = await import(
-        '@/services/user/slot.service'
-      );
+      const { getEnableSlotService } =
+        await import('@/services/user/slot.service');
 
       try {
         const data = await getEnableSlotService();
@@ -60,9 +59,8 @@ const Page = () => {
 
   useEffect(() => {
     const init = async () => {
-      const { getEnableSlotService } = await import(
-        '@/services/user/slot.service'
-      );
+      const { getEnableSlotService } =
+        await import('@/services/user/slot.service');
 
       try {
         const data = await getEnableSlotService();
@@ -80,7 +78,7 @@ const Page = () => {
           setStartDate(formattedStartDate);
           setEndDate(formattedEndDate);
         } else if (isOn === true) {
-        //  console.log('second condition true');
+          //  console.log('second condition true');
           const weeklySchedule = ScheduleToSlots(
             data.data.CompanionAvailability.availabletimeslot
           );
@@ -101,7 +99,7 @@ const Page = () => {
         }
         setIsLoading(false);
       } catch (error) {
-     //   console.log('error fetching slot data:', error);
+        //   console.log('error fetching slot data:', error);
       }
     };
     init();
@@ -124,17 +122,16 @@ const Page = () => {
         endDate: JSON.stringify(formatedendDate),
         availabletimeslot: JSON.stringify(weeklySchedule)
       };
-     // console.log('avalibity data in handlesubmit:', availabilityData);
+      // console.log('avalibity data in handlesubmit:', availabilityData);
 
-      const { enableSlotService } = await import(
-        '@/services/user/slot.service'
-      );
+      const { enableSlotService } =
+        await import('@/services/user/slot.service');
 
       try {
-        const { data,error } = await enableSlotService(availabilityData);
+        const { data, error } = await enableSlotService(availabilityData);
         if (data) {
           toast.success(`Successfully updated`);
-        } else if(error){
+        } else if (error) {
           toast.error(`Something error occured:`, error);
         }
       } catch (error) {
@@ -149,7 +146,9 @@ const Page = () => {
 
   if (isLoading) {
     return (
-      <div><Loadingbar /></div>
+      <div>
+        <Loadingbar />
+      </div>
     );
   }
 
@@ -172,7 +171,7 @@ const Page = () => {
           <div className="flex items-center justify-center">
             <button
               onClick={() => setIsOn(!isOn)}
-              className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
+              className={`relative inline-flex h-8 w-14 items-center rounded-full cursor-pointer transition-colors ${
                 isOn ? 'bg-red-600' : 'bg-white border-2 border-red-600'
               }`}
             >
@@ -190,9 +189,7 @@ const Page = () => {
           </div>
         </div>
 
-        <div
-          className={`bg-white overflow-hidden `}
-        >
+        <div className={`bg-white overflow-hidden `}>
           <div className="flex flex-wrap">
             <div className="w-full lg:w-1/2 p-1 md:p-1 border-b lg:border-b-0 lg:border-r border-red-100">
               <div className="flex items-center gap-3 mb-6">
@@ -204,7 +201,9 @@ const Page = () => {
               <p className="text-gray-600 mb-6 text-sm">
                 Select the date range for your availability
               </p>
-              <div className={`bg-linear-to-br from-red-50 to-pink-50 p-0 md:p-6 rounded-2xl shadow-inner pointer-events-none cursor-not-allowed  ${isOn ? '' : 'opacity-60 '}`}>
+              <div
+                className={`bg-linear-to-br from-red-50 to-pink-50 p-0 md:p-6 rounded-2xl shadow-inner pointer-events-none cursor-not-allowed  ${isOn ? '' : 'opacity-60 '}`}
+              >
                 {startDate ? (
                   <Calendar
                     CalendarData={handleCalendarSubmit}
@@ -224,20 +223,22 @@ const Page = () => {
                   Weekly Availability Pattern
                 </h2>
               </div>
-              <div className={` ${isOn ? '' : 'opacity-60 pointer-events-none cursor-not-allowed'}`}>
-              <p className="text-gray-500 text-sm my-6">
-                Click on time slots to select consecutive hours
-              </p>
-              {weeklySlot && weeklySlot.length > 0 ? (
-                <WeeklyScheduler
-                  selectedslotData={handleslotselected}
-                  initialSlots={userData.availableSlots || []}
-                />
-              ) : (
-                <>
-                  <WeeklyScheduler selectedslotData={handleslotselected} />
-                </>
-              )}
+              <div
+                className={` ${isOn ? '' : 'opacity-60 pointer-events-none cursor-not-allowed'}`}
+              >
+                <p className="text-gray-500 text-sm my-6">
+                  Click on time slots to select consecutive hours
+                </p>
+                {weeklySlot && weeklySlot.length > 0 ? (
+                  <WeeklyScheduler
+                    selectedslotData={handleslotselected}
+                    initialSlots={userData.availableSlots || []}
+                  />
+                ) : (
+                  <>
+                    <WeeklyScheduler selectedslotData={handleslotselected} />
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -264,29 +265,30 @@ const Page = () => {
 
           <div className="px-8 md:px-10 py-6 bg-gray-50 flex justify-end">
             {isOn === true && (
-            <button
-              className="group relative px-10 py-4 bg-linear-to-r from-red-500 to-pink-500 text-white font-bold rounded-xl hover:from-red-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-red-300 hover:scale-105 active:scale-95 overflow-hidden"
-              onClick={handleFinalSubmit}
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                Set Availability
-                <svg
-                  className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 7l5 5m0 0l-5 5m5-5H6"
-                  />
-                </svg>
-              </span>
-              <div className="absolute inset-0 bg-linear-to-r from-red-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </button>
-            ) }
+              <button
+                className="group relative cursor-pointer px-10 py-4 bg-linear-to-r from-red-500 to-pink-500 text-white font-bold rounded-xl hover:from-red-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-red-300 hover:scale-105 active:scale-95 overflow-hidden"
+                onClick={handleFinalSubmit}
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  Set Availability
+                  
+                  <svg
+                    className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </span>
+                <div className="absolute inset-0 bg-linear-to-r from-red-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -143,7 +143,7 @@ const TicketDetail = ({ userIssue, getLatestDetails }) => {
               </button>
             </div>
           ) : (
-            <button onClick={() => setisUserWanttoaddComment(true)}>
+            <button onClick={() => setisUserWanttoaddComment(true)} className='cursor-pointer'>
               Comment
             </button>
           )}
