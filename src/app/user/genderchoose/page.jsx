@@ -89,7 +89,7 @@ const Page = () => {
         <div className="gendercntbtn flex justify-center mt-4">
           <button
             type="submit"
-            className="submit-button"
+            className="submit-button cursor-pointer"
             onClick={handleSubmit}
             disabled={isLoading}
           >

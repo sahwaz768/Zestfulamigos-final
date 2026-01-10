@@ -69,7 +69,7 @@ const Footer = () => {
           <CiLinkedin color="white" size={26} />
         </div>
         <div className="pt-14 py-7 text-center">
-          Copyright 2025.All right reserve
+          Copyright 2026.All right reserve
         </div>
       </div>
     </div>

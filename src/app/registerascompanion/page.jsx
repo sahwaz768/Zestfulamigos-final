@@ -7,7 +7,7 @@ export default function Page() {
   const signup = async (payload) => {
     const companionDetails = new FormData();
     const previousImages = [];
-    //  const router = useRouter();
+  
 
     for (let key in payload) {
       if (key === 'images') {
@@ -47,7 +47,7 @@ export default function Page() {
         toast.success(
           "Successfully registered as companion, wait for admin's approval"
         );
-        // router.back();
+        
       } else {
         toast.error(`Sorry, registration failed: ${error || 'Unknown error'}`);
       }
