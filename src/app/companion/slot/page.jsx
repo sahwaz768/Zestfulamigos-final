@@ -129,10 +129,13 @@ const Page = () => {
 
       try {
         const { data, error } = await enableSlotService(availabilityData);
-        if (data) {
+        if (data.success === true) {
+          
           toast.success(`Successfully updated`);
-        } else if (error) {
-          toast.error(`Something error occured:`, error);
+        } else if (data.status >= 400) {
+          toast.error(`Can't update , slot already booked`);
+        } else {
+          toast.error(`Something went wrong, please try again later.`);
         }
       } catch (error) {
         toast.error(`Something error occured:`, error);
